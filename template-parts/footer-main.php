@@ -138,33 +138,15 @@ if (!defined('ABSPATH')) {
                 </p>
                 <div class="copy-right-btns">
                     <?php
-                    $locations = get_nav_menu_locations();
-                    $menu_id   = isset($locations['footer_social']) ? $locations['footer_social'] : 0;
-                    $items     = $menu_id ? wp_get_nav_menu_items($menu_id) : array();
+                    for ( $i = 1; $i <= 5; $i++ ) {
+                        $icon = trim( (string) get_theme_mod( "ludych_footer_social_{$i}_icon" ) );
+                        $url  = trim( (string) get_theme_mod( "ludych_footer_social_{$i}_url", '#' ) );
 
-                    if ( ! empty($items) ) {
-                        foreach ( $items as $item ) {
-                            $icon_classes = '';
-                            if ( ! empty($item->classes) && is_array($item->classes) ) {
-                                $fa = array_values(array_filter($item->classes, static function ($c) {
-                                    return is_string($c) && (0 === strpos($c, 'fa-') || 0 === strpos($c, 'fa ' ) || 0 === strpos($c, 'fa'));
-                                }));
-                                $icon_classes = implode(' ', array_map('sanitize_html_class', array_filter($fa)));
-                            }
-                            if ( empty($icon_classes) ) {
-                                $icon_classes = 'fa-brands fa-linkedin-in';
-                            }
-                            echo '<a href="' . esc_url($item->url) . '"><i class="' . esc_attr($icon_classes) . '"></i></a>';
+                        if ( '' === $icon || '' === $url ) {
+                            continue;
                         }
-                    } else {
-                        $facebook  = get_theme_mod( 'ludych_footer_facebook', '#' );
-                        $twitter   = get_theme_mod( 'ludych_footer_twitter', '#' );
-                        $google    = get_theme_mod( 'ludych_footer_google', '#' );
-                        $pinterest = get_theme_mod( 'ludych_footer_pinterest', '#' );
-                        if ( $facebook ) { echo '<a href="' . esc_url($facebook) . '"><i class="fa-brands fa-facebook-f"></i></a>'; }
-                        if ( $twitter ) { echo '<a href="' . esc_url($twitter) . '"><i class="fa-brands fa-twitter"></i></a>'; }
-                        if ( $google ) { echo '<a href="' . esc_url($google) . '"><i class="fa-brands fa-google-plus-g"></i></a>'; }
-                        if ( $pinterest ) { echo '<a href="' . esc_url($pinterest) . '"><i class="fa-brands fa-pinterest"></i></a>'; }
+
+                        echo '<a href="' . esc_url( $url ) . '"><i class="' . esc_attr( $icon ) . '"></i></a>';
                     }
                     ?>
                 </div>

@@ -23,7 +23,6 @@ function ludych_theme_setup() {
             'footer_company'   => __('Footer Company Menu', 'ludych-theme'),
             'footer_industries'=> __('Footer Industries Menu', 'ludych-theme'),
             'footer_services'  => __('Footer Services Menu', 'ludych-theme'),
-            'footer_social'    => __('Footer Social Menu', 'ludych-theme'),
         )
     );
 }

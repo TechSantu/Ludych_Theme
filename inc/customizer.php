@@ -271,28 +271,49 @@ function ludych_customize_register( $wp_customize ) {
         )
     );
 
-    $social_defaults = array(
-        'ludych_footer_facebook'  => '#',
-        'ludych_footer_twitter'   => '#',
-        'ludych_footer_google'    => '#',
-        'ludych_footer_pinterest' => '#',
-    );
+    for ( $i = 1; $i <= 5; $i++ ) {
+        $default_icon = '';
+        $default_url  = '#';
 
-    foreach ( $social_defaults as $setting_id => $default ) {
+        if ( 1 === $i ) {
+            $default_icon = 'fa-brands fa-facebook-f';
+        } elseif ( 2 === $i ) {
+            $default_icon = 'fa-brands fa-twitter';
+        } elseif ( 3 === $i ) {
+            $default_icon = 'fa-brands fa-google-plus-g';
+        } elseif ( 4 === $i ) {
+            $default_icon = 'fa-brands fa-pinterest';
+        }
+
         $wp_customize->add_setting(
-            $setting_id,
+            "ludych_footer_social_{$i}_icon",
             array(
-                'default'           => $default,
+                'default'           => $default_icon,
+                'sanitize_callback' => 'sanitize_text_field',
+            )
+        );
+
+        $wp_customize->add_control(
+            "ludych_footer_social_{$i}_icon",
+            array(
+                'label'   => sprintf( __('Social %d Icon Classes (Font Awesome)', 'ludych-theme'), $i ),
+                'section' => 'ludych_footer_section',
+                'type'    => 'text',
+            )
+        );
+
+        $wp_customize->add_setting(
+            "ludych_footer_social_{$i}_url",
+            array(
+                'default'           => $default_url,
                 'sanitize_callback' => 'esc_url_raw',
             )
         );
 
-        $label_key = strtoupper( str_replace( array('ludych_footer_', '_'), array('', ' '), $setting_id ) );
-
         $wp_customize->add_control(
-            $setting_id,
+            "ludych_footer_social_{$i}_url",
             array(
-                'label'   => sprintf( __('%s URL', 'ludych-theme'), $label_key ),
+                'label'   => sprintf( __('Social %d URL', 'ludych-theme'), $i ),
                 'section' => 'ludych_footer_section',
                 'type'    => 'url',
             )
