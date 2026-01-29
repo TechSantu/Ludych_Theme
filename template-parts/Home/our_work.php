@@ -2,7 +2,7 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-$current_post_id = get_the_ID();
+$current_post_id  = get_the_ID();
 $tech_stack_title = get_field( 'tech_stack_title', $current_post_id );
 $tech_stack_text  = get_field( 'tech_stack_text', $current_post_id );
 ?>
