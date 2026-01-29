@@ -27,7 +27,20 @@ jobs:
       - name: Install Dependencies
         run: composer install --prefer-dist --no-progress
 
-      - name: PHPCS (WordPress Coding Standards)
+      - name: PHPCS Auto-Fix (PHPCBF)
+        run: composer fix || true
+          
+      - name: Commit Auto-Fixes
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            git config --global user.name "github-actions[bot]"
+            git config --global user.email "github-actions[bot]@users.noreply.github.com"
+            git add .
+            git commit -m "chore: auto-fix coding standards (PHPCBF)"
+            git push
+          fi
+
+      - name: PHPCS Verification
         run: composer lint
 
       - name: PHPStan (Static Analysis)
