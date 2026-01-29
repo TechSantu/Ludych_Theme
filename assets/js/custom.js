@@ -126,7 +126,7 @@
 								if (response) {
 									$("#services-container").append(response);
 									button.data("page", nextPage);
-									button.find("span").html('Explore More <i class="fa-solid fa-arrow-right-long"></i>');
+									button.find("span").html('Show more  <i class="fa-solid fa-arrow-right-long"></i>');
 
 									if (nextPage === maxPage) {
 										button.fadeOut();
