@@ -98,7 +98,7 @@ $tech_stack_text  = get_field( 'tech_stack_text', $post_id );
 					</div>
 				</div>
 			</div>
-		<?php else: ?>
+		<?php else : ?>
 			<p>No terms found for taxonomy 'technology'. Please ensure this taxonomy exists and has terms.</p>
 		<?php endif; ?>
 	</div>
