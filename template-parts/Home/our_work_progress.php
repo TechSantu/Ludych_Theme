@@ -50,11 +50,13 @@ $main_title  = get_field('work_progress_title', $post_id);
 		<div class="row">
 
 			<?php if ( have_rows('work_progress_steps', $post_id) ) : ?>
-				<?php while ( have_rows('work_progress_steps', $post_id) ) : the_row(); 
+				<?php
+				while ( have_rows('work_progress_steps', $post_id) ) :
+					the_row();
 					$icon  = get_sub_field('step_icon');
 					$title = get_sub_field('step_title');
 					$desc  = get_sub_field('step_description');
-				?>
+					?>
 					<div class="col-xl-3 col-md-6 col-sm-12">
 						<div class="work-progress-card">
 

@@ -59,11 +59,13 @@ $why_image      = get_field('why_choose_us_image', $post_id);
 				<div class="content-wrapper">
 
 					<?php if ( have_rows( 'why_choose_us_box', $post_id ) ) : ?>
-						<?php while ( have_rows( 'why_choose_us_box', $post_id ) ) : the_row(); 
+						<?php
+						while ( have_rows( 'why_choose_us_box', $post_id ) ) :
+							the_row();
 							$box_image = get_sub_field('box_image');
 							$box_text  = get_sub_field('box_text');
 							$box_desc  = get_sub_field('box_desc');
-						?>
+							?>
 							<div class="content-box-inner">
 
 								<?php if ( $box_image ) : ?>
