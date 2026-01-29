@@ -37,19 +37,22 @@ jobs:
 
       - name: Commit Auto-Fixes
         if: github.repository_owner == 'TechSantu' && github.actor != 'github-actions[bot]'
+        shell: bash
         run: |
           if [ -n "$(git status --porcelain)" ]; then
             git config --global user.name "github-actions[bot]"
             git config --global user.email "github-actions[bot]@users.noreply.github.com"
             git add .
             git commit -m "chore: auto-fix coding standards (PHPCBF)"
-            if [[ "${{ github.ref }}" == refs/tags/* ]]; then
-              # If it's a tag, we usually don't push back to the tag, 
-              # but if we want to update the branch the tag was made from:
-              git push origin HEAD:master
-            else
-              git push origin HEAD:${{ github.ref_name }}
+            
+            # Identify the target branch
+            TARGET_BRANCH="master"
+            if [[ "${{ github.ref }}" == refs/heads/* ]]; then
+              TARGET_BRANCH="${{ github.ref_name }}"
             fi
+            
+            echo "Pushing fixes to $TARGET_BRANCH"
+            git push origin HEAD:"$TARGET_BRANCH"
           fi
 
       - name: PHPCS Verification
