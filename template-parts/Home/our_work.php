@@ -2,9 +2,9 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-global $post_id;
-$tech_stack_title = get_field( 'tech_stack_title', $post_id );
-$tech_stack_text  = get_field( 'tech_stack_text', $post_id );
+$current_post_id = get_the_ID();
+$tech_stack_title = get_field( 'tech_stack_title', $current_post_id );
+$tech_stack_text  = get_field( 'tech_stack_text', $current_post_id );
 ?>
 
 <!-- our work progress start -->
@@ -77,11 +77,13 @@ $tech_stack_text  = get_field( 'tech_stack_text', $post_id );
 										?>
 										<div class="icon-box">
 											<?php
-											$svg_code = get_field( 'tech_icon' );
-											if ( $svg_code ) {
-												echo $svg_code;
-											} elseif ( has_post_thumbnail() ) {
+											if ( has_post_thumbnail() ) {
 												the_post_thumbnail( 'full' );
+											} else {
+												$svg_code = get_field( 'tech_icon' );
+												if ( $svg_code ) {
+													echo $svg_code;
+												}
 											}
 											?>
 											<h6><?php the_title(); ?></h6>

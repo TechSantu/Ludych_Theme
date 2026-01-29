@@ -8,3 +8,4 @@ require_once get_template_directory() . '/inc/theme-setup.php';
 require_once get_template_directory() . '/inc/class-ludych-walker-nav-menu.php';
 require_once get_template_directory() . '/inc/customizer.php';
 require_once get_template_directory() . '/inc/ajax-load-more.php';
+require_once get_template_directory() . '/inc/post-types.php';

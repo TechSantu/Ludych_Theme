@@ -57,4 +57,9 @@ function ludych_filter_custom_logo( $html ) {
 
 	return $html;
 }
-add_filter( 'get_custom_logo', 'ludych_filter_custom_logo' );
+
+function ludych_enable_svg_upload( $mimes ) {
+	$mimes['svg'] = 'image/svg+xml';
+	return $mimes;
+}
+add_filter( 'upload_mimes', 'ludych_enable_svg_upload' );
