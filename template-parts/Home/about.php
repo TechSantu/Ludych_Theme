@@ -42,7 +42,7 @@ $author_about      = get_field( 'author_about', $post_id );
 								</div>
 								<h6><?php echo esc_html( $about_text ); ?></h6>
 							</div>
-							<h5><?php echo esc_html( $about_title ); ?></h5>
+							<h5><?php echo ( $about_title ); ?></h5>
 						</div>
 						<p><?php echo wp_kses_post( $about_description ); ?></p>
 
