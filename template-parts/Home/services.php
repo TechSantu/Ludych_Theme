@@ -18,7 +18,7 @@ global $post_id;
 								fill="url(#a)" />
 							<defs>
 								<linearGradient id="a" x1="2.10682" y1="24.5083" x2="28.4018" y2="11.5311"
-								                gradientUnits="userSpaceOnUse">
+												gradientUnits="userSpaceOnUse">
 									<stop stop-color="#3D72FB" />
 									<stop offset="1" stop-color="#fff" />
 								</linearGradient>
@@ -32,7 +32,7 @@ global $post_id;
 			<div class="busines-partner-items">
 				<div class="row" id="services-container">
 					<?php
-					$args = array(
+					$args           = array(
 						'post_type'      => 'services',
 						'posts_per_page' => 3,
 						'post_status'    => 'publish',
@@ -81,7 +81,7 @@ global $post_id;
 							<?php
 						endwhile;
 						wp_reset_postdata();
-					else:
+					else :
 						echo '<div class="col-12 text-center"><p>No services found. Please add some services in the dashboard.</p></div>';
 					endif;
 					?>
@@ -89,11 +89,11 @@ global $post_id;
 				<?php if ( $services_query->max_num_pages > 1 ) : ?>
 					<div class="load-more-btn-wrap text-center mt-5">
 						<a href="javascript:void(0);" 
-						   id="load-more-services" 
-						   class="globalBtnDark" 
-						   data-page="1" 
-						   data-max-pages="<?php echo $services_query->max_num_pages; ?>"
-						   data-post-type="services">
+							id="load-more-services" 
+							class="globalBtnDark" 
+							data-page="1" 
+							data-max-pages="<?php echo $services_query->max_num_pages; ?>"
+							data-post-type="services">
 							<span>Explore More <i class="fa-solid fa-arrow-right-long"></i></span>
 						</a>
 					</div>
