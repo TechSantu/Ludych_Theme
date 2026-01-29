@@ -3,15 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 global $post_id;
-
-$about_text        = get_field( 'about_text', $post_id );
-$about_title       = get_field( 'about_title', $post_id );
-$about_description = get_field( 'about_description', $post_id );
-$about_image       = get_field( 'about_image', $post_id );
-$author_name       = get_field( 'author_name', $post_id );
-$author_about      = get_field( 'author_about', $post_id );
 ?>
-
 
 	<!-- top business partner start -->
 	<section class="our-services">
@@ -26,7 +18,7 @@ $author_about      = get_field( 'author_about', $post_id );
 								fill="url(#a)" />
 							<defs>
 								<linearGradient id="a" x1="2.10682" y1="24.5083" x2="28.4018" y2="11.5311"
-									gradientUnits="userSpaceOnUse">
+								                gradientUnits="userSpaceOnUse">
 									<stop stop-color="#3D72FB" />
 									<stop offset="1" stop-color="#fff" />
 								</linearGradient>
@@ -43,6 +35,7 @@ $author_about      = get_field( 'author_about', $post_id );
 					$args = array(
 						'post_type'      => 'services',
 						'posts_per_page' => 3,
+						'post_status'    => 'publish',
 						'orderby'        => 'date',
 						'order'          => 'ASC',
 					);
@@ -62,26 +55,34 @@ $author_about      = get_field( 'author_about', $post_id );
 											<img src="<?php echo get_template_directory_uri(); ?>/assets/images/custom-development-2.jpg" alt="">
 										<?php endif; ?>
 									</div>
-									<?php the_excerpt(); ?>
-									<?php
-									$features = get_field( 'features' );
-									if ( $features ) :
+									<div class="partner-item-content">
+										<?php
+										$features = get_field( 'features' );
+										if ( $features ) {
+											the_excerpt();
+											?>
+											<ul>
+												<?php foreach ( $features as $feature ) : ?>
+													<li>
+														<span><i class="fa-solid fa-circle-check"></i></span>
+														<p><?php echo esc_html( is_array( $feature ) ? $feature['feature_text'] : $feature ); ?></p>
+													</li>
+												<?php endforeach; ?>
+											</ul>
+											<?php
+										} else {
+											the_content();
+										}
 										?>
-										<ul>
-											<?php foreach ( $features as $feature ) : ?>
-												<li>
-													<span><i class="fa-solid fa-circle-check"></i></span>
-													<p><?php echo esc_html( is_array( $feature ) ? $feature['feature_text'] : $feature ); ?></p>
-												</li>
-											<?php endforeach; ?>
-										</ul>
-									<?php endif; ?>
+									</div>
 									<a href="<?php the_permalink(); ?>" class="learnBtn">read more...</a>
 								</div>
 							</div>
 							<?php
 						endwhile;
 						wp_reset_postdata();
+					else:
+						echo '<div class="col-12 text-center"><p>No services found. Please add some services in the dashboard.</p></div>';
 					endif;
 					?>
 				</div>

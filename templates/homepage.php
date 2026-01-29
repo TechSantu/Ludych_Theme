@@ -19,9 +19,9 @@ $parts = array(
 	'about',
 	'services',
 	'our_work',
-	'why_choose',
+	'why_choose_us',
 	'our_work_progress',
-	'testimonial',
+	'testimonials',
 	'our_blog',
 	'faq_section',
 );

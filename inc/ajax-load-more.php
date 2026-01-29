@@ -20,7 +20,7 @@ function ludych_load_more_services() {
 		while ( $query->have_posts() ) {
 			$query->the_post();
 			?>
-			<div class="col-xl-4 col-md-6 col-sm-12">
+			<div class="col-xl-4 col-md-6 col-sm-12 service-item-col">
 				<div class="partner-item">
 					<h3><?php the_title(); ?></h3>
 					<div class="partner-thumb-item">
@@ -30,20 +30,26 @@ function ludych_load_more_services() {
 							<img src="<?php echo get_template_directory_uri(); ?>/assets/images/custom-development-2.jpg" alt="">
 						<?php endif; ?>
 					</div>
-					<?php the_excerpt(); ?>
-					<?php
-					$features = get_field( 'features' );
-					if ( $features ) :
+					<div class="partner-item-content">
+						<?php
+						$features = get_field( 'features' );
+						if ( $features ) {
+							the_excerpt();
+							?>
+							<ul>
+								<?php foreach ( $features as $feature ) : ?>
+									<li>
+										<span><i class="fa-solid fa-circle-check"></i></span>
+										<p><?php echo esc_html( is_array( $feature ) ? $feature['feature_text'] : $feature ); ?></p>
+									</li>
+								<?php endforeach; ?>
+							</ul>
+							<?php
+						} else {
+							the_content();
+						}
 						?>
-						<ul>
-							<?php foreach ( $features as $feature ) : ?>
-								<li>
-									<span><i class="fa-solid fa-circle-check"></i></span>
-									<p><?php echo esc_html( is_array( $feature ) ? $feature['feature_text'] : $feature ); ?></p>
-								</li>
-							<?php endforeach; ?>
-						</ul>
-					<?php endif; ?>
+					</div>
 					<a href="<?php the_permalink(); ?>" class="learnBtn">read more...</a>
 				</div>
 			</div>
