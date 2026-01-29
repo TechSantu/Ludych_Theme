@@ -841,6 +841,29 @@ li.nav-item.dropdown .dropdown-menu li:has(a.dropdown-toggle) {
 	margin-top: 4px;
 }
 
+.partner-item ul.wp-block-list {
+	padding: 0;
+	margin: 20px 0;
+	list-style: none;
+}
+
+.partner-item ul.wp-block-list li {
+	display: flex;
+	align-items: flex-start;
+	gap: 15px;
+	margin-bottom: 10px;
+	position: relative;
+}
+
+.partner-item ul.wp-block-list li::before {
+	content: "\f058";
+	font-family: "Font Awesome 6 Free";
+	font-weight: 900;
+	color: var(--button-border);
+	font-size: 16px;
+	margin-top: 4px;
+}
+
 .busines-partner-items .partner-item {
 	display: flex;
 	flex-direction: column;
