@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 global $post_id;
 $tech_stack_title = get_field( 'tech_stack_title', $post_id );
-$tech_stack_text = get_field( 'tech_stack_text', $post_id );
+$tech_stack_text  = get_field( 'tech_stack_text', $post_id );
 ?>
 
 <!-- our work progress start -->
@@ -59,7 +59,7 @@ $tech_stack_text = get_field( 'tech_stack_text', $post_id );
 								role="tabpanel" 
 								aria-labelledby="list-tab-<?php echo esc_attr( $term->slug ); ?>-list">
 								<?php
-								$tech_args = array(
+								$tech_args  = array(
 									'post_type'      => 'technology',
 									'posts_per_page' => -1,
 									'tax_query'      => array(
@@ -72,10 +72,11 @@ $tech_stack_text = get_field( 'tech_stack_text', $post_id );
 								);
 								$tech_query = new WP_Query( $tech_args );
 								if ( $tech_query->have_posts() ) :
-									while ( $tech_query->have_posts() ) : $tech_query->the_post();
+									while ( $tech_query->have_posts() ) :
+										$tech_query->the_post();
 										?>
 										<div class="icon-box">
-											<?php 
+											<?php
 											$svg_code = get_field( 'tech_icon' );
 											if ( $svg_code ) {
 												echo $svg_code;
