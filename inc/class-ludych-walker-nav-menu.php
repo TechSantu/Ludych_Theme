@@ -5,13 +5,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Ludych_Walker_Nav_Menu extends Walker_Nav_Menu {
 
-	public function start_lvl( &$output, $depth = 0, $args = array() ) {
+	public function start_lvl( &$output, $depth = 0, $args = null ) {
 		$indent = str_repeat( "\t", $depth );
 
 		$output .= "\n$indent<ul class=\"dropdown-menu shadow\">\n";
 	}
 
-	public function start_el( &$output, $item, $depth = 0, $args = array(), $id = 0 ) {
+	/**
+	 * @param string   $output
+	 * @param object   $item
+	 * @param int      $depth
+	 * @param stdClass $args
+	 * @param int      $id
+	 */
+	public function start_el( &$output, $item, $depth = 0, $args = null, $id = 0 ) {
 		$indent = ( $depth ) ? str_repeat( "\t", $depth ) : '';
 
 		$classes   = empty( $item->classes ) ? array() : (array) $item->classes;

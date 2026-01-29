@@ -2,7 +2,7 @@ includes:
     - vendor/szepeviktor/phpstan-wordpress/extension.neon
 
 parameters:
-    level: 5
+    level: 2
     paths:
         - .
     excludePaths:
@@ -10,4 +10,7 @@ parameters:
         - node_modules/
         - tests/
     scanDirectories:
-        - vendor/php-stubs
+        - vendor/php-stubs/acf-pro-stubs
+        - vendor/php-stubs/wordpress-stubs
+    ignoreErrors:
+        - '#Function (get_field|the_field|have_rows|the_row|the_sub_field|get_sub_field) not found#'

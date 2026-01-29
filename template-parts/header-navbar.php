@@ -44,7 +44,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 						'menu_class'     => 'navbar-nav',
 						'container'      => false,
 						'fallback_cb'    => '__return_empty_string',
-						'walker'         => class_exists( 'Ludych_Walker_Nav_Menu' ) ? new Ludych_Walker_Nav_Menu() : '',
+						'walker'         => class_exists( 'Ludych_Walker_Nav_Menu' ) ? new Ludych_Walker_Nav_Menu() : null,
 					)
 				);
 				?>
