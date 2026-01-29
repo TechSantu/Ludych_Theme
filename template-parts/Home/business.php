@@ -38,268 +38,65 @@ $author_about      = get_field( 'author_about', $post_id );
 				<h5>From Custom Apps to <span>Marketing Systems</span></h5>
 			</div>
 			<div class="busines-partner-items">
-				<div class="row">
-					<div class="col-xl-4 col-md-6 col-sm-12">
-						<div class="partner-item">
-							<h3>SEO</h3>
-							<div class="partner-thumb-item">
-								<img src="<?php echo get_template_directory_uri(); ?>/assets/images/custom-development-2.jpg" alt="">
+				<div class="row" id="services-container">
+					<?php
+					$args = array(
+						'post_type'      => 'services',
+						'posts_per_page' => 3,
+						'orderby'        => 'date',
+						'order'          => 'ASC',
+					);
+					$services_query = new WP_Query( $args );
+
+					if ( $services_query->have_posts() ) :
+						while ( $services_query->have_posts() ) :
+							$services_query->the_post();
+							?>
+							<div class="col-xl-4 col-md-6 col-sm-12 service-item-col">
+								<div class="partner-item">
+									<h3><?php the_title(); ?></h3>
+									<div class="partner-thumb-item">
+										<?php if ( has_post_thumbnail() ) : ?>
+											<?php the_post_thumbnail( 'large' ); ?>
+										<?php else : ?>
+											<img src="<?php echo get_template_directory_uri(); ?>/assets/images/custom-development-2.jpg" alt="">
+										<?php endif; ?>
+									</div>
+									<?php the_excerpt(); ?>
+									<?php
+									$features = get_field( 'features' );
+									if ( $features ) :
+										?>
+										<ul>
+											<?php foreach ( $features as $feature ) : ?>
+												<li>
+													<span><i class="fa-solid fa-circle-check"></i></span>
+													<p><?php echo esc_html( is_array( $feature ) ? $feature['feature_text'] : $feature ); ?></p>
+												</li>
+											<?php endforeach; ?>
+										</ul>
+									<?php endif; ?>
+									<a href="<?php the_permalink(); ?>" class="learnBtn">read more...</a>
+								</div>
 							</div>
-							<p>Custom, fast, and scalable WordPress solutions built for performance and conversions.
-								From business websites to advanced CMS platforms, we craft secure and SEO-friendly
-								WordPress experiences.</p>
-							<ul>
-								<li>
-									<span><i class="fa-solid fa-circle-check"></i></span>
-									<p>Custom WordPress theme & plugin development</p>
-								</li>
-								<li>
-									<span><i class="fa-solid fa-circle-check"></i></span>
-									<p>Speed & performance optimization</p>
-								</li>
-								<li>
-									<span><i class="fa-solid fa-circle-check"></i></span>
-									<p>SEO-ready structure</p>
-								</li>
-								<li>
-									<span><i class="fa-solid fa-circle-check"></i></span>
-									<p>Security hardening & backups</p>
-								</li>
-								<li>
-									<span><i class="fa-solid fa-circle-check"></i></span>
-									<p>WooCommerce integration</p>
-								</li>
-							</ul>
-							<a href="#" class="learnBtn">read more...</a>
-						</div>
-					</div>
-					<div class="col-xl-4 col-md-6 col-sm-12">
-						<div class="partner-item">
-							<h3>Shopify Development</h3>
-							<div class="partner-thumb-item">
-								<img src="<?php echo get_template_directory_uri(); ?>/assets/images/custom-development-2.jpg" alt="">
-							</div>
-							<p>High-converting Shopify stores designed to scale. We build, customize, and optimize
-								eCommerce experiences that drive sales and brand loyalty.</p>
-							<ul>
-								<li>
-									<span><i class="fa-solid fa-circle-check"></i></span>
-									<p>Custom Shopify themes</p>
-								</li>
-								<li>
-									<span><i class="fa-solid fa-circle-check"></i></span>
-									<p>App integration & customization</p>
-								</li>
-								<li>
-									<span><i class="fa-solid fa-circle-check"></i></span>
-									<p>Product & payment setup</p>
-								</li>
-								<li>
-									<span><i class="fa-solid fa-circle-check"></i></span>
-									<p>Conversion rate optimization</p>
-								</li>
-								<li>
-									<span><i class="fa-solid fa-circle-check"></i></span>
-									<p>Store performance optimization</p>
-								</li>
-							</ul>
-							<a href="#" class="learnBtn">read more...</a>
-						</div>
-					</div>
-					<div class="col-xl-4 col-md-6 col-sm-12">
-						<div class="partner-item">
-							<h3>Mobile App Development</h3>
-							<div class="partner-thumb-item">
-								<img src="<?php echo get_template_directory_uri(); ?>/assets/images/custom-development-2.jpg" alt="">
-							</div>
-							<p>End-to-end mobile app development for iOS and Android. We create user-friendly, scalable,
-								and secure apps that deliver real business value.</p>
-							<ul>
-								<li>
-									<span><i class="fa-solid fa-circle-check"></i></span>
-									<p>iOS & Android app development</p>
-								</li>
-								<li>
-									<span><i class="fa-solid fa-circle-check"></i></span>
-									<p>Cross-platform solutions (React Native / Flutter)</p>
-								</li>
-								<li>
-									<span><i class="fa-solid fa-circle-check"></i></span>
-									<p>API & backend integration</p>
-								</li>
-								<li>
-									<span><i class="fa-solid fa-circle-check"></i></span>
-									<p>Security</p>
-								</li>
-								<li>
-									<span><i class="fa-solid fa-circle-check"></i></span>
-									<p>WooCommerce</p>
-								</li>
-							</ul>
-							<a href="#" class="learnBtn">read more...</a>
-						</div>
-					</div>
-					<div class="col-xl-4 col-md-6 col-sm-12">
-						<div class="partner-item">
-							<h3>Digital Marketing</h3>
-							<div class="partner-thumb-item">
-								<img src="<?php echo get_template_directory_uri(); ?>/assets/images/custom-development-2.jpg" alt="">
-							</div>
-							<p>Custom</p>
-							<ul>
-								<li>
-									<span><i class="fa-solid fa-circle-check"></i></span>
-									<p>Custom</p>
-								</li>
-								<li>
-									<span><i class="fa-solid fa-circle-check"></i></span>
-									<p>Speed</p>
-								</li>
-								<li>
-									<span><i class="fa-solid fa-circle-check"></i></span>
-									<p>SEO</p>
-								</li>
-								<li>
-									<span><i class="fa-solid fa-circle-check"></i></span>
-									<p>Security</p>
-								</li>
-								<li>
-									<span><i class="fa-solid fa-circle-check"></i></span>
-									<p>WooCommerce</p>
-								</li>
-							</ul>
-							<a href="#" class="learnBtn">read more...</a>
-						</div>
-					</div>
-					<div class="col-xl-4 col-md-6 col-sm-12">
-						<div class="partner-item">
-							<h3>Branding Solution</h3>
-							<div class="partner-thumb-item">
-								<img src="<?php echo get_template_directory_uri(); ?>/assets/images/custom-development-2.jpg" alt="">
-							</div>
-							<p>Custom</p>
-							<ul>
-								<li>
-									<span><i class="fa-solid fa-circle-check"></i></span>
-									<p>Custom</p>
-								</li>
-								<li>
-									<span><i class="fa-solid fa-circle-check"></i></span>
-									<p>Speed</p>
-								</li>
-								<li>
-									<span><i class="fa-solid fa-circle-check"></i></span>
-									<p>SEO</p>
-								</li>
-								<li>
-									<span><i class="fa-solid fa-circle-check"></i></span>
-									<p>Security</p>
-								</li>
-								<li>
-									<span><i class="fa-solid fa-circle-check"></i></span>
-									<p>WooCommerce</p>
-								</li>
-							</ul>
-							<a href="#" class="learnBtn">read more...</a>
-						</div>
-					</div>
-					<div class="col-xl-4 col-md-6 col-sm-12">
-						<div class="partner-item">
-							<h3>Software Development</h3>
-							<div class="partner-thumb-item">
-								<img src="<?php echo get_template_directory_uri(); ?>/assets/images/custom-development-2.jpg" alt="">
-							</div>
-							<p>Custom</p>
-							<ul>
-								<li>
-									<span><i class="fa-solid fa-circle-check"></i></span>
-									<p>Custom</p>
-								</li>
-								<li>
-									<span><i class="fa-solid fa-circle-check"></i></span>
-									<p>Speed</p>
-								</li>
-								<li>
-									<span><i class="fa-solid fa-circle-check"></i></span>
-									<p>SEO</p>
-								</li>
-								<li>
-									<span><i class="fa-solid fa-circle-check"></i></span>
-									<p>Security</p>
-								</li>
-								<li>
-									<span><i class="fa-solid fa-circle-check"></i></span>
-									<p>WooCommerce</p>
-								</li>
-							</ul>
-							<a href="#" class="learnBtn">read more...</a>
-						</div>
-					</div>
-					<div class="col-xl-4 col-md-6 col-sm-12">
-						<div class="partner-item">
-							<h3>UI–UX Design</h3>
-							<div class="partner-thumb-item">
-								<img src="<?php echo get_template_directory_uri(); ?>/assets/images/custom-development-2.jpg" alt="">
-							</div>
-							<p>Custom</p>
-							<ul>
-								<li>
-									<span><i class="fa-solid fa-circle-check"></i></span>
-									<p>Custom</p>
-								</li>
-								<li>
-									<span><i class="fa-solid fa-circle-check"></i></span>
-									<p>Speed</p>
-								</li>
-								<li>
-									<span><i class="fa-solid fa-circle-check"></i></span>
-									<p>SEO</p>
-								</li>
-								<li>
-									<span><i class="fa-solid fa-circle-check"></i></span>
-									<p>Security</p>
-								</li>
-								<li>
-									<span><i class="fa-solid fa-circle-check"></i></span>
-									<p>WooCommerce</p>
-								</li>
-							</ul>
-							<a href="#" class="learnBtn">read more...</a>
-						</div>
-					</div>
-					<div class="col-xl-4 col-md-6 col-sm-12">
-						<div class="partner-item">
-							<h3>SEO</h3>
-							<div class="partner-thumb-item">
-								<img src="<?php echo get_template_directory_uri(); ?>/assets/images/custom-development-2.jpg" alt="">
-							</div>
-							<p>Custom</p>
-							<ul>
-								<li>
-									<span><i class="fa-solid fa-circle-check"></i></span>
-									<p>Custom</p>
-								</li>
-								<li>
-									<span><i class="fa-solid fa-circle-check"></i></span>
-									<p>Speed</p>
-								</li>
-								<li>
-									<span><i class="fa-solid fa-circle-check"></i></span>
-									<p>SEO</p>
-								</li>
-								<li>
-									<span><i class="fa-solid fa-circle-check"></i></span>
-									<p>Security</p>
-								</li>
-								<li>
-									<span><i class="fa-solid fa-circle-check"></i></span>
-									<p>WooCommerce</p>
-								</li>
-							</ul>
-							<a href="#" class="learnBtn">read more...</a>
-						</div>
-					</div>
+							<?php
+						endwhile;
+						wp_reset_postdata();
+					endif;
+					?>
 				</div>
+				<?php if ( $services_query->max_num_pages > 1 ) : ?>
+					<div class="load-more-btn-wrap text-center mt-5">
+						<a href="javascript:void(0);" 
+						   id="load-more-services" 
+						   class="globalBtnDark" 
+						   data-page="1" 
+						   data-max-pages="<?php echo $services_query->max_num_pages; ?>"
+						   data-post-type="services">
+							<span>Explore More <i class="fa-solid fa-arrow-right-long"></i></span>
+						</a>
+					</div>
+				<?php endif; ?>
 			</div>
 		</div>
 	</section>
