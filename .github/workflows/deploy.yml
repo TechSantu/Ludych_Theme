@@ -43,7 +43,13 @@ jobs:
             git config --global user.email "github-actions[bot]@users.noreply.github.com"
             git add .
             git commit -m "chore: auto-fix coding standards (PHPCBF)"
-            git push
+            if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+              # If it's a tag, we usually don't push back to the tag, 
+              # but if we want to update the branch the tag was made from:
+              git push origin HEAD:master
+            else
+              git push origin HEAD:${{ github.ref_name }}
+            fi
           fi
 
       - name: PHPCS Verification
