@@ -12,27 +12,27 @@ class ComposerStaticInitddcd148f3eabb1e70df120b795cabf08
     );
 
     public static $prefixLengthsPsr4 = array (
-        'S' =>
+        'S' => 
         array (
             'SzepeViktor\\PHPStan\\WordPress\\' => 30,
             'Symfony\\Polyfill\\Php73\\' => 23,
         ),
-        'P' =>
+        'P' => 
         array (
             'PHPCSStandards\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\' => 57,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'SzepeViktor\\PHPStan\\WordPress\\' =>
+        'SzepeViktor\\PHPStan\\WordPress\\' => 
         array (
             0 => __DIR__ . '/..' . '/szepeviktor/phpstan-wordpress/src',
         ),
-        'Symfony\\Polyfill\\Php73\\' =>
+        'Symfony\\Polyfill\\Php73\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php73',
         ),
-        'PHPCSStandards\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\' =>
+        'PHPCSStandards\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\' => 
         array (
             0 => __DIR__ . '/..' . '/dealerdirect/phpcodesniffer-composer-installer/src',
         ),
