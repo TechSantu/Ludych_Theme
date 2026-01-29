@@ -9,6 +9,5 @@ parameters:
         - vendor/
         - node_modules/
         - tests/
-    scanFiles:
-        # Include common WP functions if needed, though the extension handles most
-        # - functions.php 
+    scanDirectories:
+        - vendor/php-stubs
