@@ -3,7 +3,6 @@ name: Deploy to FTP
 on:
   push:
     branches:
-      - main
       - master
     tags:
       - 'v*'
