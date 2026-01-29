@@ -1,6 +1,6 @@
 <?php
-if (!defined('ABSPATH')) {
-    exit; 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
 require_once get_template_directory() . '/inc/enqueue_styles_scripts.php';
