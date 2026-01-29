@@ -21,12 +21,12 @@ function ludych_register_custom_post_types() {
 		'has_archive'  => false,
 		'supports'     => array( 'title', 'thumbnail', 'editor' ),
 		'show_in_rest' => true,
-		'menu_icon'    => 'dashicons-rest-api',
-		'taxonomies'   => array( 'technology' ),
+		'menu_icon'   => 'dashicons-rest-api',
+		'taxonomies'  => array( 'technology_cat' ),
 	) );
 
 	// Technology Taxonomy (Hierarchical)
-	register_taxonomy( 'technology', 'technology', array(
+	register_taxonomy( 'technology_cat', 'technology', array(
 		'labels'            => array(
 			'name'          => __( 'Technology Categories', 'ludych-theme' ),
 			'singular_name' => __( 'Technology Category', 'ludych-theme' ),
@@ -36,7 +36,7 @@ function ludych_register_custom_post_types() {
 		'show_in_rest'      => true,
 		'show_admin_column' => true,
 		'query_var'         => true,
-		'rewrite'           => array( 'slug' => 'technology-category' ),
+		'rewrite'           => array( 'slug' => 'tech-category' ),
 	) );
 }
 add_action( 'init', 'ludych_register_custom_post_types' );

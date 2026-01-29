@@ -30,7 +30,7 @@ $tech_stack_text  = get_field( 'tech_stack_text', $current_post_id );
 		</div>
 		<?php
 		$terms = get_terms( array(
-			'taxonomy'   => 'technology',
+			'taxonomy'   => 'technology_cat',
 			'hide_empty' => false,
 		) );
 
@@ -64,7 +64,7 @@ $tech_stack_text  = get_field( 'tech_stack_text', $current_post_id );
 									'posts_per_page' => -1,
 									'tax_query'      => array(
 										array(
-											'taxonomy' => 'technology',
+											'taxonomy' => 'technology_cat',
 											'field'    => 'term_id',
 											'terms'    => $term->term_id,
 										),
@@ -101,7 +101,7 @@ $tech_stack_text  = get_field( 'tech_stack_text', $current_post_id );
 				</div>
 			</div>
 		<?php else : ?>
-			<p>No terms found for taxonomy 'technology'. Please ensure this taxonomy exists and has terms.</p>
+			<p>No terms found for taxonomy 'technology_cat'. Please ensure this taxonomy exists and has terms assigned to Technology posts.</p>
 		<?php endif; ?>
 	</div>
 </section>
