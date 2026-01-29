@@ -40,13 +40,19 @@ jobs:
   deploy:
     name: Deploy via FTP
     needs: validate
-    if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Sync Version from Tag
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          TAG_VERSION=${GITHUB_REF#refs/tags/v}
+          echo "Updating version to $TAG_VERSION"
+          sed -i "s/Version: .*/Version: $TAG_VERSION/" style.css
 
       - name: FTP Deploy
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
