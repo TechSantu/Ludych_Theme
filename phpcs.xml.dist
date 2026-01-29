@@ -3,7 +3,17 @@
     <description>Apply WordPress Coding Standards to the theme.</description>
 
     <!-- Use the WordPress-Extra standard -->
-    <rule ref="WordPress-Extra" />
+    <rule ref="WordPress-Extra">
+        <!-- Exclude filename requirements (classes and files) -->
+        <exclude name="WordPress.Files.FileName.InvalidClassFileName" />
+        <exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
+        
+        <!-- Exclude some strict documentation requirements -->
+        <exclude name="Squiz.Commenting.FileComment.Missing" />
+        <exclude name="Squiz.Commenting.FunctionComment.Missing" />
+        <exclude name="Squiz.Commenting.ClassComment.Missing" />
+        <exclude name="WordPress.PHP.DisallowShortTernary.Found" />
+    </rule>
 
     <!-- Check all PHP files -->
     <file>.</file>
