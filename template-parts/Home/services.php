@@ -3,8 +3,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 global $post_id;
-$services_text        = get_field( 'services_text', $post_id );
-$services_title        = get_field( 'services_title', $post_id );
+$services_text  = get_field( 'services_text', $post_id );
+$services_title = get_field( 'services_title', $post_id );
 ?>
 
 	<!-- top business partner start -->
