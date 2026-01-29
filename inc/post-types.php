@@ -21,8 +21,8 @@ function ludych_register_custom_post_types() {
 		'has_archive'  => false,
 		'supports'     => array( 'title', 'thumbnail', 'editor' ),
 		'show_in_rest' => true,
-		'menu_icon'   => 'dashicons-rest-api',
-		'taxonomies'  => array( 'technology_cat' ),
+		'menu_icon'    => 'dashicons-rest-api',
+		'taxonomies'   => array( 'technology_cat' ),
 	) );
 
 	// Technology Taxonomy (Hierarchical)
