@@ -821,13 +821,13 @@ li.nav-item.dropdown .dropdown-menu li:has(a.dropdown-toggle) {
 	margin: 5px 0px;
 }
 
-.partner-item-content ul {
+.partner-item ul {
 	padding: 0;
 	margin: 20px 0;
 	list-style: none;
 }
 
-.partner-item-content ul li {
+.partner-item ul li {
 	display: flex;
 	align-items: flex-start;
 	gap: 15px;
@@ -835,11 +835,7 @@ li.nav-item.dropdown .dropdown-menu li:has(a.dropdown-toggle) {
 	position: relative;
 }
 
-.partner-item-content ul li::before {
-	content: "\f058";
-	/* fa-circle-check */
-	font-family: "Font Awesome 6 Free";
-	font-weight: 900;
+.partner-item ul li span i {
 	color: var(--button-border);
 	font-size: 16px;
 	margin-top: 4px;

@@ -3,13 +3,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 global $post_id;
+$services_text        = get_field( 'services_text', $post_id );
+$services_title        = get_field( 'services_title', $post_id );
 ?>
 
 	<!-- top business partner start -->
 	<section class="our-services">
 		<div class="custom-container">
 			<div class="global-header left-align">
-				<h2>Our Services</h2>
+				<h2><?php echo ( $services_text ); ?></h2>
 				<div class="min-title">
 					<div class="icon-box">
 						<svg xmlns="http://www.w3.org/2000/svg" width="39" height="39" viewBox="0 0 39 39" fill="none">
@@ -25,9 +27,9 @@ global $post_id;
 							</defs>
 						</svg>
 					</div>
-					<h6>Our Services</h6>
+					<h6><?php echo esc_html( $services_title ); ?></h6>
 				</div>
-				<h5>From Custom Apps to <span>Marketing Systems</span></h5>
+				<h5><?php echo ( $services_text ); ?></h5>
 			</div>
 			<div class="busines-partner-items">
 				<div class="row" id="services-container">
@@ -45,36 +47,30 @@ global $post_id;
 						while ( $services_query->have_posts() ) :
 							$services_query->the_post();
 							?>
-							<div class="col-xl-4 col-md-6 col-sm-12 service-item-col">
+							<div class="col-xl-4 col-md-6 col-sm-12">
 								<div class="partner-item">
 									<h3><?php the_title(); ?></h3>
 									<div class="partner-thumb-item">
-										<?php if ( has_post_thumbnail() ) : ?>
-											<?php the_post_thumbnail( 'large' ); ?>
-										<?php else : ?>
-											<img src="<?php echo get_template_directory_uri(); ?>/assets/images/custom-development-2.jpg" alt="">
-										<?php endif; ?>
+										<?php the_post_thumbnail( 'large' ); ?>
 									</div>
-									<div class="partner-item-content">
-										<?php
-										$features = get_field( 'features' );
-										if ( $features ) {
-											the_excerpt();
-											?>
-											<ul>
-												<?php foreach ( $features as $feature ) : ?>
-													<li>
-														<span><i class="fa-solid fa-circle-check"></i></span>
-														<p><?php echo esc_html( is_array( $feature ) ? $feature['feature_text'] : $feature ); ?></p>
-													</li>
-												<?php endforeach; ?>
-											</ul>
-											<?php
-										} else {
-											the_content();
-										}
+									<?php
+									$features = get_field( 'features' );
+									if ( $features ) {
+										the_excerpt();
 										?>
-									</div>
+										<ul>
+											<?php foreach ( $features as $feature ) : ?>
+												<li>
+													<span><i class="fa-solid fa-circle-check"></i></span>
+													<p><?php echo esc_html( is_array( $feature ) ? $feature['feature_text'] : $feature ); ?></p>
+												</li>
+											<?php endforeach; ?>
+										</ul>
+										<?php
+									} else {
+										the_content();
+									}
+									?>
 									<a href="<?php the_permalink(); ?>" class="learnBtn">read more...</a>
 								</div>
 							</div>
@@ -94,7 +90,7 @@ global $post_id;
 							data-page="1" 
 							data-max-pages="<?php echo $services_query->max_num_pages; ?>"
 							data-post-type="services">
-							<span>Explore More <i class="fa-solid fa-arrow-right-long"></i></span>
+							<span>Show more <i class="fa-solid fa-arrow-right-long"></i></span>
 						</a>
 					</div>
 				<?php endif; ?>
