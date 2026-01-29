@@ -11,6 +11,10 @@
         <!-- Exclude documentation/commenting requirements -->
         <exclude name="Squiz.Commenting" />
         <exclude name="WordPress.PHP.DisallowShortTernary.Found" />
+        
+        <!-- Skip function/naming checks as requested -->
+        <exclude name="WordPress.NamingConventions" />
+        <exclude name="PEAR.Functions.FunctionCallSignature" />
 
         <!-- Exclude strict nonce/sanitization checks that require manual code changes -->
         <exclude name="WordPress.Security.NonceVerification.Missing" />
