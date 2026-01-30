@@ -2,7 +2,7 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-global $post_id;
+global $post_id, $wp;
 
 $address   = get_theme_mod( 'ludych_contact_address', '1820 E Ray Road, STE A110, Chandler, Arizona 85225' );
 $phone     = get_theme_mod( 'ludych_contact_phone', '520-660-8791' );
@@ -118,7 +118,7 @@ $title     = get_theme_mod( 'ludych_contact_form_title', 'Get Your <span>Free Qu
 								</div>
 							</div>
 							<input type="hidden" name="action" value="ludych_contact_form">
-							<input type="hidden" name="page_url" value="<?php echo esc_url( home_url( add_query_arg( array(), $wp->request ) ) ); ?>">
+							<input type="hidden" name="page_url" value="<?php echo esc_url( home_url( $wp->request ) ); ?>">
 							<button type="submit" class="btn"><span>Inquiry Now</span></button>
 							<div class="form-message mt-3"></div>
 						</form>
