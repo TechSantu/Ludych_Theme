@@ -118,6 +118,7 @@ $title     = get_theme_mod( 'ludych_contact_form_title', 'Get Your <span>Free Qu
 								</div>
 							</div>
 							<input type="hidden" name="action" value="ludych_contact_form">
+							<?php wp_nonce_field( 'ludych_contact_nonce', 'nonce' ); ?>
 							<input type="hidden" name="page_url" value="<?php echo esc_url( home_url( $wp->request ) ); ?>">
 							<button type="submit" class="btn"><span>Inquiry Now</span></button>
 							<div class="form-message mt-3"></div>

@@ -106,9 +106,9 @@
 				function (e) {
 					e.preventDefault();
 
-					var button   = $(this);
-					var page     = button.data("page");
-					var maxPage  = button.data("max-pages");
+					var button = $(this);
+					var page = button.data("page");
+					var maxPage = button.data("max-pages");
 					var postType = button.data("post-type");
 					var nextPage = page + 1;
 
@@ -164,15 +164,22 @@
 				}
 			);
 
+			$('input[name="company"]').on(
+				'input',
+				function () {
+					this.value = this.value.replace(/[^a-zA-Z0-9\s.\-&]/g, '');
+				}
+			);
+
 			// Contact Form AJAX
 			$("#ludych-contact-form").on(
 				"submit",
 				function (e) {
 					e.preventDefault();
 
-					var form            = $(this);
-					var messageBox      = form.find(".form-message");
-					var submitBtn       = form.find("button[type='submit']");
+					var form = $(this);
+					var messageBox = form.find(".form-message");
+					var submitBtn = form.find("button[type='submit']");
 					var originalBtnText = submitBtn.find("span").text();
 
 					$.ajax(

@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 function ludych_handle_contact_form() {
 	// Security check
-	// check_ajax_referer( 'ludych_contact_nonce', 'nonce' );
+	check_ajax_referer( 'ludych_contact_nonce', 'nonce' );
 
 	$name     = sanitize_text_field( $_POST['name'] ?? '' );
 	$email    = sanitize_email( $_POST['email'] ?? '' );
