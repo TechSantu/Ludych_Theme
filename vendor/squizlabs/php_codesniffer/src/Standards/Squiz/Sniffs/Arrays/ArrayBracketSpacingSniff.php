@@ -49,11 +49,9 @@ class ArrayBracketSpacingSniff implements Sniff
             || ($tokens[$stackPtr]['code'] === T_CLOSE_SQUARE_BRACKET
             && isset($tokens[$stackPtr]['bracket_opener']) === false)
         ) {
-            // Bow out for parse error/during live coding.
             return;
         }
 
-        // Square brackets can not have a space before them.
         $prevType = $tokens[($stackPtr - 1)]['code'];
         if ($prevType === T_WHITESPACE) {
             $nonSpace = $phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 2), null, true);
@@ -70,7 +68,6 @@ class ArrayBracketSpacingSniff implements Sniff
             }
         }
 
-        // Open square brackets can't ever have spaces after them.
         if ($tokens[$stackPtr]['code'] === T_OPEN_SQUARE_BRACKET) {
             $nextType = $tokens[($stackPtr + 1)]['code'];
             if ($nextType === T_WHITESPACE) {

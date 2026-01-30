@@ -130,9 +130,6 @@ class NewKeywordsSniff extends AbstractNewFeatureSniff
             'description' => '__TRAIT__ magic constant',
             'content'     => '__TRAIT__',
         ),
-        // The specifics for distinguishing between 'yield' and 'yield from' are dealt
-        // with in the translation logic.
-        // This token has to be placed above the `T_YIELD` token in this array to allow for this.
         'T_YIELD_FROM' => array(
             '5.6'         => false,
             '7.0'         => true,
@@ -214,15 +211,12 @@ class NewKeywordsSniff extends AbstractNewFeatureSniff
         $tokens    = $phpcsFile->getTokens();
         $tokenType = $tokens[$stackPtr]['type'];
 
-        // Allow for dealing with multi-token keywords, like "yield from".
         $end = $stackPtr;
 
-        // Translate T_STRING token if necessary.
         if ($tokens[$stackPtr]['type'] === 'T_STRING') {
             $content = strtolower($tokens[$stackPtr]['content']);
 
             if (isset($this->translateContentToToken[$content]) === false) {
-                // Not one of the tokens we're looking for.
                 return;
             }
 
@@ -254,7 +248,6 @@ class NewKeywordsSniff extends AbstractNewFeatureSniff
         }
 
         if ($tokenType === 'T_YIELD_FROM' && $tokens[($stackPtr - 1)]['type'] === 'T_YIELD_FROM') {
-            // Multi-line "yield from", no need to report it twice.
             return;
         }
 
@@ -269,23 +262,15 @@ class NewKeywordsSniff extends AbstractNewFeatureSniff
             && ($tokens[$prevToken]['code'] === \T_DOUBLE_COLON
             || $tokens[$prevToken]['code'] === \T_OBJECT_OPERATOR)
         ) {
-            // Class property of the same name as one of the keywords. Ignore.
             return;
         }
 
-        // Skip attempts to use keywords as functions or class names - the former
-        // will be reported by ForbiddenNamesAsInvokedFunctionsSniff, whilst the
-        // latter will be (partially) reported by the ForbiddenNames sniff.
-        // Either type will result in false-positives when targetting lower versions
-        // of PHP where the name was not reserved, unless we explicitly check for
-        // them.
         if (($nextToken === false
                 || $tokens[$nextToken]['type'] !== 'T_OPEN_PARENTHESIS')
             && ($prevToken === false
                 || $tokens[$prevToken]['type'] !== 'T_CLASS'
                 || $tokens[$prevToken]['type'] !== 'T_INTERFACE')
         ) {
-            // Skip based on token scope condition.
             if (isset($this->newKeywords[$tokenType]['condition'])
                 && \call_user_func(array($this, $this->newKeywords[$tokenType]['condition']), $phpcsFile, $stackPtr) === true
             ) {

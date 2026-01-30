@@ -86,7 +86,6 @@ final class AssignmentInTernaryConditionSniff extends Sniff {
 
 		$token = $this->tokens[ $stackPtr ];
 
-		// Check if the condition for the ternary is bracketed.
 		$prev = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, ( $stackPtr - 1 ), null, true );
 		if ( \T_CLOSE_PARENTHESIS === $this->tokens[ $prev ]['code'] ) {
 			if ( ! isset( $this->tokens[ $prev ]['parenthesis_opener'] ) ) {
@@ -101,13 +100,11 @@ final class AssignmentInTernaryConditionSniff extends Sniff {
 
 			$next_statement_closer = BCFile::findEndOfStatement( $this->phpcsFile, $stackPtr, array( \T_COLON, \T_CLOSE_PARENTHESIS, \T_CLOSE_SQUARE_BRACKET ) );
 			if ( false !== $next_statement_closer && $next_statement_closer < $closer ) {
-				// Parentheses are unrelated to the ternary.
 				return;
 			}
 
 			$prev_statement_closer = BCFile::findStartOfStatement( $this->phpcsFile, $stackPtr, array( \T_COLON, \T_OPEN_PARENTHESIS, \T_OPEN_SQUARE_BRACKET ) );
 			if ( false !== $prev_statement_closer && $opener < $prev_statement_closer ) {
-				// Parentheses are unrelated to the ternary.
 				return;
 			}
 
@@ -115,7 +112,6 @@ final class AssignmentInTernaryConditionSniff extends Sniff {
 				$closer = $stackPtr;
 			}
 		} else {
-			// No parenthesis found, can't determine where the conditional part of the ternary starts.
 			return;
 		}
 
@@ -127,7 +123,6 @@ final class AssignmentInTernaryConditionSniff extends Sniff {
 				return;
 			}
 
-			// Examine whether the left side is a variable.
 			$hasVariable       = false;
 			$conditionStart    = $startPos;
 			$altConditionStart = $this->phpcsFile->findPrevious(
@@ -144,7 +139,6 @@ final class AssignmentInTernaryConditionSniff extends Sniff {
 					continue;
 				}
 
-				// If this is a variable or array, we've seen all we need to see.
 				if ( \T_VARIABLE === $this->tokens[ $i ]['code']
 					|| \T_CLOSE_SQUARE_BRACKET === $this->tokens[ $i ]['code']
 				) {
@@ -152,7 +146,6 @@ final class AssignmentInTernaryConditionSniff extends Sniff {
 					break;
 				}
 
-				// If this is a function call or something, we are OK.
 				if ( \T_CLOSE_PARENTHESIS === $this->tokens[ $i ]['code'] ) {
 					break;
 				}

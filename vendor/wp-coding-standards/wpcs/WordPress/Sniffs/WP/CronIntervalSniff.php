@@ -92,7 +92,6 @@ final class CronIntervalSniff extends Sniff {
 			return;
 		}
 
-		// Check if the text was found within a function call to add_filter().
 		$functionPtr = ContextHelper::is_in_function_call( $this->phpcsFile, $stackPtr, $this->valid_functions );
 		if ( false === $functionPtr ) {
 			return;
@@ -104,14 +103,11 @@ final class CronIntervalSniff extends Sniff {
 		}
 
 		if ( $stackPtr >= $callback['start'] && $stackPtr <= $callback['end'] ) {
-			// "cron_schedules" found in the second parameter, not the first.
 			return;
 		}
 
-		// Detect callback function name.
 		$callbackArrayPtr = $this->phpcsFile->findNext( Tokens::$emptyTokens, $callback['start'], ( $callback['end'] + 1 ), true );
 
-		// If callback is array, get second element.
 		if ( false !== $callbackArrayPtr
 			&& ( \T_ARRAY === $this->tokens[ $callbackArrayPtr ]['code']
 				|| ( isset( Collections::shortArrayListOpenTokensBC()[ $this->tokens[ $callbackArrayPtr ]['code'] ] )
@@ -128,7 +124,6 @@ final class CronIntervalSniff extends Sniff {
 
 		unset( $functionPtr );
 
-		// Search for the function in tokens.
 		$search                = Tokens::$stringTokens;
 		$search[ \T_CLOSURE ]  = \T_CLOSURE;
 		$search[ \T_FN ]       = \T_FN;
@@ -145,13 +140,11 @@ final class CronIntervalSniff extends Sniff {
 		) {
 			$functionPtr = $callbackFunctionPtr;
 		} elseif ( \T_ELLIPSIS === $this->tokens[ $callbackFunctionPtr ]['code'] ) {
-			// Check if this is a PHP 8.1 first class callable.
 			$before = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, ( $callbackFunctionPtr - 1 ), null, true );
 			$after  = $this->phpcsFile->findNext( Tokens::$emptyTokens, ( $callbackFunctionPtr + 1 ), null, true );
 			if ( ( false !== $before && \T_OPEN_PARENTHESIS === $this->tokens[ $before ]['code'] )
 				&& ( false !== $after && \T_CLOSE_PARENTHESIS === $this->tokens[ $after ]['code'] )
 			) {
-				// Ok, now see if we can find the function name.
 				$beforeOpen = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, ( $before - 1 ), null, true );
 				if ( false !== $beforeOpen && \T_STRING === $this->tokens[ $beforeOpen ]['code'] ) {
 					$found_function = $this->find_function_by_name( $this->tokens[ $beforeOpen ]['content'] );
@@ -208,7 +201,6 @@ final class CronIntervalSniff extends Sniff {
 							break;
 						}
 
-						// Make sure that PHP 7.4 numeric literals and PHP 8.1 explicit octals don't cause problems.
 						if ( \T_LNUMBER === $this->tokens[ $j ]['code']
 							|| \T_DNUMBER === $this->tokens[ $j ]['code']
 						) {
@@ -225,7 +217,6 @@ final class CronIntervalSniff extends Sniff {
 						}
 
 						if ( \T_CLOSE_PARENTHESIS === $this->tokens[ $j ]['code'] ) {
-							// Only add a close parenthesis if there are open parentheses.
 							if ( $parentheses_count > 0 ) {
 								$value .= $this->tokens[ $j ]['content'];
 								--$parentheses_count;
@@ -237,7 +228,6 @@ final class CronIntervalSniff extends Sniff {
 					}
 
 					if ( $parentheses_count > 0 ) {
-						// Make sure all open parenthesis are closed.
 						$value .= str_repeat( ')', $parentheses_count );
 					}
 
@@ -246,10 +236,8 @@ final class CronIntervalSniff extends Sniff {
 						break;
 					}
 
-					// Deal correctly with WP time constants.
 					$value = str_replace( array_keys( $this->wp_time_constants ), array_values( $this->wp_time_constants ), $value );
 
-					// If all parentheses, digits and operators, eval!
 					if ( preg_match( '#^[\s\d()+*/-]+$#', $value ) > 0 ) {
 						$interval = eval( "return ( $value );" ); // phpcs:ignore Squiz.PHP.Eval -- No harm here.
 						break;
@@ -295,7 +283,6 @@ final class CronIntervalSniff extends Sniff {
 					$functionPtr = $ptr;
 					break;
 				} elseif ( isset( $this->tokens[ $ptr ]['scope_closer'] ) ) {
-					// Skip to the end of the function definition.
 					$ptr = $this->tokens[ $ptr ]['scope_closer'];
 				}
 			}

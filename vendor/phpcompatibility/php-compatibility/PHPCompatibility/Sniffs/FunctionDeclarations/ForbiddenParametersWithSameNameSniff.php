@@ -61,12 +61,10 @@ class ForbiddenParametersWithSameNameSniff extends Sniff
 
         $tokens = $phpcsFile->getTokens();
         $token  = $tokens[$stackPtr];
-        // Skip function without body.
         if (isset($token['scope_opener']) === false) {
             return;
         }
 
-        // Get all parameters from method signature.
         $parameters = PHPCSHelper::getMethodParameters($phpcsFile, $stackPtr);
         if (empty($parameters) || \is_array($parameters) === false) {
             return;

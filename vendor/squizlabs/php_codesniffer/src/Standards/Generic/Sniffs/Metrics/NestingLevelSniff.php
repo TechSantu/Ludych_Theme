@@ -56,18 +56,15 @@ class NestingLevelSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Ignore abstract and interface methods. Bail early when live coding.
         if (isset($tokens[$stackPtr]['scope_opener'], $tokens[$stackPtr]['scope_closer']) === false) {
             return;
         }
 
-        // Detect start and end of this function definition.
         $start = $tokens[$stackPtr]['scope_opener'];
         $end   = $tokens[$stackPtr]['scope_closer'];
 
         $nestingLevel = 0;
 
-        // Find the maximum nesting level of any token in the function.
         for ($i = ($start + 1); $i < $end; $i++) {
             $level = $tokens[$i]['level'];
             if ($nestingLevel < $level) {
@@ -75,7 +72,6 @@ class NestingLevelSniff implements Sniff
             }
         }
 
-        // We subtract the nesting level of the function itself.
         $nestingLevel = ($nestingLevel - $tokens[$stackPtr]['level'] - 1);
 
         if ($nestingLevel > $this->absoluteNestingLevel) {

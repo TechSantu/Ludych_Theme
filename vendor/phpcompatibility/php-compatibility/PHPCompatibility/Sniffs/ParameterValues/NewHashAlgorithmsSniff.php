@@ -143,12 +143,10 @@ class NewHashAlgorithmsSniff extends AbstractNewFeatureSniff
             return;
         }
 
-        // Bow out if not one of the algorithms we're targetting.
         if (isset($this->newAlgorithms[$algo]) === false) {
             return;
         }
 
-        // Check if the algorithm used is new.
         $itemInfo = array(
             'name'   => $algo,
         );

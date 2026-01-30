@@ -94,7 +94,6 @@ class ChangedConcatOperatorPrecedenceSniff extends Sniff
 
         for ($i = ($stackPtr - 1); $stackPtr >= 0; $i--) {
             if ($tokens[$i]['code'] === \T_STRING_CONCAT) {
-                // Found one.
                 break;
             }
 
@@ -106,8 +105,6 @@ class ChangedConcatOperatorPrecedenceSniff extends Sniff
                 || $tokens[$i]['code'] === \T_COLON
                 || $tokens[$i]['code'] === \T_CASE
             ) {
-                // If we reached any of the above tokens, we've reached the end of
-                // the statement without encountering a concatenation operator.
                 return;
             }
 
@@ -115,8 +112,6 @@ class ChangedConcatOperatorPrecedenceSniff extends Sniff
                 && isset($tokens[$i]['bracket_closer'])
                 && $tokens[$i]['bracket_closer'] > $stackPtr
             ) {
-                // No need to look any further, this is plus/minus within curly braces
-                // and we've reached the open curly.
                 return;
             }
 
@@ -124,8 +119,6 @@ class ChangedConcatOperatorPrecedenceSniff extends Sniff
                 && isset($tokens[$i]['parenthesis_closer'])
                 && $tokens[$i]['parenthesis_closer'] > $stackPtr
             ) {
-                // No need to look any further, this is plus/minus within parenthesis
-                // and we've reached the open parenthesis.
                 return;
             }
 
@@ -134,14 +127,11 @@ class ChangedConcatOperatorPrecedenceSniff extends Sniff
                 && isset($tokens[$i]['bracket_closer'])
                 && $tokens[$i]['bracket_closer'] > $stackPtr
             ) {
-                // No need to look any further, this is plus/minus within a short array
-                // or array key square brackets and we've reached the opener.
                 return;
             }
 
             if ($tokens[$i]['code'] === \T_CLOSE_CURLY_BRACKET) {
                 if (isset($tokens[$i]['scope_owner'])) {
-                    // Different scope, we've passed the start of the statement.
                     return;
                 }
 
@@ -155,7 +145,6 @@ class ChangedConcatOperatorPrecedenceSniff extends Sniff
             if ($tokens[$i]['code'] === \T_CLOSE_PARENTHESIS
                 && isset($tokens[$i]['parenthesis_opener'])
             ) {
-                // Skip over statements in parenthesis, including long arrays.
                 $i = $tokens[$i]['parenthesis_opener'];
                 continue;
             }
@@ -164,12 +153,10 @@ class ChangedConcatOperatorPrecedenceSniff extends Sniff
                 || $tokens[$i]['code'] === \T_CLOSE_SHORT_ARRAY)
                 && isset($tokens[$i]['bracket_opener'])
             ) {
-                // Skip over array keys and short arrays.
                 $i = $tokens[$i]['bracket_opener'];
                 continue;
             }
 
-            // Check for chain being broken by a token with a lower precedence.
             if (isset(Tokens::$booleanOperators[$tokens[$i]['code']]) === true
                 || isset(Tokens::$assignmentTokens[$tokens[$i]['code']]) === true
             ) {

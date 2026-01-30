@@ -39,7 +39,6 @@ class RemovedConstantsSniff extends AbstractRemovedFeatureSniff
      * @var array(string => array(string => bool|string))
      */
     protected $removedConstants = array(
-        // Disabled since PHP 5.3.0 due to thread safety issues.
         'FILEINFO_COMPRESS' => array(
             '5.3' => true,
         ),

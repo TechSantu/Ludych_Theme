@@ -41,7 +41,6 @@ class Comment
         $char      = ($numChars - strlen(ltrim($string, '/*')));
         $lastChars = substr($string, -2);
         if ($char === $numChars && $lastChars === '*/') {
-            // Edge case: docblock without whitespace or contents.
             $openTag = substr($string, 0, -2);
             $string  = $lastChars;
         } else {
@@ -78,7 +77,6 @@ class Comment
         ];
 
         if ($closeTag['content'] === false) {
-            // In PHP < 8.0 substr() can return `false` instead of always returning a string.
             $closeTag['content'] = '';
         }
 
@@ -98,7 +96,6 @@ class Comment
             $char     = 0;
             $numChars = strlen($string);
 
-            // We've started a new line, so process the indent.
             $space = $this->collectWhitespace($string, $char, $numChars);
             if ($space !== null) {
                 $tokens[$stackPtr] = $space;
@@ -119,7 +116,6 @@ class Comment
             }
 
             if ($lineNum > 0 && $string[$char] === '*') {
-                // This is a function or class doc block line.
                 $char++;
                 $tokens[$stackPtr] = [
                     'content' => '*',
@@ -134,7 +130,6 @@ class Comment
                 }
             }
 
-            // Now we are ready to process the actual content of the line.
             $lineTokens = $this->processLine($string, $eolChar, $char, $numChars);
             foreach ($lineTokens as $lineToken) {
                 $tokens[$stackPtr] = $lineToken;
@@ -182,7 +177,6 @@ class Comment
     {
         $tokens = [];
 
-        // Collect content padding.
         $space = $this->collectWhitespace($string, $start, $end);
         if ($space !== null) {
             $tokens[] = $space;
@@ -194,7 +188,6 @@ class Comment
         }
 
         if ($string[$start] === '@') {
-            // The content up until the first whitespace is the tag name.
             $matches = [];
             preg_match('/@[^\s]+/', $string, $matches, 0, $start);
             if (isset($matches[0]) === true
@@ -208,7 +201,6 @@ class Comment
                     'type'    => 'T_DOC_COMMENT_TAG',
                 ];
 
-                // Then there will be some whitespace.
                 $space = $this->collectWhitespace($string, $start, $end);
                 if ($space !== null) {
                     $tokens[] = $space;
@@ -217,7 +209,6 @@ class Comment
             }
         }//end if
 
-        // Process the rest of the line.
         $eol = strpos($string, $eolChar, $start);
         if ($eol === false) {
             $eol = $end;

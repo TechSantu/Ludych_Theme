@@ -73,11 +73,9 @@ final class DisallowFinalClassSniff implements Sniff
 
         $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
         if ($nextNonEmpty === false) {
-            // Live coding or parse error.
             return;
         }
 
-        // No extra safeguards needed, we know the keyword will exist based on the check above.
         $finalKeyword = $phpcsFile->findPrevious(\T_FINAL, ($stackPtr - 1));
         $snippetEnd   = $nextNonEmpty;
         $classCloser  = '';
@@ -100,7 +98,6 @@ final class DisallowFinalClassSniff implements Sniff
             $phpcsFile->fixer->beginChangeset();
             $phpcsFile->fixer->replaceToken($finalKeyword, '');
 
-            // Remove redundant whitespace.
             for ($i = ($finalKeyword + 1); $i < $stackPtr; $i++) {
                 if ($tokens[$i]['code'] === \T_WHITESPACE) {
                     $phpcsFile->fixer->replaceToken($i, '');

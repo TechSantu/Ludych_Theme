@@ -42,7 +42,6 @@ class DisallowComparisonAssignmentSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Ignore default value assignments in function definitions.
         $function = $phpcsFile->findPrevious(T_FUNCTION, ($stackPtr - 1), null, false, null, true);
         if ($function !== false) {
             $opener = $tokens[$function]['parenthesis_opener'];
@@ -52,7 +51,6 @@ class DisallowComparisonAssignmentSniff implements Sniff
             }
         }
 
-        // Ignore values in array definitions or match structures.
         $nextNonEmpty = $phpcsFile->findNext(
             Tokens::$emptyTokens,
             ($stackPtr + 1),
@@ -67,7 +65,6 @@ class DisallowComparisonAssignmentSniff implements Sniff
             return;
         }
 
-        // Ignore function calls.
         $ignore = [
             T_NULLSAFE_OBJECT_OPERATOR,
             T_OBJECT_OPERATOR,
@@ -81,8 +78,6 @@ class DisallowComparisonAssignmentSniff implements Sniff
             || ($tokens[$next]['code'] === T_OPEN_PARENTHESIS
             && $tokens[($next - 1)]['code'] === T_STRING)
         ) {
-            // Code will look like: $var = myFunction(
-            // and will be ignored.
             return;
         }
 

@@ -67,41 +67,30 @@ class NonExecutableCodeSniff implements Sniff
 
         $prev = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($stackPtr - 1), null, true);
 
-        // Allow for PHP 8.4+ fully qualified use of exit/die.
         if ($tokens[$stackPtr]['code'] === T_EXIT && $tokens[$prev]['code'] === T_NS_SEPARATOR) {
             $prev = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($prev - 1), null, true);
         }
 
-        // Tokens which can be used in inline expressions need special handling.
         if (isset($this->expressionTokens[$tokens[$stackPtr]['code']]) === true) {
-            // If this token is preceded by a logical operator, it only relates to one line
-            // and should be ignored. For example: fopen() or die().
-            // Note: There is one exception: throw expressions can not be used with xor.
             if (isset(Tokens::$booleanOperators[$tokens[$prev]['code']]) === true
                 && ($tokens[$stackPtr]['code'] === T_THROW && $tokens[$prev]['code'] === T_LOGICAL_XOR) === false
             ) {
                 return;
             }
 
-            // Expressions are allowed in the `else` clause of ternaries.
             if ($tokens[$prev]['code'] === T_INLINE_THEN || $tokens[$prev]['code'] === T_INLINE_ELSE) {
                 return;
             }
 
-            // Expressions are allowed with PHP 7.0+ null coalesce and PHP 7.4+ null coalesce equals.
             if ($tokens[$prev]['code'] === T_COALESCE || $tokens[$prev]['code'] === T_COALESCE_EQUAL) {
                 return;
             }
 
-            // Expressions are allowed in arrow functions.
             if ($tokens[$prev]['code'] === T_FN_ARROW) {
                 return;
             }
         }//end if
 
-        // This token may be part of an inline condition.
-        // If we find a closing parenthesis that belongs to a condition,
-        // or an "else", we should ignore this token.
         if ($tokens[$prev]['code'] === T_ELSE
             || (isset($tokens[$prev]['parenthesis_owner']) === true
             && ($tokens[$tokens[$prev]['parenthesis_owner']]['code'] === T_IF
@@ -115,9 +104,6 @@ class NonExecutableCodeSniff implements Sniff
             if ($tokens[$next]['code'] === T_SEMICOLON) {
                 $next = $phpcsFile->findNext(Tokens::$emptyTokens, ($next + 1), null, true);
                 if ($tokens[$next]['code'] === T_CLOSE_CURLY_BRACKET) {
-                    // If this is the closing brace of a function
-                    // then this return statement doesn't return anything
-                    // and is not required anyway.
                     $owner = $tokens[$next]['scope_condition'];
                     if ($tokens[$owner]['code'] === T_FUNCTION
                         || $tokens[$owner]['code'] === T_CLOSURE
@@ -133,9 +119,6 @@ class NonExecutableCodeSniff implements Sniff
         if (isset($tokens[$stackPtr]['scope_opener']) === true) {
             $owner = $tokens[$stackPtr]['scope_condition'];
             if ($tokens[$owner]['code'] === T_CASE || $tokens[$owner]['code'] === T_DEFAULT) {
-                // This token closes the scope of a CASE or DEFAULT statement
-                // so any code between this statement and the next CASE, DEFAULT or
-                // end of SWITCH token will not be executable.
                 $end  = $phpcsFile->findEndOfStatement($stackPtr);
                 $next = $phpcsFile->findNext(
                     [
@@ -168,7 +151,6 @@ class NonExecutableCodeSniff implements Sniff
                     }
                 }//end if
 
-                // That's all we have to check for these types of statements.
                 return;
             }//end if
         }//end if
@@ -182,11 +164,6 @@ class NonExecutableCodeSniff implements Sniff
                 return;
             }
 
-            // Special case for BREAK statements sitting directly inside SWITCH
-            // statements. If we get to this point, we know the BREAK is not being
-            // used to close a CASE statement, so it is most likely non-executable
-            // code itself (as is the case when you put return; break; at the end of
-            // a case). So we need to ignore this token.
             if ($tokens[$condition]['code'] === T_SWITCH
                 && $tokens[$stackPtr]['code'] === T_BREAK
             ) {
@@ -195,15 +172,10 @@ class NonExecutableCodeSniff implements Sniff
 
             $closer = $tokens[$condition]['scope_closer'];
 
-            // If the closer for our condition is shared with other openers,
-            // we will need to throw errors from this token to the next
-            // shared opener (if there is one), not to the scope closer.
             $nextOpener = null;
             for ($i = ($stackPtr + 1); $i < $closer; $i++) {
                 if (isset($tokens[$i]['scope_closer']) === true) {
                     if ($tokens[$i]['scope_closer'] === $closer) {
-                        // We found an opener that shares the same
-                        // closing token as us.
                         $nextOpener = $i;
                         break;
                     }
@@ -216,17 +188,13 @@ class NonExecutableCodeSniff implements Sniff
                 $end = ($nextOpener - 1);
             }
         } else {
-            // This token is in the global scope.
             if ($tokens[$stackPtr]['code'] === T_BREAK) {
                 return;
             }
 
-            // Throw an error for all lines until the end of the file.
             $end = ($phpcsFile->numTokens - 1);
         }//end if
 
-        // Find the semicolon or closing PHP tag that ends this statement,
-        // skipping nested statements like FOR loops and closures.
         for ($start = ($stackPtr + 1); $start < $phpcsFile->numTokens; $start++) {
             if ($start === $end) {
                 break;
@@ -264,14 +232,11 @@ class NonExecutableCodeSniff implements Sniff
                 continue;
             }
 
-            // Skip whole functions and classes/interfaces because they are not
-            // technically executed code, but rather declarations that may be used.
             if (isset(Tokens::$ooScopeTokens[$tokens[$i]['code']]) === true
                 || $tokens[$i]['code'] === T_FUNCTION
                 || $tokens[$i]['code'] === T_CLOSURE
             ) {
                 if (isset($tokens[$i]['scope_closer']) === false) {
-                    // Parse error/Live coding.
                     return;
                 }
 
@@ -279,12 +244,10 @@ class NonExecutableCodeSniff implements Sniff
                 continue;
             }
 
-            // Skip HTML whitespace.
             if ($tokens[$i]['code'] === T_INLINE_HTML && trim($tokens[$i]['content']) === '') {
                 continue;
             }
 
-            // Skip PHP re-open tag (eg, after inline HTML).
             if ($tokens[$i]['code'] === T_OPEN_TAG) {
                 continue;
             }

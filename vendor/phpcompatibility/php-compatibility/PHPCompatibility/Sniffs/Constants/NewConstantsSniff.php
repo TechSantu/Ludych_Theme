@@ -40,7 +40,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '4.4' => false,
             '5.0' => true,
         ),
-        // Curl:
         'CURLOPT_FTP_USE_EPRT' => array(
             '4.4' => false,
             '5.0' => true,
@@ -77,7 +76,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '4.4' => false,
             '5.0' => true,
         ),
-        // OpenSSL:
         'OPENSSL_ALGO_MD2' => array(
             '4.4' => false,
             '5.0' => true,
@@ -98,7 +96,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '4.4' => false,
             '5.0' => true,
         ),
-        // Tokenizer:
         'T_ABSTRACT' => array(
             '4.4' => false,
             '5.0' => true,
@@ -134,7 +131,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.0' => false,
             '5.1' => true,
         ),
-        // Curl:
         'CURLOPT_AUTOREFERER' => array(
             '5.0' => false,
             '5.1' => true,
@@ -159,7 +155,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.0' => false,
             '5.1' => true,
         ),
-        // POSIX:
         'POSIX_F_OK' => array(
             '5.0' => false,
             '5.1' => true,
@@ -196,7 +191,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.0' => false,
             '5.1' => true,
         ),
-        // Streams:
         'STREAM_IPPROTO_ICMP' => array(
             '5.0' => false,
             '5.1' => true,
@@ -249,13 +243,11 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.0' => false,
             '5.1' => true,
         ),
-        // Tokenizer:
         'T_HALT_COMPILER' => array(
             '5.0' => false,
             '5.1' => true,
         ),
 
-        // Date/Time:
         'DATE_ATOM' => array(
             '5.1.0' => false,
             '5.1.1' => true,
@@ -301,7 +293,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.1.1' => true,
         ),
 
-        // Date/Time:
         'SUNFUNCS_RET_TIMESTAMP' => array(
             '5.1.1' => false,
             '5.1.2' => true,
@@ -314,7 +305,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.1.1' => false,
             '5.1.2' => true,
         ),
-        // XSL:
         'LIBXSLT_VERSION' => array(
             '5.1.1' => false,
             '5.1.2' => true,
@@ -331,7 +321,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.1.1' => false,
             '5.1.2' => true,
         ),
-        // URL:
         'PHP_URL_SCHEME' => array(
             '5.1.1' => false,
             '5.1.2' => true,
@@ -373,18 +362,15 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.1.2' => true,
         ),
 
-        // Curl:
         'CURLINFO_HEADER_OUT' => array(
             '5.1.2' => false,
             '5.1.3' => true,
         ),
 
-        // Core:
         'E_RECOVERABLE_ERROR' => array(
             '5.1' => false,
             '5.2' => true,
         ),
-        // Math:
         'M_EULER' => array(
             '5.1' => false,
             '5.2' => true,
@@ -409,7 +395,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.1' => false,
             '5.2' => true,
         ),
-        // Curl:
         'CURLE_FILESIZE_EXCEEDED' => array(
             '5.1' => false,
             '5.2' => true,
@@ -454,7 +439,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.1' => false,
             '5.2' => true,
         ),
-        // Ming:
         'SWFTEXTFIELD_USEFONT' => array(
             '5.1' => false,
             '5.2' => true,
@@ -515,7 +499,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.1' => false,
             '5.2' => true,
         ),
-        // OpenSSL:
         'OPENSSL_KEYTYPE_EC' => array(
             '5.1' => false,
             '5.2' => true,
@@ -528,7 +511,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.1' => false,
             '5.2' => true,
         ),
-        // PCRE:
         'PREG_BACKTRACK_LIMIT_ERROR' => array(
             '5.1' => false,
             '5.2' => true,
@@ -549,7 +531,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.1' => false,
             '5.2' => true,
         ),
-        // Snmp:
         'SNMP_OID_OUTPUT_FULL' => array(
             '5.1' => false,
             '5.2' => true,
@@ -558,7 +539,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.1' => false,
             '5.2' => true,
         ),
-        // Semaphore:
         'MSG_EAGAIN' => array(
             '5.1' => false,
             '5.2' => true,
@@ -568,13 +548,11 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.2' => true,
         ),
 
-        // Curl:
         'CURLOPT_TCP_NODELAY' => array(
             '5.2.0' => false,
             '5.2.1' => true,
         ),
 
-        // Stream:
         'STREAM_SHUT_RD' => array(
             '5.2.0' => false,
             '5.2.1' => true,
@@ -593,7 +571,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.2.2' => true,
         ),
 
-        // Curl:
         'CURLOPT_TIMEOUT_MS' => array(
             '5.2.2' => false,
             '5.2.3' => true,
@@ -603,7 +580,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.2.3' => true,
         ),
 
-        // Curl:
         'CURLOPT_PRIVATE' => array(
             '5.2.3' => false,
             '5.2.4' => true,
@@ -612,7 +588,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.2.3' => false,
             '5.2.4' => true,
         ),
-        // GD:
         'GD_VERSION' => array(
             '5.2.3' => false,
             '5.2.4' => true,
@@ -633,7 +608,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.2.3' => false,
             '5.2.4' => true,
         ),
-        // PCRE:
         'PCRE_VERSION' => array(
             '5.2.3' => false,
             '5.2.4' => true,
@@ -675,13 +649,11 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.2.6' => false,
             '5.2.7' => true,
         ),
-        // Sockets:
         'TCP_NODELAY' => array(
             '5.2.6' => false,
             '5.2.7' => true,
         ),
 
-        // Curl:
         'CURLOPT_PROTOCOLS' => array(
             '5.2.9'  => false,
             '5.2.10' => true,
@@ -695,13 +667,11 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.2.10' => true,
         ),
 
-        // Libxml:
         'LIBXML_PARSEHUGE' => array(
             '5.2.11' => false,
             '5.2.12' => true,
         ),
 
-        // Core:
         'ENT_IGNORE' => array(
             '5.2' => false,
             '5.3' => true,
@@ -770,7 +740,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.2' => false,
             '5.3' => true,
         ),
-        // Curl:
         'CURLINFO_CERTINFO' => array(
             '5.2' => false,
             '5.3' => true,
@@ -783,7 +752,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.2' => false,
             '5.3' => true,
         ),
-        // GD:
         'IMG_FILTER_PIXELATE' => array(
             '5.2' => false,
             '5.3' => true,
@@ -792,7 +760,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.2' => false,
             '5.3' => true,
         ),
-        // Fileinfo:
         'FILEINFO_MIME_TYPE' => array(
             '5.2' => false,
             '5.3' => true,
@@ -801,7 +768,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.2' => false,
             '5.3' => true,
         ),
-        // JSON:
         'JSON_ERROR_CTRL_CHAR' => array(
             '5.2' => false,
             '5.3' => true,
@@ -842,17 +808,14 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.2' => false,
             '5.3' => true,
         ),
-        // LDAP:
         'LDAP_OPT_NETWORK_TIMEOUT' => array(
             '5.2' => false,
             '5.3' => true,
         ),
-        // Libxml:
         'LIBXML_LOADED_VERSION' => array(
             '5.2' => false,
             '5.3' => true,
         ),
-        // Math:
         'PHP_ROUND_HALF_UP' => array(
             '5.2' => false,
             '5.3' => true,
@@ -869,7 +832,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.2' => false,
             '5.3' => true,
         ),
-        // Mysqli
         'MYSQLI_OPT_INT_AND_FLOAT_NATIVE' => array(
             '5.2' => false,
             '5.3' => true,
@@ -886,17 +848,14 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.2' => false,
             '5.3' => true,
         ),
-        // OCI8:
         'OCI_CRED_EXT' => array(
             '5.2' => false,
             '5.3' => true,
         ),
-        // PCRE:
         'PREG_BAD_UTF8_OFFSET_ERROR' => array(
             '5.2' => false,
             '5.3' => true,
         ),
-        // PCNTL:
         'BUS_ADRALN' => array(
             '5.2' => false,
             '5.3' => true,
@@ -1085,7 +1044,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.2' => false,
             '5.3' => true,
         ),
-        // Tokenizer:
         'T_DIR' => array(
             '5.2' => false,
             '5.3' => true,
@@ -1111,18 +1069,15 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.3' => true,
         ),
 
-        // OCI8:
         'OCI_NO_AUTO_COMMIT' => array(
             '5.3.1' => false,
             '5.3.2' => true,
         ),
-        // OpenSSL:
         'OPENSSL_TLSEXT_SERVER_NAME' => array(
             '5.3.1' => false,
             '5.3.2' => true,
         ),
 
-        // JSON:
         'JSON_ERROR_UTF8' => array(
             '5.3.2' => false,
             '5.3.3' => true,
@@ -1238,7 +1193,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.3' => false,
             '5.4' => true,
         ),
-        // Curl:
         'CURLOPT_MAX_RECV_SPEED_LARGE' => array(
             '5.3' => false,
             '5.4' => true,
@@ -1247,7 +1201,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.3' => false,
             '5.4' => true,
         ),
-        // Directories:
         'SCANDIR_SORT_ASCENDING' => array(
             '5.3' => false,
             '5.4' => true,
@@ -1260,7 +1213,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.3' => false,
             '5.4' => true,
         ),
-        // LibXML:
         'LIBXML_HTML_NODEFDTD' => array(
             '5.3' => false,
             '5.4' => true,
@@ -1273,7 +1225,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.3' => false,
             '5.4' => true,
         ),
-        // OpenSSL:
         'OPENSSL_CIPHER_AES_128_CBC' => array(
             '5.3' => false,
             '5.4' => true,
@@ -1294,7 +1245,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.3' => false,
             '5.4' => true,
         ),
-        // Output buffering:
         'PHP_OUTPUT_HANDLER_CLEAN' => array(
             '5.3' => false,
             '5.4' => true,
@@ -1335,7 +1285,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.3' => false,
             '5.4' => true,
         ),
-        // Sessions:
         'PHP_SESSION_ACTIVE' => array(
             '5.3' => false,
             '5.4' => true,
@@ -1348,7 +1297,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.3' => false,
             '5.4' => true,
         ),
-        // Streams:
         'STREAM_META_ACCESS' => array(
             '5.3' => false,
             '5.4' => true,
@@ -1373,7 +1321,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.3' => false,
             '5.4' => true,
         ),
-        // Intl:
         'U_IDNA_DOMAIN_NAME_TOO_LONG_ERROR' => array(
             '5.3' => false,
             '5.4' => true,
@@ -1454,7 +1401,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.3' => false,
             '5.4' => true,
         ),
-        // Json:
         'JSON_PRETTY_PRINT' => array(
             '5.3' => false,
             '5.4' => true,
@@ -1475,7 +1421,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.3' => false,
             '5.4' => true,
         ),
-        // Snmp:
         'SNMP_OID_OUTPUT_SUFFIX' => array(
             '5.3' => false,
             '5.4' => true,
@@ -1492,7 +1437,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.3' => false,
             '5.4' => true,
         ),
-        // Tokenizer:
         'T_INSTEADOF' => array(
             '5.3' => false,
             '5.4' => true,
@@ -1506,7 +1450,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.4' => true,
         ),
 
-        // Curl:
         'CURLINFO_PRIMARY_IP' => array(
             '5.4.6' => false,
             '5.4.7' => true,
@@ -1524,7 +1467,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.4.7' => true,
         ),
 
-        // OpenSSL:
         'OPENSSL_ALGO_RMD160' => array(
             '5.4.7' => false,
             '5.4.8' => true,
@@ -1546,12 +1488,10 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.4.8' => true,
         ),
 
-        // Filter:
         'FILTER_VALIDATE_MAC' => array(
             '5.4' => false,
             '5.5' => true,
         ),
-        // GD
         'IMG_AFFINE_TRANSLATE' => array(
             '5.4' => false,
             '5.5' => true,
@@ -1688,7 +1628,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.4' => false,
             '5.5' => true,
         ),
-        // JSON:
         'JSON_ERROR_RECURSION' => array(
             '5.4' => false,
             '5.5' => true,
@@ -1705,12 +1644,10 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.4' => false,
             '5.5' => true,
         ),
-        // MySQLi
         'MYSQLI_SERVER_PUBLIC_KEY' => array(
             '5.4' => false,
             '5.5' => true,
         ),
-        // Curl:
         'CURLOPT_SHARE' => array(
             '5.4' => false,
             '5.5' => true,
@@ -1819,7 +1756,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.4' => false,
             '5.5' => true,
         ),
-        // Soap:
         'SOAP_SSL_METHOD_TLS' => array(
             '5.4' => false,
             '5.5' => true,
@@ -1836,7 +1772,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.4' => false,
             '5.5' => true,
         ),
-        // Tokenizer:
         'T_FINALLY' => array(
             '5.4' => false,
             '5.5' => true,
@@ -1845,7 +1780,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.4' => false,
             '5.5' => true,
         ),
-        // Core/Password Hashing:
         'PASSWORD_BCRYPT' => array(
             '5.4' => false,
             '5.5' => true,
@@ -1860,13 +1794,11 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
         ),
 
 
-        // Libxml:
         'LIBXML_SCHEMA_CREATE' => array(
             '5.5.1' => false,
             '5.5.2' => true,
         ),
 
-        // Curl:
         'CURL_SSLVERSION_TLSv1_0' => array(
             '5.5.18' => false,
             '5.5.19' => true,
@@ -1902,7 +1834,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.5' => false,
             '5.6' => true,
         ),
-        // LDAP:
         'LDAP_ESCAPE_DN' => array(
             '5.5' => false,
             '5.6' => true,
@@ -1911,7 +1842,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.5' => false,
             '5.6' => true,
         ),
-        // OpenSSL:
         'OPENSSL_DEFAULT_STREAM_CIPHERS' => array(
             '5.5' => false,
             '5.6' => true,
@@ -1948,7 +1878,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.5' => false,
             '5.6' => true,
         ),
-        // PostgreSQL:
         'PGSQL_CONNECT_ASYNC' => array(
             '5.5' => false,
             '5.6' => true,
@@ -2001,7 +1930,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.5' => false,
             '5.6' => true,
         ),
-        // Tokenizer:
         'T_ELLIPSIS' => array(
             '5.5' => false,
             '5.6' => true,
@@ -2030,8 +1958,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.6.16' => true,
         ),
 
-        // GD:
-        // Also introduced in 7.0.10.
         'IMG_WEBP' => array(
             '5.6.24' => false,
             '5.6.25' => true,
@@ -2050,7 +1976,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.6' => false,
             '7.0' => true,
         ),
-        // Curl:
         'CURLPIPE_NOTHING' => array(
             '5.6' => false,
             '7.0' => true,
@@ -2063,7 +1988,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.6' => false,
             '7.0' => true,
         ),
-        // JSON:
         'JSON_ERROR_INVALID_PROPERTY_NAME' => array(
             '5.6' => false,
             '7.0' => true,
@@ -2072,17 +1996,14 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.6' => false,
             '7.0' => true,
         ),
-        // LibXML:
         'LIBXML_BIGLINES' => array(
             '5.6' => false,
             '7.0' => true,
         ),
-        // PCRE:
         'PREG_JIT_STACKLIMIT_ERROR' => array(
             '5.6' => false,
             '7.0' => true,
         ),
-        // POSIX:
         'POSIX_RLIMIT_AS' => array(
             '5.6' => false,
             '7.0' => true,
@@ -2151,7 +2072,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '5.6' => false,
             '7.0' => true,
         ),
-        // Tokenizer:
         'T_COALESCE' => array(
             '5.6' => false,
             '7.0' => true,
@@ -2165,8 +2085,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '7.0' => true,
         ),
 
-        // Zlib:
-        // The first three are in the PHP 5.4 changelog, but the Extension constant page says 7.0.
         'ZLIB_ENCODING_RAW' => array(
             '5.6' => false,
             '7.0' => true,
@@ -2433,7 +2351,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '7.0' => false,
             '7.1' => true,
         ),
-        // Curl:
         'CURLMOPT_PUSHFUNCTION' => array(
             '7.0' => false,
             '7.1' => true,
@@ -2446,22 +2363,18 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '7.0' => false,
             '7.1' => true,
         ),
-        // Filter:
         'FILTER_FLAG_EMAIL_UNICODE' => array(
             '7.0' => false,
             '7.1' => true,
         ),
-        // GD:
         'IMAGETYPE_WEBP' => array(
             '7.0' => false,
             '7.1' => true,
         ),
-        // Json:
         'JSON_UNESCAPED_LINE_TERMINATORS' => array(
             '7.0' => false,
             '7.1' => true,
         ),
-        // LDAP:
         'LDAP_OPT_X_SASL_NOCANON' => array(
             '7.0' => false,
             '7.1' => true,
@@ -2558,7 +2471,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '7.0' => false,
             '7.1' => true,
         ),
-        // PostgreSQL:
         'PGSQL_NOTICE_LAST' => array(
             '7.0' => false,
             '7.1' => true,
@@ -2571,19 +2483,16 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '7.0' => false,
             '7.1' => true,
         ),
-        // SPL:
         'MT_RAND_PHP' => array(
             '7.0' => false,
             '7.1' => true,
         ),
 
-        // SQLite3:
         'SQLITE3_DETERMINISTIC' => array(
             '7.1.3' => false,
             '7.1.4' => true,
         ),
 
-        // Core:
         'PHP_OS_FAMILY' => array(
             '7.1' => false,
             '7.2' => true,
@@ -2605,7 +2514,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '7.2' => true,
         ),
 
-        // Core/Password Hashing:
         'PASSWORD_ARGON2I' => array(
             '7.1' => false,
             '7.2' => true,
@@ -2623,13 +2531,11 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '7.2' => true,
         ),
 
-        // Fileinfo:
         'FILEINFO_EXTENSION' => array(
             '7.1' => false,
             '7.2' => true,
         ),
 
-        // GD:
         'IMG_EFFECT_MULTIPLY' => array(
             '7.1' => false,
             '7.2' => true,
@@ -2639,7 +2545,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '7.2' => true,
         ),
 
-        // JSON:
         'JSON_INVALID_UTF8_IGNORE' => array(
             '7.1' => false,
             '7.2' => true,
@@ -2649,7 +2554,6 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '7.2' => true,
         ),
 
-        // LDAP:
         'LDAP_EXOP_START_TLS' => array(
             '7.1' => false,
             '7.2' => true,
@@ -2671,13 +2575,11 @@ class NewConstantsSniff extends AbstractNewFeatureSniff
             '7.2' => true,
         ),
 
-        // PCRE:
         'PREG_UNMATCHED_AS_NULL' => array(
             '7.1' => false,
             '7.2' => true,
         ),
 
-        // Sodium:
         'SODIUM_LIBRARY_VERSION' => array(
             '7.1' => false,
             '7.2' => true,

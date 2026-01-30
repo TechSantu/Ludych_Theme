@@ -152,7 +152,6 @@ class ForbiddenThisUseContextsSniff extends Sniff
                  */
                 $endOfStatement = $phpcsFile->findNext(array(\T_SEMICOLON, \T_CLOSE_TAG), ($stackPtr + 1));
                 if ($endOfStatement === false) {
-                    // No semi-colon - live coding.
                     return;
                 }
 
@@ -383,11 +382,9 @@ class ForbiddenThisUseContextsSniff extends Sniff
         for ($i = ($tokens[$stackPtr]['scope_opener'] + 1); $i < $tokens[$stackPtr]['scope_closer']; $i++) {
             if (isset($this->skipOverScopes[$tokens[$i]['type']])) {
                 if (isset($tokens[$i]['scope_closer']) === false) {
-                    // Live coding or parse error, will only lead to inaccurate results.
                     return;
                 }
 
-                // Skip over nested structures.
                 $i = $tokens[$i]['scope_closer'];
                 continue;
             }

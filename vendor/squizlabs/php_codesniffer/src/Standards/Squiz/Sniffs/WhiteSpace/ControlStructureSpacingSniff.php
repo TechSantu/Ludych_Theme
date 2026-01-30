@@ -128,7 +128,6 @@ class ControlStructureSpacingSniff implements Sniff
                 continue;
             }
 
-            // Skip all empty tokens on the same line as the opener.
             if ($tokens[$firstContent]['line'] === $tokens[$scopeOpener]['line']
                 && (isset(Tokens::$emptyTokens[$code]) === true
                 || $code === T_CLOSE_TAG)
@@ -139,7 +138,6 @@ class ControlStructureSpacingSniff implements Sniff
             break;
         }
 
-        // We ignore spacing for some structures that tend to have their own rules.
         $ignore = [
             T_FUNCTION             => true,
             T_CLASS                => true,
@@ -162,7 +160,6 @@ class ControlStructureSpacingSniff implements Sniff
                 $phpcsFile->fixer->beginChangeset();
                 $i = ($scopeOpener + 1);
                 while ($tokens[$i]['line'] !== $tokens[$firstContent]['line']) {
-                    // Start removing content from the line after the opener.
                     if ($tokens[$i]['line'] !== $tokens[$scopeOpener]['line']) {
                         $phpcsFile->fixer->replaceToken($i, '');
                     }
@@ -235,7 +232,6 @@ class ControlStructureSpacingSniff implements Sniff
         }//end if
 
         if ($tokens[$stackPtr]['code'] === T_MATCH) {
-            // Move the scope closer to the semicolon/comma.
             $next = $phpcsFile->findNext(Tokens::$emptyTokens, ($scopeCloser + 1), null, true);
             if ($next !== false
                 && ($tokens[$next]['code'] === T_SEMICOLON || $tokens[$next]['code'] === T_COMMA)
@@ -254,8 +250,6 @@ class ControlStructureSpacingSniff implements Sniff
         if ($tokens[$trailingContent]['code'] === T_COMMENT
             || isset(Tokens::$phpcsCommentTokens[$tokens[$trailingContent]['code']]) === true
         ) {
-            // Special exception for code where the comment about
-            // an ELSE or ELSEIF is written between the control structures.
             $nextCode = $phpcsFile->findNext(
                 Tokens::$emptyTokens,
                 ($scopeCloser + 1),
@@ -273,7 +267,6 @@ class ControlStructureSpacingSniff implements Sniff
 
         if ($tokens[$trailingContent]['code'] === T_ELSE) {
             if ($tokens[$stackPtr]['code'] === T_IF) {
-                // IF with ELSE.
                 return;
             }
         }
@@ -281,12 +274,10 @@ class ControlStructureSpacingSniff implements Sniff
         if ($tokens[$trailingContent]['code'] === T_WHILE
             && $tokens[$stackPtr]['code'] === T_DO
         ) {
-            // DO with WHILE.
             return;
         }
 
         if ($tokens[$trailingContent]['code'] === T_CLOSE_TAG) {
-            // At the end of the script or embedded code.
             return;
         }
 
@@ -295,11 +286,8 @@ class ControlStructureSpacingSniff implements Sniff
             && isset($tokens[$trailingContent]['scope_opener']) === true
             && $tokens[$trailingContent]['scope_opener'] !== $trailingContent
         ) {
-            // Another control structure's closing brace.
             $owner = $tokens[$trailingContent]['scope_condition'];
             if ($tokens[$owner]['code'] === T_FUNCTION) {
-                // The next content is the closing brace of a function
-                // so normal function rules apply and we can ignore it.
                 return;
             }
 

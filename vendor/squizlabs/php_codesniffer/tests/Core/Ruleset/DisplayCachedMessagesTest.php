@@ -86,11 +86,9 @@ final class DisplayCachedMessagesTest extends AbstractRulesetTestCase
                     'And here is another one'                 => MessageCollector::ERROR,
                     'OMG, why do you think that would work ?' => MessageCollector::ERROR,
                 ],
-                // phpcs:disable Squiz.Strings.ConcatenationSpacing.PaddingFound -- Test readability is more important.
                 'expected' => 'ERROR: This is a serious blocking issue'.PHP_EOL
                     . 'ERROR: And here is another one'.PHP_EOL
                     . 'ERROR: OMG, why do you think that would work ?'.PHP_EOL.PHP_EOL,
-                // phpcs:enable
             ],
             'Mix of blocking and non-blocking errors' => [
                 'messages' => [
@@ -98,11 +96,9 @@ final class DisplayCachedMessagesTest extends AbstractRulesetTestCase
                     'Something something deprecated and will be removed in v x.x.x' => MessageCollector::DEPRECATED,
                     'Careful, this may not be correct'                              => MessageCollector::NOTICE,
                 ],
-                // phpcs:disable Squiz.Strings.ConcatenationSpacing.PaddingFound -- Test readability is more important.
                 'expected' => 'ERROR: This is a serious blocking issue'.PHP_EOL
                     . 'NOTICE: Careful, this may not be correct'.PHP_EOL
                     . 'DEPRECATED: Something something deprecated and will be removed in v x.x.x'.PHP_EOL.PHP_EOL,
-                // phpcs:enable
             ],
         ];
 
@@ -160,12 +156,10 @@ final class DisplayCachedMessagesTest extends AbstractRulesetTestCase
                     'Some other deprecation notice'                                 => MessageCollector::DEPRECATED,
                     'Careful, this may not be correct'                              => MessageCollector::NOTICE,
                 ],
-                // phpcs:disable Squiz.Strings.ConcatenationSpacing.PaddingFound -- Test readability is more important.
                 'expected' => 'WARNING: Something is not supported and support may be removed'.PHP_EOL
                     .'NOTICE: Careful, this may not be correct'.PHP_EOL
                     .'DEPRECATED: Something something deprecated and will be removed in v x.x.x'.PHP_EOL
                     .'DEPRECATED: Some other deprecation notice'.PHP_EOL.PHP_EOL,
-                // phpcs:enable
             ],
         ];
 
@@ -238,7 +232,6 @@ final class DisplayCachedMessagesTest extends AbstractRulesetTestCase
             ],
         ];
 
-        // Setting the `--generator` arg is only supported when running `phpcs`.
         if (PHP_CODESNIFFER_CBF === false) {
             $data['Documentation is requested'] = [
                 'configArgs' => ['--generator=text'],

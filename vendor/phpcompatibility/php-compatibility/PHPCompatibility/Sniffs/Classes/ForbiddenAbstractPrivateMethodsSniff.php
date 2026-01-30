@@ -72,7 +72,6 @@ class ForbiddenAbstractPrivateMethodsSniff extends Sniff
         }
 
         if ($this->validDirectScope($phpcsFile, $stackPtr, $this->ooScopeTokens) === false) {
-            // Function, not method.
             return;
         }
 

@@ -50,7 +50,6 @@ final class NoDoubleNegativeSniff implements Sniff
      */
     public function register()
     {
-        // Collect all the operators only once.
         $this->operatorsWithLowerPrecedence  = Tokens::$assignmentTokens;
         $this->operatorsWithLowerPrecedence += Tokens::$booleanOperators;
         $this->operatorsWithLowerPrecedence += Tokens::$comparisonTokens;
@@ -93,7 +92,6 @@ final class NoDoubleNegativeSniff implements Sniff
         }
 
         if ($notCount === 1) {
-            // Singular unary not-operator. Nothing to do.
             return;
         }
 
@@ -120,7 +118,6 @@ final class NoDoubleNegativeSniff implements Sniff
                 $phpcsFile->fixer->endChangeset();
             }
 
-            // Only throw one error, even if there are more than two not-operators.
             return $lastNot;
         }
 
@@ -158,11 +155,9 @@ final class NoDoubleNegativeSniff implements Sniff
                 }
 
                 if (isset($this->operatorsWithLowerPrecedence[$tokens[$nextRelevant]['code']])) {
-                    // The expression the `!` belongs to has ended.
                     break;
                 }
 
-                // Skip over anything within some form of brackets.
                 if (isset($tokens[$nextRelevant]['scope_closer'])
                     && ($nextRelevant === $tokens[$nextRelevant]['scope_opener']
                     || $nextRelevant === $tokens[$nextRelevant]['scope_condition'])
@@ -185,7 +180,6 @@ final class NoDoubleNegativeSniff implements Sniff
                     continue;
                 }
 
-                // Skip over attributes (just in case).
                 if ($tokens[$nextRelevant]['code'] === \T_ATTRIBUTE
                     && isset($tokens[$nextRelevant]['attribute_closer'])
                 ) {
@@ -206,10 +200,8 @@ final class NoDoubleNegativeSniff implements Sniff
             $code    = 'FoundDoubleWithInstanceof';
             $data[0] = 'and parentheses around the instanceof expression';
 
-            // Don't auto-fix in combination with instanceof.
             $phpcsFile->addError($error, $stackPtr, $code, $data);
 
-            // Only throw one error, even if there are more than two not-operators.
             return $lastNot;
         }
 
@@ -225,7 +217,6 @@ final class NoDoubleNegativeSniff implements Sniff
             $phpcsFile->fixer->endChangeset();
         }
 
-        // Only throw one error, even if there are more than two not-operators.
         return $lastNot;
     }
 
@@ -250,7 +241,6 @@ final class NoDoubleNegativeSniff implements Sniff
 
         for ($i = $stackPtr; $i < $lastNot; $i++) {
             if (isset(Tokens::$commentTokens[$tokens[$i]['code']])) {
-                // Ignore comments and whitespace after comments.
                 $ignore = true;
                 continue;
             }

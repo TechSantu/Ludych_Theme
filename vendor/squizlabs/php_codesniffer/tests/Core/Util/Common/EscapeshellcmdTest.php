@@ -71,13 +71,11 @@ final class EscapeshellcmdTest extends TestCase
                 'expected'    => '\&\#\;\`\|\*\?\~\<\>\^\(\)\[\]\{\}\$\\\\,%!',
                 'expectedWin' => '^&^#^;^`^|^*^?^~^<^>^^^(^)^[^]^{^}^$^\,^%^!',
             ],
-            // @link https://github.com/squizlabs/PHP_CodeSniffer/pull/3214
             'Command containing spaces, which can cause problems on Windows' => [
                 'command'     => 'C:\Program Files\nodejs\csslint.cmd',
                 'expected'    => 'C:\\\\Program Files\\\\nodejs\\\\csslint.cmd',
                 'expectedWin' => 'C:^\Program^ Files^\nodejs^\csslint.cmd',
             ],
-            // @link https://github.com/php/doc-en/pull/511
             'Command containing spaces with additional arguments'            => [
                 'command'     => 'php -f ./~home/path to/file.php',
                 'expected'    => 'php -f ./\~home/path to/file.php',

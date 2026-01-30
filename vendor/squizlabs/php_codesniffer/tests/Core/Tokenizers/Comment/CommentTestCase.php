@@ -45,7 +45,6 @@ abstract class CommentTestCase extends AbstractTokenizerTestCase
         $expectedCloser = ($target + $closerOffset);
         $this->assertSame($expectedCloser, $opener['comment_closer'], 'Comment opener: comment_closer not set to the expected stack pointer');
 
-        // Update the tags expectations.
         foreach ($expectedTags as $i => $ptr) {
             $expectedTags[$i] += $target;
         }

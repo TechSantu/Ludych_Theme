@@ -65,7 +65,6 @@ final class RequireFinalClassSniff implements Sniff
         }
 
         if ($classProp['is_abstract'] === true) {
-            // Abstract classes can't be final.
             $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'abstract');
             return;
         }
@@ -74,7 +73,6 @@ final class RequireFinalClassSniff implements Sniff
 
         $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
         if ($nextNonEmpty === false) {
-            // Live coding or parse error.
             return;
         }
 

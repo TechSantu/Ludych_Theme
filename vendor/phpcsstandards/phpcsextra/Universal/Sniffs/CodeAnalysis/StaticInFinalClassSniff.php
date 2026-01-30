@@ -48,13 +48,9 @@ final class StaticInFinalClassSniff implements Sniff
     public function register()
     {
         return [
-            // These tokens are used to retrieve return types reliably.
             \T_FUNCTION,
             \T_FN,
-            // While this is our "real" target.
             \T_STATIC,
-            // But we also need this as after "instanceof", `static` is tokenized as `T_STRING in PHPCS < 4.0.0.
-            // See: https://github.com/squizlabs/PHP_CodeSniffer/pull/3121
             \T_STRING,
         ];
     }
@@ -97,13 +93,11 @@ final class StaticInFinalClassSniff implements Sniff
             if ($tokens[$stackPtr]['code'] === \T_FUNCTION) {
                 $ooPtr = Scopes::validDirectScope($phpcsFile, $stackPtr, $this->validOOScopes);
                 if ($ooPtr === false) {
-                    // Method in a trait (not known where it is used), interface (never final) or not in an OO scope.
                     return $scopeOpener;
                 }
             } else {
                 $ooPtr = Conditions::getLastCondition($phpcsFile, $stackPtr, $this->validOOScopes);
                 if ($ooPtr === false) {
-                    // Arrow function outside of OO.
                     return $scopeOpener;
                 }
             }
@@ -111,7 +105,6 @@ final class StaticInFinalClassSniff implements Sniff
             if ($tokens[$ooPtr]['code'] === \T_CLASS) {
                 $classProps = ObjectDeclarations::getClassProperties($phpcsFile, $ooPtr);
                 if ($classProps['is_final'] === false) {
-                    // Method in a non-final class.
                     return $scopeOpener;
                 }
             }
@@ -131,7 +124,6 @@ final class StaticInFinalClassSniff implements Sniff
                 return $scopeOpener;
             }
 
-            // Found a return type containing the `static` type.
             $this->handleError($phpcsFile, $staticPtr, 'ReturnType', '"static" return type');
 
             return $scopeOpener;
@@ -152,14 +144,12 @@ final class StaticInFinalClassSniff implements Sniff
 
         $ooPtr = Scopes::validDirectScope($phpcsFile, $functionPtr, $this->validOOScopes);
         if ($ooPtr === false) {
-            // Not in an OO context.
             return;
         }
 
         if ($tokens[$ooPtr]['code'] === \T_CLASS) {
             $classProps = ObjectDeclarations::getClassProperties($phpcsFile, $ooPtr);
             if ($classProps['is_final'] === false) {
-                // Token in a non-final class.
                 return;
             }
         }

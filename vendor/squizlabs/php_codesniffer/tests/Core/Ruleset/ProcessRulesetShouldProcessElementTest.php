@@ -78,7 +78,6 @@ final class ProcessRulesetShouldProcessElementTest extends TestCase
     protected function initializeConfigAndRuleset()
     {
         if (isset(self::$ruleset) === false) {
-            // Set up the ruleset.
             $standard      = __DIR__.'/ProcessRulesetShouldProcessElementTest.xml';
             self::$config  = new ConfigDouble(["--standard=$standard"]);
             self::$ruleset = new Ruleset(self::$config);
@@ -96,10 +95,6 @@ final class ProcessRulesetShouldProcessElementTest extends TestCase
      */
     public static function restoreOriginalValues()
     {
-        // Explicitly trigger __destruct() on the ConfigDouble to reset the Config statics.
-        // The explicit method call prevents potential stray test-local references to the $config object
-        // preventing the destructor from running the clean up (which without stray references would be
-        // automagically triggered when this object is destroyed, but we can't definitively rely on that).
         if (isset(self::$config) === true) {
             self::$config->__destruct();
         }

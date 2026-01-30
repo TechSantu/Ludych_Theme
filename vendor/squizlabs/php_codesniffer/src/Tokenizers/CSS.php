@@ -55,8 +55,6 @@ class CSS extends PHP
             echo "\t*** START CSS TOKENIZING 1ST PASS ***".PHP_EOL;
         }
 
-        // If the content doesn't have an EOL char on the end, add one so
-        // the open and close tags we add are parsed correctly.
         $eolAdded = false;
         if (substr($string, (strlen($this->eolChar) * -1)) !== $this->eolChar) {
             $string  .= $this->eolChar;
@@ -80,9 +78,6 @@ class CSS extends PHP
         for ($stackPtr = 1; $stackPtr < $numTokens; $stackPtr++) {
             $token = $tokens[$stackPtr];
 
-            // CSS files don't have lists, breaks etc, so convert these to
-            // standard strings early so they can be converted into T_STYLE
-            // tokens and joined with other strings if needed.
             if ($token['code'] === T_BREAK
                 || $token['code'] === T_LIST
                 || $token['code'] === T_DEFAULT
@@ -114,7 +109,6 @@ class CSS extends PHP
                     if ($tokens[$stackPtr]['code'] === T_BITWISE_XOR
                         && $tokens[($stackPtr + 1)]['content'] === 'PHPCS_CSS_T_CLOSE_TAG'
                     ) {
-                        // Add the end tag and ignore the * we put at the end.
                         $content  .= '?>';
                         $stackPtr += 2;
                         break;
@@ -140,8 +134,6 @@ class CSS extends PHP
             }//end if
 
             if ($token['code'] === T_GOTO_LABEL) {
-                // Convert these back to T_STRING followed by T_COLON so we can
-                // more easily process style definitions.
                 $finalTokens[$newStackPtr] = [
                     'type'    => 'T_STRING',
                     'code'    => T_STRING,
@@ -158,7 +150,6 @@ class CSS extends PHP
             }
 
             if ($token['code'] === T_FUNCTION) {
-                // There are no functions in CSS, so convert this to a string.
                 $finalTokens[$newStackPtr] = [
                     'type'    => 'T_STRING',
                     'code'    => T_STRING,
@@ -172,8 +163,6 @@ class CSS extends PHP
             if ($token['code'] === T_COMMENT
                 && substr($token['content'], 0, 2) === '/*'
             ) {
-                // Multi-line comment. Record it so we can ignore other
-                // comment tags until we get out of this one.
                 $multiLineComment = true;
             }
 
@@ -184,8 +173,6 @@ class CSS extends PHP
             ) {
                 $content = ltrim($token['content'], '#/');
 
-                // Guard against PHP7+ syntax errors by stripping
-                // leading zeros so the content doesn't look like an invalid int.
                 $leadingZero = false;
                 if ($content[0] === '0') {
                     $content     = '1'.$content;
@@ -194,7 +181,6 @@ class CSS extends PHP
 
                 $commentTokens = parent::tokenize('<?php '.$content.'?>');
 
-                // The first and last tokens are the open/close tags.
                 array_shift($commentTokens);
                 $closeTag = array_pop($commentTokens);
 
@@ -208,12 +194,8 @@ class CSS extends PHP
                 }
 
                 if ($token['content'][0] === '#') {
-                    // The # character is not a comment in CSS files, so
-                    // determine what it means in this context.
                     $firstContent = $commentTokens[0]['content'];
 
-                    // If the first content is just a number, it is probably a
-                    // colour like 8FB7DB, which PHP splits into 8 and FB7DB.
                     if (($commentTokens[0]['code'] === T_LNUMBER
                         || $commentTokens[0]['code'] === T_DNUMBER)
                         && $commentTokens[1]['code'] === T_STRING
@@ -222,13 +204,10 @@ class CSS extends PHP
                         array_shift($commentTokens);
                     }
 
-                    // If the first content looks like a colour and not a class
-                    // definition, join the tokens together.
                     if (preg_match('/^[ABCDEF0-9]+$/i', $firstContent) === 1
                         && $commentTokens[1]['content'] !== '-'
                     ) {
                         array_shift($commentTokens);
-                        // Work out what we trimmed off above and remember to re-add it.
                         $trimmed = substr($token['content'], 0, (strlen($token['content']) - strlen($content)));
                         $finalTokens[$newStackPtr] = [
                             'type'    => 'T_COLOUR',
@@ -261,7 +240,6 @@ class CSS extends PHP
             if ($token['code'] === T_COMMENT
                 && substr($token['content'], -2) === '*/'
             ) {
-                // Multi-line comment is done.
                 $multiLineComment = false;
             }
 
@@ -274,12 +252,8 @@ class CSS extends PHP
             echo "\t*** START CSS TOKENIZING 2ND PASS ***".PHP_EOL;
         }
 
-        // A flag to indicate if we are inside a style definition,
-        // which is defined using curly braces.
         $inStyleDef = false;
 
-        // A flag to indicate if an At-rule like "@media" is used, which will result
-        // in nested curly brackets.
         $asperandStart = false;
 
         $numTokens = count($finalTokens);
@@ -294,10 +268,6 @@ class CSS extends PHP
 
             switch ($token['code']) {
             case T_OPEN_CURLY_BRACKET:
-                // Opening curly brackets for an At-rule do not start a style
-                // definition. We also reset the asperand flag here because the next
-                // opening curly bracket could be indeed the start of a style
-                // definition.
                 if ($asperandStart === true) {
                     if (PHP_CODESNIFFER_VERBOSITY > 1) {
                         if ($inStyleDef === true) {
@@ -333,8 +303,6 @@ class CSS extends PHP
                 $asperandStart = false;
                 break;
             case T_MINUS:
-                // Minus signs are often used instead of spaces inside
-                // class names, IDs and styles.
                 if ($finalTokens[($stackPtr + 1)]['code'] === T_STRING) {
                     if ($finalTokens[($stackPtr - 1)]['code'] === T_STRING) {
                         $newContent = $finalTokens[($stackPtr - 1)]['content'].'-'.$finalTokens[($stackPtr + 1)]['content'];
@@ -356,7 +324,6 @@ class CSS extends PHP
                         unset($finalTokens[$stackPtr]);
                     }
                 } else if ($finalTokens[($stackPtr + 1)]['code'] === T_LNUMBER) {
-                    // They can also be used to provide negative numbers.
                     if (PHP_CODESNIFFER_VERBOSITY > 1) {
                         echo "\t\t* token is part of a negative number; adding content to next token and ignoring *".PHP_EOL;
                         $content = Util\Common::prepareForOutput($finalTokens[($stackPtr + 1)]['content']);
@@ -368,7 +335,6 @@ class CSS extends PHP
                 }//end if
                 break;
             case T_COLON:
-                // Only interested in colons that are defining styles.
                 if ($inStyleDef === false) {
                     break;
                 }
@@ -389,19 +355,16 @@ class CSS extends PHP
                 break;
             case T_STRING:
                 if (strtolower($token['content']) === 'url') {
-                    // Find the next content.
                     for ($x = ($stackPtr + 1); $x < $numTokens; $x++) {
                         if (isset(Util\Tokens::$emptyTokens[$finalTokens[$x]['code']]) === false) {
                             break;
                         }
                     }
 
-                    // Needs to be in the format "url(" for it to be a URL.
                     if ($finalTokens[$x]['code'] !== T_OPEN_PARENTHESIS) {
                         continue 2;
                     }
 
-                    // Make sure the content isn't empty.
                     for ($y = ($x + 1); $y < $numTokens; $y++) {
                         if (isset(Util\Tokens::$emptyTokens[$finalTokens[$y]['code']]) === false) {
                             break;
@@ -422,7 +385,6 @@ class CSS extends PHP
                         echo "\t\t* token starts a URL *".PHP_EOL;
                     }
 
-                    // Join all the content together inside the url() statement.
                     $newContent = '';
                     for ($i = ($x + 2); $i < $numTokens; $i++) {
                         if ($finalTokens[$i]['code'] === T_CLOSE_PARENTHESIS) {
@@ -440,10 +402,6 @@ class CSS extends PHP
 
                     $stackPtr = $i;
 
-                    // If the content inside the "url()" is in double quotes
-                    // there will only be one token and so we don't have to do
-                    // anything except change its type. If it is not empty,
-                    // we need to do some token merging.
                     $finalTokens[($x + 1)]['type'] = 'T_URL';
                     $finalTokens[($x + 1)]['code'] = T_URL;
 
@@ -487,20 +445,16 @@ class CSS extends PHP
                 }
                 break;
             default:
-                // Nothing special to be done with this token.
                 break;
             }//end switch
         }//end for
 
-        // Reset the array keys to avoid gaps.
         $finalTokens = array_values($finalTokens);
         $numTokens   = count($finalTokens);
 
-        // Blank out the content of the end tag.
         $finalTokens[($numTokens - 1)]['content'] = '';
 
         if ($eolAdded === true) {
-            // Strip off the extra EOL char we added for tokenizing.
             $finalTokens[($numTokens - 2)]['content'] = substr(
                 $finalTokens[($numTokens - 2)]['content'],
                 0,

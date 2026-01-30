@@ -84,12 +84,10 @@ final class NoSilencedErrorsSniff extends Sniff {
 	 * @var array<string, true> Key is function name, value irrelevant.
 	 */
 	protected $allowedFunctionsList = array(
-		// Directory extension.
 		'chdir'                        => true,
 		'opendir'                      => true,
 		'scandir'                      => true,
 
-		// File extension.
 		'file_exists'                  => true,
 		'file_get_contents'            => true,
 		'file'                         => true,
@@ -120,26 +118,21 @@ final class NoSilencedErrorsSniff extends Sniff {
 		'stat'                         => true,
 		'unlink'                       => true,
 
-		// FTP extension.
 		'ftp_chdir'                    => true,
 		'ftp_login'                    => true,
 		'ftp_rename'                   => true,
 
-		// Stream extension.
 		'stream_select'                => true,
 		'stream_set_chunk_size'        => true,
 
-		// Zlib extension.
 		'deflate_add'                  => true,
 		'deflate_init'                 => true,
 		'inflate_add'                  => true,
 		'inflate_init'                 => true,
 		'readgzfile'                   => true,
 
-		// LibXML extension.
 		'libxml_disable_entity_loader' => true, // PHP 8.0 deprecation warning, but function call still needed in select cases.
 
-		// Miscellaneous other functions.
 		'imagecreatefromstring'        => true,
 		'imagecreatefromwebp'          => true,
 		'parse_url'                    => true, // Pre-PHP 5.3.3 an E_WARNING was thrown when URL parsing failed.
@@ -183,7 +176,6 @@ final class NoSilencedErrorsSniff extends Sniff {
 	 * @param int $stackPtr The position of the current token in the stack.
 	 */
 	public function process_token( $stackPtr ) {
-		// Handle the user-defined custom function list.
 		$this->customAllowedFunctionsList = RulesetPropertyHelper::merge_custom_array( $this->customAllowedFunctionsList, array(), false );
 		$this->customAllowedFunctionsList = array_map( 'strtolower', $this->customAllowedFunctionsList );
 
@@ -215,7 +207,6 @@ final class NoSilencedErrorsSniff extends Sniff {
 			$context_length = 2;
 		}
 
-		// Prepare the "Found" string to display.
 		$end_of_statement = BCFile::findEndOfStatement( $this->phpcsFile, $stackPtr, \T_COMMA );
 		if ( ( $end_of_statement - $stackPtr ) < $context_length ) {
 			$context_length = ( $end_of_statement - $stackPtr );

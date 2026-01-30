@@ -42,7 +42,6 @@ class ConstantVisibilitySniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Make sure this is a class constant.
         if ($phpcsFile->hasCondition($stackPtr, Tokens::$ooScopeTokens) === false) {
             return;
         }

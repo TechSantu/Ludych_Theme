@@ -130,7 +130,6 @@ final class PreparedSQLSniff extends Sniff {
 	 * @return array
 	 */
 	public function register() {
-		// Enrich the array of tokens which can be safely ignored.
 		$this->ignored_tokens += Tokens::$bracketTokens;
 		$this->ignored_tokens += Tokens::$heredocTokens;
 		$this->ignored_tokens += Tokens::$castTokens;
@@ -139,7 +138,6 @@ final class PreparedSQLSniff extends Sniff {
 		$this->ignored_tokens += Collections::objectOperators();
 		$this->ignored_tokens += Tokens::$emptyTokens;
 
-		// The contents of heredoc tokens needs to be examined.
 		unset( $this->ignored_tokens[ \T_HEREDOC ] );
 
 		return array(
@@ -214,14 +212,12 @@ final class PreparedSQLSniff extends Sniff {
 					|| isset( $this->SQLAutoEscapedFunctions[ $content_lowercase ] )
 				) {
 
-					// Find the opening parenthesis.
 					$opening_paren = $this->phpcsFile->findNext( Tokens::$emptyTokens, ( $this->i + 1 ), null, true );
 
 					if ( false !== $opening_paren
 						&& \T_OPEN_PARENTHESIS === $this->tokens[ $opening_paren ]['code']
 						&& isset( $this->tokens[ $opening_paren ]['parenthesis_closer'] )
 					) {
-						// Skip past to the end of the function call.
 						$this->i = $this->tokens[ $opening_paren ]['parenthesis_closer'];
 						continue;
 					}

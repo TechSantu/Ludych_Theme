@@ -73,7 +73,6 @@ final class DiscouragedConstantsSniff extends AbstractFunctionParameterSniff {
 	 */
 	public function process_token( $stackPtr ) {
 		if ( isset( $this->target_functions[ strtolower( $this->tokens[ $stackPtr ]['content'] ) ] ) ) {
-			// Disallow excluding function groups for this sniff.
 			$this->exclude = array();
 
 			return parent::process_token( $stackPtr );
@@ -130,7 +129,6 @@ final class DiscouragedConstantsSniff extends AbstractFunctionParameterSniff {
 	public function process_parameters( $stackPtr, $group_name, $matched_content, $parameters ) {
 		$target_param = $this->target_functions[ $matched_content ];
 
-		// Was the target parameter passed ?
 		$found_param = PassedParameters::getParameterFromStack( $parameters, $target_param['position'], $target_param['name'] );
 		if ( false === $found_param ) {
 			return;

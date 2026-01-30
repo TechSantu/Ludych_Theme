@@ -88,7 +88,6 @@ final class GlobalVariablesOverrideSniff extends Sniff {
 		);
 		$targets += Collections::listOpenTokensBC();
 
-		// Only used to skip over test classes.
 		$targets += Tokens::$ooScopeTokens;
 
 		return $targets;
@@ -109,18 +108,15 @@ final class GlobalVariablesOverrideSniff extends Sniff {
 
 		$token = $this->tokens[ $stackPtr ];
 
-		// Ignore variable overrides in test classes.
 		if ( isset( Tokens::$ooScopeTokens[ $token['code'] ] ) ) {
 
 			if ( true === $this->is_test_class( $this->phpcsFile, $stackPtr )
 				&& $token['scope_condition'] === $stackPtr
 				&& isset( $token['scope_closer'] )
 			) {
-				// Skip forward to end of test class.
 				return $token['scope_closer'];
 			}
 
-			// Otherwise ignore the tokens as they were only registered to enable skipping over test classes.
 			return;
 		}
 
@@ -174,7 +170,6 @@ final class GlobalVariablesOverrideSniff extends Sniff {
 	protected function process_list_assignment( $stackPtr ) {
 		$list_open_close = Lists::getOpenClose( $this->phpcsFile, $stackPtr );
 		if ( false === $list_open_close ) {
-			// Live coding or short array, not short list.
 			return;
 		}
 
@@ -183,7 +178,6 @@ final class GlobalVariablesOverrideSniff extends Sniff {
 			$this->process_variable_assignment( $ptr, true );
 		}
 
-		// No need to re-examine these variables.
 		return $list_open_close['closer'];
 	}
 
@@ -204,7 +198,6 @@ final class GlobalVariablesOverrideSniff extends Sniff {
 		$var_name = substr( $token['content'], 1 ); // Strip the dollar sign.
 		$data     = array();
 
-		// Determine the variable name for `$GLOBALS['array_key']`.
 		if ( 'GLOBALS' === $var_name ) {
 			$bracketPtr = $this->phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true );
 
@@ -215,7 +208,6 @@ final class GlobalVariablesOverrideSniff extends Sniff {
 				return;
 			}
 
-			// Retrieve the array key and avoid getting tripped up by some simple obfuscation.
 			$var_name = '';
 			$start    = ( $bracketPtr + 1 );
 			for ( $ptr = $start; $ptr < $this->tokens[ $bracketPtr ]['bracket_closer']; $ptr++ ) {
@@ -236,11 +228,9 @@ final class GlobalVariablesOverrideSniff extends Sniff {
 			}
 
 			if ( '' === $var_name ) {
-				// Shouldn't happen, but just in case.
 				return;
 			}
 
-			// Set up the data for the error message.
 			$data[] = '$GLOBALS[\'' . $var_name . '\']';
 		}
 
@@ -288,7 +278,6 @@ final class GlobalVariablesOverrideSniff extends Sniff {
 			return;
 		}
 
-		// Still here ? In that case, the WP global variable is being tampered with.
 		$this->add_error( $stackPtr, $data );
 	}
 
@@ -335,21 +324,17 @@ final class GlobalVariablesOverrideSniff extends Sniff {
 		if ( true === $in_function_scope ) {
 			$functionPtr = Conditions::getLastCondition( $this->phpcsFile, $stackPtr, Collections::functionDeclarationTokens() );
 			if ( isset( $this->tokens[ $functionPtr ]['scope_closer'] ) === false ) {
-				// Live coding or parse error.
 				return;
 			}
 			$end = $this->tokens[ $functionPtr ]['scope_closer'];
 		} else {
-			// Global statement in the global namespace in a file which is being treated as scoped.
 			$end = $this->phpcsFile->numTokens;
 		}
 
 		for ( $ptr = $start; $ptr < $end; $ptr++ ) {
 
-			// Skip over nested functions, classes and the likes.
 			if ( isset( Collections::closedScopes()[ $this->tokens[ $ptr ]['code'] ] ) ) {
 				if ( ! isset( $this->tokens[ $ptr ]['scope_closer'] ) ) {
-					// Live coding or parse error.
 					break;
 				}
 
@@ -357,12 +342,10 @@ final class GlobalVariablesOverrideSniff extends Sniff {
 				continue;
 			}
 
-			// Make sure to recognize assignments to variables in a list construct.
 			if ( isset( Collections::listOpenTokensBC()[ $this->tokens[ $ptr ]['code'] ] ) ) {
 				$list_open_close = Lists::getOpenClose( $this->phpcsFile, $ptr );
 
 				if ( false === $list_open_close ) {
-					// Short array, not short list.
 					continue;
 				}
 
@@ -378,7 +361,6 @@ final class GlobalVariablesOverrideSniff extends Sniff {
 					}
 				}
 
-				// No need to re-examine these variables.
 				$ptr = $list_open_close['closer'];
 				continue;
 			}
@@ -388,11 +370,9 @@ final class GlobalVariablesOverrideSniff extends Sniff {
 			}
 
 			if ( isset( $search[ $this->tokens[ $ptr ]['content'] ] ) === false ) {
-				// Not one of the variables we're interested in.
 				continue;
 			}
 
-			// Don't throw false positives for static class properties.
 			if ( ContextHelper::has_object_operator_before( $this->phpcsFile, $ptr ) === true ) {
 				continue;
 			}
@@ -402,7 +382,6 @@ final class GlobalVariablesOverrideSniff extends Sniff {
 				continue;
 			}
 
-			// Check if this is a variable assignment within a `foreach()` declaration.
 			if ( Context::inForeachCondition( $this->phpcsFile, $ptr ) === 'afterAs' ) {
 				$this->add_error( $ptr );
 			}

@@ -133,7 +133,6 @@ abstract class AbstractArrayDeclarationSniff implements Sniff
      */
     final public function __construct()
     {
-        // Enhance the list of accepted tokens.
         $this->acceptedTokens += Tokens::$assignmentTokens;
         $this->acceptedTokens += Tokens::$comparisonTokens;
         $this->acceptedTokens += Tokens::$arithmeticTokens;
@@ -180,13 +179,11 @@ abstract class AbstractArrayDeclarationSniff implements Sniff
         try {
             $this->arrayItems = PassedParameters::getParameters($phpcsFile, $stackPtr);
         } catch (UnexpectedTokenType $e) {
-            // Parse error, short list, real square open bracket or incorrectly tokenized short array token.
             return;
         }
 
         $openClose = Arrays::getOpenClose($phpcsFile, $stackPtr, true);
         if ($openClose === false) {
-            // Parse error or live coding.
             return;
         }
 
@@ -203,7 +200,6 @@ abstract class AbstractArrayDeclarationSniff implements Sniff
 
         $this->processArray($phpcsFile);
 
-        // Reset select properties between calls to this sniff to lower memory usage.
         $this->tokens     = [];
         $this->arrayItems = [];
     }
@@ -247,7 +243,6 @@ abstract class AbstractArrayDeclarationSniff implements Sniff
             try {
                 $arrowPtr = Arrays::getDoubleArrowPtr($phpcsFile, $arrayItem['start'], $arrayItem['end']);
             } catch (LogicException $e) {
-                // Parse error: empty array item. Ignore.
                 continue;
             }
 
@@ -478,7 +473,6 @@ abstract class AbstractArrayDeclarationSniff implements Sniff
                 continue;
             }
 
-            // Handle FQN true/false/null for PHPCS 3.x.
             if ($this->tokens[$i]['code'] === \T_NS_SEPARATOR) {
                 $nextNonEmpty   = $phpcsFile->findNext(Tokens::$emptyTokens, ($i + 1), null, true);
                 $nextNonEmptyLC = \strtolower($this->tokens[$nextNonEmpty]['content']);
@@ -496,11 +490,9 @@ abstract class AbstractArrayDeclarationSniff implements Sniff
             if (isset($this->acceptedTokens[$this->tokens[$i]['code']]) === false
                 || \T_UNSET_CAST === $this->tokens[$i]['code']
             ) {
-                // This is not a key we can evaluate. Might be a variable or constant.
                 return;
             }
 
-            // Take PHP 7.4 numeric literal separators into account.
             if ($this->tokens[$i]['code'] === \T_LNUMBER || $this->tokens[$i]['code'] === \T_DNUMBER) {
                 $number   = Numbers::getCompleteNumber($phpcsFile, $i);
                 $content .= $number['content'];
@@ -542,11 +534,9 @@ abstract class AbstractArrayDeclarationSniff implements Sniff
                 }
             }
 
-            // Account for heredoc with vars.
             if ($this->tokens[$i]['code'] === \T_START_HEREDOC) {
                 $text = TextStrings::getCompleteTextString($phpcsFile, $i);
 
-                // Check if there's a variable in the heredoc.
                 if ($text !== TextStrings::stripEmbeds($text)) {
                     return;
                 }
@@ -562,7 +552,6 @@ abstract class AbstractArrayDeclarationSniff implements Sniff
             $content .= $this->tokens[$i]['content'];
         }
 
-        // The PHP_EOL is to prevent getting parse errors when the key is a heredoc/nowdoc.
         $key = eval('return ' . $content . ';' . \PHP_EOL);
 
         /*
@@ -572,7 +561,6 @@ abstract class AbstractArrayDeclarationSniff implements Sniff
 
         switch (\gettype($key)) {
             case 'NULL':
-                // An array key of `null` will become an empty string.
                 return '';
 
             case 'boolean':

@@ -55,17 +55,13 @@ class FunctionClosingBraceSpaceSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
 
         if (isset($tokens[$stackPtr]['scope_closer']) === false) {
-            // Probably an interface method.
             return;
         }
 
         $closeBrace  = $tokens[$stackPtr]['scope_closer'];
         $prevContent = $phpcsFile->findPrevious(T_WHITESPACE, ($closeBrace - 1), null, true);
 
-        // Special case for empty JS functions.
         if ($phpcsFile->tokenizerType === 'JS' && $prevContent === $tokens[$stackPtr]['scope_opener']) {
-            // In this case, the opening and closing brace must be
-            // right next to each other.
             if ($tokens[$stackPtr]['scope_closer'] !== ($tokens[$stackPtr]['scope_opener'] + 1)) {
                 $error = 'The opening and closing braces of empty functions must be directly next to each other; e.g., function () {}';
                 $fix   = $phpcsFile->addFixableError($error, $closeBrace, 'SpacingBetween');
@@ -109,7 +105,6 @@ class FunctionClosingBraceSpaceSniff implements Sniff
                     $phpcsFile->fixer->beginChangeset();
                     $changeMade = false;
                     for ($i = ($prevContent + 1); $i < $closeBrace; $i++) {
-                        // Try and maintain indentation.
                         if ($tokens[$i]['line'] === ($braceLine - 1)) {
                             break;
                         }
@@ -118,8 +113,6 @@ class FunctionClosingBraceSpaceSniff implements Sniff
                         $changeMade = true;
                     }
 
-                    // Special case for when the last content contains the newline
-                    // token as well, like with a comment.
                     if ($changeMade === false) {
                         $phpcsFile->fixer->replaceToken(($prevContent + 1), '');
                     }
@@ -147,7 +140,6 @@ class FunctionClosingBraceSpaceSniff implements Sniff
                         $phpcsFile->fixer->replaceToken($i, $phpcsFile->eolChar);
                         $phpcsFile->fixer->endChangeset();
                     } else {
-                        // Try and maintain indentation.
                         if ($tokens[($closeBrace - 1)]['code'] === T_WHITESPACE) {
                             $phpcsFile->fixer->addNewlineBefore($closeBrace - 1);
                         } else {

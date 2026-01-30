@@ -115,7 +115,6 @@ class ForbiddenStylesSniff implements Sniff, DeprecatedSniff
                 return;
             }
 
-            // Remove the pattern delimiters and modifier.
             $pattern = substr($pattern, 1, -2);
         } else {
             if (in_array($style, $this->forbiddenStyleNames, true) === false) {

@@ -61,7 +61,6 @@ final class OneStatementInShortEchoTagSniff implements Sniff
                 break;
             }
 
-            // Skip over anything within parenthesis.
             if ($tokens[$endOfStatement]['code'] === \T_OPEN_PARENTHESIS
                 && isset($tokens[$endOfStatement]['parenthesis_closer'])
             ) {
@@ -75,7 +74,6 @@ final class OneStatementInShortEchoTagSniff implements Sniff
             return;
         }
 
-        // Semicolon, so check for any code between it and the close tag.
         $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($endOfStatement + 1), null, true);
         if ($nextNonEmpty === false
             || $tokens[$nextNonEmpty]['code'] === \T_CLOSE_TAG

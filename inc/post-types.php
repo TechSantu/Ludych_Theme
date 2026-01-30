@@ -8,7 +8,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 function ludych_register_custom_post_types() {
-	// Technology Post Type
 	register_post_type( 'technology', array(
 		'labels'       => array(
 			'name'          => __( 'Technologies', 'ludych-theme' ),
@@ -25,7 +24,6 @@ function ludych_register_custom_post_types() {
 		'taxonomies'   => array( 'technology_cat' ),
 	) );
 
-	// Technology Taxonomy (Hierarchical)
 	register_taxonomy( 'technology_cat', 'technology', array(
 		'labels'            => array(
 			'name'          => __( 'Technology Categories', 'ludych-theme' ),
@@ -37,6 +35,21 @@ function ludych_register_custom_post_types() {
 		'show_admin_column' => true,
 		'query_var'         => true,
 		'rewrite'           => array( 'slug' => 'tech-category' ),
+	) );
+
+	register_post_type( 'testimonial', array(
+		'labels'       => array(
+			'name'          => __( 'Testimonials', 'ludych-theme' ),
+			'singular_name' => __( 'Testimonial', 'ludych-theme' ),
+			'add_new'       => __( 'Add New Testimonial', 'ludych-theme' ),
+			'add_new_item'  => __( 'Add New Testimonial', 'ludych-theme' ),
+			'edit_item'     => __( 'Edit Testimonial', 'ludych-theme' ),
+		),
+		'public'       => true,
+		'has_archive'  => false,
+		'supports'     => array( 'title', 'thumbnail', 'editor' ),
+		'show_in_rest' => true,
+		'menu_icon'    => 'dashicons-testimonial',
 	) );
 }
 add_action( 'init', 'ludych_register_custom_post_types' );

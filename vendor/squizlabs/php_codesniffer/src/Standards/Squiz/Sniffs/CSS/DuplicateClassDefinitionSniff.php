@@ -52,16 +52,12 @@ class DuplicateClassDefinitionSniff implements Sniff, DeprecatedSniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Find the content of each class definition name.
         $classNames = [];
         $next       = $phpcsFile->findNext(T_OPEN_CURLY_BRACKET, ($stackPtr + 1));
         if ($next === false) {
-            // No class definitions in the file.
             return;
         }
 
-        // Save the class names in a "scope",
-        // to prevent false positives with @media blocks.
         $scope = 'main';
 
         $find = [
@@ -73,7 +69,6 @@ class DuplicateClassDefinitionSniff implements Sniff, DeprecatedSniff
         while ($next !== false) {
             $prev = $phpcsFile->findPrevious($find, ($next - 1));
 
-            // Check if an inner block was closed.
             $beforePrev = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($prev - 1), null, true);
             if ($beforePrev !== false
                 && $tokens[$beforePrev]['code'] === T_CLOSE_CURLY_BRACKET
@@ -81,8 +76,6 @@ class DuplicateClassDefinitionSniff implements Sniff, DeprecatedSniff
                 $scope = 'main';
             }
 
-            // Create a sorted name for the class so we can compare classes
-            // even when the individual names are all over the place.
             $name = '';
             for ($i = ($prev + 1); $i < $next; $i++) {
                 $name .= $tokens[$i]['content'];
@@ -99,7 +92,6 @@ class DuplicateClassDefinitionSniff implements Sniff, DeprecatedSniff
             $name = implode(',', $names);
 
             if ($name[0] === '@') {
-                // Media block has its own "scope".
                 $scope = $name;
             } else if (isset($classNames[$scope][$name]) === true) {
                 $first = $classNames[$scope][$name];

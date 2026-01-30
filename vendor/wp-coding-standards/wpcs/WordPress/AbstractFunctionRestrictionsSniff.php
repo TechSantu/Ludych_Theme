@@ -118,7 +118,6 @@ abstract class AbstractFunctionRestrictionsSniff extends Sniff {
 	 * @return array
 	 */
 	public function register() {
-		// Prepare the function group regular expressions only once.
 		if ( false === $this->setup_groups( 'functions' ) ) {
 			return array();
 		}
@@ -137,14 +136,12 @@ abstract class AbstractFunctionRestrictionsSniff extends Sniff {
 	 * @return bool True if the groups were setup. False if not.
 	 */
 	protected function setup_groups( $key ) {
-		// Prepare the function group regular expressions only once.
 		$this->groups = $this->getGroups();
 
 		if ( empty( $this->groups ) && empty( self::$unittest_groups ) ) {
 			return false;
 		}
 
-		// Allow for adding extra unit tests.
 		if ( ! empty( self::$unittest_groups ) ) {
 			$this->groups = array_merge( $this->groups, self::$unittest_groups );
 		}
@@ -156,8 +153,6 @@ abstract class AbstractFunctionRestrictionsSniff extends Sniff {
 				continue;
 			}
 
-			// Lowercase the items and potential allows as the comparisons should be done case-insensitively.
-			// Note: this disregards non-ascii names, but as we don't have any of those, that is okay for now.
 			$items                              = array_map( 'strtolower', $group[ $key ] );
 			$this->groups[ $groupName ][ $key ] = $items;
 
@@ -176,7 +171,6 @@ abstract class AbstractFunctionRestrictionsSniff extends Sniff {
 			return false;
 		}
 
-		// Create one "super-regex" to allow for initial filtering.
 		$all_items                = \call_user_func_array( 'array_merge', $all_items );
 		$all_items                = implode( '|', array_unique( $all_items ) );
 		$this->prelim_check_regex = sprintf( $this->regex_pattern, $all_items );
@@ -196,14 +190,9 @@ abstract class AbstractFunctionRestrictionsSniff extends Sniff {
 
 		$this->excluded_groups = RulesetPropertyHelper::merge_custom_array( $this->exclude );
 		if ( array_diff_key( $this->groups, $this->excluded_groups ) === array() ) {
-			// All groups have been excluded.
-			// Don't remove the listener as the exclude property can be changed inline.
 			return;
 		}
 
-		// Preliminary check. If the content of the T_STRING is not one of the functions we're
-		// looking for, we can bow out before doing the heavy lifting of checking whether
-		// this is a function call.
 		if ( preg_match( $this->prelim_check_regex, $this->tokens[ $stackPtr ]['content'] ) !== 1 ) {
 			return;
 		}
@@ -223,7 +212,6 @@ abstract class AbstractFunctionRestrictionsSniff extends Sniff {
 	 * @return bool
 	 */
 	public function is_targetted_token( $stackPtr ) {
-		// Exclude function definitions, class methods, and namespaced calls.
 		if ( ContextHelper::has_object_operator_before( $this->phpcsFile, $stackPtr ) === true ) {
 			return false;
 		}
@@ -233,7 +221,6 @@ abstract class AbstractFunctionRestrictionsSniff extends Sniff {
 		}
 
 		if ( Context::inAttribute( $this->phpcsFile, $stackPtr ) ) {
-			// Class instantiation or constant in attribute, not function call.
 			return false;
 		}
 
@@ -242,7 +229,6 @@ abstract class AbstractFunctionRestrictionsSniff extends Sniff {
 
 		$prev = $this->phpcsFile->findPrevious( $search, ( $stackPtr - 1 ), null, true );
 
-		// Skip sniffing on function, OO definitions or for function aliases in use statements.
 		$invalid_tokens  = Tokens::$ooScopeTokens;
 		$invalid_tokens += array(
 			\T_FUNCTION => \T_FUNCTION,
@@ -254,20 +240,17 @@ abstract class AbstractFunctionRestrictionsSniff extends Sniff {
 			return false;
 		}
 
-		// Check if this could even be a function call.
 		$next = $this->phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true );
 		if ( false === $next ) {
 			return false;
 		}
 
-		// Check for `use function ... (as|;)`.
 		if ( ( \T_STRING === $this->tokens[ $prev ]['code'] && 'function' === $this->tokens[ $prev ]['content'] )
 			&& ( \T_AS === $this->tokens[ $next ]['code'] || \T_SEMICOLON === $this->tokens[ $next ]['code'] )
 		) {
 			return true;
 		}
 
-		// If it's not a `use` statement, there should be parenthesis.
 		if ( \T_OPEN_PARENTHESIS !== $this->tokens[ $next ]['code'] ) {
 			return false;
 		}

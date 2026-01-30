@@ -33,7 +33,6 @@ class NotEnoughLoopsSniff implements Sniff
         $error = 'There should be 60 spaces after an ECHO keyword';
         $fix   = $phpcsFile->addFixableError($error, ($stackPtr + 1), 'ShortSpace');
         if ($fix === true) {
-            // The fixer deliberately only adds one space in each loop to ensure it runs out of loops before the file complies.
             $phpcsFile->fixer->addContent($stackPtr, ' ');
         }
     }

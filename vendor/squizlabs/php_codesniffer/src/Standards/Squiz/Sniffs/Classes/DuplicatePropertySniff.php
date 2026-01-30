@@ -60,7 +60,6 @@ class DuplicatePropertySniff implements Sniff, DeprecatedSniff
         $next = $phpcsFile->findNext($wantedTokens, ($stackPtr + 1), $tokens[$stackPtr]['bracket_closer']);
         while ($next !== false && $next < $tokens[$stackPtr]['bracket_closer']) {
             if ($tokens[$next]['code'] === T_OBJECT) {
-                // Skip nested objects.
                 $next = $tokens[$next]['bracket_closer'];
             } else {
                 $propName = $tokens[$next]['content'];

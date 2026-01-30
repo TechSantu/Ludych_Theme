@@ -72,7 +72,6 @@ class LowerCaseConstantSniff implements Sniff
     {
         $targets = $this->targets;
 
-        // Register scope modifiers to filter out property type declarations.
         $targets  += Tokens::$scopeModifiers;
         $targets[] = T_VAR;
         $targets[] = T_STATIC;
@@ -80,12 +79,10 @@ class LowerCaseConstantSniff implements Sniff
         $targets[] = T_FINAL;
         $targets[] = T_ABSTRACT;
 
-        // Register function keywords to filter out param/return type declarations.
         $targets[] = T_FUNCTION;
         $targets[] = T_CLOSURE;
         $targets[] = T_FN;
 
-        // Register constant keyword to filter out type declarations.
         $targets[] = T_CONST;
 
         return $targets;
@@ -108,16 +105,12 @@ class LowerCaseConstantSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Skip over potential type declarations for constants.
         if ($tokens[$stackPtr]['code'] === T_CONST) {
-            // Constant must always have a value assigned to it, so we can just look for the assignment
-            // operator. Anything between the const keyword and the assignment can be safely ignored.
             $skipTo = $phpcsFile->findNext(T_EQUAL, ($stackPtr + 1));
             if ($skipTo !== false) {
                 return $skipTo;
             }
 
-            // If we're at the end of the file, just return.
             return;
         }
 
@@ -148,11 +141,9 @@ class LowerCaseConstantSniff implements Sniff
                 return $skipTo;
             }
 
-            // If we're at the end of the file, just return.
             return;
         }
 
-        // Handle function declarations separately as they may contain the keywords in type declarations.
         if ($tokens[$stackPtr]['code'] === T_FUNCTION
             || $tokens[$stackPtr]['code'] === T_CLOSURE
             || $tokens[$stackPtr]['code'] === T_FN
@@ -161,7 +152,6 @@ class LowerCaseConstantSniff implements Sniff
                 return;
             }
 
-            // Make sure to skip over return type declarations.
             $end = $tokens[$stackPtr]['parenthesis_closer'];
             if (isset($tokens[$stackPtr]['scope_opener']) === true) {
                 $end = $tokens[$stackPtr]['scope_opener'];
@@ -172,14 +162,11 @@ class LowerCaseConstantSniff implements Sniff
                 }
             }
 
-            // Do a quick check if any of the targets exist in the declaration.
             $found = $phpcsFile->findNext($this->targets, $tokens[$stackPtr]['parenthesis_opener'], $end);
             if ($found === false) {
-                // Skip forward, no need to examine these tokens again.
                 return $end;
             }
 
-            // Handle the whole function declaration in one go.
             $params = $phpcsFile->getMethodParameters($stackPtr);
             foreach ($params as $param) {
                 if (isset($param['default_token']) === false) {
@@ -198,11 +185,9 @@ class LowerCaseConstantSniff implements Sniff
                 }
             }
 
-            // Skip over return type declarations.
             return $end;
         }//end if
 
-        // Handle everything else.
         $this->processConstant($phpcsFile, $stackPtr);
 
     }//end process()

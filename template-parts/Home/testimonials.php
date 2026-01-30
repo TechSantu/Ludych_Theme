@@ -4,20 +4,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 global $post_id;
 
-$about_text        = get_field( 'about_text', $post_id );
-$about_title       = get_field( 'about_title', $post_id );
-$about_description = get_field( 'about_description', $post_id );
-$about_image       = get_field( 'about_image', $post_id );
-$author_name       = get_field( 'author_name', $post_id );
-$author_about      = get_field( 'author_about', $post_id );
+$testimonial_subtitle = get_field( 'testimonial_subtitle', $post_id );
+$testimonial_title    = get_field( 'testimonial_title', $post_id );
+$testimonial_heading  = get_field( 'testimonial_heading', $post_id );
 ?>
 
-
-	<!-- about our services start -->
 	<section class="client-testimonial">
 		<div class="custom-container">
 			<div class="global-header middle-align">
-				<h2>Testimonials</h2>
+				<h2><?php echo esc_html( $testimonial_subtitle ); ?></h2>
 				<div class="min-title">
 					<div class="icon-box">
 						<svg xmlns="http://www.w3.org/2000/svg" width="39" height="39" viewBox="0 0 39 39" fill="none">
@@ -33,63 +28,46 @@ $author_about      = get_field( 'author_about', $post_id );
 							</defs>
 						</svg>
 					</div>
-					<h6>Testimonials</h6>
+					<h6><?php echo esc_html( $testimonial_title ); ?></h6>
 				</div>
-				<h5>Testimonials: <span>Trusted by Our Clients</span></h5>
+				<h5><?php echo ( $testimonial_heading ); ?></h5>
 			</div>
+			<?php
+			$testimonial_args = array(
+				'post_type'      => 'testimonial',
+				'posts_per_page' => -1,
+				'post_status'    => 'publish',
+			);
+			$testimonial_query = new WP_Query( $testimonial_args );
+
+			if ( $testimonial_query->have_posts() ) :
+			?>
 			<div id="clientTestimonial" class="owl-carousel owl-theme">
+				<?php
+				while ( $testimonial_query->have_posts() ) :
+					$testimonial_query->the_post();
+					$designation = get_field( 'testimonial_designation' );
+					?>
 				<div class="client-Item">
 					<div class="client-info">
 						<div class="info-head">
-							<h5>Award-Winning Entrepreneur & Global Mentor, San Francisco, CA </h5>
+							<h5><?php echo esc_html( $designation ); ?></h5>
 						</div>
-						<p>Partnering with Ludych has been a complete game-changer for my professional business journey.
-							From strategy to flawless execution, every step reflected their strong commitment to
-							excellence and client success. As an award-winning entrepreneur, author, mentor, and
-							international speaker, I have collaborated with many skilled professionals, but Ludych truly
-							stands out for their professionalism, transparency, and results-driven approach.</p>
-						<h4>Sarah Okoye</h4>
-						<h6>Sarah Okoye</h6>
+						<p><?php the_content(); ?></p>
+						<h4><?php the_title(); ?></h4>
+						<h6><?php the_title(); ?></h6>
 					</div>
 					<div class="client-profile">
-						<img src="<?php echo get_template_directory_uri(); ?>/assets/images/testimonial.png" alt="">
+						<?php if ( has_post_thumbnail() ) : ?>
+							<?php the_post_thumbnail( 'full' ); ?>
+						<?php endif; ?>
 					</div>
 				</div>
-				<div class="client-Item">
-					<div class="client-info">
-						<div class="info-head">
-							<h5>Award-Winning Entrepreneur & Global Mentor, San Francisco, CA </h5>
-						</div>
-						<p>Partnering with Ludych has been a complete game-changer for my professional business journey.
-							From strategy to flawless execution, every step reflected their strong commitment to
-							excellence and client success. As an award-winning entrepreneur, author, mentor, and
-							international speaker, I have collaborated with many skilled professionals, but Ludych truly
-							stands out for their professionalism, transparency, and results-driven approach.</p>
-						<h4>Sarah Okoye</h4>
-						<h6>Sarah Okoye</h6>
-					</div>
-					<div class="client-profile">
-						<img src="<?php echo get_template_directory_uri(); ?>/assets/images/testimonial.png" alt="">
-					</div>
-				</div>
-				<div class="client-Item">
-					<div class="client-info">
-						<div class="info-head">
-							<h5>Award-Winning Entrepreneur & Global Mentor, San Francisco, CA </h5>
-						</div>
-						<p>Partnering with Ludych has been a complete game-changer for my professional business journey.
-							From strategy to flawless execution, every step reflected their strong commitment to
-							excellence and client success. As an award-winning entrepreneur, author, mentor, and
-							international speaker, I have collaborated with many skilled professionals, but Ludych truly
-							stands out for their professionalism, transparency, and results-driven approach.</p>
-						<h4>Sarah Okoye</h4>
-						<h6>Sarah Okoye</h6>
-					</div>
-					<div class="client-profile">
-						<img src="<?php echo get_template_directory_uri(); ?>/assets/images/testimonial.png" alt="">
-					</div>
-				</div>
+				<?php
+				endwhile;
+				wp_reset_postdata();
+				?>
 			</div>
+			<?php endif; ?>
 		</div>
 	</section>
-	<!-- about our services end -->

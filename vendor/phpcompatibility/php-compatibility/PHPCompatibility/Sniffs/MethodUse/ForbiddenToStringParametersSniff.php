@@ -77,23 +77,19 @@ class ForbiddenToStringParametersSniff extends Sniff
         }
 
         if (strtolower($tokens[$nextNonEmpty]['content']) !== '__tostring') {
-            // Not a call to the __toString() method.
             return;
         }
 
         $openParens = $phpcsFile->findNext(Tokens::$emptyTokens, ($nextNonEmpty + 1), null, true);
         if ($openParens === false || $tokens[$openParens]['code'] !== \T_OPEN_PARENTHESIS) {
-            // Not a method call.
             return;
         }
 
         $closeParens = $phpcsFile->findNext(Tokens::$emptyTokens, ($openParens + 1), null, true);
         if ($closeParens === false || $tokens[$closeParens]['code'] === \T_CLOSE_PARENTHESIS) {
-            // Not a method call.
             return;
         }
 
-        // If we're still here, then this is a call to the __toString() magic method passing parameters.
         $phpcsFile->addError(
             'The __toString() magic method will no longer accept passed arguments since PHP 5.3',
             $stackPtr,

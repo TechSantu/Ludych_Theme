@@ -87,8 +87,6 @@ abstract class VersionControl implements Report
             unset($blames[($line - 1)]);
         }//end foreach
 
-        // Now go through and give the authors some credit for
-        // all the lines that do not have errors.
         foreach ($blames as $line) {
             $author = $this->getAuthor($line);
             if ($author === false) {
@@ -96,7 +94,6 @@ abstract class VersionControl implements Report
             }
 
             if (isset($authorCache[$author]) === false) {
-                // This author doesn't have any errors.
                 if (PHP_CODESNIFFER_VERBOSITY === 0) {
                     continue;
                 }
@@ -161,7 +158,6 @@ abstract class VersionControl implements Report
     ) {
         $errorsShown = ($totalErrors + $totalWarnings);
         if ($errorsShown === 0) {
-            // Nothing to show.
             return;
         }
 
@@ -216,7 +212,6 @@ abstract class VersionControl implements Report
             }//end switch
         }//end foreach
 
-        // Make sure the report width isn't too big.
         $maxLength = 0;
         foreach ($authorCache as $author => $count) {
             $maxLength = max($maxLength, strlen($author));

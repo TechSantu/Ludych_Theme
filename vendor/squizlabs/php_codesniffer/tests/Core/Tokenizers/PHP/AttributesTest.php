@@ -34,7 +34,6 @@ final class AttributesTest extends AbstractTokenizerTestCase
     {
         $tokens = $this->phpcsFile->getTokens();
 
-        // Calculate the number of tokens between opener and closer (excluding the opener, including the closer).
         $length = (count($tokenCodes) + 1);
 
         $attribute = $this->getTargetToken($testMarker, T_ATTRIBUTE);
@@ -358,7 +357,6 @@ final class AttributesTest extends AbstractTokenizerTestCase
     {
         $tokens = $this->phpcsFile->getTokens();
 
-        // Calculate the number of tokens between opener and closer (excluding the opener, including the closer).
         $length = (count($tokenCodes) + 1);
 
         $function  = $this->getTargetToken($testMarker, T_FUNCTION);
@@ -470,7 +468,6 @@ final class AttributesTest extends AbstractTokenizerTestCase
     {
         $tokens = $this->phpcsFile->getTokens();
 
-        // Calculate the number of tokens between opener and closer (excluding the opener, including the closer).
         $length = count($expectedTokensAttribute);
 
         $attribute = $this->getTargetToken($testMarker, T_ATTRIBUTE);
@@ -643,7 +640,6 @@ final class AttributesTest extends AbstractTokenizerTestCase
             T_CLOSE_PARENTHESIS,
         ];
 
-        // Calculate the number of tokens between opener and closer (excluding the opener, including the closer).
         $outerAttributeLength = (count($tokenCodes) + 1);
 
         $attribute = $this->getTargetToken('/* testNestedAttributes */', T_ATTRIBUTE);
@@ -669,7 +665,6 @@ final class AttributesTest extends AbstractTokenizerTestCase
             }
         };
 
-        // Length here is 8 (nested attribute offset) + 5 (real length).
         $innerAttributeLength = (8 + 5);
 
         $test(array_slice($tokens, ($attribute + 1), 7), $outerAttributeLength, [$attribute => $attribute + $outerAttributeLength]);

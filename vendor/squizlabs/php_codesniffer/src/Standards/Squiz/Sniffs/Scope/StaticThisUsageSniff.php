@@ -41,7 +41,6 @@ class StaticThisUsageSniff extends AbstractScopeSniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Determine if this is a function which needs to be examined.
         $conditions = $tokens[$stackPtr]['conditions'];
         end($conditions);
         $deepestScope = key($conditions);
@@ -49,14 +48,12 @@ class StaticThisUsageSniff extends AbstractScopeSniff
             return;
         }
 
-        // Ignore abstract functions.
         if (isset($tokens[$stackPtr]['scope_closer']) === false) {
             return;
         }
 
         $next = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
         if ($next === false || $tokens[$next]['code'] !== T_STRING) {
-            // Not a function declaration, or incomplete.
             return;
         }
 

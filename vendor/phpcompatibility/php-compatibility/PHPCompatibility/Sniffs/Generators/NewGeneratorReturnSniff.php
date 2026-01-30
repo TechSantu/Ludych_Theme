@@ -108,7 +108,6 @@ class NewGeneratorReturnSniff extends Sniff
             return;
         }
 
-        // Walk the condition from inner to outer to see if we can find a valid function/closure scope.
         $conditions = array_reverse($tokens[$stackPtr]['conditions'], true);
         foreach ($conditions as $ptr => $type) {
             if (isset($this->validConditions[$type]) === true) {
@@ -118,12 +117,10 @@ class NewGeneratorReturnSniff extends Sniff
         }
 
         if (isset($function) === false) {
-            // Yield outside function scope, fatal error, but not our concern.
             return;
         }
 
         if (isset($tokens[$function]['scope_opener'], $tokens[$function]['scope_closer']) === false) {
-            // Can't reliably determine start/end of function scope.
             return;
         }
 
@@ -145,14 +142,11 @@ class NewGeneratorReturnSniff extends Sniff
                 return $tokens[$function]['scope_closer'];
             }
 
-            // Found a nested scope in which return can exist without problems.
             if (isset($tokens[$current]['scope_closer'])) {
-                // Skip past the nested scope.
                 $current = $tokens[$current]['scope_closer'];
             }
         }
 
-        // Don't examine this function again.
         return $tokens[$function]['scope_closer'];
     }
 }

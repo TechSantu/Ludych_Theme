@@ -48,13 +48,11 @@ final class DNFTypesTest extends AbstractTokenizerTestCase
 
         if ($skipCheckInside === false) {
             for ($i = ($openPtr + 1); $i < $closePtr; $i++) {
-                // If there are ampersands, make sure these are tokenized as bitwise and.
                 if ($tokens[$i]['content'] === '&') {
                     $this->assertSame(T_BITWISE_AND, $tokens[$i]['code'], 'Token tokenized as '.$tokens[$i]['type'].', not T_BITWISE_AND (code)');
                     $this->assertSame('T_BITWISE_AND', $tokens[$i]['type'], 'Token tokenized as '.$tokens[$i]['type'].', not T_BITWISE_AND (type)');
                 }
 
-                // If there are pipes, make sure these are tokenized as bitwise or.
                 if ($tokens[$i]['content'] === '|') {
                     $this->assertSame(T_BITWISE_OR, $tokens[$i]['code'], 'Token tokenized as '.$tokens[$i]['type'].', not T_BITWISE_OR (code)');
                     $this->assertSame('T_BITWISE_OR', $tokens[$i]['type'], 'Token tokenized as '.$tokens[$i]['type'].', not T_BITWISE_OR (type)');
@@ -102,7 +100,6 @@ final class DNFTypesTest extends AbstractTokenizerTestCase
      */
     public static function dataNormalParentheses()
     {
-        // "Owner" offsets are relative to the open parenthesis.
         return [
             'parens without owner'                                            => [
                 'testMarker' => '/* testParensNoOwner */',
@@ -318,12 +315,10 @@ final class DNFTypesTest extends AbstractTokenizerTestCase
                 ++$intersectionCount;
             }
 
-            // Not valid, but that's irrelevant for the tokenization.
             if ($tokens[$i]['content'] === '|') {
                 $this->assertSame(T_TYPE_UNION, $tokens[$i]['code'], 'Token tokenized as '.$tokens[$i]['type'].', not T_TYPE_UNION (code)');
                 $this->assertSame('T_TYPE_UNION', $tokens[$i]['type'], 'Token tokenized as '.$tokens[$i]['type'].', not T_TYPE_UNION (type)');
 
-                // For the purposes of this test, presume it was intended as an intersection.
                 ++$intersectionCount;
             }
         }//end for
@@ -344,7 +339,6 @@ final class DNFTypesTest extends AbstractTokenizerTestCase
             );
         }
 
-        // Invalid, but that's not relevant for the tokenization.
         if ($before !== false && $tokens[$before]['content'] === '?') {
             $this->assertSame(
                 T_NULLABLE,

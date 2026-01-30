@@ -82,14 +82,12 @@ final class CapitalPDangitSniff extends Sniff {
 	 * @return array
 	 */
 	public function register() {
-		// Union the arrays - keeps the array keys.
 		$this->text_and_comment_tokens = ( Tokens::$textStringTokens + $this->comment_text_tokens );
 
 		$targets                 = $this->text_and_comment_tokens;
 		$targets                += Tokens::$ooScopeTokens;
 		$targets[ \T_NAMESPACE ] = \T_NAMESPACE;
 
-		// Also sniff for array tokens to make skipping anything within those more efficient.
 		$targets                          += Collections::arrayOpenTokensBC();
 		$targets                          += Collections::listTokens();
 		$targets[ \T_OPEN_SQUARE_BRACKET ] = \T_OPEN_SQUARE_BRACKET;
@@ -136,7 +134,6 @@ final class CapitalPDangitSniff extends Sniff {
 		if ( \T_NAMESPACE === $this->tokens[ $stackPtr ]['code'] ) {
 			$ns_name = Namespaces::getDeclaredName( $this->phpcsFile, $stackPtr );
 			if ( empty( $ns_name ) ) {
-				// Namespace operator or declaration without name.
 				return;
 			}
 
@@ -189,7 +186,6 @@ final class CapitalPDangitSniff extends Sniff {
 		 * Deal with misspellings in text strings and documentation.
 		 */
 
-		// Ignore content of docblock @link tags.
 		if ( \T_DOC_COMMENT_STRING === $this->tokens[ $stackPtr ]['code']
 			|| \T_DOC_COMMENT === $this->tokens[ $stackPtr ]['code']
 		) {
@@ -202,17 +198,14 @@ final class CapitalPDangitSniff extends Sniff {
 				&& \T_DOC_COMMENT_TAG === $this->tokens[ $comment_tag ]['code']
 				&& '@link' === $this->tokens[ $comment_tag ]['content']
 			) {
-				// @link tag, so ignore.
 				return;
 			}
 		}
 
-		// Ignore constant declarations via define().
 		if ( ContextHelper::is_in_function_call( $this->phpcsFile, $stackPtr, array( 'define' => true ), true, true ) ) {
 			return;
 		}
 
-		// Ignore constant declarations using the const keyword.
 		$stop_points = array(
 			\T_CONST,
 			\T_SEMICOLON,
@@ -236,17 +229,13 @@ final class CapitalPDangitSniff extends Sniff {
 				foreach ( $matches[1] as $key => $match_data ) {
 					$next_offset = ( $match_data[1] + \strlen( $match_data[0] ) );
 
-					// Prevent matches on part of a URL.
 					if ( preg_match( '`http[s]?://[^\s<>\'"()]*' . preg_quote( $match_data[0], '`' ) . '`', $content, $discard, 0, $offset ) === 1 ) {
 						unset( $matches[1][ $key ] );
 					} elseif ( preg_match( '`[a-z]+=(["\'])' . preg_quote( $match_data[0], '`' ) . '\1`', $content, $discard, 0, $offset ) === 1 ) {
-						// Prevent matches on html attributes like: `value="wordpress"`.
 						unset( $matches[1][ $key ] );
 					} elseif ( preg_match( '`\\\\\'' . preg_quote( $match_data[0], '`' ) . '\\\\\'`', $content, $discard, 0, $offset ) === 1 ) {
-						// Prevent matches on xpath queries and such: `\'wordpress\'`.
 						unset( $matches[1][ $key ] );
 					} elseif ( preg_match( '`(?:\?|&amp;|&)[a-z0-9_]+=' . preg_quote( $match_data[0], '`' ) . '(?:&|$)`', $content, $discard, 0, $offset ) === 1 ) {
-						// Prevent matches on url query strings: `?something=wordpress`.
 						unset( $matches[1][ $key ] );
 					}
 
@@ -280,7 +269,6 @@ final class CapitalPDangitSniff extends Sniff {
 			);
 
 			if ( true === $fix ) {
-				// Apply fixes based on offset to ensure we don't replace false positives.
 				$replacement = $content;
 				foreach ( $matches[1] as $match ) {
 					$replacement = substr_replace( $replacement, 'WordPress', $match[1], \strlen( $match[0] ) );
@@ -300,7 +288,6 @@ final class CapitalPDangitSniff extends Sniff {
 	protected function retrieve_misspellings( $match_stack ) {
 		$misspelled = array();
 		foreach ( $match_stack as $match ) {
-			// Deal with multi-dimensional arrays when capturing offset.
 			if ( \is_array( $match ) ) {
 				$match = $match[0];
 			}

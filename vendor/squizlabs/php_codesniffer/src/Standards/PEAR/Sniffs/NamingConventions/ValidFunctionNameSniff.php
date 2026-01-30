@@ -74,7 +74,6 @@ class ValidFunctionNameSniff extends AbstractScopeSniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Determine if this is a function which needs to be examined.
         $conditions = $tokens[$stackPtr]['conditions'];
         end($conditions);
         $deepestScope = key($conditions);
@@ -84,7 +83,6 @@ class ValidFunctionNameSniff extends AbstractScopeSniff
 
         $methodName = $phpcsFile->getDeclarationName($stackPtr);
         if ($methodName === null) {
-            // Ignore closures.
             return;
         }
 
@@ -98,7 +96,6 @@ class ValidFunctionNameSniff extends AbstractScopeSniff
         $methodNameLc = strtolower($methodName);
         $classNameLc  = strtolower($className);
 
-        // Is this a magic method. i.e., is prefixed with "__" ?
         if (preg_match('|^__[^_]|', $methodName) !== 0) {
             $magicPart = substr($methodNameLc, 2);
             if (isset($this->magicMethods[$magicPart]) === true) {
@@ -109,12 +106,10 @@ class ValidFunctionNameSniff extends AbstractScopeSniff
             $phpcsFile->addError($error, $stackPtr, 'MethodDoubleUnderscore', $errorData);
         }
 
-        // PHP4 constructors are allowed to break our rules.
         if ($methodNameLc === $classNameLc) {
             return;
         }
 
-        // PHP4 destructors are allowed to break our rules.
         if ($methodNameLc === '_'.$classNameLc) {
             return;
         }
@@ -129,7 +124,6 @@ class ValidFunctionNameSniff extends AbstractScopeSniff
             $isPublic = true;
         }
 
-        // If it's a private method, it must have an underscore on the front.
         if ($isPublic === false) {
             if ($methodName[0] !== '_') {
                 $error = 'Private method name "%s" must be prefixed with an underscore';
@@ -140,7 +134,6 @@ class ValidFunctionNameSniff extends AbstractScopeSniff
             }
         }
 
-        // If it's not a private method, it must not have an underscore on the front.
         if ($isPublic === true && $scopeSpecified === true && $methodName[0] === '_') {
             $error = '%s method name "%s" must not be prefixed with an underscore';
             $data  = [
@@ -182,18 +175,15 @@ class ValidFunctionNameSniff extends AbstractScopeSniff
     {
         $functionName = $phpcsFile->getDeclarationName($stackPtr);
         if ($functionName === null) {
-            // Ignore closures.
             return;
         }
 
         if (ltrim($functionName, '_') === '') {
-            // Ignore special functions.
             return;
         }
 
         $errorData = [$functionName];
 
-        // Is this a magic function. i.e., it is prefixed with "__".
         if (preg_match('|^__[^_]|', $functionName) !== 0) {
             $magicPart = strtolower(substr($functionName, 2));
             if (isset($this->magicFunctions[$magicPart]) === true) {
@@ -204,8 +194,6 @@ class ValidFunctionNameSniff extends AbstractScopeSniff
             $phpcsFile->addError($error, $stackPtr, 'FunctionDoubleUnderscore', $errorData);
         }
 
-        // Function names can be in two parts; the package name and
-        // the function name.
         $packagePart   = '';
         $underscorePos = strrpos($functionName, '_');
         if ($underscorePos === false) {
@@ -214,11 +202,9 @@ class ValidFunctionNameSniff extends AbstractScopeSniff
             $packagePart   = substr($functionName, 0, $underscorePos);
             $camelCapsPart = substr($functionName, ($underscorePos + 1));
 
-            // We don't care about _'s on the front.
             $packagePart = ltrim($packagePart, '_');
         }
 
-        // If it has a package part, make sure the first letter is a capital.
         if ($packagePart !== '') {
             if ($functionName[0] === '_') {
                 $error = 'Function name "%s" is invalid; only private methods should be prefixed with an underscore';
@@ -231,7 +217,6 @@ class ValidFunctionNameSniff extends AbstractScopeSniff
             }
         }
 
-        // If it doesn't have a camel caps part, it's not valid.
         if (trim($camelCapsPart) === '') {
             $error = 'Function name "%s" is not valid; name appears incomplete';
             $phpcsFile->addError($error, $stackPtr, 'FunctionInvalid', $errorData);
@@ -242,14 +227,12 @@ class ValidFunctionNameSniff extends AbstractScopeSniff
         $newPackagePart   = $packagePart;
         $newCamelCapsPart = $camelCapsPart;
 
-        // Every function must have a camel caps part, so check that first.
         if (Common::isCamelCaps($camelCapsPart, false, true, false) === false) {
             $validName        = false;
             $newCamelCapsPart = strtolower($camelCapsPart[0]).substr($camelCapsPart, 1);
         }
 
         if ($packagePart !== '') {
-            // Check that each new word starts with a capital.
             $nameBits = explode('_', $packagePart);
             $nameBits = array_filter($nameBits);
             foreach ($nameBits as $bit) {

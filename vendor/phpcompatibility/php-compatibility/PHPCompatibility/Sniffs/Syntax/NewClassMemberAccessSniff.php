@@ -106,7 +106,6 @@ class NewClassMemberAccessSniff extends Sniff
             if ($tokens[$stackPtr]['code'] === \T_NEW
                 && $tokens[$open]['code'] === \T_OPEN_CURLY_BRACKET
             ) {
-                // Non-curlies was already handled above.
                 $itemData      = array('instantiation using curly braces', '5.6');
                 $itemErrorCode = 'OnNewFoundUsingCurlies';
             }
@@ -134,7 +133,6 @@ class NewClassMemberAccessSniff extends Sniff
         $tokens = $phpcsFile->getTokens();
 
         if (isset($tokens[$stackPtr]['nested_parenthesis']) === false) {
-            // The `new className/clone $a` has to be in parentheses, without is not supported.
             return array();
         }
 
@@ -142,13 +140,11 @@ class NewClassMemberAccessSniff extends Sniff
         $parenthesisOpener = key($tokens[$stackPtr]['nested_parenthesis']);
 
         if (isset($tokens[$parenthesisOpener]['parenthesis_owner']) === true) {
-            // If there is an owner, these parentheses are for a different purpose.
             return array();
         }
 
         $prevBeforeParenthesis = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($parenthesisOpener - 1), null, true);
         if ($prevBeforeParenthesis !== false && $tokens[$prevBeforeParenthesis]['code'] === \T_STRING) {
-            // This is most likely a function call with the new/cloned object as a parameter.
             return array();
         }
 
@@ -162,7 +158,6 @@ class NewClassMemberAccessSniff extends Sniff
             }
 
             if ($tokens[$nextNonEmpty]['code'] === \T_OBJECT_OPERATOR) {
-                // No need to walk any further if this is object access.
                 $braces[$nextNonEmpty] = true;
                 break;
             }
@@ -171,18 +166,15 @@ class NewClassMemberAccessSniff extends Sniff
                 || $tokens[$nextNonEmpty]['code'] === \T_OPEN_CURLY_BRACKET // PHP 7.0+.
             ) {
                 if (isset($tokens[$nextNonEmpty]['bracket_closer']) === false) {
-                    // Live coding or parse error.
                     break;
                 }
 
                 $braces[$nextNonEmpty] = $tokens[$nextNonEmpty]['bracket_closer'];
 
-                // Continue, just in case there is nested array access, i.e. `(new Foo())[1][0];`.
                 $end = $tokens[$nextNonEmpty]['bracket_closer'];
                 continue;
             }
 
-            // If we're still here, we've reached the end.
             break;
 
         } while (true);

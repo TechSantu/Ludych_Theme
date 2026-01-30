@@ -52,7 +52,6 @@ class LogicalOperatorSpacingSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Check there is one space before the operator.
         if ($tokens[($stackPtr - 1)]['code'] !== T_WHITESPACE) {
             $error = 'Expected 1 space before logical operator; 0 found';
             $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'NoSpaceBefore');
@@ -74,7 +73,6 @@ class LogicalOperatorSpacingSniff implements Sniff
             }
         }
 
-        // Check there is one space after the operator.
         if ($tokens[($stackPtr + 1)]['code'] !== T_WHITESPACE) {
             $error = 'Expected 1 space after logical operator; 0 found';
             $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'NoSpaceAfter');

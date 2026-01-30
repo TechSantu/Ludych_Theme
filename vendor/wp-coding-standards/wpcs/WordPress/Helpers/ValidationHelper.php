@@ -110,13 +110,11 @@ final class ValidationHelper {
 			 */
 			$conditionPtr = Conditions::getLastCondition( $phpcsFile, $stackPtr );
 			if ( false === $conditionPtr ) {
-				// If there are no conditions, there's no validation.
 				return false;
 			}
 
 			$condition = $tokens[ $conditionPtr ];
 			if ( ! isset( $condition['parenthesis_opener'] ) ) {
-				// Live coding or parse error.
 				return false;
 			}
 
@@ -139,7 +137,6 @@ final class ValidationHelper {
 			 */
 			$function = Conditions::getLastCondition( $phpcsFile, $stackPtr, array( \T_FUNCTION, \T_CLOSURE ) );
 
-			// If so, we check only within the function, otherwise the whole file.
 			if ( false !== $function ) {
 				$scope_start = $tokens[ $function ]['scope_opener'];
 			}
@@ -153,13 +150,11 @@ final class ValidationHelper {
 
 		$bare_array_keys = self::strip_quotes_from_array_values( $array_keys );
 
-		// phpcs:ignore Generic.CodeAnalysis.JumbledIncrementer.Found -- On purpose, see below.
 		for ( $i = ( $scope_start + 1 ); $i < $scope_end; $i++ ) {
 
 			if ( isset( Collections::closedScopes()[ $tokens[ $i ]['code'] ] )
 				&& isset( $tokens[ $i ]['scope_closer'] )
 			) {
-				// Jump over nested closed scopes as validation done within those does not apply.
 				$i = $tokens[ $i ]['scope_closer'];
 				continue;
 			}
@@ -168,7 +163,6 @@ final class ValidationHelper {
 				&& isset( $tokens[ $i ]['scope_closer'] )
 				&& $tokens[ $i ]['scope_closer'] < $scope_end
 			) {
-				// Jump over nested arrow functions as long as the current variable isn't *in* the arrow function.
 				$i = $tokens[ $i ]['scope_closer'];
 				continue;
 			}
@@ -184,13 +178,11 @@ final class ValidationHelper {
 						|| \T_OPEN_PARENTHESIS !== $tokens[ $issetOpener ]['code']
 						|| isset( $tokens[ $issetOpener ]['parenthesis_closer'] ) === false
 					) {
-						// Parse error or live coding.
 						continue 2;
 					}
 
 					$issetCloser = $tokens[ $issetOpener ]['parenthesis_closer'];
 
-					// Look for this variable. We purposely stomp $i from the parent loop.
 					for ( $i = ( $issetOpener + 1 ); $i < $issetCloser; $i++ ) {
 
 						if ( \T_VARIABLE !== $tokens[ $i ]['code'] ) {
@@ -201,8 +193,6 @@ final class ValidationHelper {
 							continue;
 						}
 
-						// If we're checking for specific array keys (ex: 'hello' in
-						// $_POST['hello']), that must match too. Quote-style, however, doesn't matter.
 						if ( ! empty( $bare_array_keys ) ) {
 							$found_keys = VariableHelper::get_array_access_keys( $phpcsFile, $i );
 							$found_keys = self::strip_quotes_from_array_values( $found_keys );
@@ -218,35 +208,29 @@ final class ValidationHelper {
 					break;
 
 				case 'function_call':
-					// Only check calls to array_key_exists() and key_exists().
 					if ( isset( self::$key_exists_functions[ strtolower( $tokens[ $i ]['content'] ) ] ) === false ) {
 						continue 2;
 					}
 
 					$next_non_empty = $phpcsFile->findNext( Tokens::$emptyTokens, ( $i + 1 ), null, true );
 					if ( false === $next_non_empty || \T_OPEN_PARENTHESIS !== $tokens[ $next_non_empty ]['code'] ) {
-						// Not a function call.
 						continue 2;
 					}
 
 					if ( Context::inAttribute( $phpcsFile, $i ) === true ) {
-						// Definitely not the function call as those are not allowed in attributes.
 						continue 2;
 					}
 
 					if ( ContextHelper::has_object_operator_before( $phpcsFile, $i ) === true ) {
-						// Method call.
 						continue 2;
 					}
 
 					if ( ContextHelper::is_token_namespaced( $phpcsFile, $i ) === true ) {
-						// Namespaced function call.
 						continue 2;
 					}
 
 					$params = PassedParameters::getParameters( $phpcsFile, $i );
 
-					// As `key_exists()` is an alias of `array_key_exists()`, the param positions and names are the same.
 					$array_param = PassedParameters::getParameterFromStack( $params, 2, 'array' );
 					if ( false === $array_param ) {
 						continue 2;
@@ -261,7 +245,6 @@ final class ValidationHelper {
 					}
 
 					if ( ! empty( $bare_array_keys ) ) {
-						// Prevent the original array from being altered.
 						$bare_keys = $bare_array_keys;
 						$last_key  = array_pop( $bare_keys );
 
@@ -273,14 +256,11 @@ final class ValidationHelper {
 						$found_keys = VariableHelper::get_array_access_keys( $phpcsFile, $array_param_first_token );
 						$found_keys = self::strip_quotes_from_array_values( $found_keys );
 
-						// First try matching the complete set against the array parameter.
 						$diff = array_diff_assoc( $bare_array_keys, $found_keys );
 						if ( empty( $diff ) ) {
 							return true;
 						}
 
-						// If that failed, try getting an exact match for the subset against the
-						// $array parameter and the last key against the first.
 						$key_param = PassedParameters::getParameterFromStack( $params, 1, 'key' );
 						if ( false !== $key_param
 							&& $bare_keys === $found_keys
@@ -289,7 +269,6 @@ final class ValidationHelper {
 							return true;
 						}
 
-						// Didn't find the correct array keys.
 						continue 2;
 					}
 
@@ -299,7 +278,6 @@ final class ValidationHelper {
 					$prev = $i;
 					do {
 						$prev = $phpcsFile->findPrevious( Tokens::$emptyTokens, ( $prev - 1 ), null, true );
-						// Skip over array keys, like `$_GET['key']['subkey']`.
 						if ( \T_CLOSE_SQUARE_BRACKET === $tokens[ $prev ]['code'] ) {
 							$prev = $tokens[ $prev ]['bracket_opener'];
 							continue;
@@ -308,7 +286,6 @@ final class ValidationHelper {
 						break;
 					} while ( $prev >= ( $scope_start + 1 ) );
 
-					// We should now have reached the variable.
 					if ( \T_VARIABLE !== $tokens[ $prev ]['code'] ) {
 						continue 2;
 					}
@@ -326,7 +303,6 @@ final class ValidationHelper {
 						}
 					}
 
-					// Right variable, correct key.
 					return true;
 			}
 		}

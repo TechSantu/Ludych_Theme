@@ -62,7 +62,6 @@ class DisallowTabIndentSniff implements Sniff
     {
         if ($this->tabWidth === null) {
             if (isset($phpcsFile->config->tabWidth) === false || $phpcsFile->config->tabWidth === 0) {
-                // We have no idea how wide tabs are, so assume 4 spaces for metrics.
                 $this->tabWidth = 4;
             } else {
                 $this->tabWidth = $phpcsFile->config->tabWidth;
@@ -86,8 +85,6 @@ class DisallowTabIndentSniff implements Sniff
                 continue;
             }
 
-            // If tabs are being converted to spaces by the tokeniser, the
-            // original content should be checked instead of the converted content.
             if (isset($tokens[$i]['orig_content']) === true) {
                 $content = $tokens[$i]['orig_content'];
             } else {
@@ -98,8 +95,6 @@ class DisallowTabIndentSniff implements Sniff
                 continue;
             }
 
-            // If this is an inline HTML token or a subsequent line of a multi-line comment,
-            // split off the indentation as that is the only part to take into account for the metrics.
             $indentation = $content;
             if (($tokens[$i]['code'] === T_INLINE_HTML
                 || $tokens[$i]['code'] === T_COMMENT)
@@ -114,7 +109,6 @@ class DisallowTabIndentSniff implements Sniff
                 || $tokens[$i]['code'] === T_COMMENT)
                 && $indentation === ' '
             ) {
-                // Ignore all non-indented comments, especially for recording metrics.
                 continue;
             }
 
@@ -123,7 +117,6 @@ class DisallowTabIndentSniff implements Sniff
                 && isset($tokens[($i + 1)]) === true
                 && $tokens[$i]['line'] < $tokens[($i + 1)]['line']
             ) {
-                // Don't record metrics for empty lines.
                 $recordMetrics = false;
             }
 
@@ -146,7 +139,6 @@ class DisallowTabIndentSniff implements Sniff
                         if ($tabAfterSpaces !== false) {
                             $phpcsFile->recordMetric($i, 'Line indent', 'mixed');
                         } else {
-                            // Check for use of precision spaces.
                             $numTabs = (int) floor($foundIndentSpaces / $this->tabWidth);
                             if ($numTabs === 0) {
                                 $phpcsFile->recordMetric($i, 'Line indent', 'tabs');
@@ -157,9 +149,6 @@ class DisallowTabIndentSniff implements Sniff
                     }
                 }//end if
             } else {
-                // Look for tabs so we can report and replace, but don't
-                // record any metrics about them because they aren't
-                // line indent tokens.
                 if ($foundTabs > 0) {
                     $error     = 'Spaces must be used for alignment; tabs are not allowed';
                     $errorCode = 'NonIndentTabsUsed';
@@ -170,9 +159,6 @@ class DisallowTabIndentSniff implements Sniff
                 continue;
             }
 
-            // Report, but don't auto-fix tab identation for a PHP 7.3+ flexible heredoc/nowdoc closer.
-            // Auto-fixing this would cause parse errors as the indentation of the heredoc/nowdoc contents
-            // needs to use the same type of indentation. Also see: https://3v4l.org/7OF3M .
             if ($tokens[$i]['code'] === T_END_HEREDOC || $tokens[$i]['code'] === T_END_NOWDOC) {
                 $phpcsFile->addError($error, $i, $errorCode.'HeredocCloser');
                 continue;
@@ -181,18 +167,14 @@ class DisallowTabIndentSniff implements Sniff
             $fix = $phpcsFile->addFixableError($error, $i, $errorCode);
             if ($fix === true) {
                 if (isset($tokens[$i]['orig_content']) === true) {
-                    // Use the replacement that PHPCS has already done.
                     $phpcsFile->fixer->replaceToken($i, $tokens[$i]['content']);
                 } else {
-                    // Replace tabs with spaces, using an indent of tabWidth spaces.
-                    // Other sniffs can then correct the indent if they need to.
                     $newContent = str_replace("\t", str_repeat(' ', $this->tabWidth), $tokens[$i]['content']);
                     $phpcsFile->fixer->replaceToken($i, $newContent);
                 }
             }
         }//end for
 
-        // Ignore the rest of the file.
         return $phpcsFile->numTokens;
 
     }//end process()

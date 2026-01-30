@@ -152,7 +152,6 @@ class NewParamTypeDeclarationsSniff extends AbstractNewFeatureSniff
      */
     public function process(File $phpcsFile, $stackPtr)
     {
-        // Get all parameters from method signature.
         $paramNames = PHPCSHelper::getMethodParameters($phpcsFile, $stackPtr);
         if (empty($paramNames)) {
             return;
@@ -165,7 +164,6 @@ class NewParamTypeDeclarationsSniff extends AbstractNewFeatureSniff
                 continue;
             }
 
-            // Strip off potential nullable indication.
             $typeHint = ltrim($param['type_hint'], '?');
 
             if ($supportsPHP4 === true) {
@@ -181,9 +179,6 @@ class NewParamTypeDeclarationsSniff extends AbstractNewFeatureSniff
                 );
                 $this->handleFeature($phpcsFile, $param['token'], $itemInfo);
 
-                // As of PHP 7.0, using `self` or `parent` outside class scope throws a fatal error.
-                // Only throw this error for PHP 5.2+ as before that the "type hint not supported" error
-                // will be thrown.
                 if (($typeHint === 'self' || $typeHint === 'parent')
                     && $this->inClassScope($phpcsFile, $stackPtr, false) === false
                     && $this->supportsAbove('5.2') !== false

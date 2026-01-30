@@ -57,7 +57,6 @@ class SubversionPropertiesSniff implements Sniff
         $path       = $phpcsFile->getFilename();
         $properties = $this->getProperties($path);
         if ($properties === null) {
-            // Not under version control.
             return $phpcsFile->numTokens;
         }
 
@@ -100,7 +99,6 @@ class SubversionPropertiesSniff implements Sniff
             }
         }//end foreach
 
-        // Ignore the rest of the file.
         return $phpcsFile->numTokens;
 
     }//end process()
@@ -137,34 +135,25 @@ class SubversionPropertiesSniff implements Sniff
                 }
 
                 while (feof($handle) === false) {
-                    // Read a key length line. Might be END, though.
                     $buffer = trim(fgets($handle));
 
-                    // Check for the end of the hash.
                     if ($buffer === 'END') {
                         break;
                     }
 
-                    // Now read that much into a buffer.
                     $key = fread($handle, substr($buffer, 2));
 
-                    // Suck up extra newline after key data.
                     fgetc($handle);
 
-                    // Read a value length line.
                     $buffer = trim(fgets($handle));
 
-                    // Now read that much into a buffer.
                     $length = substr($buffer, 2);
                     if ($length === '0') {
-                        // Length of value is ZERO characters, so
-                        // value is actually empty.
                         $value = '';
                     } else {
                         $value = fread($handle, $length);
                     }
 
-                    // Suck up extra newline after value data.
                     fgetc($handle);
 
                     $properties[$key] = $value;

@@ -76,7 +76,6 @@ class NewArrayUnpackingSniff extends Sniff
                 $closer = $tokens[$opener]['parenthesis_closer'];
             }
         } else {
-            // Short array syntax.
             $opener = $stackPtr;
 
             if (isset($tokens[$stackPtr]['bracket_closer'])) {
@@ -97,38 +96,28 @@ class NewArrayUnpackingSniff extends Sniff
 
             if ($tokens[$i]['code'] === \T_OPEN_SHORT_ARRAY) {
                 if (isset($tokens[$i]['bracket_closer']) === false) {
-                    // Live coding, unfinished nested array, handle this when the array opener
-                    // of the nested array is passed.
                     return;
                 }
 
-                // Skip over nested short arrays. These will be handled when the array opener
-                // of the nested array is passed.
                 $i = $tokens[$i]['bracket_closer'];
                 continue;
             }
 
             if ($tokens[$i]['code'] === \T_ARRAY) {
                 if (isset($tokens[$i]['parenthesis_closer']) === false) {
-                    // Live coding, unfinished nested array, handle this when the array opener
-                    // of the nested array is passed.
                     return;
                 }
 
-                // Skip over nested long arrays. These will be handled when the array opener
-                // of the nested array is passed.
                 $i = $tokens[$i]['parenthesis_closer'];
                 continue;
             }
 
-            // Ensure this is not function call variable unpacking.
             if (isset($tokens[$i]['nested_parenthesis'])
                 && count($tokens[$i]['nested_parenthesis']) > $nestingLevel
             ) {
                 continue;
             }
 
-            // Ok, found one.
             $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($i + 1), null, true);
             $snippet      = trim($phpcsFile->getTokensAsString($i, (($nextNonEmpty - $i) + 1)));
             $phpcsFile->addError(

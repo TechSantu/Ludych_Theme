@@ -100,8 +100,6 @@ class Notifysend implements Report
     {
         echo $report['filename'].PHP_EOL;
 
-        // We want this file counted in the total number
-        // of checked files even if it has no errors.
         return true;
 
     }//end generateFileReport()
@@ -160,7 +158,6 @@ class Notifysend implements Report
     protected function generateMessage($checkedFiles, $totalErrors, $totalWarnings)
     {
         if ($totalErrors === 0 && $totalWarnings === 0) {
-            // Nothing to print.
             return null;
         }
 

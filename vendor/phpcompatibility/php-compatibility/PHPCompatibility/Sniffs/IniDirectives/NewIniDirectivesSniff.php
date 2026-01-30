@@ -635,7 +635,6 @@ class NewIniDirectivesSniff extends AbstractNewFeatureSniff
             '7.1' => true,
         ),
 
-        // Introduced in PHP 7.1.25, 7.2.13, 7.3.0.
         'imap.enable_insecure_rsh' => array(
             '7.1.24' => false,
             '7.1.25' => true,
@@ -716,7 +715,6 @@ class NewIniDirectivesSniff extends AbstractNewFeatureSniff
 
         $prevToken = $phpcsFile->findPrevious(\T_WHITESPACE, ($stackPtr - 1), null, true);
         if (isset($ignore[$tokens[$prevToken]['code']]) === true) {
-            // Not a call to a PHP function.
             return;
         }
 
@@ -790,7 +788,6 @@ class NewIniDirectivesSniff extends AbstractNewFeatureSniff
             $errorInfo['alternative'] = $itemArray['alternative'];
         }
 
-        // Lower error level to warning if the function used was ini_get.
         if ($errorInfo['error'] === true && $itemInfo['functionLc'] === 'ini_get') {
             $errorInfo['error'] = false;
         }

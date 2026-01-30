@@ -48,10 +48,8 @@ class MultiLineAssignmentSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Equal sign can't be the last thing on the line.
         $next = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
         if ($next === false) {
-            // Bad assignment.
             return;
         }
 
@@ -61,10 +59,8 @@ class MultiLineAssignmentSniff implements Sniff
             return;
         }
 
-        // Make sure it is the first thing on the line, otherwise we ignore it.
         $prev = $phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), null, true);
         if ($prev === false) {
-            // Bad assignment.
             return;
         }
 
@@ -72,7 +68,6 @@ class MultiLineAssignmentSniff implements Sniff
             return;
         }
 
-        // Find the required indent based on the ident of the previous line.
         $assignmentIndent = 0;
         $prevLine         = $tokens[$prev]['line'];
         for ($i = ($prev - 1); $i >= 0; $i--) {
@@ -86,7 +81,6 @@ class MultiLineAssignmentSniff implements Sniff
             $assignmentIndent = $tokens[$i]['length'];
         }
 
-        // Find the actual indent.
         $prev = $phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1));
 
         $expectedIndent = ($assignmentIndent + $this->indent);

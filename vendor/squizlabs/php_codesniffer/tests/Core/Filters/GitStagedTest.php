@@ -251,8 +251,6 @@ final class GitStagedTest extends AbstractFilterTestCase
     {
         return [
             'valid command which won\'t have any output unless files in the bin dir have been modified & staged' => [
-                // Largely using the command used in the filter, but only checking the bin dir.
-                // This should prevent the test unexpectedly failing during local development (in most cases).
                 'cmd'      => 'git diff --cached --name-only -- '.escapeshellarg(self::getBaseDir().'/bin'),
                 'expected' => [],
             ],

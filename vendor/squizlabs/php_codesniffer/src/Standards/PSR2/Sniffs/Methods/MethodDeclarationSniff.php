@@ -40,7 +40,6 @@ class MethodDeclarationSniff extends AbstractScopeSniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Determine if this is a function which needs to be examined.
         $conditions = $tokens[$stackPtr]['conditions'];
         end($conditions);
         $deepestScope = key($conditions);
@@ -50,7 +49,6 @@ class MethodDeclarationSniff extends AbstractScopeSniff
 
         $methodName = $phpcsFile->getDeclarationName($stackPtr);
         if ($methodName === null) {
-            // Ignore closures.
             return;
         }
 
@@ -130,7 +128,6 @@ class MethodDeclarationSniff extends AbstractScopeSniff
             }
         }
 
-        // Batch all the fixes together to reduce the possibility of conflicts.
         if (empty($fixes) === false) {
             $phpcsFile->fixer->beginChangeset();
             foreach ($fixes as $stackPtr => $content) {

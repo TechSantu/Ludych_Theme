@@ -273,7 +273,6 @@ final class FunctionDeclarations
 
             for ($i = $parenthesisCloser; $i < $phpcsFile->numTokens; $i++) {
                 if ($i === $scopeOpener) {
-                    // End of function definition.
                     $hasBody = true;
                     break;
                 }
@@ -282,12 +281,10 @@ final class FunctionDeclarations
                     && ($tokens[$i]['code'] === \T_SEMICOLON
                     || $tokens[$i]['code'] === \T_OPEN_CURLY_BRACKET)
                 ) {
-                    // End of abstract/interface function definition.
                     break;
                 }
 
                 if ($tokens[$i]['code'] === \T_USE) {
-                    // Skip over closure use statements.
                     for (
                         $j = ($i + 1);
                         $j < $phpcsFile->numTokens && isset(Tokens::$emptyTokens[$tokens[$j]['code']]) === true;
@@ -296,7 +293,6 @@ final class FunctionDeclarations
 
                     if ($tokens[$j]['code'] === \T_OPEN_PARENTHESIS) {
                         if (isset($tokens[$j]['parenthesis_closer']) === false) {
-                            // Live coding/parse error, stop parsing.
                             break;
                         }
 
@@ -440,7 +436,6 @@ final class FunctionDeclarations
         }
 
         if ($tokens[$stackPtr]['code'] === \T_USE) {
-            // This will work PHPCS 3.x/4.x cross-version without much overhead.
             $opener = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
             if ($opener === false
                 || $tokens[$opener]['code'] !== \T_OPEN_PARENTHESIS
@@ -450,7 +445,6 @@ final class FunctionDeclarations
             }
         } else {
             if (isset($tokens[$stackPtr]['parenthesis_opener']) === false) {
-                // Live coding or syntax error, so no params to find.
                 return [];
             }
 
@@ -458,7 +452,6 @@ final class FunctionDeclarations
         }
 
         if (isset($tokens[$opener]['parenthesis_closer']) === false) {
-            // Live coding or syntax error, so no params to find.
             return [];
         }
 
@@ -511,7 +504,6 @@ final class FunctionDeclarations
                 case \T_ATTRIBUTE:
                     $hasAttributes = true;
 
-                    // Skip to the end of the attribute.
                     $i = $tokens[$i]['attribute_closer'];
                     break;
 
@@ -553,8 +545,6 @@ final class FunctionDeclarations
 
                 case \T_CLOSE_PARENTHESIS:
                 case \T_COMMA:
-                    // If it's null, then there must be no parameters for this
-                    // method.
                     if ($currVar === null) {
                         continue 2;
                     }
@@ -611,7 +601,6 @@ final class FunctionDeclarations
                         $vars[$paramCount]['comma_token'] = false;
                     }
 
-                    // Reset the vars, as we are about to process the next parameter.
                     $currVar            = null;
                     $paramStart         = ($i + 1);
                     $defaultStart       = null;
@@ -636,21 +625,17 @@ final class FunctionDeclarations
                     $defaultStart = $phpcsFile->findNext(Tokens::$emptyTokens, ($i + 1), null, true);
                     $equalToken   = $i;
 
-                    // Skip past everything in the default value before going into the next switch loop.
                     for ($j = ($i + 1); $j <= $closer; $j++) {
-                        // Skip past array()'s et al as default values.
                         if (isset($tokens[$j]['parenthesis_opener'], $tokens[$j]['parenthesis_closer'])) {
                             $j = $tokens[$j]['parenthesis_closer'];
 
                             if ($j === $closer) {
-                                // Found the end of the parameter.
                                 break;
                             }
 
                             continue;
                         }
 
-                        // Skip past short arrays et al as default values.
                         if (isset($tokens[$j]['bracket_opener'])) {
                             $j = $tokens[$j]['bracket_closer'];
                             continue;

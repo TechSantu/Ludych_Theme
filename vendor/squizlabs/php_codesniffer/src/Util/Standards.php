@@ -89,7 +89,6 @@ class Standards
         }
 
         foreach ($installedPaths as $standardsDir) {
-            // Check if the installed dir is actually a standard itself.
             $csFile = $standardsDir.'/ruleset.xml';
             if (is_file($csFile) === true) {
                 $rulesets[] = $csFile;
@@ -105,12 +104,10 @@ class Standards
                 if ($file->isDir() === true && $file->isDot() === false) {
                     $filename = $file->getFilename();
 
-                    // Ignore the special "Generic" standard.
                     if ($includeGeneric === false && $filename === 'Generic') {
                         continue;
                     }
 
-                    // Valid coding standard dirs include a ruleset.
                     $csFile = $file->getPathname().'/ruleset.xml';
                     if (is_file($csFile) === true) {
                         $rulesets[] = $csFile;
@@ -178,7 +175,6 @@ class Standards
         }
 
         foreach ($installedPaths as $standardsDir) {
-            // Check if the installed dir is actually a standard itself.
             $csFile = $standardsDir.'/ruleset.xml';
             if (is_file($csFile) === true) {
                 $basename = basename($standardsDir);
@@ -187,7 +183,6 @@ class Standards
             }
 
             if (is_dir($standardsDir) === false) {
-                // Doesn't exist.
                 continue;
             }
 
@@ -197,12 +192,10 @@ class Standards
                 if ($file->isDir() === true && $file->isDot() === false) {
                     $filename = $file->getFilename();
 
-                    // Ignore the special "Generic" standard.
                     if ($includeGeneric === false && $filename === 'Generic') {
                         continue;
                     }
 
-                    // Valid coding standard dirs include a ruleset.
                     $csFile = $file->getPathname().'/ruleset.xml';
                     if (is_file($csFile) === true) {
                         $standardsInDir[$filename] = $filename;
@@ -237,15 +230,11 @@ class Standards
         if ($path !== null && strpos($path, 'ruleset.xml') !== false) {
             return true;
         } else {
-            // This could be a custom standard, installed outside our
-            // standards directory.
             $standard = Common::realpath($standard);
             if ($standard === false) {
                 return false;
             }
 
-            // Might be an actual ruleset file itUtil.
-            // If it has an XML extension, let's at least try it.
             if (is_file($standard) === true
                 && (substr(strtolower($standard), -4) === '.xml'
                 || substr(strtolower($standard), -9) === '.xml.dist')
@@ -253,8 +242,6 @@ class Standards
                 return true;
             }
 
-            // If it is a directory with a ruleset.xml file in it,
-            // it is a standard.
             $ruleset = rtrim($standard, ' /\\').DIRECTORY_SEPARATOR.'ruleset.xml';
             if (is_file($ruleset) === true) {
                 return true;

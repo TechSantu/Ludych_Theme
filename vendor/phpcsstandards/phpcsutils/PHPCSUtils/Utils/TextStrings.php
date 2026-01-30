@@ -96,7 +96,6 @@ final class TextStrings
         $contents = GetTokensAsString::normal($phpcsFile, $stackPtr, $end);
 
         if ($stripNewline === true) {
-            // Heredoc/nowdoc: strip the new line at the end of the string to emulate how PHP sees the string.
             $contents = \rtrim($contents, "\r\n");
         }
 
@@ -145,7 +144,6 @@ final class TextStrings
             throw UnexpectedTokenType::create(2, '$stackPtr', $acceptedTokens, $tokens[$stackPtr]['type']);
         }
 
-        // Must be the start of a text string token.
         if (isset(Tokens::$stringTokens[$tokens[$stackPtr]['code']]) === true) {
             $prev = $phpcsFile->findPrevious(\T_WHITESPACE, ($stackPtr - 1), null, true);
             if ($tokens[$stackPtr]['code'] === $tokens[$prev]['code']) {
@@ -327,7 +325,6 @@ final class TextStrings
         }
 
         if ($offset < $strLen) {
-            // Add the end of the string.
             $stripped .= \substr($text, $offset);
         }
 

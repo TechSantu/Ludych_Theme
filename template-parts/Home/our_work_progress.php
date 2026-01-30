@@ -9,7 +9,6 @@ $small_title = get_field('work_progress_small_title', $post_id);
 $main_title  = get_field('work_progress_title', $post_id);
 ?>
 
-<!-- our work progress start -->
 <section class="our-work-progress">
 	<div class="custom-container">
 
@@ -86,4 +85,3 @@ $main_title  = get_field('work_progress_title', $post_id);
 		</div>
 	</div>
 </section>
-<!-- our work progress end -->

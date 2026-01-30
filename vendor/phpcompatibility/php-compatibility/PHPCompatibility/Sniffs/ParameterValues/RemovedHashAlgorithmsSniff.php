@@ -76,7 +76,6 @@ class RemovedHashAlgorithmsSniff extends AbstractRemovedFeatureSniff
             return;
         }
 
-        // Bow out if not one of the algorithms we're targetting.
         if (isset($this->removedAlgorithms[$algo]) === false) {
             return;
         }

@@ -68,7 +68,6 @@ final class PrintProgressTest extends TestCase
         self::$runner         = new Runner();
         self::$runner->config = self::$config;
 
-        // Simple file which won't have any errors against the above sniff.
         $content = '<?php'."\n".'$var = false;'."\n";
         self::$fileWithoutErrorsOrWarnings = new DummyFile($content, self::$ruleset, self::$config);
         self::$fileWithoutErrorsOrWarnings->process();
@@ -100,10 +99,6 @@ final class PrintProgressTest extends TestCase
      */
     public static function reset()
     {
-        // Explicitly trigger __destruct() on the ConfigDouble to reset the Config statics.
-        // The explicit method call prevents potential stray test-local references to the $config object
-        // preventing the destructor from running the clean up (which without stray references would be
-        // automagically triggered when this object is destroyed, but we can't definitively rely on that).
         self::$config->__destruct();
 
     }//end reset()
@@ -180,7 +175,6 @@ final class PrintProgressTest extends TestCase
     {
         $fullLineOfDots = str_repeat('.', 60);
 
-        // phpcs:disable Squiz.Strings.ConcatenationSpacing.PaddingFound -- Favour test readability.
         return [
             'Less than 60 files (23)'       => [
                 'nrOfFiles' => 23,
@@ -201,7 +195,6 @@ final class PrintProgressTest extends TestCase
                     .$fullLineOfDots.' 120 / 162 (74%)'.PHP_EOL
                     .str_repeat('.', 42).str_repeat(' ', 18).' 162 / 162 (100%)'.PHP_EOL,
             ],
-            // More than anything, this tests that the padding of the numbers is handled correctly.
             'More than 1000 files (1234)'   => [
                 'nrOfFiles' => 1234,
                 'expected'  => $fullLineOfDots.'   60 / 1234 (5%)'.PHP_EOL
@@ -227,7 +220,6 @@ final class PrintProgressTest extends TestCase
                     .str_repeat('.', 34).str_repeat(' ', 26).' 1234 / 1234 (100%)'.PHP_EOL,
             ],
         ];
-        // phpcs:enable
 
     }//end dataEndOfLineSummary()
 

@@ -67,8 +67,6 @@ class ObjectInstantiationSniff implements Sniff
             T_INLINE_ELSE => true,
         ];
 
-        // For ternary like tokens, walk a little further back to see if it is preceded by
-        // one of the allowed tokens (within the same statement).
         if (isset($ternaryLikeTokens[$tokens[$prev]['code']]) === true) {
             $hasAllowedBefore = $phpcsFile->findPrevious($allowedTokens, ($prev - 1), null, false, null, true);
             if ($hasAllowedBefore !== false) {

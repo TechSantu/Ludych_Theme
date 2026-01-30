@@ -74,7 +74,6 @@ final class ErrorSuppressionTest extends TestCase
                 'expectedErrors' => 1,
             ],
 
-            // Inline slash comments.
             'disable/enable: slash comment'                                            => [
                 'before' => '// phpcs:disable'.PHP_EOL,
                 'after'  => '// phpcs:enable',
@@ -92,7 +91,6 @@ final class ErrorSuppressionTest extends TestCase
                 'after'  => '// pHPcs:enabLE',
             ],
 
-            // Inline hash comments.
             'disable/enable: hash comment'                                             => [
                 'before' => '# phpcs:disable'.PHP_EOL,
                 'after'  => '# phpcs:enable',
@@ -110,7 +108,6 @@ final class ErrorSuppressionTest extends TestCase
                 'after'  => '# pHPcs:enabLE',
             ],
 
-            // Inline star (block) comments.
             'disable/enable: star comment'                                             => [
                 'before' => '/* phpcs:disable */'.PHP_EOL,
                 'after'  => '/* phpcs:enable */',
@@ -128,13 +125,11 @@ final class ErrorSuppressionTest extends TestCase
                 'after'  => "\t".'/*'.PHP_EOL.' * phpcs:enable'.PHP_EOL.' */',
             ],
 
-            // Docblock comments.
             'disable/enable: single line docblock comment'                             => [
                 'before' => '/** phpcs:disable */'.PHP_EOL,
                 'after'  => '/** phpcs:enable */',
             ],
 
-            // Deprecated syntax.
             'old style: slash comment'                                                 => [
                 'before' => '// @codingStandardsIgnoreStart'.PHP_EOL,
                 'after'  => '// @codingStandardsIgnoreEnd',
@@ -212,7 +207,6 @@ EOD;
                 'expectedErrors' => 2,
             ],
 
-            // With suppression.
             'disable/enable: slash comment'                => [
                 'before'  => '// phpcs:disable',
                 'between' => '// phpcs:enable',
@@ -234,7 +228,6 @@ EOD;
                 'between' => '/** phpcs:enable */',
             ],
 
-            // Deprecated syntax.
             'old style: slash comment'                     => [
                 'before'  => '// @codingStandardsIgnoreStart',
                 'between' => '// @codingStandardsIgnoreEnd',
@@ -303,7 +296,6 @@ EOD;
                 'expectedWarnings' => 1,
             ],
 
-            // With suppression.
             'disable/enable: slash comment'                => [
                 'before' => '// phpcs:disable',
                 'after'  => '// phpcs:enable',
@@ -317,7 +309,6 @@ EOD;
                 'after'  => '/** phpcs:enable */',
             ],
 
-            // Deprecated syntax.
             'old style: slash comment'                     => [
                 'before' => '// @codingStandardsIgnoreStart',
                 'after'  => '// @codingStandardsIgnoreEnd',
@@ -387,7 +378,6 @@ EOD;
                 'expectedErrors' => 2,
             ],
 
-            // With suppression on line before.
             'ignore: line before, slash comment'         => [
                 'before' => '// phpcs:ignore',
             ],
@@ -407,7 +397,6 @@ EOD;
                 'before' => '/* @phpcs:ignore */',
             ],
 
-            // With suppression as trailing comment on code line.
             'ignore: end of line, slash comment'         => [
                 'before' => '',
                 'after'  => ' // phpcs:ignore',
@@ -425,7 +414,6 @@ EOD;
                 'after'  => ' # @phpcs:ignore',
             ],
 
-            // Deprecated syntax.
             'old style: line before, slash comment'      => [
                 'before' => '// @codingStandardsIgnoreLine',
             ],
@@ -474,7 +462,6 @@ EOD;
 
         $ruleset = new Ruleset($config);
 
-        // Process with @ suppression on line before inside docblock.
         $comment = str_repeat('a ', 50);
         $content = <<<EOD
 <?php
@@ -541,7 +528,6 @@ EOD;
     public static function dataNestedSuppressLine()
     {
         return [
-            // Process with disable/enable suppression and no single line suppression.
             'disable/enable: slash comment, no single line suppression'                       => [
                 'before' => '// phpcs:disable',
                 'after'  => '// phpcs:enable',
@@ -559,7 +545,6 @@ EOD;
                 'after'  => '// @codingStandardsIgnoreEnd',
             ],
 
-            // Process with line suppression nested within disable/enable suppression.
             'disable/enable: slash comment, next line nested single line suppression'         => [
                 'before' => '// phpcs:disable'.PHP_EOL.'// phpcs:ignore',
                 'after'  => '// phpcs:enable',
@@ -640,7 +625,6 @@ EOD;
                 'expectedErrors' => 1,
             ],
 
-            // Process with suppression.
             'disable/enable: slash comment'                        => [
                 'before' => '//phpcs:disable',
                 'after'  => '//phpcs:enable',
@@ -662,7 +646,6 @@ EOD;
                 'after'  => '/** @phpcs:enable */',
             ],
 
-            // Deprecated syntax.
             'old style: start/end, slash comment'                  => [
                 'before' => '//@codingStandardsIgnoreStart',
                 'after'  => '//@codingStandardsIgnoreEnd',
@@ -734,7 +717,6 @@ EOD;
                 'expectedWarnings' => 1,
             ],
 
-            // Process with suppression.
             'ignoreFile: start of file, slash comment'                => [
                 'before' => '// phpcs:ignoreFile',
             ],
@@ -760,13 +742,11 @@ EOD;
                 'before' => '/** phpcs:ignoreFile */',
             ],
 
-            // Process late comment.
             'ignoreFile: late comment, slash comment'                 => [
                 'before' => '',
                 'after'  => '// phpcs:ignoreFile',
             ],
 
-            // Deprecated syntax.
             'old style: start of file, slash comment'                 => [
                 'before' => '// @codingStandardsIgnoreFile',
             ],
@@ -780,7 +760,6 @@ EOD;
                 'before' => '/** @codingStandardsIgnoreFile */',
             ],
 
-            // Deprecated syntax, late comment.
             'old style: late comment, slash comment'                  => [
                 'before' => '',
                 'after'  => '// @codingStandardsIgnoreFile',
@@ -846,7 +825,6 @@ EOD;
     public static function dataDisableSelected()
     {
         return [
-            // Single sniff.
             'disable: single sniff'                        => [
                 'before'         => '// phpcs:disable Generic.Commenting.Todo',
                 'expectedErrors' => 1,
@@ -864,7 +842,6 @@ EOD;
                 'expectedErrors' => 1,
             ],
 
-            // Multiple sniffs.
             'disable: multiple sniffs in one comment'      => [
                 'before' => '// phpcs:disable Generic.Commenting.Todo,Generic.PHP.LowerCaseConstant',
             ],
@@ -872,7 +849,6 @@ EOD;
                 'before' => '// phpcs:disable Generic.Commenting.Todo'.PHP_EOL.'// phpcs:disable Generic.PHP.LowerCaseConstant',
             ],
 
-            // Selectiveness variations.
             'disable: complete category'                   => [
                 'before'         => '// phpcs:disable Generic.Commenting',
                 'expectedErrors' => 1,
@@ -888,7 +864,6 @@ EOD;
                 'before' => '// phpcs:disable Generic.PHP.LowerCaseConstant.Found,Generic.Commenting',
             ],
 
-            // Wrong category/sniff/code.
             'disable: wrong error code and category'       => [
                 'before'           => '/**'.PHP_EOL.' * phpcs:disable Generic.PHP.LowerCaseConstant.Upper,Generic.Comments'.PHP_EOL.' */ ',
                 'expectedErrors'   => 1,
@@ -960,20 +935,16 @@ EOD;
         return [
             'disable/enable: a single sniff'                                                                                => [
                 'code'             => '
-                    // phpcs:disable Generic.Commenting.Todo
                     $var = FALSE;
                     //TODO: write some code
-                    // phpcs:enable Generic.Commenting.Todo
                     //TODO: write some code',
                 'expectedErrors'   => 1,
                 'expectedWarnings' => 1,
             ],
             'disable/enable: multiple sniffs'                                                                               => [
                 'code'             => '
-                    // phpcs:disable Generic.Commenting.Todo,Generic.PHP.LowerCaseConstant
                     $var = FALSE;
                     //TODO: write some code
-                    // phpcs:enable Generic.Commenting.Todo,Generic.PHP.LowerCaseConstant
                     //TODO: write some code
                     $var = FALSE;',
                 'expectedErrors'   => 1,
@@ -992,30 +963,24 @@ EOD;
             ],
             'disable/enable: complete category'                                                                             => [
                 'code'             => '
-                    // phpcs:disable Generic.Commenting
                     $var = FALSE;
                     //TODO: write some code
-                    // phpcs:enable Generic.Commenting
                     //TODO: write some code',
                 'expectedErrors'   => 1,
                 'expectedWarnings' => 1,
             ],
             'disable/enable: whole standard'                                                                                => [
                 'code'             => '
-                    // phpcs:disable Generic
                     $var = FALSE;
                     //TODO: write some code
-                    // phpcs:enable Generic
                     //TODO: write some code',
                 'expectedErrors'   => 0,
                 'expectedWarnings' => 1,
             ],
             'disable: whole standard; enable: category from the standard'                                                   => [
                 'code'             => '
-                    // phpcs:disable Generic
                     $var = FALSE;
                     //TODO: write some code
-                    // phpcs:enable Generic.Commenting
                     //TODO: write some code',
                 'expectedErrors'   => 0,
                 'expectedWarnings' => 1,
@@ -1032,47 +997,36 @@ EOD;
             ],
             'disable: single sniff; enable: the category containing the sniff'                                              => [
                 'code'             => '
-                    // phpcs:disable Generic.Commenting.Todo
                     $var = FALSE;
                     //TODO: write some code
-                    // phpcs:enable Generic.Commenting
                     //TODO: write some code',
                 'expectedErrors'   => 1,
                 'expectedWarnings' => 1,
             ],
             'disable: whole standard; enable: single sniff from the standard'                                               => [
                 'code'             => '
-                    // phpcs:disable Generic
                     $var = FALSE;
                     //TODO: write some code
-                    // phpcs:enable Generic.Commenting.Todo
                     //TODO: write some code',
                 'expectedErrors'   => 0,
                 'expectedWarnings' => 1,
             ],
             'disable: whole standard; enable: single sniff from the standard; disable: that same sniff; enable: everything' => [
                 'code'             => '
-                    // phpcs:disable Generic
                     $var = FALSE;
                     //TODO: write some code
-                    // phpcs:enable Generic.Commenting.Todo
                     //TODO: write some code
-                    // phpcs:disable Generic.Commenting.Todo
                     //TODO: write some code
-                    // phpcs:enable
                     //TODO: write some code',
                 'expectedErrors'   => 0,
                 'expectedWarnings' => 2,
             ],
             'disable: whole standard; enable: single sniff from the standard; enable: other sniff from the standard'        => [
                 'code'             => '
-                    // phpcs:disable Generic
                     $var = FALSE;
                     //TODO: write some code
-                    // phpcs:enable Generic.Commenting.Todo
                     //TODO: write some code
                     $var = FALSE;
-                    // phpcs:enable Generic.PHP.LowerCaseConstant
                     //TODO: write some code
                     $var = FALSE;',
                 'expectedErrors'   => 1,
@@ -1143,7 +1097,6 @@ EOD;
                 'expectedWarnings' => 2,
             ],
 
-            // With suppression.
             'ignore: single sniff'                        => [
                 'before'           => '// phpcs:ignore Generic.Commenting.Todo',
                 'expectedErrors'   => 2,
@@ -1225,7 +1178,6 @@ EOD;
         return [
             'ignore: single sniff'                                                                         => [
                 'code'             => '
-                    // phpcs:ignore Generic.Commenting.Todo -- Because reasons
                     $var = FALSE; //TODO: write some code
                     $var = FALSE; //TODO: write some code',
                 'expectedErrors'   => 2,
@@ -1233,10 +1185,8 @@ EOD;
             ],
             'disable: single sniff; enable: same sniff - test whitespace handling around reason delimiter' => [
                 'code'             => '
-                    // phpcs:disable Generic.Commenting.Todo --Because reasons
                     $var = FALSE;
                     //TODO: write some code
-                    // phpcs:enable Generic.Commenting.Todo   --  Because reasons
                     //TODO: write some code',
                 'expectedErrors'   => 1,
                 'expectedWarnings' => 1,
@@ -1254,8 +1204,6 @@ EOD;
             ],
             'ignore: single sniff, multi-line slash comment'                                               => [
                 'code'             => '
-                    // Turn off a check for the next line of code.
-                    // phpcs:ignore Generic.Commenting.Todo
                     $var = FALSE; //TODO: write some code
                     $var = FALSE; //TODO: write some code',
                 'expectedErrors'   => 2,
@@ -1263,7 +1211,6 @@ EOD;
             ],
             'enable before disable, sniff not in standard'                                                 => [
                 'code'             => '
-                    // phpcs:enable Generic.PHP.NoSilencedErrors -- Because reasons
                     $var = @delete( $filename );
                     ',
                 'expectedErrors'   => 0,

@@ -67,22 +67,16 @@ class LowercasePHPFunctionsSniff implements Sniff
             return;
         }
 
-        // Make sure it is an inbuilt PHP function.
-        // PHP_CodeSniffer can possibly include user defined functions
-        // through the use of vendor/autoload.php.
         if (isset($this->builtInFunctions[$contentLc]) === false) {
             return;
         }
 
-        // Make sure this is a function call or a use statement.
         if (empty($tokens[$stackPtr]['nested_attributes']) === false) {
-            // Class instantiation in attribute, not function call.
             return;
         }
 
         $next = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
         if ($next === false) {
-            // Not a function call.
             return;
         }
 
@@ -92,7 +86,6 @@ class LowercasePHPFunctionsSniff implements Sniff
         $prevPrev = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($prev - 1), null, true);
 
         if ($tokens[$next]['code'] !== T_OPEN_PARENTHESIS) {
-            // Is this a use statement importing a PHP native function ?
             if ($tokens[$next]['code'] !== T_NS_SEPARATOR
                 && $tokens[$prev]['code'] === T_STRING
                 && $tokens[$prev]['content'] === 'function'
@@ -111,12 +104,10 @@ class LowercasePHPFunctionsSniff implements Sniff
                 }
             }
 
-            // No open parenthesis; not a "use function" statement nor a function call.
             return;
         }//end if
 
         if ($tokens[$prev]['code'] === T_FUNCTION) {
-            // Function declaration, not a function call.
             return;
         }
 
@@ -126,27 +117,21 @@ class LowercasePHPFunctionsSniff implements Sniff
                 || $tokens[$prevPrev]['code'] === T_NAMESPACE
                 || $tokens[$prevPrev]['code'] === T_NEW)
             ) {
-                // Namespaced class/function, not an inbuilt function.
-                // Could potentially give false negatives for non-namespaced files
-                // when namespace\functionName() is encountered.
                 return;
             }
         }
 
         if ($tokens[$prev]['code'] === T_NEW) {
-            // Object creation, not an inbuilt function.
             return;
         }
 
         if ($tokens[$prev]['code'] === T_OBJECT_OPERATOR
             || $tokens[$prev]['code'] === T_NULLSAFE_OBJECT_OPERATOR
         ) {
-            // Not an inbuilt function.
             return;
         }
 
         if ($tokens[$prev]['code'] === T_DOUBLE_COLON) {
-            // Not an inbuilt function.
             return;
         }
 

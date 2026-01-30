@@ -55,7 +55,6 @@ final class RuleInclusionAbsoluteLinuxTest extends TestCase
         $this->standard = __DIR__.'/'.basename(__FILE__, '.php').'.xml';
         $repoRootDir    = dirname(dirname(dirname(__DIR__)));
 
-        // On-the-fly adjust the ruleset test file to be able to test sniffs included with absolute paths.
         $contents       = file_get_contents($this->standard);
         $this->contents = $contents;
 
@@ -70,7 +69,6 @@ final class RuleInclusionAbsoluteLinuxTest extends TestCase
             $this->markTestSkipped('On the fly ruleset adjustment failed');
         }
 
-        // Initialize the config and ruleset objects for the test.
         $config        = new ConfigDouble(["--standard={$this->standard}"]);
         $this->ruleset = new Ruleset($config);
 
@@ -99,7 +97,6 @@ final class RuleInclusionAbsoluteLinuxTest extends TestCase
      */
     public function testLinuxStylePathRuleInclusion()
     {
-        // Test that the sniff is correctly registered.
         $this->assertCount(1, $this->ruleset->sniffCodes);
         $this->assertArrayHasKey('Generic.Formatting.SpaceAfterNot', $this->ruleset->sniffCodes);
         $this->assertSame(
@@ -107,7 +104,6 @@ final class RuleInclusionAbsoluteLinuxTest extends TestCase
             $this->ruleset->sniffCodes['Generic.Formatting.SpaceAfterNot']
         );
 
-        // Test that the sniff properties are correctly set.
         $this->assertSame(
             '10',
             $this->ruleset->sniffs['PHP_CodeSniffer\Standards\Generic\Sniffs\Formatting\SpaceAfterNotSniff']->spacing

@@ -35,10 +35,8 @@ class ClassDeclarationSniff extends PEARClassDeclarationSniff
      */
     public function process(File $phpcsFile, $stackPtr)
     {
-        // We want all the errors from the PEAR standard, plus some of our own.
         parent::process($phpcsFile, $stackPtr);
 
-        // Just in case.
         $tokens = $phpcsFile->getTokens();
         if (isset($tokens[$stackPtr]['scope_opener']) === false) {
             return;
@@ -64,7 +62,6 @@ class ClassDeclarationSniff extends PEARClassDeclarationSniff
         $tokens       = $phpcsFile->getTokens();
         $stackPtrType = strtolower($tokens[$stackPtr]['content']);
 
-        // Check alignment of the keyword and braces.
         $classModifiers = [
             T_ABSTRACT => T_ABSTRACT,
             T_FINAL    => T_FINAL,
@@ -93,7 +90,6 @@ class ClassDeclarationSniff extends PEARClassDeclarationSniff
                 ];
 
                 if ($prevNonSpace !== $prevNonEmpty) {
-                    // Comment found between modifier and class keyword. Do not auto-fix.
                     $phpcsFile->addError($error, $stackPtr, $errorCode, $data);
                 } else {
                     $fix = $phpcsFile->addFixableError($error, $stackPtr, $errorCode, $data);
@@ -114,14 +110,12 @@ class ClassDeclarationSniff extends PEARClassDeclarationSniff
             }//end if
         }//end if
 
-        // We'll need the indent of the class/interface declaration for later.
         $classIndent = 0;
         for ($i = ($stackPtr - 1); $i > 0; $i--) {
             if ($tokens[$i]['line'] === $tokens[$stackPtr]['line']) {
                 continue;
             }
 
-            // We changed lines.
             if ($tokens[($i + 1)]['code'] === T_WHITESPACE) {
                 $classIndent = $tokens[($i + 1)]['length'];
             }
@@ -135,7 +129,6 @@ class ClassDeclarationSniff extends PEARClassDeclarationSniff
         if ($tokens[$stackPtr]['code'] !== T_ANON_CLASS) {
             $className = $phpcsFile->findNext(T_STRING, $stackPtr);
         } else {
-            // Ignore the spacing check if this is a simple anon class.
             $next = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
             if ($next === $tokens[$stackPtr]['scope_opener']
                 && $tokens[$next]['line'] > $tokens[$stackPtr]['line']
@@ -145,7 +138,6 @@ class ClassDeclarationSniff extends PEARClassDeclarationSniff
         }
 
         if ($checkSpacing === true) {
-            // Spacing of the keyword.
             if ($tokens[($stackPtr + 1)]['code'] !== T_WHITESPACE) {
                 $gap = 0;
             } else if ($tokens[($stackPtr + 2)]['line'] !== $tokens[$stackPtr]['line']) {
@@ -172,7 +164,6 @@ class ClassDeclarationSniff extends PEARClassDeclarationSniff
             }
         }//end if
 
-        // Check after the class/interface name.
         if ($className !== null
             && $tokens[($className + 2)]['line'] === $tokens[$className]['line']
         ) {
@@ -194,7 +185,6 @@ class ClassDeclarationSniff extends PEARClassDeclarationSniff
 
         $openingBrace = $tokens[$stackPtr]['scope_opener'];
 
-        // Check positions of the extends and implements keywords.
         $compareToken = $stackPtr;
         $compareType  = 'name';
         if ($tokens[$stackPtr]['code'] === T_ANON_CLASS) {
@@ -242,9 +232,6 @@ class ClassDeclarationSniff extends PEARClassDeclarationSniff
                         $phpcsFile->fixer->endChangeset();
                     }//end if
                 } else {
-                    // Check the whitespace before. Whitespace after is checked
-                    // later by looking at the whitespace before the first class name
-                    // in the list.
                     $gap = $tokens[($keyword - 1)]['length'];
                     if ($gap !== 1) {
                         $error = 'Expected 1 space before '.$keywordType.' keyword; %s found';
@@ -258,13 +245,6 @@ class ClassDeclarationSniff extends PEARClassDeclarationSniff
             }//end if
         }//end foreach
 
-        // Check each of the extends/implements class names. If the extends/implements
-        // keyword is the last content on the line, it means we need to check for
-        // the multi-line format, so we do not include the class names
-        // from the extends/implements list in the following check.
-        // Note that classes can only extend one other class, so they can't use a
-        // multi-line extends format, whereas an interface can extend multiple
-        // other interfaces, and so uses a multi-line extends format.
         if ($tokens[$stackPtr]['code'] === T_INTERFACE) {
             $keywordTokenType = T_EXTENDS;
         } else {
@@ -404,7 +384,6 @@ class ClassDeclarationSniff extends PEARClassDeclarationSniff
                 || ($tokens[($className - 2)]['code'] !== T_STRING
                 && $tokens[($className - 2)]['code'] !== T_NAMESPACE)
             ) {
-                // Not part of a longer fully qualified or namespace relative class name.
                 if ($tokens[($className - 1)]['code'] === T_COMMA
                     || ($tokens[($className - 1)]['code'] === T_NS_SEPARATOR
                     && $tokens[($className - 2)]['code'] === T_COMMA)
@@ -456,8 +435,6 @@ class ClassDeclarationSniff extends PEARClassDeclarationSniff
                 && $tokens[($className + 1)]['code'] !== T_COMMA
             ) {
                 if ($n !== ($classCount - 1)) {
-                    // This is not the last class name, and the comma
-                    // is not where we expect it to be.
                     if ($tokens[($className + 2)]['code'] !== $keywordTokenType) {
                         $error = 'Expected 0 spaces between "%s" and comma; %s found';
                         $data  = [
@@ -494,7 +471,6 @@ class ClassDeclarationSniff extends PEARClassDeclarationSniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Check that the closing brace comes right after the code body.
         $closeBrace  = $tokens[$stackPtr]['scope_closer'];
         $prevContent = $phpcsFile->findPrevious(T_WHITESPACE, ($closeBrace - 1), null, true);
         if ($prevContent !== $tokens[$stackPtr]['scope_opener']
@@ -519,8 +495,6 @@ class ClassDeclarationSniff extends PEARClassDeclarationSniff
         }//end if
 
         if ($tokens[$stackPtr]['code'] !== T_ANON_CLASS) {
-            // Check the closing brace is on it's own line, but allow
-            // for comments like "//end class".
             $ignoreTokens   = Tokens::$phpcsCommentTokens;
             $ignoreTokens[] = T_WHITESPACE;
             $ignoreTokens[] = T_COMMENT;

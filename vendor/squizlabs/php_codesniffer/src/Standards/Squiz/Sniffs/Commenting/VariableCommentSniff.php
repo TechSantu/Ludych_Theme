@@ -92,7 +92,6 @@ class VariableCommentSniff extends AbstractVariableSniff
                     $foundVar = $tag;
                 }
             } else if ($tokens[$tag]['content'] === '@see') {
-                // Make sure the tag isn't empty.
                 $string = $phpcsFile->findNext(T_DOC_COMMENT_STRING, $tag, $commentEnd);
                 if ($string === false || $tokens[$string]['line'] !== $tokens[$tag]['line']) {
                     $error = 'Content missing for @see tag in member variable comment';
@@ -105,7 +104,6 @@ class VariableCommentSniff extends AbstractVariableSniff
             }//end if
         }//end foreach
 
-        // The @var tag is the only one we require.
         if ($foundVar === null) {
             $error = 'Missing @var tag in member variable comment';
             $phpcsFile->addError($error, $commentEnd, 'MissingVar');
@@ -118,7 +116,6 @@ class VariableCommentSniff extends AbstractVariableSniff
             $phpcsFile->addError($error, $foundVar, 'VarOrder');
         }
 
-        // Make sure the tag isn't empty and has the correct padding.
         $string = $phpcsFile->findNext(T_DOC_COMMENT_STRING, $foundVar, $commentEnd);
         if ($string === false || $tokens[$string]['line'] !== $tokens[$foundVar]['line']) {
             $error = 'Content missing for @var tag in member variable comment';
@@ -126,7 +123,6 @@ class VariableCommentSniff extends AbstractVariableSniff
             return;
         }
 
-        // Support both a var type and a description.
         preg_match('`^((?:\|?(?:array\([^\)]*\)|[\\\\a-z0-9\[\]]+))*)( .*)?`i', $tokens[($foundVar + 2)]['content'], $varParts);
         if (isset($varParts[1]) === false) {
             return;
@@ -134,7 +130,6 @@ class VariableCommentSniff extends AbstractVariableSniff
 
         $varType = $varParts[1];
 
-        // Check var type (can be multiple, separated by '|').
         $typeNames      = explode('|', $varType);
         $suggestedNames = [];
         foreach ($typeNames as $typeName) {

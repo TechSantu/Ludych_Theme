@@ -92,7 +92,6 @@ class NewPHPOpenTagEOFSniff extends Sniff
         }
 
         if ($stackPtr !== ($phpcsFile->numTokens - 1)) {
-            // We're only interested in the last token in the file.
             return;
         }
 
@@ -102,17 +101,14 @@ class NewPHPOpenTagEOFSniff extends Sniff
 
         switch ($tokens[$stackPtr]['code']) {
             case \T_INLINE_HTML:
-                // PHP < 7.4 with short open tags off.
                 if ($contents === '<?php') {
                     $error = true;
                 } elseif ($contents === '<?=') {
-                    // Also cover short open echo tags in PHP 5.3 with short open tags off.
                     $error = true;
                 }
                 break;
 
             case \T_STRING:
-                // PHP < 7.4 with short open tags on.
                 if ($contents === 'php'
                     && $tokens[($stackPtr - 1)]['code'] === \T_OPEN_TAG
                     && $tokens[($stackPtr - 1)]['content'] === '<?'
@@ -122,14 +118,12 @@ class NewPHPOpenTagEOFSniff extends Sniff
                 break;
 
             case \T_OPEN_TAG_WITH_ECHO:
-                // PHP 5.4+.
                 if (rtrim($contents) === '<?=') {
                     $error = true;
                 }
                 break;
 
             case \T_OPEN_TAG:
-                // PHP 7.4+.
                 if ($contents === '<?php') {
                     $error = true;
                 }

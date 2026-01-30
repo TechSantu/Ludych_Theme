@@ -35,14 +35,12 @@ final class TextTest extends TestCase
      */
     public function testDocs($standard, $pathToExpected)
     {
-        // Set up the ruleset.
         $config  = new ConfigDouble(["--standard=$standard"]);
         $ruleset = new Ruleset($config);
 
         $expected = file_get_contents($pathToExpected);
         $this->assertNotFalse($expected, 'Output expectation file could not be found');
 
-        // Make the test OS independent.
         $expected = str_replace("\n", PHP_EOL, $expected);
         $this->expectOutputString($expected);
 
@@ -89,12 +87,10 @@ final class TextTest extends TestCase
      */
     public function testDocSpecifics($sniffs, $pathToExpected)
     {
-        // Set up the ruleset.
         $standard = __DIR__.'/AllValidDocsTest.xml';
         $config   = new ConfigDouble(["--standard=$standard", "--sniffs=$sniffs"]);
         $ruleset  = new Ruleset($config);
 
-        // In tests, the `--sniffs` setting doesn't work out of the box.
         $sniffParts = explode('.', $sniffs);
         $sniffFile  = __DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.$sniffParts[0].DIRECTORY_SEPARATOR;
         $sniffFile .= 'Sniffs'.DIRECTORY_SEPARATOR.$sniffParts[1].DIRECTORY_SEPARATOR.$sniffParts[2].'Sniff.php';
@@ -107,7 +103,6 @@ final class TextTest extends TestCase
         $expected = file_get_contents($pathToExpected);
         $this->assertNotFalse($expected, 'Output expectation file could not be found');
 
-        // Make the test OS independent.
         $expected = str_replace("\n", PHP_EOL, $expected);
         $this->expectOutputString($expected);
 

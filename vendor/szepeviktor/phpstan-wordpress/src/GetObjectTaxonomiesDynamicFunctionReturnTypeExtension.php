@@ -35,19 +35,16 @@ class GetObjectTaxonomiesDynamicFunctionReturnTypeExtension implements \PHPStan\
     {
         $args = $functionCall->getArgs();
 
-        // Called without second $output argument
         if (count($args) <= 1) {
             return new ArrayType(new IntegerType(), new StringType());
         }
 
         $argumentType = $scope->getType($args[1]->value);
 
-        // When called with an $output that isn't a constant string, return default return type
         if (count($argumentType->getConstantStrings()) === 0) {
             return null;
         }
 
-        // Called with a constant string $output
         $returnType = [];
         foreach ($argumentType->getConstantStrings() as $constantString) {
             switch ($constantString->getValue()) {

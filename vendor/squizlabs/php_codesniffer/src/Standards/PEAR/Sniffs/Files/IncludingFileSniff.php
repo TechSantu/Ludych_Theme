@@ -73,9 +73,6 @@ class IncludingFileSniff implements Sniff
             $inCondition = false;
         }
 
-        // Check to see if this including statement is within the parenthesis
-        // of a condition. If that's the case then we need to process it as being
-        // within a condition, as they are checking the return value.
         if (isset($tokens[$stackPtr]['nested_parenthesis']) === true) {
             foreach ($tokens[$stackPtr]['nested_parenthesis'] as $left => $right) {
                 if (isset($tokens[$left]['parenthesis_owner']) === true) {
@@ -84,18 +81,13 @@ class IncludingFileSniff implements Sniff
             }
         }
 
-        // Check to see if they are assigning the return value of this
-        // including call. If they are then they are probably checking it, so
-        // it's conditional.
         $previous = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($stackPtr - 1), null, true);
         if (isset(Tokens::$assignmentTokens[$tokens[$previous]['code']]) === true) {
-            // The have assigned the return value to it, so its conditional.
             $inCondition = true;
         }
 
         $tokenCode = $tokens[$stackPtr]['code'];
         if ($inCondition === true) {
-            // We are inside a conditional statement. We need an include_once.
             if ($tokenCode === T_REQUIRE_ONCE) {
                 $error  = 'File is being conditionally included; ';
                 $error .= 'use "include_once" instead';
@@ -112,7 +104,6 @@ class IncludingFileSniff implements Sniff
                 }
             }
         } else {
-            // We are unconditionally including, we need a require_once.
             if ($tokenCode === T_INCLUDE_ONCE) {
                 $error  = 'File is being unconditionally included; ';
                 $error .= 'use "require_once" instead';

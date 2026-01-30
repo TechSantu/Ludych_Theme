@@ -65,7 +65,6 @@ class SyntaxSniff implements Sniff
             $phpcsFile->addErrorOnLine("PHP syntax error: $error", $line, 'PHPSyntax');
         }
 
-        // Ignore the rest of the file.
         return $phpcsFile->numTokens;
 
     }//end process()

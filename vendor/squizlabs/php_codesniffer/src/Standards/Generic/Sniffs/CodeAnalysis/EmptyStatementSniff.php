@@ -70,7 +70,6 @@ class EmptyStatementSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
         $token  = $tokens[$stackPtr];
 
-        // Skip statements without a body.
         if (isset($token['scope_opener']) === false) {
             return;
         }
@@ -86,7 +85,6 @@ class EmptyStatementSniff implements Sniff
             return;
         }
 
-        // Get token identifier.
         $name  = strtoupper($token['content']);
         $error = 'Empty %s statement detected';
         $phpcsFile->addError($error, $stackPtr, 'Detected'.ucfirst(strtolower($name)), [$name]);

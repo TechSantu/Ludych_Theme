@@ -69,7 +69,6 @@ final class Helper
     public static function setConfigData($key, $value, $temp = false, $config = null)
     {
         if (isset($config) === true) {
-            // PHPCS 3.x and 4.x.
             return $config->setConfigData($key, $value, $temp);
         }
 
@@ -77,7 +76,6 @@ final class Helper
             throw MissingArgumentError::create(4, '$config', 'when running on PHPCS 4.x');
         }
 
-        // PHPCS 3.x.
         return Config::setConfigData($key, $value, $temp);
     }
 
@@ -157,7 +155,6 @@ final class Helper
         $default = 'utf-8';
 
         if ($phpcsFile instanceof File) {
-            // Most reliable.
             $encoding = self::getCommandLineData($phpcsFile, 'encoding');
             if ($encoding === null) {
                 $encoding = $default;
@@ -166,7 +163,6 @@ final class Helper
             return $encoding;
         }
 
-        // Less reliable.
         $encoding = self::getConfigData('encoding');
         if ($encoding === null) {
             $encoding = $default;

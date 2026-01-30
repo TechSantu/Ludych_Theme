@@ -100,8 +100,6 @@ final class ObjectDeclarations
         if ($tokenCode === \T_FUNCTION
             && \strtolower($tokens[$stackPtr]['content']) !== 'function'
         ) {
-            // This is a function declared without the "function" keyword.
-            // So this token is the function name.
             return $tokens[$stackPtr]['content'];
         }
 
@@ -126,7 +124,6 @@ final class ObjectDeclarations
 
         $nameStart = $phpcsFile->findNext($exclude, ($stackPtr + 1), $stopPoint, true);
         if ($nameStart === false) {
-            // Live coding or parse error.
             return null;
         }
 
@@ -136,7 +133,6 @@ final class ObjectDeclarations
             return $tokens[$nameStart]['content'];
         }
 
-        // Name starts with number, so is composed of multiple tokens.
         return GetTokensAsString::noEmpties($phpcsFile, $nameStart, ($tokenAfterNameEnd - 1));
     }
 
@@ -267,7 +263,6 @@ final class ObjectDeclarations
             return false;
         }
 
-        // Classes can only extend one parent class.
         return \array_shift($names);
     }
 
@@ -544,7 +539,6 @@ final class ObjectDeclarations
             throw UnexpectedTokenType::create(2, '$stackPtr', $acceptedTokens, $tokens[$stackPtr]['type']);
         }
 
-        // Set defaults.
         $found = [
             'constants'  => [],
             'cases'      => [],
@@ -561,19 +555,16 @@ final class ObjectDeclarations
         }
 
         for ($i = ($tokens[$stackPtr]['scope_opener'] + 1); $i < $tokens[$stackPtr]['scope_closer']; $i++) {
-            // Skip over potentially large docblocks.
             if (isset($tokens[$i]['comment_closer']) === true) {
                 $i = $tokens[$i]['comment_closer'];
                 continue;
             }
 
-            // Skip over attributes.
             if (isset($tokens[$i]['attribute_closer']) === true) {
                 $i = $tokens[$i]['attribute_closer'];
                 continue;
             }
 
-            // Skip over trait imports with conflict resolution.
             if ($tokens[$i]['code'] === \T_USE
                 && isset($tokens[$i]['scope_closer']) === true
             ) {
@@ -581,7 +572,6 @@ final class ObjectDeclarations
                 continue;
             }
 
-            // Defensive coding against parse errors.
             if ($tokens[$i]['code'] === \T_CLOSURE
                 && isset($tokens[$i]['scope_closer']) === true
             ) {
@@ -593,33 +583,28 @@ final class ObjectDeclarations
                 case \T_CONST:
                     $assignmentPtr = $phpcsFile->findNext([\T_EQUAL, \T_SEMICOLON, \T_CLOSE_CURLY_BRACKET], ($i + 1));
                     if ($assignmentPtr === false || $tokens[$assignmentPtr]['code'] !== \T_EQUAL) {
-                        // Probably a parse error. Ignore.
                         continue 2;
                     }
 
                     $namePtr = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($assignmentPtr - 1), ($i + 1), true);
                     if ($namePtr === false || $tokens[$namePtr]['code'] !== \T_STRING) {
-                        // Probably a parse error. Ignore.
                         continue 2;
                     }
 
                     $found['constants'][$tokens[$namePtr]['content']] = $i;
 
-                    // Skip to the assignment pointer, no need to double walk.
                     $i = $assignmentPtr;
                     break;
 
                 case \T_ENUM_CASE:
                     $namePtr = $phpcsFile->findNext(Tokens::$emptyTokens, ($i + 1), null, true);
                     if ($namePtr === false || $tokens[$namePtr]['code'] !== \T_STRING) {
-                        // Probably a parse error. Ignore.
                         continue 2;
                     }
 
                     $name                  = $tokens[$namePtr]['content'];
                     $found['cases'][$name] = $i;
 
-                    // Skip to the name pointer, no need to double walk.
                     $i = $namePtr;
                     break;
 
@@ -634,7 +619,6 @@ final class ObjectDeclarations
                         $found['methods'][$name] = $i;
 
                         if (\strtolower($name) === '__construct') {
-                            // Check for constructor property promotion.
                             $parameters = FunctionDeclarations::getParameters($phpcsFile, $i);
                             foreach ($parameters as $param) {
                                 if (isset($param['property_visibility'])) {
@@ -645,10 +629,8 @@ final class ObjectDeclarations
                     }
 
                     if (isset($tokens[$i]['scope_closer']) === true) {
-                        // Skip over the contents of the method, including the parameters.
                         $i = $tokens[$i]['scope_closer'];
                     } elseif (isset($tokens[$i]['parenthesis_closer']) === true) {
-                        // Skip over the contents of an abstract/interface method, including the parameters.
                         $i = $tokens[$i]['parenthesis_closer'];
                     }
                     break;

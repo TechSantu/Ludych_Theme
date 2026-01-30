@@ -39,7 +39,6 @@ final class ObjectOperatorSpacingSniff extends Squiz_ObjectOperatorSpacingSniff 
 		$tokens            = $phpcsFile->getTokens();
 		$property_adjusted = false;
 
-		// Check for `::class` and don't ignore new lines in that case.
 		if ( true === $this->ignoreNewlines
 			&& \T_DOUBLE_COLON === $tokens[ $stackPtr ]['code']
 		) {

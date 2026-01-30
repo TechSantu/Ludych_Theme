@@ -63,19 +63,14 @@ class OperatorSpacingSniff implements Sniff
             used as an operator.
         */
 
-        // Trying to operate on a negative value; eg. ($var * -1).
         $this->nonOperandTokens = Tokens::$operators;
 
-        // Trying to compare a negative value; eg. ($var === -1).
         $this->nonOperandTokens += Tokens::$comparisonTokens;
 
-        // Trying to compare a negative value; eg. ($var || -1 === $b).
         $this->nonOperandTokens += Tokens::$booleanOperators;
 
-        // Trying to assign a negative value; eg. ($var = -1).
         $this->nonOperandTokens += Tokens::$assignmentTokens;
 
-        // Returning/printing a negative value; eg. (return -1).
         $this->nonOperandTokens += [
             T_RETURN      => T_RETURN,
             T_ECHO        => T_ECHO,
@@ -86,7 +81,6 @@ class OperatorSpacingSniff implements Sniff
             T_MATCH_ARROW => T_MATCH_ARROW,
         ];
 
-        // Trying to use a negative value; eg. myFunction($var, -2).
         $this->nonOperandTokens += [
             T_CASE                => T_CASE,
             T_COLON               => T_COLON,
@@ -100,7 +94,6 @@ class OperatorSpacingSniff implements Sniff
             T_STRING_CONCAT       => T_STRING_CONCAT,
         ];
 
-        // Casting a negative value; eg. (array) -$a.
         $this->nonOperandTokens += Tokens::$castTokens;
 
         /*
@@ -114,7 +107,6 @@ class OperatorSpacingSniff implements Sniff
         $targets[] = T_INLINE_ELSE;
         $targets[] = T_INSTANCEOF;
 
-        // Also register the contexts we want to specifically skip over.
         $targets[] = T_DECLARE;
 
         return $targets;
@@ -138,10 +130,8 @@ class OperatorSpacingSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Skip over declare statements as those should be handled by different sniffs.
         if ($tokens[$stackPtr]['code'] === T_DECLARE) {
             if (isset($tokens[$stackPtr]['parenthesis_closer']) === false) {
-                // Parse error / live coding.
                 return $phpcsFile->numTokens;
             }
 
@@ -153,7 +143,6 @@ class OperatorSpacingSniff implements Sniff
         }
 
         if ($tokens[$stackPtr]['code'] === T_BITWISE_AND) {
-            // Check there is one space before the & operator.
             if ($tokens[($stackPtr - 1)]['code'] !== T_WHITESPACE) {
                 $error = 'Expected 1 space before "&" operator; 0 found';
                 $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'NoSpaceBeforeAmp');
@@ -184,11 +173,9 @@ class OperatorSpacingSniff implements Sniff
 
             $hasNext = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
             if ($hasNext === false) {
-                // Live coding/parse error at end of file.
                 return;
             }
 
-            // Check there is one space after the & operator.
             if ($tokens[($stackPtr + 1)]['code'] !== T_WHITESPACE) {
                 $error = 'Expected 1 space after "&" operator; 0 found';
                 $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'NoSpaceAfterAmp');
@@ -236,8 +223,6 @@ class OperatorSpacingSniff implements Sniff
         } else if (isset(Tokens::$assignmentTokens[$tokens[$stackPtr]['code']]) === false
             || $this->ignoreSpacingBeforeAssignments === false
         ) {
-            // Throw an error for assignments only if enabled using the sniff property
-            // because other standards allow multiple spaces to align assignments.
             $prevNonWhitespace = $phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), null, true);
             if ($tokens[$prevNonWhitespace]['line'] !== $tokens[$stackPtr]['line']) {
                 $found = 'newline';
@@ -256,10 +241,6 @@ class OperatorSpacingSniff implements Sniff
                 ];
 
                 if (isset(Tokens::$commentTokens[$tokens[$prevNonWhitespace]['code']]) === true) {
-                    // Throw a non-fixable error if the token on the previous line is a comment token,
-                    // as in that case it's not for the sniff to decide where the comment should be moved to
-                    // and it would get us into unfixable situations as the new line char is included
-                    // in the contents of the comment token.
                     $phpcsFile->addError($error, $stackPtr, 'SpacingBefore', $data);
                 } else {
                     $fix = $phpcsFile->addFixableError($error, $stackPtr, 'SpacingBefore', $data);
@@ -282,12 +263,10 @@ class OperatorSpacingSniff implements Sniff
 
         $hasNext = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
         if ($hasNext === false) {
-            // Live coding/parse error at end of file.
             return;
         }
 
         if ($tokens[($stackPtr + 1)]['code'] !== T_WHITESPACE) {
-            // Skip short ternary such as: "$foo = $bar ?: true;".
             if (($tokens[$stackPtr]['code'] === T_INLINE_THEN
                 && $tokens[($stackPtr + 1)]['code'] === T_INLINE_ELSE)
             ) {
@@ -325,8 +304,6 @@ class OperatorSpacingSniff implements Sniff
                     && isset(Tokens::$commentTokens[$tokens[$nextNonWhitespace]['code']]) === true
                     && $found === 'newline'
                 ) {
-                    // Don't auto-fix when it's a comment or PHPCS annotation on a new line as
-                    // it causes fixer conflicts and can cause the meaning of annotations to change.
                     $phpcsFile->addError($error, $stackPtr, 'SpacingAfter', $data);
                 } else {
                     $fix = $phpcsFile->addFixableError($error, $stackPtr, 'SpacingAfter', $data);
@@ -357,8 +334,6 @@ class OperatorSpacingSniff implements Sniff
             return false;
         }
 
-        // Skip default values in function declarations.
-        // Skip declare statements.
         if ($tokens[$stackPtr]['code'] === T_EQUAL) {
             if (isset($tokens[$stackPtr]['nested_parenthesis']) === true) {
                 $parenthesis = array_keys($tokens[$stackPtr]['nested_parenthesis']);
@@ -376,7 +351,6 @@ class OperatorSpacingSniff implements Sniff
         }
 
         if ($tokens[$stackPtr]['code'] === T_EQUAL) {
-            // Skip for '=&' case.
             if (isset($tokens[($stackPtr + 1)]) === true
                 && $tokens[($stackPtr + 1)]['code'] === T_BITWISE_AND
             ) {
@@ -385,16 +359,12 @@ class OperatorSpacingSniff implements Sniff
         }
 
         if ($tokens[$stackPtr]['code'] === T_BITWISE_AND) {
-            // If it's not a reference, then we expect one space either side of the
-            // bitwise operator.
             if ($phpcsFile->isReference($stackPtr) === true) {
                 return false;
             }
         }
 
         if ($tokens[$stackPtr]['code'] === T_MINUS || $tokens[$stackPtr]['code'] === T_PLUS) {
-            // Check minus spacing, but make sure we aren't just assigning
-            // a minus value or returning one.
             $prev = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($stackPtr - 1), null, true);
             if (isset($this->nonOperandTokens[$tokens[$prev]['code']]) === true) {
                 return false;

@@ -74,7 +74,6 @@ class FunctionDeclarationSniff implements Sniff
         $closeBracket = $tokens[$stackPtr]['parenthesis_closer'];
 
         if (strtolower($tokens[$stackPtr]['content']) === 'function') {
-            // Must be one space after the FUNCTION keyword.
             if ($tokens[($stackPtr + 1)]['content'] === $phpcsFile->eolChar) {
                 $spaces = 'newline';
             } else if ($tokens[($stackPtr + 1)]['code'] === T_WHITESPACE) {
@@ -97,11 +96,6 @@ class FunctionDeclarationSniff implements Sniff
             }
         }//end if
 
-        // Must be no space before the opening parenthesis. For closures, this is
-        // enforced by the previous check because there is no content between the keywords
-        // and the opening parenthesis.
-        // Unfinished closures are tokenized as T_FUNCTION however, and can be excluded
-        // by checking if the function has a name.
         $methodProps = $phpcsFile->getMethodProperties($stackPtr);
         $methodName  = $phpcsFile->getDeclarationName($stackPtr);
         if ($tokens[$stackPtr]['code'] === T_FUNCTION && $methodName !== null) {
@@ -122,7 +116,6 @@ class FunctionDeclarationSniff implements Sniff
                 }
             }
 
-            // Must be no space before semicolon in abstract/interface methods.
             if ($methodProps['has_body'] === false) {
                 $end = $phpcsFile->findNext(T_SEMICOLON, $closeBracket);
                 if ($end !== false) {
@@ -146,7 +139,6 @@ class FunctionDeclarationSniff implements Sniff
             }//end if
         }//end if
 
-        // Must be one space before and after USE keyword for closures.
         if ($tokens[$stackPtr]['code'] === T_CLOSURE) {
             $use = $phpcsFile->findNext(T_USE, ($closeBracket + 1), $tokens[$stackPtr]['scope_opener']);
             if ($use !== false) {
@@ -223,12 +215,9 @@ class FunctionDeclarationSniff implements Sniff
             return true;
         }
 
-        // Closures may use the USE keyword and so be multi-line in this way.
         if ($tokens[$stackPtr]['code'] === T_CLOSURE) {
             $use = $phpcsFile->findNext(T_USE, ($closeBracket + 1), $tokens[$stackPtr]['scope_opener']);
             if ($use !== false) {
-                // If the opening and closing parenthesis of the use statement
-                // are also on the same line, this is a single line declaration.
                 $open  = $phpcsFile->findNext(T_OPEN_PARENTHESIS, ($use + 1));
                 $close = $tokens[$open]['parenthesis_closer'];
                 if ($tokens[$open]['line'] !== $tokens[$close]['line']) {
@@ -297,9 +286,6 @@ class FunctionDeclarationSniff implements Sniff
             return;
         }
 
-        // The opening brace needs to be on the same line as the closing parenthesis.
-        // There should only be one space between the closing parenthesis - or the end of the
-        // return type - and the opening brace.
         $opener = $tokens[$stackPtr]['scope_opener'];
         if ($tokens[$opener]['line'] !== $tokens[$closeBracket]['line']) {
             $error = 'The closing parenthesis and the opening brace of a multi-line function declaration must be on the same line';
@@ -307,7 +293,6 @@ class FunctionDeclarationSniff implements Sniff
 
             $prev = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($opener - 1), $closeBracket, true);
             if ($tokens[$prev]['line'] === $tokens[$opener]['line']) {
-                // End of the return type is not on the same line as the close parenthesis.
                 $phpcsFile->addError($error, $opener, $code);
             } else {
                 $fix = $phpcsFile->addFixableError($error, $opener, $code);
@@ -315,22 +300,18 @@ class FunctionDeclarationSniff implements Sniff
                     $phpcsFile->fixer->beginChangeset();
                     $phpcsFile->fixer->addContent($prev, ' {');
 
-                    // If the opener is on a line by itself, removing it will create
-                    // an empty line, so remove the entire line instead.
                     $prev = $phpcsFile->findPrevious(T_WHITESPACE, ($opener - 1), $closeBracket, true);
                     $next = $phpcsFile->findNext(T_WHITESPACE, ($opener + 1), null, true);
 
                     if ($tokens[$prev]['line'] < $tokens[$opener]['line']
                         && $tokens[$next]['line'] > $tokens[$opener]['line']
                     ) {
-                        // Clear the whole line.
                         for ($i = ($prev + 1); $i < $next; $i++) {
                             if ($tokens[$i]['line'] === $tokens[$opener]['line']) {
                                 $phpcsFile->fixer->replaceToken($i, '');
                             }
                         }
                     } else {
-                        // Just remove the opener.
                         $phpcsFile->fixer->replaceToken($opener, '');
                         if ($tokens[$next]['line'] === $tokens[$opener]['line']
                             && ($opener + 1) !== $next
@@ -384,9 +365,6 @@ class FunctionDeclarationSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // We need to work out how far indented the function
-        // declaration itself is, so we can work out how far to
-        // indent parameters.
         $functionIndent = 0;
         for ($i = ($stackPtr - 1); $i >= 0; $i--) {
             if ($tokens[$i]['line'] !== $tokens[$stackPtr]['line']) {
@@ -394,15 +372,12 @@ class FunctionDeclarationSniff implements Sniff
             }
         }
 
-        // Move $i back to the line the function is or to 0.
         $i++;
 
         if ($tokens[$i]['code'] === T_WHITESPACE) {
             $functionIndent = $tokens[$i]['length'];
         }
 
-        // The closing parenthesis must be on a new line, even
-        // when checking abstract function definitions.
         $closeBracket = $tokens[$stackPtr]['parenthesis_closer'];
         $prev         = $phpcsFile->findPrevious(
             T_WHITESPACE,
@@ -421,9 +396,6 @@ class FunctionDeclarationSniff implements Sniff
             }
         }
 
-        // If this is a closure and is using a USE statement, the closing
-        // parenthesis we need to look at from now on is the closing parenthesis
-        // of the USE statement.
         if ($tokens[$stackPtr]['code'] === T_CLOSURE) {
             $use = $phpcsFile->findNext(T_USE, ($closeBracket + 1), $tokens[$stackPtr]['scope_opener']);
             if ($use !== false) {
@@ -449,7 +421,6 @@ class FunctionDeclarationSniff implements Sniff
             }//end if
         }//end if
 
-        // Each line between the parenthesis should be indented 4 spaces.
         $openBracket = $tokens[$stackPtr]['parenthesis_opener'];
         $lastLine    = $tokens[$openBracket]['line'];
         for ($i = ($openBracket + 1); $i < $closeBracket; $i++) {
@@ -459,14 +430,11 @@ class FunctionDeclarationSniff implements Sniff
                     && (($i + 1) === $closeBracket
                     || ($i + 1) === $tokens[$stackPtr]['parenthesis_closer']))
                 ) {
-                    // Closing braces need to be indented to the same level
-                    // as the function.
                     $expectedIndent = $functionIndent;
                 } else {
                     $expectedIndent = ($functionIndent + $indent);
                 }
 
-                // We changed lines, so this should be a whitespace indent token.
                 $foundIndent = 0;
                 if ($tokens[$i]['code'] === T_WHITESPACE
                     && $tokens[$i]['line'] !== $tokens[($i + 1)]['line']
@@ -477,7 +445,6 @@ class FunctionDeclarationSniff implements Sniff
                         $phpcsFile->fixer->replaceToken($i, '');
                     }
 
-                    // This is an empty line, so don't check the indent.
                     continue;
                 } else if ($tokens[$i]['code'] === T_WHITESPACE) {
                     $foundIndent = $tokens[$i]['length'];
@@ -512,8 +479,6 @@ class FunctionDeclarationSniff implements Sniff
             ) {
                 $prevNonEmpty = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($i - 1), null, true);
                 if ($tokens[$prevNonEmpty]['code'] !== T_USE) {
-                    // Since PHP 8.1, a default value can contain a class instantiation.
-                    // Skip over these "function calls" as they have their own indentation rules.
                     $i        = $tokens[$i]['parenthesis_closer'];
                     $lastLine = $tokens[$i]['line'];
                     continue;
@@ -521,7 +486,6 @@ class FunctionDeclarationSniff implements Sniff
             }
 
             if ($tokens[$i]['code'] === T_ARRAY || $tokens[$i]['code'] === T_OPEN_SHORT_ARRAY) {
-                // Skip arrays as they have their own indentation rules.
                 if ($tokens[$i]['code'] === T_OPEN_SHORT_ARRAY) {
                     $i = $tokens[$i]['bracket_closer'];
                 } else {
@@ -533,7 +497,6 @@ class FunctionDeclarationSniff implements Sniff
             }
 
             if ($tokens[$i]['code'] === T_ATTRIBUTE) {
-                // Skip attributes as they have their own indentation rules.
                 $i        = $tokens[$i]['attribute_closer'];
                 $lastLine = $tokens[$i]['line'];
                 continue;

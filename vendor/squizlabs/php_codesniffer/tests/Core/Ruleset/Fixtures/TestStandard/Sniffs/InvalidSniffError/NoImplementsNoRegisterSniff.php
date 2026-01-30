@@ -14,6 +14,5 @@ final class NoImplementsNoRegisterSniff
 
     public function process(File $phpcsFile, $stackPtr)
     {
-        // Do something.
     }
 }

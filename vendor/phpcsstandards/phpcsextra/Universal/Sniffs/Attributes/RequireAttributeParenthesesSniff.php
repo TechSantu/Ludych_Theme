@@ -67,9 +67,7 @@ final class RequireAttributeParenthesesSniff implements Sniff
         foreach ($instantiations as $attribute) {
             $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($attribute['name_token'] + 1), null, true);
 
-            // Note: no need to check for `false` as there will always be something after, if only the attribute closer.
             if ($tokens[$nextNonEmpty]['code'] === \T_OPEN_PARENTHESIS) {
-                // Parentheses found.
                 $phpcsFile->recordMetric($attribute['name_token'], self::METRIC_NAME, 'yes');
                 continue;
             }

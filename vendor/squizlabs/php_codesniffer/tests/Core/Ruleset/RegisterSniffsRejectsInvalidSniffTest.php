@@ -34,7 +34,6 @@ final class RegisterSniffsRejectsInvalidSniffTest extends AbstractRulesetTestCas
      */
     public function testExceptionIsThrownOnMissingInterfaceMethod($standard, $methodName)
     {
-        // Set up the ruleset.
         $standard = __DIR__.'/'.$standard;
         $config   = new ConfigDouble(["--standard=$standard"]);
 

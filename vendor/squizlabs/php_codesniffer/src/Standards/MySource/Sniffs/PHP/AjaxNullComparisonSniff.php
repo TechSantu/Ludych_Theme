@@ -47,10 +47,8 @@ class AjaxNullComparisonSniff implements Sniff, DeprecatedSniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Make sure it is an API function. We know this by the doc comment.
         $commentEnd   = $phpcsFile->findPrevious(T_DOC_COMMENT_CLOSE_TAG, $stackPtr);
         $commentStart = $phpcsFile->findPrevious(T_DOC_COMMENT_OPEN_TAG, ($commentEnd - 1));
-        // If function doesn't contain any doc comments - skip it.
         if ($commentEnd === false || $commentStart === false) {
             return;
         }
@@ -60,8 +58,6 @@ class AjaxNullComparisonSniff implements Sniff, DeprecatedSniff
             return;
         }
 
-        // Find all the vars passed in as we are only interested in comparisons
-        // to NULL for these specific variables.
         $foundVars = [];
         $open      = $tokens[$stackPtr]['parenthesis_opener'];
         $close     = $tokens[$stackPtr]['parenthesis_closer'];

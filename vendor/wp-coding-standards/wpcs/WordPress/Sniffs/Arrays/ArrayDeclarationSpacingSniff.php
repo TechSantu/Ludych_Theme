@@ -76,7 +76,6 @@ final class ArrayDeclarationSpacingSniff extends Sniff {
 		if ( isset( Collections::shortArrayListOpenTokensBC()[ $this->tokens[ $stackPtr ]['code'] ] )
 			&& Arrays::isShortArray( $this->phpcsFile, $stackPtr ) === false
 		) {
-			// Short list, not short array.
 			return;
 		}
 
@@ -85,7 +84,6 @@ final class ArrayDeclarationSpacingSniff extends Sniff {
 		 */
 		$array_open_close = Arrays::getOpenClose( $this->phpcsFile, $stackPtr );
 		if ( false === $array_open_close ) {
-			// Array open/close could not be determined.
 			return;
 		}
 
@@ -93,7 +91,6 @@ final class ArrayDeclarationSpacingSniff extends Sniff {
 		$closer = $array_open_close['closer'];
 		unset( $array_open_close );
 
-		// Pass off to either the single line or multi-line array analysis.
 		if ( $this->tokens[ $opener ]['line'] === $this->tokens[ $closer ]['line'] ) {
 			$this->process_single_line_array( $stackPtr, $opener, $closer );
 		} else {
@@ -179,7 +176,6 @@ final class ArrayDeclarationSpacingSniff extends Sniff {
 		foreach ( $array_items as $item ) {
 			$end_of_this_item = ( $item['end'] + 1 );
 
-			// Find the line on which the item starts.
 			$first_content = $this->phpcsFile->findNext(
 				array( \T_WHITESPACE, \T_DOC_COMMENT_WHITESPACE ),
 				$item['start'],
@@ -187,14 +183,12 @@ final class ArrayDeclarationSpacingSniff extends Sniff {
 				true
 			);
 
-			// Ignore comments after array items if the next real content starts on a new line.
 			if ( $this->tokens[ $first_content ]['line'] === $this->tokens[ $end_of_last_item ]['line']
 				&& ( \T_COMMENT === $this->tokens[ $first_content ]['code']
 				|| isset( Tokens::$phpcsCommentTokens[ $this->tokens[ $first_content ]['code'] ] ) )
 			) {
 				$end_of_comment = $first_content;
 
-				// Find the end of (multi-line) /* */- style trailing comments.
 				if ( substr( ltrim( $this->tokens[ $end_of_comment ]['content'] ), 0, 2 ) === '/*' ) {
 					while ( ( \T_COMMENT === $this->tokens[ $end_of_comment ]['code']
 						|| isset( Tokens::$phpcsCommentTokens[ $this->tokens[ $end_of_comment ]['code'] ] ) )
@@ -205,7 +199,6 @@ final class ArrayDeclarationSpacingSniff extends Sniff {
 					}
 
 					if ( $this->tokens[ $end_of_comment ]['line'] !== $this->tokens[ $end_of_last_item ]['line'] ) {
-						// Multi-line trailing comment.
 						$end_of_last_item = $end_of_comment;
 					}
 				}
@@ -218,7 +211,6 @@ final class ArrayDeclarationSpacingSniff extends Sniff {
 				);
 
 				if ( false === $next ) {
-					// Shouldn't happen, but just in case.
 					$end_of_last_item = $end_of_this_item; // @codeCoverageIgnore
 					continue; // @codeCoverageIgnore
 				}
@@ -229,7 +221,6 @@ final class ArrayDeclarationSpacingSniff extends Sniff {
 			}
 
 			if ( false === $first_content ) {
-				// Shouldn't happen, but just in case.
 				$end_of_last_item = $end_of_this_item; // @codeCoverageIgnore
 				continue; // @codeCoverageIgnore
 			}

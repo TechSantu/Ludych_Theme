@@ -60,30 +60,25 @@ final class RequireFinalMethodsInTraitsSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
         if (isset($tokens[$stackPtr]['parenthesis_opener']) === false) {
-            // Parse error/live coding.
             return;
         }
 
         $scopePtr = Scopes::validDirectScope($phpcsFile, $stackPtr, \T_TRAIT);
         if ($scopePtr === false) {
-            // Not a trait method.
             return;
         }
 
         $methodProps = FunctionDeclarations::getProperties($phpcsFile, $stackPtr);
         if ($methodProps['scope'] === 'private') {
-            // Private methods can't be final.
             return;
         }
 
         if ($methodProps['is_final'] === true) {
-            // Already final, nothing to do.
             $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'final');
             return;
         }
 
         if ($methodProps['is_abstract'] === true) {
-            // Abstract classes can't be final.
             $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'abstract');
             return;
         }
@@ -94,7 +89,6 @@ final class RequireFinalMethodsInTraitsSniff implements Sniff
         $magic      = '';
         $code       = 'NonFinalMethodFound';
         if (FunctionDeclarations::isMagicMethodName($methodName) === true) {
-            // Use separate error code for magic methods.
             $magic = 'magic ';
             $code  = 'NonFinalMagicMethodFound';
         }

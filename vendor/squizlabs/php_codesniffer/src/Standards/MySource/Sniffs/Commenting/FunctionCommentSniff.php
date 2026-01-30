@@ -49,15 +49,12 @@ class FunctionCommentSniff extends SquizFunctionCommentSniff implements Deprecat
         foreach ($tokens[$commentStart]['comment_tags'] as $tag) {
             if ($tokens[$tag]['content'] === '@api') {
                 if ($hasApiTag === true) {
-                    // We've come across an API tag already, which means
-                    // we were not the first tag in the API list.
                     $error = 'The @api tag must come first in the @api tag list in a function comment';
                     $phpcsFile->addError($error, $tag, 'ApiNotFirst');
                 }
 
                 $hasApiTag = true;
 
-                // There needs to be a blank line before the @api tag.
                 $prev = $phpcsFile->findPrevious([T_DOC_COMMENT_STRING, T_DOC_COMMENT_TAG], ($tag - 1));
                 if ($tokens[$prev]['line'] !== ($tokens[$tag]['line'] - 2)) {
                     $error = 'There must be one blank line before the @api tag in a function comment';
@@ -76,7 +73,6 @@ class FunctionCommentSniff extends SquizFunctionCommentSniff implements Deprecat
         }//end foreach
 
         if ($hasApiTag === true && substr($tokens[$tag]['content'], 0, 4) !== '@api') {
-            // API tags must be the last tags in a function comment.
             $error = 'The @api tags must be the last tags in a function comment';
             $phpcsFile->addError($error, $commentEnd, 'ApiNotLast');
         }

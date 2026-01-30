@@ -34,12 +34,10 @@ class MySQL2DateDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dyna
     {
         $argumentType = $scope->getType($functionCall->getArgs()[0]->value);
 
-        // When called with a $format that isn't a constant string, return default return type
         if (count($argumentType->getConstantStrings()) === 0) {
             return null;
         }
 
-        // Called with a constant string $format
         $returnType = [];
         foreach ($argumentType->getConstantStrings() as $constantString) {
             switch ($constantString->getValue()) {

@@ -51,8 +51,6 @@ class AssignThisSniff implements Sniff, DeprecatedSniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Ignore this.something and other uses of "this" that are not
-        // direct assignments.
         $next = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
         if ($tokens[$next]['code'] !== T_SEMICOLON) {
             if ($tokens[$next]['line'] === $tokens[$stackPtr]['line']) {
@@ -60,19 +58,16 @@ class AssignThisSniff implements Sniff, DeprecatedSniff
             }
         }
 
-        // Something must be assigned to "this".
         $prev = $phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), null, true);
         if ($tokens[$prev]['code'] !== T_EQUAL) {
             return;
         }
 
-        // A variable needs to be assigned to "this".
         $prev = $phpcsFile->findPrevious(T_WHITESPACE, ($prev - 1), null, true);
         if ($tokens[$prev]['code'] !== T_STRING) {
             return;
         }
 
-        // We can only assign "this" to a var called "self".
         if ($tokens[$prev]['content'] !== 'self' && $tokens[$prev]['content'] !== '_self') {
             $error = 'Keyword "this" can only be assigned to a variable called "self" or "_self"';
             $phpcsFile->addError($error, $prev, 'NotSelf');

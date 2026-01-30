@@ -65,7 +65,6 @@ final class DisallowShortListSyntaxSniff implements Sniff
         $openClose = Lists::getOpenClose($phpcsFile, $stackPtr);
 
         if ($openClose === false) {
-            // Not a short list, live coding or parse error.
             return;
         }
 

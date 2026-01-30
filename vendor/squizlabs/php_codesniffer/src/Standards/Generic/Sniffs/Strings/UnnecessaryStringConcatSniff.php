@@ -73,10 +73,8 @@ class UnnecessaryStringConcatSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
 
         if ($tokens[$stackPtr]['code'] === T_STRING_CONCAT && $phpcsFile->tokenizerType === 'JS') {
-            // JS uses T_PLUS for string concatenation, not T_STRING_CONCAT.
             return;
         } else if ($tokens[$stackPtr]['code'] === T_PLUS && $phpcsFile->tokenizerType === 'PHP') {
-            // PHP uses T_STRING_CONCAT for string concatenation, not T_PLUS.
             return;
         }
 
@@ -89,18 +87,13 @@ class UnnecessaryStringConcatSniff implements Sniff
         if (isset(Tokens::$stringTokens[$tokens[$prev]['code']]) === false
             || isset(Tokens::$stringTokens[$tokens[$next]['code']]) === false
         ) {
-            // Bow out as at least one of the two tokens being concatenated is not a string.
             return;
         }
 
         if ($tokens[$prev]['content'][0] !== $tokens[$next]['content'][0]) {
-            // Bow out as the two strings are not of the same type.
             return;
         }
 
-        // Before we throw an error for PHP, allow strings to be
-        // combined if they would have < and ? next to each other because
-        // this trick is sometimes required in PHP strings.
         if ($phpcsFile->tokenizerType === 'PHP') {
             $prevChar = substr($tokens[$prev]['content'], -2, 1);
             $nextChar = $tokens[$next]['content'][1];

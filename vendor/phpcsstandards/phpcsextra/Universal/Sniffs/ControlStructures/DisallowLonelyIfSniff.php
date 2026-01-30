@@ -61,12 +61,10 @@ final class DisallowLonelyIfSniff implements Sniff
          * Deal with `else if`.
          */
         if (ControlStructures::isElseIf($phpcsFile, $stackPtr) === true) {
-            // Ignore, not our real target.
             return;
         }
 
         if (isset($tokens[$stackPtr]['scope_opener'], $tokens[$stackPtr]['scope_closer']) === false) {
-            // Either an else without curly braces or a parse error. Ignore.
             return;
         }
 
@@ -75,12 +73,10 @@ final class DisallowLonelyIfSniff implements Sniff
 
         $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($outerScopeOpener + 1), $outerScopeCloser, true);
         if ($nextNonEmpty === false || $tokens[$nextNonEmpty]['code'] !== \T_IF) {
-            // Definitely not a lonely if statement.
             return;
         }
 
         if (isset($tokens[$nextNonEmpty]['scope_closer']) === false) {
-            // Either a control structure without curly braces or a parse error. Ignore.
             return;
         }
 
@@ -93,9 +89,6 @@ final class DisallowLonelyIfSniff implements Sniff
         $autoFixable      = true;
         $innerScopeCloser = $innerIfToken['scope_closer'];
 
-        // For alternative syntax fixer only.
-        // Remember the individual inner scope opener and closers so the fixer doesn't need
-        // to do the same walking over the if/else chain again.
         $innerScopes = [
             $innerIfToken['scope_opener'] => $innerScopeCloser,
         ];
@@ -114,18 +107,15 @@ final class DisallowLonelyIfSniff implements Sniff
                     );
 
                     if ($tokens[$nextAfter]['code'] === \T_CLOSE_TAG) {
-                        // Not "lonely" as at the very least there must be a PHP open tag before the outer closer.
                         return;
                     }
 
                     if ($tokens[$nextAfter]['code'] === \T_SEMICOLON) {
                         $innerScopeCloser = $nextAfter;
                     } else {
-                        // Missing semicolon. Report, but don't auto-fix.
                         $autoFixable = false;
                     }
                 } else {
-                    // This must be an else[if].
                     --$innerScopeCloser;
                 }
             }
@@ -137,19 +127,16 @@ final class DisallowLonelyIfSniff implements Sniff
                 true
             );
             if ($innerNextNonEmpty === false) {
-                // This was the last closer.
                 break;
             }
 
             if ($tokens[$innerNextNonEmpty]['code'] !== \T_ELSE
                 && $tokens[$innerNextNonEmpty]['code'] !== \T_ELSEIF
             ) {
-                // Found another statement after the control structure. The "if" is not lonely.
                 return;
             }
 
             if (isset($tokens[$innerNextNonEmpty]['scope_closer']) === false) {
-                // This may still be an "else if"...
                 $nextAfter = $phpcsFile->findNext(
                     Tokens::$emptyTokens,
                     ($innerNextNonEmpty + 1),
@@ -161,7 +148,6 @@ final class DisallowLonelyIfSniff implements Sniff
                     || $tokens[$nextAfter]['code'] !== \T_IF
                     || isset($tokens[$nextAfter]['scope_closer']) === false
                 ) {
-                    // Defense in depth. Either a control structure without curly braces or a parse error. Ignore.
                     return;
                 }
 
@@ -176,14 +162,12 @@ final class DisallowLonelyIfSniff implements Sniff
          * As of now, we know we have an error. Check if it can be auto-fixed.
          */
         if ($phpcsFile->findNext(\T_WHITESPACE, ($innerScopeCloser + 1), $outerScopeCloser, true) !== false) {
-            // Comment between the inner and outer closers.
             $autoFixable = false;
         }
 
         if ($tokens[$innerScopeCloser]['code'] === \T_SEMICOLON) {
             $hasComment = $phpcsFile->findPrevious(\T_WHITESPACE, ($innerScopeCloser - 1), null, true);
             if ($tokens[$hasComment]['code'] !== \T_ENDIF) {
-                // Comment between the "endif" and the semi-colon.
                 $autoFixable = false;
             }
         }
@@ -196,13 +180,11 @@ final class DisallowLonelyIfSniff implements Sniff
             }
 
             if ($phpcsFile->findNext(\T_WHITESPACE, $startOfNextLine, $innerIfPtr, true) !== false) {
-                // Comment between the inner and outer openers.
                 $autoFixable = false;
             }
         }
 
         if (isset($innerIfToken['parenthesis_opener'], $innerIfToken['parenthesis_closer']) === false) {
-            // Start/end of the condition of the if unclear. Most likely a parse error.
             $autoFixable = false;
         }
 
@@ -245,12 +227,10 @@ final class DisallowLonelyIfSniff implements Sniff
 
         $phpcsFile->fixer->beginChangeset();
 
-        // Remove the inner if + condition up to and including the scope opener.
         for ($i = $innerIfPtr; $i <= $innerIfToken['scope_opener']; $i++) {
             $phpcsFile->fixer->replaceToken($i, '');
         }
 
-        // Potentially remove trailing whitespace/new line if there is no comment after the inner condition.
         while ($tokens[$i]['line'] === $innerIfToken['line']
             && $tokens[$i]['code'] === \T_WHITESPACE
         ) {
@@ -258,7 +238,6 @@ final class DisallowLonelyIfSniff implements Sniff
             ++$i;
         }
 
-        // Remove any potential indentation whitespace for the inner if.
         if ($tokens[$outerScopeOpener]['line'] !== $innerIfToken['line']
             && $tokens[$i]['line'] !== $innerIfToken['line']
         ) {
@@ -271,33 +250,26 @@ final class DisallowLonelyIfSniff implements Sniff
             }
         }
 
-        // Remove the inner scope closer.
         $phpcsFile->fixer->replaceToken($innerScopeCloser, '');
         $i = ($innerScopeCloser - 1);
 
-        // Handle alternative syntax for the closer.
         if ($tokens[$innerScopeCloser]['code'] === \T_SEMICOLON) {
-            // Remove potential whitespace between the "endif" and the semicolon.
             while ($tokens[$i]['code'] === \T_WHITESPACE) {
                 $phpcsFile->fixer->replaceToken($i, '');
                 --$i;
             }
 
-            // Remove the "endif".
             $phpcsFile->fixer->replaceToken($i, '');
             --$i;
         }
 
-        // Remove superfluous whitespace before the inner scope closer.
         while ($tokens[$i]['code'] === \T_WHITESPACE) {
             $phpcsFile->fixer->replaceToken($i, '');
             --$i;
         }
 
-        // Replace the else.
         $phpcsFile->fixer->replaceToken($stackPtr, 'elseif' . $condition);
 
-        // Remove potential superfluous whitespace between the new condition and the scope opener.
         $i = ($stackPtr + 1);
         while ($tokens[$i]['line'] === $tokens[$stackPtr]['line']
             && $tokens[$i]['code'] === \T_WHITESPACE
@@ -313,22 +285,18 @@ final class DisallowLonelyIfSniff implements Sniff
             foreach ($innerScopes as $opener => $closer) {
                 if ($targetIsCurly === true) {
                     if ($loop !== 1) {
-                        // Only handle the opener when it's not the first of the chain as that's already handled above.
                         $phpcsFile->fixer->replaceToken($opener, ' {');
                     }
 
                     if ($loop !== $innerScopeCount) {
-                        // Only handle the closer when it's not the last of the chain as that's already handled above.
                         $phpcsFile->fixer->addContentBefore($closer, '} ');
                     }
                 } else {
                     if ($loop !== 1) {
-                        // Only handle the opener when it's not the first of the chain as that's already handled above.
                         $phpcsFile->fixer->replaceToken($opener, ':');
                     }
 
                     if ($loop !== $innerScopeCount) {
-                        // Only handle the closer when it's not the last of the chain as that's already handled above.
                         $phpcsFile->fixer->replaceToken($closer, '');
 
                         $j = ($closer + 1);

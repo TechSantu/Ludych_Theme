@@ -63,7 +63,6 @@ class CompoundNamespaceDepthSniff implements Sniff
             }
 
             if ($i === $end || $tokens[$i]['code'] === T_COMMA) {
-                // End of a namespace.
                 if ($depth > $this->maxDepth) {
                     $error = 'Compound namespaces cannot have a depth more than %s';
                     $data  = [$this->maxDepth];

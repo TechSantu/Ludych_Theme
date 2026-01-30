@@ -50,14 +50,11 @@ class ValidClassNameSniff implements Sniff
         $name      = trim($tokens[$className]['content']);
         $errorData = [ucfirst($tokens[$stackPtr]['content'])];
 
-        // Make sure the first letter is a capital.
         if (preg_match('|^[A-Z]|', $name) === 0) {
             $error = '%s name must begin with a capital letter';
             $phpcsFile->addError($error, $stackPtr, 'StartWithCapital', $errorData);
         }
 
-        // Check that each new word starts with a capital as well, but don't
-        // check the first word, as it is checked above.
         $validName = true;
         $nameBits  = explode('_', $name);
         $firstBit  = array_shift($nameBits);
@@ -69,8 +66,6 @@ class ValidClassNameSniff implements Sniff
         }
 
         if ($validName === false) {
-            // Strip underscores because they cause the suggested name
-            // to be incorrect.
             $nameBits = explode('_', trim($name, '_'));
             $firstBit = array_shift($nameBits);
             if ($firstBit === '') {

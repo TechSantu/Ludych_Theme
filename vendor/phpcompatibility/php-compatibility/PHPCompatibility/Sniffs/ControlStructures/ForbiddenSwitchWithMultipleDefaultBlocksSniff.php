@@ -64,7 +64,6 @@ class ForbiddenSwitchWithMultipleDefaultBlocksSniff extends Sniff
         $defaultCount = 0;
         $targetLevel  = $tokens[$stackPtr]['level'] + 1;
         while ($defaultCount < 2 && ($defaultToken = $phpcsFile->findNext(array(\T_DEFAULT), $defaultToken + 1, $tokens[$stackPtr]['scope_closer'])) !== false) {
-            // Same level or one below (= two default cases after each other).
             if ($tokens[$defaultToken]['level'] === $targetLevel || $tokens[$defaultToken]['level'] === ($targetLevel + 1)) {
                 $defaultCount++;
             }

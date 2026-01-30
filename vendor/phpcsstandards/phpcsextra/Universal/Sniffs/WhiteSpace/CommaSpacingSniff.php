@@ -100,7 +100,6 @@ final class CommaSpacingSniff implements Sniff
     public function process(File $phpcsFile, $stackPtr)
     {
         if (isset($this->phpVersion) === false || \defined('PHP_CODESNIFFER_IN_TESTS')) {
-            // Set default value to prevent this code from running every time the sniff is triggered.
             $this->phpVersion = 0;
 
             $phpVersion = Helper::getConfigData('php_version');
@@ -136,7 +135,6 @@ final class CommaSpacingSniff implements Sniff
             && $tokens[$prevNonEmpty]['code'] !== \T_COMMA
             && $tokens[$prevNonEmpty]['line'] !== $tokens[$nextNonEmpty]['line']
         ) {
-            // Special case: comma after a trailing comment - the comma should be moved to before the comment.
             $fix = $phpcsFile->addFixableError(
                 'Comma found after comment, expected the comma after the end of the code',
                 $stackPtr,
@@ -149,7 +147,6 @@ final class CommaSpacingSniff implements Sniff
                 $phpcsFile->fixer->replaceToken($stackPtr, '');
                 $phpcsFile->fixer->addContent($prevNonEmpty, ',');
 
-                // Clean up potential trailing whitespace left behind, but don't remove blank lines.
                 $nextNonWhitespace = $phpcsFile->findNext(\T_WHITESPACE, ($stackPtr + 1), null, true);
                 if ($tokens[($stackPtr - 1)]['code'] === \T_WHITESPACE
                     && $tokens[($stackPtr - 1)]['line'] === $tokens[$stackPtr]['line']
@@ -164,7 +161,6 @@ final class CommaSpacingSniff implements Sniff
         }
 
         if ($tokens[$prevNonWhitespace]['code'] === \T_COMMA) {
-            // This must be a list assignment with ignored items. Ignore.
             return;
         }
 
@@ -173,7 +169,6 @@ final class CommaSpacingSniff implements Sniff
             || $tokens[$prevNonWhitespace]['code'] === \T_OPEN_USE_GROUP
             || $tokens[$prevNonWhitespace]['code'] === \T_ATTRIBUTE
         ) {
-            // Should only realistically be possible for lists. Leave for a block brace spacing sniff to sort out.
             return;
         }
 
@@ -234,12 +229,10 @@ final class CommaSpacingSniff implements Sniff
 
         $nextNonWhitespace = $phpcsFile->findNext(\T_WHITESPACE, ($stackPtr + 1), null, true);
         if ($nextNonWhitespace === false) {
-            // Live coding/parse error. Ignore.
             return;
         }
 
         if ($tokens[$nextNonWhitespace]['code'] === \T_COMMA) {
-            // This must be a list assignment with ignored items. Ignore.
             return;
         }
 
@@ -250,7 +243,6 @@ final class CommaSpacingSniff implements Sniff
             || $tokens[$nextNonWhitespace]['code'] === \T_CLOSE_USE_GROUP
             || $tokens[$nextNonWhitespace]['code'] === \T_ATTRIBUTE_END
         ) {
-            // Ignore. Leave for a block spacing sniff to sort out.
             return;
         }
 
@@ -268,8 +260,6 @@ final class CommaSpacingSniff implements Sniff
                 return;
             }
 
-            // Note: this check allows for trailing whitespace between the comma and a new line char.
-            // The trailing whitespace is not the concern of this sniff.
             if (\ltrim($nextToken['content'], ' ') === $phpcsFile->eolChar) {
                 $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME_AFTER . $metricSuffix, 'a new line');
                 return;
@@ -281,7 +271,6 @@ final class CommaSpacingSniff implements Sniff
             if (isset(Tokens::$commentTokens[$tokens[$nextNonWhitespace]['code']]) === true
                 && ($nextNonEmpty === false || $tokens[$stackPtr]['line'] !== $tokens[$nextNonEmpty]['line'])
             ) {
-                // Separate error code to allow for aligning trailing comments.
                 $errorCode = 'TooMuchSpaceAfterCommaBeforeTrailingComment';
             }
 
@@ -327,8 +316,6 @@ final class CommaSpacingSniff implements Sniff
             return \preg_replace('`(^|[^%])%([^%]|$)`', '\1%%\2', \trim($text));
         };
 
-        // We need to "double" escape to make sure chars involved in the `\2` match will
-        // be taken into account for the decision on whether or not to escape the char _after_ that.
         return $escapeSinglePercentSign($escapeSinglePercentSign($text));
     }
 
@@ -381,7 +368,6 @@ final class CommaSpacingSniff implements Sniff
                 case \T_UNSET:
                     return 'InFunctionCall';
 
-                // Long array, long list, empty, exit, eval, control structures.
                 default:
                     return '';
             }

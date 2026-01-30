@@ -95,14 +95,12 @@ final class DisallowUseClassSniff implements Sniff
     {
         $file = $phpcsFile->getFilename();
         if ($file !== $this->currentFile) {
-            // Reset the current namespace for each new file.
             $this->currentFile      = $file;
             $this->currentNamespace = '';
         }
 
         $tokens = $phpcsFile->getTokens();
 
-        // Get the name of the current namespace.
         if ($tokens[$stackPtr]['code'] === \T_NAMESPACE) {
             $namespaceName = Namespaces::getDeclaredName($phpcsFile, $stackPtr);
             if ($namespaceName !== false) {
@@ -112,16 +110,13 @@ final class DisallowUseClassSniff implements Sniff
             return;
         }
 
-        // Ok, so this is a T_USE token.
         try {
             $statements = UseStatements::splitImportUseStatement($phpcsFile, $stackPtr);
         } catch (ValueError $e) {
-            // Not an import use statement. Bow out.
             return;
         }
 
         if (empty($statements['name'])) {
-            // No class/trait/interface/enum import statements found.
             return;
         }
 
@@ -139,13 +134,11 @@ final class DisallowUseClassSniff implements Sniff
             do {
                 $reportPtr = $phpcsFile->findNext(\T_STRING, ($reportPtr + 1), $endOfStatement, false, $alias);
                 if ($reportPtr === false) {
-                    // Shouldn't be possible on 3.x, but perfectly possible on 4.x when the class is not aliased.
                     break;
                 }
 
                 $next = $phpcsFile->findNext(Tokens::$emptyTokens, ($reportPtr + 1), $endOfStatement, true);
                 if ($next !== false && $tokens[$next]['code'] === \T_NS_SEPARATOR) {
-                    // Namespace level with same name. Continue searching.
                     continue;
                 }
 
@@ -153,7 +146,6 @@ final class DisallowUseClassSniff implements Sniff
             } while (true);
 
             if ($reportPtr === false) {
-                // Find the non-aliased name on PHPCS 4.x.
                 $reportPtr = $phpcsFile->findNext(
                     [\T_NAME_QUALIFIED],
                     ($stackPtr + 1),
@@ -163,7 +155,6 @@ final class DisallowUseClassSniff implements Sniff
                 );
 
                 if ($reportPtr === false) {
-                    // This may be an imported class (incorrectly) passed as an FQN.
                     $reportPtr = $phpcsFile->findNext(
                         [\T_NAME_FULLY_QUALIFIED],
                         ($stackPtr + 1),
@@ -173,10 +164,8 @@ final class DisallowUseClassSniff implements Sniff
                     );
 
                     if ($reportPtr === false) {
-                        // This may be a partial name in a group use statement.
                         $groupStart = $phpcsFile->findNext(\T_OPEN_USE_GROUP, ($stackPtr + 1), $endOfStatement);
                         if ($groupStart === false) {
-                            // Shouldn't be possible.
                             continue; // @codeCoverageIgnore
                         }
 
@@ -193,7 +182,6 @@ final class DisallowUseClassSniff implements Sniff
                         }
 
                         if ($reportPtr === false) {
-                            // Shouldn't be possible.
                             continue; // @codeCoverageIgnore
                         }
                     }

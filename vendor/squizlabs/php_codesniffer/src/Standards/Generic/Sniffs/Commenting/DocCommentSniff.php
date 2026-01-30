@@ -56,7 +56,6 @@ class DocCommentSniff implements Sniff
             || ($tokens[$tokens[$stackPtr]['comment_closer']]['content'] === ''
             && $tokens[$stackPtr]['comment_closer'] === ($phpcsFile->numTokens - 1))
         ) {
-            // Don't process an unfinished comment during live coding.
             return;
         }
 
@@ -70,13 +69,11 @@ class DocCommentSniff implements Sniff
 
         $short = $phpcsFile->findNext($empty, ($stackPtr + 1), $commentEnd, true);
         if ($short === false) {
-            // No content at all.
             $error = 'Doc comment is empty';
             $phpcsFile->addError($error, $stackPtr, 'Empty');
             return;
         }
 
-        // The first line of the comment should just be the /** code.
         if ($tokens[$short]['line'] === $tokens[$stackPtr]['line']) {
             $error = 'The open comment tag must be the only content on the line';
             $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'ContentAfterOpen');
@@ -88,7 +85,6 @@ class DocCommentSniff implements Sniff
             }
         }
 
-        // The last line of the comment should just be the */ code.
         $prev = $phpcsFile->findPrevious($empty, ($commentEnd - 1), $stackPtr, true);
         if ($tokens[$prev]['line'] === $tokens[$commentEnd]['line']) {
             $error = 'The close comment tag must be the only content on the line';
@@ -98,7 +94,6 @@ class DocCommentSniff implements Sniff
             }
         }
 
-        // Check for additional blank lines at the end of the comment.
         if ($tokens[$prev]['line'] < ($tokens[$commentEnd]['line'] - 1)) {
             $error = 'Additional blank lines found at end of doc comment';
             $fix   = $phpcsFile->addFixableError($error, $commentEnd, 'SpacingAfter');
@@ -116,12 +111,10 @@ class DocCommentSniff implements Sniff
             }
         }
 
-        // Check for a comment description.
         if ($tokens[$short]['code'] !== T_DOC_COMMENT_STRING) {
             $error = 'Missing short description in doc comment';
             $phpcsFile->addError($error, $stackPtr, 'MissingShort');
         } else {
-            // No extra newline before short description.
             if ($tokens[$short]['line'] !== ($tokens[$stackPtr]['line'] + 1)) {
                 $error = 'Doc comment short description must be on the first line';
                 $fix   = $phpcsFile->addFixableError($error, $short, 'SpacingBeforeShort');
@@ -141,8 +134,6 @@ class DocCommentSniff implements Sniff
                 }
             }
 
-            // Account for the fact that a short description might cover
-            // multiple lines.
             $shortContent = $tokens[$short]['content'];
             $shortEnd     = $short;
             for ($i = ($short + 1); $i < $commentEnd; $i++) {
@@ -190,7 +181,6 @@ class DocCommentSniff implements Sniff
         }//end if
 
         if (empty($tokens[$commentStart]['comment_tags']) === true) {
-            // No tags in the comment.
             return;
         }
 
@@ -217,9 +207,6 @@ class DocCommentSniff implements Sniff
             }
         }
 
-        // Break out the tags into groups and check alignment within each.
-        // A tag group is one where there are no blank lines between tags.
-        // The param tag group is special as it requires all @param tags to be inside.
         $tagGroups    = [];
         $groupid      = 0;
         $paramGroupid = null;
@@ -273,15 +260,12 @@ class DocCommentSniff implements Sniff
                     $maxLength = $tagLength;
                 }
 
-                // Check for a value. No value means no padding needed.
                 $string = $phpcsFile->findNext(T_DOC_COMMENT_STRING, $tag, $commentEnd);
                 if ($string !== false && $tokens[$string]['line'] === $tokens[$tag]['line']) {
                     $paddings[$tag] = $tokens[($tag + 1)]['length'];
                 }
             }
 
-            // Check that there was single blank line after the tag block
-            // but account for multi-line tag comments.
             $find = Tokens::$phpcsCommentTokens;
             $find[T_DOC_COMMENT_TAG] = T_DOC_COMMENT_TAG;
 
@@ -309,7 +293,6 @@ class DocCommentSniff implements Sniff
                 }
             }//end if
 
-            // Now check paddings.
             foreach ($paddings as $tag => $padding) {
                 $required = ($maxLength - $tokens[$tag]['length'] + 1);
 
@@ -329,7 +312,6 @@ class DocCommentSniff implements Sniff
             }
         }//end foreach
 
-        // If there is a param group, it needs to be first.
         if ($paramGroupid !== null && $paramGroupid !== 0) {
             $error = 'Parameter tags must be defined first in a doc comment';
             $phpcsFile->addError($error, $tagGroups[$paramGroupid][0], 'ParamNotFirst');

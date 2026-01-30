@@ -9,7 +9,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 if ( function_exists( 'acf_add_local_field_group' ) ) :
 
-	// Field Group for Technology Post Type
 	acf_add_local_field_group( array(
 		'key'                   => 'group_technology_details',
 		'title'                 => __( 'Technology Details', 'ludych-theme' ),
@@ -44,8 +43,36 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 		'description'           => '',
 	) );
 
-	// Field Group for Home Page / Sections (Example for tech_stack_title and tech_stack_text)
-	// You might want to assign this to your Front Page or a specific template.
+	acf_add_local_field_group( array(
+		'key'                   => 'group_testimonial_details',
+		'title'                 => __( 'Testimonial Details', 'ludych-theme' ),
+		'fields'                => array(
+			array(
+				'key'   => 'field_testimonial_designation',
+				'label' => __( 'Designation / Location', 'ludych-theme' ),
+				'name'  => 'testimonial_designation',
+				'type'  => 'text',
+			),
+		),
+		'location'              => array(
+			array(
+				array(
+					'param'    => 'post_type',
+					'operator' => '==',
+					'value'    => 'testimonial',
+				),
+			),
+		),
+		'menu_order'            => 0,
+		'position'              => 'normal',
+		'style'                 => 'default',
+		'label_placement'       => 'top',
+		'instruction_placement' => 'label',
+		'hide_on_screen'        => '',
+		'active'                => true,
+		'description'           => '',
+	) );
+
 	acf_add_local_field_group( array(
 		'key'                   => 'group_tech_stack_settings',
 		'title'                 => __( 'Technology Stack Section Settings', 'ludych-theme' ),

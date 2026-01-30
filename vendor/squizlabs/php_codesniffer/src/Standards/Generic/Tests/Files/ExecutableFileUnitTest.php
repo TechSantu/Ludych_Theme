@@ -27,7 +27,6 @@ final class ExecutableFileUnitTest extends AbstractSniffUnitTest
      */
     protected function shouldSkipTest()
     {
-        // Skip on Windows which doesn't have the concept of executable files.
         return (stripos(PHP_OS, 'WIN') === 0);
 
     }//end shouldSkipTest()

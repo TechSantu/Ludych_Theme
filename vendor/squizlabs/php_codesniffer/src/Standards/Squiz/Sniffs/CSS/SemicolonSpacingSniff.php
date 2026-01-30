@@ -59,7 +59,6 @@ class SemicolonSpacingSniff implements Sniff, DeprecatedSniff
 
         $ignore = Tokens::$emptyTokens;
         if ($tokens[$nextStatement]['code'] === T_STYLE) {
-            // Allow for star-prefix hack.
             $ignore[] = T_MULTIPLY;
         }
 
@@ -74,7 +73,6 @@ class SemicolonSpacingSniff implements Sniff, DeprecatedSniff
             return;
         }
 
-        // There is a semicolon, so now find the last token in the statement.
         $prevNonEmpty = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($endOfThisStatement - 1), null, true);
         $found        = $tokens[($endOfThisStatement - 1)]['length'];
         if ($tokens[$prevNonEmpty]['line'] !== $tokens[$endOfThisStatement]['line']) {

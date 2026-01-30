@@ -69,7 +69,6 @@ class GitStaged extends ExactMatch
         foreach ($output as $path) {
             $path = Common::realpath($path);
             if ($path === false) {
-                // Skip deleted files.
                 continue;
             }
 

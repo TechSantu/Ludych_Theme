@@ -81,7 +81,6 @@ class NewAnonymousClassesSniff extends Sniff
             return;
         }
 
-        // Still here ? In that case, it is an anonymous class.
         $phpcsFile->addError(
             'Anonymous classes are not supported in PHP 5.6 or earlier',
             $stackPtr,

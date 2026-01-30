@@ -480,7 +480,6 @@ final class DeprecatedParametersSniff extends AbstractFunctionParameterSniff {
 				continue;
 			}
 
-			// The list will need to updated if the default value is not supported.
 			switch ( $found_param['raw'] ) {
 				case 'true':
 					$matched_parameter = true;

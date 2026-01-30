@@ -100,14 +100,12 @@ class LowPHPCSSniff extends Sniff
      */
     public function process(File $phpcsFile, $stackPtr)
     {
-        // Don't do anything if the warning has already been thrown or is not necessary.
         if ($this->examine === false) {
             return ($phpcsFile->numTokens + 1);
         }
 
         $phpcsVersion = PHPCSHelper::getVersion();
 
-        // Don't do anything if the PHPCS version used is above the minimum recommended version.
         if (version_compare($phpcsVersion, self::MIN_RECOMMENDED_VERSION, '>=')) {
             $this->examine = false;
             return ($phpcsFile->numTokens + 1);

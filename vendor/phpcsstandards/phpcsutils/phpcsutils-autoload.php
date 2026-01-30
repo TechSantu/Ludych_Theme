@@ -30,7 +30,6 @@ if (defined('PHPCSUTILS_AUTOLOAD') === false) {
      * should include this file in their test runner bootstrap.
      */
     spl_autoload_register(function ($fqClassName) {
-        // Only try & load our own classes.
         if (stripos($fqClassName, 'PHPCSUtils\\') !== 0) {
             return;
         }

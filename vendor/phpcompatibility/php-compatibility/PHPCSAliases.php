@@ -59,7 +59,6 @@ if (defined('PHPCOMPATIBILITY_PHPCS_ALIASES_SET') === false) {
      * @since 8.0.0
      */
     spl_autoload_register(function ($class) {
-        // Only try & load our own classes.
         if (stripos($class, 'PHPCompatibility') !== 0) {
             return;
         }

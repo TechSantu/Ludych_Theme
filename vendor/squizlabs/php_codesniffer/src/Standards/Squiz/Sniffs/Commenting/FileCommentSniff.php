@@ -66,7 +66,6 @@ class FileCommentSniff implements Sniff
             || ($tokens[$tokens[$commentStart]['comment_closer']]['content'] === ''
             && $tokens[$commentStart]['comment_closer'] === ($phpcsFile->numTokens - 1))
         ) {
-            // Don't process an unfinished file comment during live coding.
             return $phpcsFile->numTokens;
         }
 
@@ -121,20 +120,17 @@ class FileCommentSniff implements Sniff
 
         $phpcsFile->recordMetric($stackPtr, 'File has doc comment', 'yes');
 
-        // No blank line between the open tag and the file comment.
         if ($tokens[$commentStart]['line'] > ($tokens[$stackPtr]['line'] + 1)) {
             $error = 'There must be no blank lines before the file comment';
             $phpcsFile->addError($error, $stackPtr, 'SpacingAfterOpen');
         }
 
-        // Exactly one blank line after the file comment.
         $next = $phpcsFile->findNext(T_WHITESPACE, ($commentEnd + 1), null, true);
         if ($next !== false && $tokens[$next]['line'] !== ($tokens[$commentEnd]['line'] + 2)) {
             $error = 'There must be exactly one blank line after the file comment';
             $phpcsFile->addError($error, $commentEnd, 'SpacingAfterComment');
         }
 
-        // Required tags in correct order.
         $required = [
             '@package'    => true,
             '@subpackage' => true,
@@ -194,7 +190,6 @@ class FileCommentSniff implements Sniff
             }//end if
         }//end foreach
 
-        // Check if the tags are in the correct position.
         $pos = 0;
         foreach ($required as $tag => $true) {
             if (in_array($tag, $foundTags, true) === false) {
@@ -219,7 +214,6 @@ class FileCommentSniff implements Sniff
             $pos++;
         }//end foreach
 
-        // Ignore the rest of the file.
         return $phpcsFile->numTokens;
 
     }//end process()

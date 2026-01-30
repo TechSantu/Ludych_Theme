@@ -90,7 +90,6 @@ abstract class AbstractSniffUnitTest extends TestCase
             }
         }
 
-        // Put them in order.
         sort($testFiles, SORT_NATURAL);
 
         return $testFiles;
@@ -118,7 +117,6 @@ abstract class AbstractSniffUnitTest extends TestCase
      */
     final public function testSniff()
     {
-        // Skip this test if we can't run in this environment.
         if ($this->shouldSkipTest() === true) {
             $this->markTestSkipped();
         }
@@ -128,7 +126,6 @@ abstract class AbstractSniffUnitTest extends TestCase
 
         $testFileBase = $this->testsDir.$categoryName.DIRECTORY_SEPARATOR.$sniffName.'UnitTest.';
 
-        // Get a list of all test files to check.
         $testFiles = $this->getTestFiles($testFileBase);
         $GLOBALS['PHP_CODESNIFFER_SNIFF_CASE_FILES'][] = $testFiles;
 
@@ -182,19 +179,16 @@ abstract class AbstractSniffUnitTest extends TestCase
             $failureMessages = array_merge($failureMessages, $failures);
 
             if ($phpcsFile->getFixableCount() > 0) {
-                // Attempt to fix the errors.
                 $phpcsFile->fixer->fixFile();
                 $fixable = $phpcsFile->getFixableCount();
                 if ($fixable > 0) {
                     $failureMessages[] = "Failed to fix $fixable fixable violations in $filename";
                 }
 
-                // Check for a .fixed file to check for accuracy of fixes.
                 $fixedFile = $testFile.'.fixed';
                 $filename  = basename($testFile);
                 if (file_exists($fixedFile) === true) {
                     if ($phpcsFile->fixer->getContents() !== file_get_contents($fixedFile)) {
-                        // Only generate the (expensive) diff if a difference is expected.
                         $diff = $phpcsFile->fixer->generateDiff($fixedFile);
                         if (trim($diff) !== '') {
                             $fixedFilename     = basename($fixedFile);
@@ -206,7 +200,6 @@ abstract class AbstractSniffUnitTest extends TestCase
                 }
             }//end if
 
-            // Restore the config.
             $config->setSettings($oldConfig);
         }//end foreach
 
@@ -366,7 +359,6 @@ abstract class AbstractSniffUnitTest extends TestCase
             $allProblems[$line]['expected_warnings'] = $numWarnings;
         }
 
-        // Order the messages by line number.
         ksort($allProblems);
 
         foreach ($allProblems as $line => $problems) {

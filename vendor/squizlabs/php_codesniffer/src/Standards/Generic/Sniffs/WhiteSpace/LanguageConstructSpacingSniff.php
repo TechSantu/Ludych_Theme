@@ -61,12 +61,10 @@ class LanguageConstructSpacingSniff implements Sniff
 
         $nextToken = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
         if ($nextToken === false) {
-            // Skip when at end of file.
             return;
         }
 
         if ($tokens[($stackPtr + 1)]['code'] === T_SEMICOLON) {
-            // No content for this language construct.
             return;
         }
 
@@ -74,7 +72,6 @@ class LanguageConstructSpacingSniff implements Sniff
         if ($tokens[$stackPtr]['code'] === T_NAMESPACE) {
             $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
             if ($nextNonEmpty !== false && $tokens[$nextNonEmpty]['code'] === T_NS_SEPARATOR) {
-                // Namespace keyword used as operator, not as the language construct.
                 return;
             }
         }
@@ -86,7 +83,6 @@ class LanguageConstructSpacingSniff implements Sniff
             $hasComment   = false;
             $yieldFromEnd = $stackPtr;
 
-            // Handle potentially multi-line/multi-token "yield from" expressions.
             if (preg_match('`yield\s+from`i', $content) !== 1) {
                 for ($i = ($stackPtr + 1); $i < $phpcsFile->numTokens; $i++) {
                     if (isset(Tokens::$emptyTokens[$tokens[$i]['code']]) === false

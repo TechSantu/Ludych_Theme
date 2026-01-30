@@ -102,7 +102,6 @@ final class ModifierKeywordOrderSniff implements Sniff
         }
 
         if ($classProp['final_token'] !== false && $classProp['abstract_token'] !== false) {
-            // Parse error. Ignore.
             return;
         }
 
@@ -125,7 +124,6 @@ final class ModifierKeywordOrderSniff implements Sniff
         switch ($this->order) {
             case self::READONLY_EXTEND:
                 if ($readonly < $extendability) {
-                    // Order is correct. Nothing to do.
                     return;
                 }
 
@@ -135,7 +133,6 @@ final class ModifierKeywordOrderSniff implements Sniff
             case self::EXTEND_READONLY:
             default:
                 if ($extendability < $readonly) {
-                    // Order is correct. Nothing to do.
                     return;
                 }
 
@@ -172,14 +169,12 @@ final class ModifierKeywordOrderSniff implements Sniff
 
             $phpcsFile->fixer->replaceToken($secondKeyword, '');
 
-            // Prevent leaving behind trailing whitespace.
             $i = ($secondKeyword + 1);
             while ($tokens[$i]['code'] === \T_WHITESPACE) {
                 $phpcsFile->fixer->replaceToken($i, '');
                 ++$i;
             }
 
-            // Use the original token content as the case used for keywords is not the concern of this sniff.
             $phpcsFile->fixer->addContentBefore($firstKeyword, $tokens[$secondKeyword]['content'] . ' ');
 
             $phpcsFile->fixer->endChangeset();

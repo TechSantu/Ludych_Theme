@@ -46,8 +46,6 @@ class NewFopenModesSniff extends AbstractFunctionCallParameterSniff
      */
     protected function bowOutEarly()
     {
-        // Version used here should be (above) the highest version from the `newModes` control,
-        // structure below, i.e. the last PHP version in which a new mode was introduced.
         return ($this->supportsBelow('7.1') === false);
     }
 

@@ -60,16 +60,13 @@ class CyclomaticComplexitySniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Ignore abstract and interface methods. Bail early when live coding.
         if (isset($tokens[$stackPtr]['scope_opener'], $tokens[$stackPtr]['scope_closer']) === false) {
             return;
         }
 
-        // Detect start and end of this function definition.
         $start = $tokens[$stackPtr]['scope_opener'];
         $end   = $tokens[$stackPtr]['scope_closer'];
 
-        // Predicate nodes for PHP.
         $find = [
             T_CASE                     => true,
             T_DEFAULT                  => true,
@@ -88,7 +85,6 @@ class CyclomaticComplexitySniff implements Sniff
 
         $complexity = 1;
 
-        // Iterate from start to end and count predicate nodes.
         for ($i = ($start + 1); $i < $end; $i++) {
             if (isset($find[$tokens[$i]['code']]) === true) {
                 $complexity++;

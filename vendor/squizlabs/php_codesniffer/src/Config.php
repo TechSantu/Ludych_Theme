@@ -228,7 +228,6 @@ class Config
             throw new RuntimeException("ERROR: unable to get value of property \"$name\"");
         }
 
-        // Figure out what the terminal width needs to be for "auto".
         if ($name === 'reportWidth' && $this->settings[$name] === 'auto') {
             if (function_exists('shell_exec') === true) {
                 $dimensions = shell_exec('stty size 2>&1');
@@ -238,8 +237,6 @@ class Config
             }
 
             if ($this->settings[$name] === 'auto') {
-                // If shell_exec wasn't available or didn't yield a usable value, set to the default.
-                // This will prevent subsequent retrievals of the reportWidth from making another call to stty.
                 $this->settings[$name] = self::DEFAULT_REPORT_WIDTH;
             }
         }
@@ -267,7 +264,6 @@ class Config
         switch ($name) {
         case 'reportWidth' :
             if (is_string($value) === true && $value === 'auto') {
-                // Nothing to do. Leave at 'auto'.
                 break;
             }
 
@@ -283,7 +279,6 @@ class Config
         case 'standards' :
             $cleaned = [];
 
-            // Check if the standard name is valid, or if the case is invalid.
             $installedStandards = Standards::getInstalledStandards();
             foreach ($value as $standard) {
                 foreach ($installedStandards as $validStandard) {
@@ -299,7 +294,6 @@ class Config
             $value = $cleaned;
             break;
 
-        // Only track time when explicitly needed.
         case 'verbosity':
             if ($value > 2) {
                 $this->settings['trackTime'] = true;
@@ -313,7 +307,6 @@ class Config
             break;
 
         default :
-            // No validation required.
             break;
         }//end switch
 
@@ -388,8 +381,6 @@ class Config
     public function __construct(array $cliArgs=[], $dieOnUnknownArg=true)
     {
         if (defined('PHP_CODESNIFFER_IN_TESTS') === true) {
-            // Let everything through during testing so that we can
-            // make use of PHPUnit command line arguments as well.
             $this->dieOnUnknownArg = false;
         } else {
             $this->dieOnUnknownArg = $dieOnUnknownArg;
@@ -404,8 +395,6 @@ class Config
         $this->setCommandLineValues($cliArgs);
 
         if (isset(self::$overriddenDefaults['standards']) === false) {
-            // They did not supply a standard to use.
-            // Look for a default ruleset in the current directory or higher.
             $currentDir = getcwd();
 
             $defaultFiles = [
@@ -437,7 +426,6 @@ class Config
 
         $handle = fopen('php://stdin', 'r');
 
-        // Check for content on STDIN.
         if ($this->stdin === true
             || (Common::isStdinATTY() === false
             && feof($handle) === false)
@@ -447,7 +435,6 @@ class Config
 
             $fileContents = '';
             while (is_resource($handle) === true && feof($handle) === false) {
-                // Set a timeout of 200ms.
                 if (stream_select($readStreams, $writeSteams, $writeSteams, 0, 200000) === 0) {
                     break;
                 }
@@ -488,14 +475,12 @@ class Config
 
             if ($arg[0] === '-') {
                 if ($arg === '-') {
-                    // Asking to read from STDIN.
                     $this->stdin = true;
                     self::$overriddenDefaults['stdin'] = true;
                     continue;
                 }
 
                 if ($arg === '--') {
-                    // Empty argument, ignore it.
                     continue;
                 }
 
@@ -674,7 +659,6 @@ class Config
             throw new DeepExitException($output, 0);
         case 'v' :
             if ($this->quiet === true) {
-                // Ignore when quiet mode is enabled.
                 break;
             }
 
@@ -699,7 +683,6 @@ class Config
             break;
         case 'p' :
             if ($this->quiet === true) {
-                // Ignore when quiet mode is enabled.
                 break;
             }
 
@@ -707,7 +690,6 @@ class Config
             self::$overriddenDefaults['showProgress'] = true;
             break;
         case 'q' :
-            // Quiet mode disables a few other settings as well.
             $this->quiet        = true;
             $this->showProgress = false;
             $this->verbosity    = 0;
@@ -919,13 +901,11 @@ class Config
                     break;
                 }
 
-                // Turn caching on.
                 $this->cache = true;
                 self::$overriddenDefaults['cache'] = true;
 
                 $this->cacheFile = Common::realpath(substr($arg, 6));
 
-                // It may not exist and return false instead.
                 if ($this->cacheFile === false) {
                     $this->cacheFile = substr($arg, 6);
 
@@ -937,18 +917,15 @@ class Config
                     }
 
                     if ($dir === '.') {
-                        // Passed cache file is a file in the current directory.
                         $this->cacheFile = getcwd().'/'.basename($this->cacheFile);
                     } else {
                         if ($dir[0] === '/') {
-                            // An absolute path.
                             $dir = Common::realpath($dir);
                         } else {
                             $dir = Common::realpath(getcwd().'/'.$dir);
                         }
 
                         if ($dir !== false) {
-                            // Cache file path is relative.
                             $this->cacheFile = $dir.'/'.basename($this->cacheFile);
                         }
                     }
@@ -990,7 +967,6 @@ class Config
                 foreach ($files as $inputFile) {
                     $inputFile = trim($inputFile);
 
-                    // Skip empty lines.
                     if ($inputFile === '') {
                         continue;
                     }
@@ -1004,7 +980,6 @@ class Config
 
                 $this->stdinPath = Common::realpath(substr($arg, 11));
 
-                // It may not exist and return false instead, so use whatever they gave us.
                 if ($this->stdinPath === false) {
                     $this->stdinPath = trim(substr($arg, 11));
                 }
@@ -1017,7 +992,6 @@ class Config
 
                 $this->reportFile = Common::realpath(substr($arg, 12));
 
-                // It may not exist and return false instead.
                 if ($this->reportFile === false) {
                     $this->reportFile = substr($arg, 12);
 
@@ -1059,7 +1033,6 @@ class Config
 
                 $basepath = Common::realpath(substr($arg, 9));
 
-                // It may not exist and return false instead.
                 if ($basepath === false) {
                     $this->basepath = substr($arg, 9);
                 } else {
@@ -1075,7 +1048,6 @@ class Config
                 $reports = [];
 
                 if ($arg[6] === '-') {
-                    // This is a report with file output.
                     $split = strpos($arg, '=');
                     if ($split === false) {
                         $report = substr($arg, 7);
@@ -1105,7 +1077,6 @@ class Config
 
                     $reports[$report] = $output;
                 } else {
-                    // This is a single report.
                     if (isset(self::$overriddenDefaults['reports']) === true) {
                         break;
                     }
@@ -1116,7 +1087,6 @@ class Config
                     }
                 }//end if
 
-                // Remove the default value so the CLI value overrides it.
                 if (isset(self::$overriddenDefaults['reports']) === false) {
                     $this->reports = $reports;
                 } else {
@@ -1150,7 +1120,6 @@ class Config
                     foreach ($extensions as $ext) {
                         $slash = strpos($ext, '/');
                         if ($slash !== false) {
-                            // They specified the tokenizer too.
                             list($ext, $tokenizer) = explode('/', $ext);
                             $newExtensions[$ext]   = strtoupper($tokenizer);
                             continue;
@@ -1209,8 +1178,6 @@ class Config
                     break;
                 }
 
-                // Split the ignore string on commas, unless the comma is escaped
-                // using 1 or 3 slashes (\, or \\\,).
                 $patterns = preg_split(
                     '/(?<=(?<!\\\\)\\\\\\\\),|(?<!\\\\),/',
                     substr($arg, 7)
@@ -1282,7 +1249,6 @@ class Config
 
                         $this->unknown = $unknown;
                     } catch (RuntimeException $e) {
-                        // Value is not valid, so just ignore it.
                     }
                 } else {
                     $this->processUnknownArgument('--'.$arg, $pos);
@@ -1319,7 +1285,6 @@ class Config
 
             $partCount = substr_count($sniff, '.');
             if ($partCount === 2) {
-                // Correct number of parts.
                 $sniffs[] = $sniff;
                 continue;
             }
@@ -1347,7 +1312,6 @@ class Config
 
                 foreach ($carry as $found) {
                     if ($lower === strtolower($found)) {
-                        // This sniff is already in our list.
                         return $carry;
                     }
                 }
@@ -1394,7 +1358,6 @@ class Config
      */
     public function processUnknownArgument($arg, $pos)
     {
-        // We don't know about any additional switches; just files.
         if ($arg[0] === '-') {
             if ($this->dieOnUnknownArg === false) {
                 return;
@@ -1420,7 +1383,6 @@ class Config
      */
     public function processFilePath($path)
     {
-        // If we are processing STDIN, don't record any files to check.
         if ($this->stdin === true) {
             return;
         }
@@ -1435,8 +1397,6 @@ class Config
             $error .= $this->printShortUsage(true);
             throw new DeepExitException($error, 3);
         } else {
-            // Can't modify the files array directly because it's not a real
-            // class member, so need to use this little get/modify/set trick.
             $files       = $this->files;
             $files[]     = $file;
             $this->files = $files;
@@ -1577,7 +1537,6 @@ class Config
         }
 
         if ($name === "php") {
-            // For php, we know the executable path. There's no need to look it up.
             return PHP_BINARY;
         }
 
@@ -1670,8 +1629,6 @@ class Config
 
         self::$configData = $phpCodeSnifferConfig;
 
-        // If the installed paths are being set, make sure all known
-        // standards paths are added to the autoloader.
         if ($key === 'installed_paths') {
             $installedStandards = Standards::getInstalledStandardDetails();
             foreach ($installedStandards as $details) {

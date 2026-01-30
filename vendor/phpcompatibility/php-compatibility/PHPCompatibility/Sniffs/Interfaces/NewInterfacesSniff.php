@@ -128,7 +128,6 @@ class NewInterfacesSniff extends AbstractNewFeatureSniff
      */
     public function register()
     {
-        // Handle case-insensitivity of interface names.
         $this->newInterfaces      = $this->arrayKeysToLowercase($this->newInterfaces);
         $this->unsupportedMethods = $this->arrayKeysToLowercase($this->unsupportedMethods);
 
@@ -175,8 +174,6 @@ class NewInterfacesSniff extends AbstractNewFeatureSniff
             case 'T_CLOSURE':
                 $this->processFunctionToken($phpcsFile, $stackPtr);
 
-                // Deal with older PHPCS versions which don't recognize return type hints
-                // as well as newer PHPCS versions (3.3.0+) where the tokenization has changed.
                 $returnTypeHint = $this->getReturnTypeHintToken($phpcsFile, $stackPtr);
                 if ($returnTypeHint !== false) {
                     $this->processReturnTypeToken($phpcsFile, $returnTypeHint);
@@ -188,7 +185,6 @@ class NewInterfacesSniff extends AbstractNewFeatureSniff
                 break;
 
             default:
-                // Deliberately left empty.
                 break;
         }
     }
@@ -324,7 +320,6 @@ class NewInterfacesSniff extends AbstractNewFeatureSniff
             return;
         }
 
-        // Still here ? Then this is a return type declaration using a new interface.
         $itemInfo = array(
             'name'   => $returnTypeHint,
             'nameLc' => $returnTypeHintLc,

@@ -55,12 +55,10 @@ class LanguageConstructSpacingSniff implements Sniff, DeprecatedSniff
         $tokens = $phpcsFile->getTokens();
 
         if (isset($tokens[($stackPtr + 1)]) === false) {
-            // Skip if there is no next token.
             return;
         }
 
         if ($tokens[($stackPtr + 1)]['code'] === T_SEMICOLON) {
-            // No content for this language construct.
             return;
         }
 

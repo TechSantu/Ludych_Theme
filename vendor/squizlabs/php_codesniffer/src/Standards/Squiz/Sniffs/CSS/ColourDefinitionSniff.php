@@ -66,7 +66,6 @@ class ColourDefinitionSniff implements Sniff, DeprecatedSniff
             }
         }
 
-        // Now check if shorthand can be used.
         if (strlen($colour) !== 7) {
             return;
         }

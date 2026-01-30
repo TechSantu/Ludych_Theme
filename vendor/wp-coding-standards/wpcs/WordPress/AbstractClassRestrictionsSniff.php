@@ -66,7 +66,6 @@ abstract class AbstractClassRestrictionsSniff extends AbstractFunctionRestrictio
 	 * @return array
 	 */
 	public function register() {
-		// Prepare the function group regular expressions only once.
 		if ( false === $this->setup_groups( 'classes' ) ) {
 			return array();
 		}
@@ -92,13 +91,10 @@ abstract class AbstractClassRestrictionsSniff extends AbstractFunctionRestrictio
 	 *                  normal file processing.
 	 */
 	public function process_token( $stackPtr ) {
-		// Reset the temporary storage before processing the token.
 		unset( $this->classname );
 
 		$this->excluded_groups = RulesetPropertyHelper::merge_custom_array( $this->exclude );
 		if ( array_diff_key( $this->groups, $this->excluded_groups ) === array() ) {
-			// All groups have been excluded.
-			// Don't remove the listener as the exclude property can be changed inline.
 			return;
 		}
 
@@ -128,7 +124,6 @@ abstract class AbstractClassRestrictionsSniff extends AbstractFunctionRestrictio
 				if ( false === $nextNonEmpty
 					|| \in_array( $this->tokens[ $nextNonEmpty ]['code'], array( \T_READONLY, \T_ANON_CLASS, \T_ATTRIBUTE ), true )
 				) {
-					// Live coding or anonymous class. Bow out.
 					return false;
 				}
 
@@ -146,7 +141,6 @@ abstract class AbstractClassRestrictionsSniff extends AbstractFunctionRestrictio
 		if ( \T_DOUBLE_COLON === $token['code'] ) {
 			$nameEnd = $this->phpcsFile->findPrevious( Tokens::$emptyTokens, ( $stackPtr - 1 ), null, true );
 			if ( \T_STRING !== $this->tokens[ $nameEnd ]['code'] ) {
-				// Hierarchy keyword or object stored in variable.
 				return false;
 			}
 
@@ -155,12 +149,10 @@ abstract class AbstractClassRestrictionsSniff extends AbstractFunctionRestrictio
 			$classname = $this->get_namespaced_classname( $classname, ( $nameStart - 1 ) );
 		}
 
-		// Stop if we couldn't determine a classname.
 		if ( empty( $classname ) ) {
 			return false;
 		}
 
-		// Nothing to do if one of the hierarchy keywords - 'parent', 'self' or 'static' - is used.
 		if ( \in_array( strtolower( $classname ), array( '\parent', '\self', '\static' ), true ) ) {
 			return false;
 		}
@@ -218,7 +210,6 @@ abstract class AbstractClassRestrictionsSniff extends AbstractFunctionRestrictio
 	public function process_matched_token( $stackPtr, $group_name, $matched_content ) {
 		parent::process_matched_token( $stackPtr, $group_name, $matched_content );
 	}
-	// phpcs:enable
 
 	/**
 	 * Prepare the class name for use in a regular expression.
@@ -245,19 +236,16 @@ abstract class AbstractClassRestrictionsSniff extends AbstractFunctionRestrictio
 	 * @return string Classname, potentially prefixed with the namespace.
 	 */
 	protected function get_namespaced_classname( $classname, $search_from ) {
-		// Don't do anything if this is already a fully qualified classname.
 		if ( empty( $classname ) || '\\' === $classname[0] ) {
 			return $classname;
 		}
 
-		// Remove the namespace keyword if used.
 		if ( 0 === stripos( $classname, 'namespace\\' ) ) {
 			$classname = substr( $classname, 10 );
 		}
 
 		$namespace = Namespaces::determineNamespace( $this->phpcsFile, $search_from );
 		if ( '' === $namespace ) {
-			// No namespace keyword found at all, so global namespace.
 			$classname = '\\' . $classname;
 		} else {
 			$classname = '\\' . $namespace . '\\' . $classname;

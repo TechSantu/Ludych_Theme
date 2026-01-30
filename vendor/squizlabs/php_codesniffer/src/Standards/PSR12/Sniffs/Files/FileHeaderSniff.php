@@ -51,7 +51,6 @@ class FileHeaderSniff implements Sniff
         do {
             $headerLines = $this->getHeaderLines($phpcsFile, $openTag);
             if (empty($headerLines) === true && $openTag === $stackPtr) {
-                // No content in the file.
                 return $phpcsFile->numTokens;
             }
 
@@ -62,8 +61,6 @@ class FileHeaderSniff implements Sniff
 
             $next = $phpcsFile->findNext($searchFor, ($openTag + 1));
             if (isset(Tokens::$ooScopeTokens[$tokens[$next]['code']]) === true) {
-                // Once we find an OO token, the file content has
-                // definitely started.
                 break;
             }
 
@@ -71,32 +68,20 @@ class FileHeaderSniff implements Sniff
         } while ($openTag !== false);
 
         if ($openTag === false) {
-            // We never found a proper file header.
-            // If the file has multiple PHP open tags, we know
-            // that it must be a mix of PHP and HTML (or similar)
-            // so the header rules do not apply.
             if (count($possibleHeaders) > 1) {
                 return $phpcsFile->numTokens;
             }
 
-            // There is only one possible header.
-            // If it is the first content in the file, it technically
-            // serves as the file header, and the open tag needs to
-            // have a newline after it. Otherwise, ignore it.
             if ($stackPtr > 0) {
                 return $phpcsFile->numTokens;
             }
 
             $openTag = $stackPtr;
         } else if (count($possibleHeaders) > 1) {
-            // There are other PHP blocks before the file header.
             $error = 'The file header must be the first content in the file';
             $phpcsFile->addError($error, $openTag, 'HeaderPosition');
         } else {
-            // The first possible header was the file header block,
-            // so make sure it is the first content in the file.
             if ($openTag !== 0) {
-                // Allow for hashbang lines.
                 $hashbang = false;
                 if ($tokens[($openTag - 1)]['code'] === T_INLINE_HTML) {
                     $content = trim($tokens[($openTag - 1)]['content']);
@@ -161,11 +146,9 @@ class FileHeaderSniff implements Sniff
             switch ($tokens[$next]['code']) {
             case T_DOC_COMMENT_OPEN_TAG:
                 if ($foundDocblock === true) {
-                    // Found a second docblock, so start of code.
                     break(2);
                 }
 
-                // Make sure this is not a code-level docblock.
                 $end = $tokens[$next]['comment_closer'];
                 for ($docToken = ($end + 1); $docToken < $phpcsFile->numTokens; $docToken++) {
                     if (isset(Tokens::$emptyTokens[$tokens[$docToken]['code']]) === true) {
@@ -190,7 +173,6 @@ class FileHeaderSniff implements Sniff
                     && isset(Tokens::$methodPrefixes[$tokens[$docToken]['code']]) === false
                     && $tokens[$docToken]['code'] !== T_READONLY
                 ) {
-                    // Check for an @var annotation.
                     $annotation = false;
                     for ($i = $next; $i < $end; $i++) {
                         if ($tokens[$i]['code'] === T_DOC_COMMENT_TAG
@@ -216,9 +198,6 @@ class FileHeaderSniff implements Sniff
             case T_DECLARE:
             case T_NAMESPACE:
                 if (isset($tokens[$next]['scope_opener']) === true) {
-                    // If this statement is using bracketed syntax, it doesn't
-                    // apply to the entire files and so is not part of header.
-                    // The header has now ended and the main code block begins.
                     break(2);
                 }
 
@@ -253,11 +232,9 @@ class FileHeaderSniff implements Sniff
                 $next = $end;
                 break;
             default:
-                // Skip comments as PSR-12 doesn't say if these are allowed or not.
                 if (isset(Tokens::$commentTokens[$tokens[$next]['code']]) === true) {
                     $next = $phpcsFile->findNext(Tokens::$commentTokens, ($next + 1), null, true);
                     if ($next === false) {
-                        // We reached the end of the file.
                         break(2);
                     }
 
@@ -265,7 +242,6 @@ class FileHeaderSniff implements Sniff
                     break;
                 }
 
-                // We found the start of the main code block.
                 break(2);
             }//end switch
 
@@ -296,9 +272,6 @@ class FileHeaderSniff implements Sniff
             if (isset($headerLines[($i + 1)]) === false
                 || $headerLines[($i + 1)]['type'] !== $line['type']
             ) {
-                // We're at the end of the current header block.
-                // Make sure there is a single blank line after
-                // this block.
                 $next = $phpcsFile->findNext(T_WHITESPACE, ($line['end'] + 1), null, true);
                 if ($next !== false && $tokens[$next]['line'] !== ($tokens[$line['end']]['line'] + 2)) {
                     $error = 'Header blocks must be separated by a single blank line';
@@ -323,7 +296,6 @@ class FileHeaderSniff implements Sniff
                     }//end if
                 }//end if
 
-                // Make sure we haven't seen this next block before.
                 if (isset($headerLines[($i + 1)]) === true
                     && isset($found[$headerLines[($i + 1)]['type']]) === true
                 ) {
@@ -336,8 +308,6 @@ class FileHeaderSniff implements Sniff
                     $phpcsFile->addError($error, $headerLines[($i + 1)]['start'], 'IncorrectGrouping', $data);
                 }
             } else if ($headerLines[($i + 1)]['type'] === $line['type']) {
-                // Still in the same block, so make sure there is no
-                // blank line after this statement.
                 $next = $phpcsFile->findNext(T_WHITESPACE, ($line['end'] + 1), null, true);
                 if ($tokens[$next]['line'] > ($tokens[$line['end']]['line'] + 1)) {
                     $error = 'Header blocks must not contain blank lines';
@@ -390,7 +360,6 @@ class FileHeaderSniff implements Sniff
 
         foreach (array_keys($found) as $type) {
             if ($type === 'tag') {
-                // The opening tag is always in the correct spot.
                 continue;
             }
 
@@ -399,10 +368,6 @@ class FileHeaderSniff implements Sniff
             } while ($orderedType !== false && key($blockOrder) !== $type);
 
             if ($orderedType === false) {
-                // We didn't find the block type in the rest of the
-                // ordered array, so it is out of place.
-                // Error and reset the array to the correct position
-                // so we can check the next block.
                 reset($blockOrder);
                 $prevValidType = 'tag';
                 do {

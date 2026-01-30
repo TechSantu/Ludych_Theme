@@ -293,11 +293,9 @@ final class MessageCollector
     private function arrayColumn(array $input, $columnKey)
     {
         if (function_exists('array_column') === true) {
-            // PHP 5.5+.
             return array_column($input, $columnKey);
         }
 
-        // PHP 5.4.
         $callback = static function ($row) use ($columnKey) {
             return $row[$columnKey];
         };

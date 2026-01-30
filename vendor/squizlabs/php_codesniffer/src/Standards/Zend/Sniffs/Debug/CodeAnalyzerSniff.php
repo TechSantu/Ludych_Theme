@@ -54,20 +54,10 @@ class CodeAnalyzerSniff implements Sniff, DeprecatedSniff
 
         $fileName = $phpcsFile->getFilename();
 
-        // In the command, 2>&1 is important because the code analyzer sends its
-        // findings to stderr. $output normally contains only stdout, so using 2>&1
-        // will pipe even stderr to stdout.
         $cmd = Common::escapeshellcmd($analyzerPath).' '.escapeshellarg($fileName).' 2>&1';
 
-        // There is the possibility to pass "--ide" as an option to the analyzer.
-        // This would result in an output format which would be easier to parse.
-        // The problem here is that no cleartext error messages are returned; only
-        // error-code-labels. So for a start we go for cleartext output.
         $exitCode = exec($cmd, $output, $retval);
 
-        // Variable $exitCode is the last line of $output if no error occurs, on
-        // error it is numeric. Try to handle various error conditions and
-        // provide useful error reporting.
         if (is_numeric($exitCode) === true && $exitCode > 0) {
             if (is_array($output) === true) {
                 $msg = implode('\n', $output);
@@ -78,11 +68,6 @@ class CodeAnalyzerSniff implements Sniff, DeprecatedSniff
 
         if (is_array($output) === true) {
             foreach ($output as $finding) {
-                // The first two lines of analyzer output contain
-                // something like this:
-                // > Zend Code Analyzer 1.2.2
-                // > Analyzing <filename>...
-                // So skip these...
                 $res = preg_match("/^.+\(line ([0-9]+)\):(.+)$/", $finding, $regs);
                 if (empty($regs) === true || $res === false) {
                     continue;
@@ -92,7 +77,6 @@ class CodeAnalyzerSniff implements Sniff, DeprecatedSniff
             }
         }
 
-        // Ignore the rest of the file.
         return $phpcsFile->numTokens;
 
     }//end process()

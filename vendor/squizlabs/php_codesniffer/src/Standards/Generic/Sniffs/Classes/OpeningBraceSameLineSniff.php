@@ -56,7 +56,6 @@ class OpeningBraceSameLineSniff implements Sniff
 
         $openingBrace = $tokens[$stackPtr]['scope_opener'];
 
-        // Is the brace on the same line as the class/interface/trait declaration ?
         $lastClassLineToken = $phpcsFile->findPrevious(T_WHITESPACE, ($openingBrace - 1), $stackPtr, true);
         $lastClassLine      = $tokens[$lastClassLineToken]['line'];
         $braceLine          = $tokens[$openingBrace]['line'];
@@ -76,11 +75,9 @@ class OpeningBraceSameLineSniff implements Sniff
             $phpcsFile->recordMetric($stackPtr, 'Class opening brace placement', 'same line');
         }
 
-        // Is the opening brace the last thing on the line ?
         $next = $phpcsFile->findNext(T_WHITESPACE, ($openingBrace + 1), null, true);
         if ($tokens[$next]['line'] === $tokens[$openingBrace]['line']) {
             if ($next === $tokens[$stackPtr]['scope_closer']) {
-                // Ignore empty classes.
                 return;
             }
 
@@ -91,12 +88,10 @@ class OpeningBraceSameLineSniff implements Sniff
             }
         }
 
-        // Only continue checking if the opening brace looks good.
         if ($lineDifference > 0) {
             return;
         }
 
-        // Is there precisely one space before the opening brace ?
         if ($tokens[($openingBrace - 1)]['code'] !== T_WHITESPACE) {
             $length = 0;
         } else if ($tokens[($openingBrace - 1)]['content'] === "\t") {

@@ -34,7 +34,6 @@ class AssertNotWpErrorTypeSpecifyingExtension implements \PHPStan\Type\MethodTyp
             && $context->null();
     }
 
-    // phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter
     public function specifyTypes(MethodReflection $methodReflection, MethodCall $node, Scope $scope, TypeSpecifierContext $context): SpecifiedTypes
     {
         $expr = $node->getArgs()[0]->value;

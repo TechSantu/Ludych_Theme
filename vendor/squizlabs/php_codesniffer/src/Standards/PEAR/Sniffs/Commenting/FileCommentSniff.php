@@ -94,16 +94,13 @@ class FileCommentSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Find the next non whitespace token.
         $commentStart = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
 
-        // Allow declare() statements at the top of the file.
         if ($tokens[$commentStart]['code'] === T_DECLARE) {
             $semicolon    = $phpcsFile->findNext(T_SEMICOLON, ($commentStart + 1));
             $commentStart = $phpcsFile->findNext(T_WHITESPACE, ($semicolon + 1), null, true);
         }
 
-        // Ignore vim header.
         if ($tokens[$commentStart]['code'] === T_COMMENT) {
             if (strstr($tokens[$commentStart]['content'], 'vim:') !== false) {
                 $commentStart = $phpcsFile->findNext(
@@ -121,7 +118,6 @@ class FileCommentSniff implements Sniff
         }
 
         if ($tokens[$commentStart]['code'] === T_CLOSE_TAG) {
-            // We are only interested if this is the first open tag.
             return $phpcsFile->numTokens;
         } else if ($tokens[$commentStart]['code'] === T_COMMENT) {
             $error = 'You must use "/**" style comments for a file comment';
@@ -183,7 +179,6 @@ class FileCommentSniff implements Sniff
 
         $phpcsFile->recordMetric($stackPtr, 'File has doc comment', 'yes');
 
-        // Check the PHP Version, which should be in some text before the first tag.
         $found = false;
         for ($i = ($commentStart + 1); $i < $commentEnd; $i++) {
             if ($tokens[$i]['code'] === T_DOC_COMMENT_TAG) {
@@ -201,10 +196,8 @@ class FileCommentSniff implements Sniff
             $phpcsFile->addWarning($error, $commentEnd, 'MissingVersion');
         }
 
-        // Check each tag.
         $this->processTags($phpcsFile, $stackPtr, $commentStart);
 
-        // Ignore the rest of the file.
         return $phpcsFile->numTokens;
 
     }//end process()
@@ -264,7 +257,6 @@ class FileCommentSniff implements Sniff
             }
         }//end foreach
 
-        // Check if the tags are in the correct position.
         $pos = 0;
         foreach ($this->tags as $tag => $tagData) {
             if (isset($tagTokens[$tag]) === false) {
@@ -281,7 +273,6 @@ class FileCommentSniff implements Sniff
             } else {
                 $method = 'process'.substr($tag, 1);
                 if (method_exists($this, $method) === true) {
-                    // Process each tag if a method is defined.
                     call_user_func([$this, $method], $phpcsFile, $tagTokens[$tag]);
                 }
             }
@@ -299,7 +290,6 @@ class FileCommentSniff implements Sniff
                 $phpcsFile->addError($error, $tokens[$commentStart]['comment_tags'][$pos], ucfirst(substr($tag, 1)).'TagOrder', $data);
             }
 
-            // Account for multiple tags.
             $pos++;
             while (isset($foundTags[$pos]) === true && $foundTags[$pos] === $tag) {
                 $pos++;
@@ -322,7 +312,6 @@ class FileCommentSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
         foreach ($tags as $tag) {
             if ($tokens[($tag + 2)]['code'] !== T_DOC_COMMENT_STRING) {
-                // No content.
                 continue;
             }
 
@@ -364,7 +353,6 @@ class FileCommentSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
         foreach ($tags as $tag) {
             if ($tokens[($tag + 2)]['code'] !== T_DOC_COMMENT_STRING) {
-                // No content.
                 continue;
             }
 
@@ -417,7 +405,6 @@ class FileCommentSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
         foreach ($tags as $tag) {
             if ($tokens[($tag + 2)]['code'] !== T_DOC_COMMENT_STRING) {
-                // No content.
                 continue;
             }
 
@@ -461,13 +448,11 @@ class FileCommentSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
         foreach ($tags as $tag) {
             if ($tokens[($tag + 2)]['code'] !== T_DOC_COMMENT_STRING) {
-                // No content.
                 continue;
             }
 
             $content = $tokens[($tag + 2)]['content'];
             $local   = '\da-zA-Z-_+';
-            // Dot character cannot be the first or last character in the local-part.
             $localMiddle = $local.'.\w';
             if (preg_match('/^([^<]*)\s+<(['.$local.'](['.$localMiddle.']*['.$local.'])*@[\da-zA-Z][-.\w]*[\da-zA-Z]\.[a-zA-Z]{2,})>$/', $content) === 0) {
                 $error = 'Content of the @author tag must be in the form "Display Name <username@example.com>"';
@@ -491,14 +476,12 @@ class FileCommentSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
         foreach ($tags as $tag) {
             if ($tokens[($tag + 2)]['code'] !== T_DOC_COMMENT_STRING) {
-                // No content.
                 continue;
             }
 
             $content = $tokens[($tag + 2)]['content'];
             $matches = [];
             if (preg_match('/^([0-9]{4})((.{1})([0-9]{4}))? (.+)$/', $content, $matches) !== 0) {
-                // Check earliest-latest year order.
                 if ($matches[3] !== '' && $matches[3] !== null) {
                     if ($matches[3] !== '-') {
                         $error = 'A hyphen must be used between the earliest and latest year';
@@ -532,7 +515,6 @@ class FileCommentSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
         foreach ($tags as $tag) {
             if ($tokens[($tag + 2)]['code'] !== T_DOC_COMMENT_STRING) {
-                // No content.
                 continue;
             }
 
@@ -561,7 +543,6 @@ class FileCommentSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
         foreach ($tags as $tag) {
             if ($tokens[($tag + 2)]['code'] !== T_DOC_COMMENT_STRING) {
-                // No content.
                 continue;
             }
 

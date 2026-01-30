@@ -89,7 +89,6 @@ class NewForeachExpressionReferencingSniff extends Sniff
             return;
         }
 
-        // Non-variable detected before the `as` keyword.
         $phpcsFile->addError(
             'Referencing $value is only possible if the iterated array is a variable in PHP 5.4 or earlier.',
             $hasReference,

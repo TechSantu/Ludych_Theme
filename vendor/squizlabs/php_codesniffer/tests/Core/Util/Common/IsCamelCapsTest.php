@@ -122,7 +122,6 @@ final class IsCamelCapsTest extends TestCase
                 'name' => 'this-IsCamelCaps',
             ],
             'lower camelCase string with medial illegal character: é'                    => [
-                // No camels were harmed in the cspell:disable-next-line.
                 'name' => 'thisIsCamélCaps',
             ],
             'lower camelCase string with single medial underscore'                       => [

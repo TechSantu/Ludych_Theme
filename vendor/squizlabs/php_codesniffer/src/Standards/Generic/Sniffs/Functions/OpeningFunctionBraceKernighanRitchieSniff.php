@@ -73,7 +73,6 @@ class OpeningFunctionBraceKernighanRitchieSniff implements Sniff
 
         $openingBrace = $tokens[$stackPtr]['scope_opener'];
 
-        // Find the end of the function declaration.
         $prev = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($openingBrace - 1), null, true);
 
         $functionLine = $tokens[$prev]['line'];
@@ -97,16 +96,12 @@ class OpeningFunctionBraceKernighanRitchieSniff implements Sniff
                 if ($tokens[($openingBrace + 1)]['code'] === T_WHITESPACE
                     && $tokens[($openingBrace + 2)]['line'] > $tokens[$openingBrace]['line']
                 ) {
-                    // Brace is followed by a new line, so remove it to ensure we don't
-                    // leave behind a blank line at the top of the block.
                     $phpcsFile->fixer->replaceToken(($openingBrace + 1), '');
 
                     if ($tokens[($openingBrace - 1)]['code'] === T_WHITESPACE
                         && $tokens[($openingBrace - 1)]['line'] === $tokens[$openingBrace]['line']
                         && $tokens[($openingBrace - 2)]['line'] < $tokens[$openingBrace]['line']
                     ) {
-                        // Brace is preceded by indent, so remove it to ensure we don't
-                        // leave behind more indent than is required for the first line.
                         $phpcsFile->fixer->replaceToken(($openingBrace - 1), '');
                     }
                 }
@@ -121,7 +116,6 @@ class OpeningFunctionBraceKernighanRitchieSniff implements Sniff
         $ignore[] = T_WHITESPACE;
         $next     = $phpcsFile->findNext($ignore, ($openingBrace + 1), null, true);
         if ($tokens[$next]['line'] === $tokens[$openingBrace]['line']) {
-            // Only throw this error when this is not an empty function.
             if ($next !== $tokens[$stackPtr]['scope_closer']
                 && $tokens[$next]['code'] !== T_CLOSE_TAG
             ) {
@@ -133,24 +127,19 @@ class OpeningFunctionBraceKernighanRitchieSniff implements Sniff
             }
         }
 
-        // Only continue checking if the opening brace looks good.
         if ($lineDifference > 0) {
             return;
         }
 
-        // Enforce a single space. Tabs not allowed.
         $spacing = $tokens[($openingBrace - 1)]['content'];
         if ($tokens[($openingBrace - 1)]['code'] !== T_WHITESPACE) {
             $length = 0;
         } else if ($spacing === "\t") {
-            // Tab without tab-width set, so no tab replacement has taken place.
             $length = '\t';
         } else {
             $length = strlen($spacing);
         }
 
-        // If tab replacement is on, avoid confusing the user with a "expected 1 space, found 1"
-        // message when the "1" found is actually a tab, not a space.
         if ($length === 1
             && isset($tokens[($openingBrace - 1)]['orig_content']) === true
             && $tokens[($openingBrace - 1)]['orig_content'] === "\t"

@@ -90,7 +90,6 @@ class EmptyPHPStatementSniff implements Sniff
                 return;
             }
 
-            // Else, it's something like `if (foo) {};` and the semicolon is not needed.
         }
 
         if (isset($tokens[$stackPtr]['nested_parenthesis']) === true) {
@@ -99,7 +98,6 @@ class EmptyPHPStatementSniff implements Sniff
             if (isset($tokens[$lastCloser]['parenthesis_owner']) === true
                 && $tokens[$tokens[$lastCloser]['parenthesis_owner']]['code'] === T_FOR
             ) {
-                // Empty for() condition.
                 return;
             }
         }
@@ -116,9 +114,6 @@ class EmptyPHPStatementSniff implements Sniff
             if ($tokens[$prevNonEmpty]['code'] === T_OPEN_TAG
                 || $tokens[$prevNonEmpty]['code'] === T_OPEN_TAG_WITH_ECHO
             ) {
-                // Check for superfluous whitespace after the semicolon which should be
-                // removed as the `<?php ` open tag token already contains whitespace,
-                // either a space or a new line.
                 if ($tokens[($stackPtr + 1)]['code'] === T_WHITESPACE) {
                     $replacement = str_replace(' ', '', $tokens[($stackPtr + 1)]['content']);
                     $phpcsFile->fixer->replaceToken(($stackPtr + 1), $replacement);

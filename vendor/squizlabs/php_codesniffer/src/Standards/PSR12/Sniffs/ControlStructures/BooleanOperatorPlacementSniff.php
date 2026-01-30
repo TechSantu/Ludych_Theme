@@ -66,7 +66,6 @@ class BooleanOperatorPlacementSniff implements Sniff
         $parenCloser = $tokens[$stackPtr]['parenthesis_closer'];
 
         if ($tokens[$parenOpener]['line'] === $tokens[$parenCloser]['line']) {
-            // Conditions are all on the same line.
             return;
         }
 
@@ -93,13 +92,11 @@ class BooleanOperatorPlacementSniff implements Sniff
 
             $prev = $phpcsFile->findPrevious(T_WHITESPACE, ($operator - 1), $parenOpener, true);
             if ($prev === false) {
-                // Parse error.
                 return;
             }
 
             $next = $phpcsFile->findNext(T_WHITESPACE, ($operator + 1), $parenCloser, true);
             if ($next === false) {
-                // Parse error.
                 return;
             }
 
@@ -107,28 +104,20 @@ class BooleanOperatorPlacementSniff implements Sniff
             $lastOnLine  = false;
 
             if ($tokens[$prev]['line'] < $tokens[$operator]['line']) {
-                // The boolean operator is the first content on the line.
                 $firstOnLine = true;
             }
 
             if ($tokens[$next]['line'] > $tokens[$operator]['line']) {
-                // The boolean operator is the last content on the line.
                 $lastOnLine = true;
             }
 
             if ($firstOnLine === true && $lastOnLine === true) {
-                // The operator is the only content on the line.
-                // Don't record it because we can't determine
-                // placement information from looking at it.
                 continue;
             }
 
             $operators[] = $operator;
 
             if ($firstOnLine === false && $lastOnLine === false) {
-                // It's in the middle of content, so we can't determine
-                // placement information from looking at it, but we may
-                // still need to process it.
                 continue;
             }
 
@@ -179,7 +168,6 @@ class BooleanOperatorPlacementSniff implements Sniff
             if ($position === 'last') {
                 if ($tokens[$next]['line'] === $tokens[$operator]['line']) {
                     if ($tokens[$prev]['line'] === $tokens[$operator]['line']) {
-                        // Move the content after the operator to the next line.
                         if ($tokens[($operator + 1)]['code'] === T_WHITESPACE) {
                             $phpcsFile->fixer->replaceToken(($operator + 1), '');
                         }
@@ -188,7 +176,6 @@ class BooleanOperatorPlacementSniff implements Sniff
                         $padding = str_repeat(' ', ($tokens[$first]['column'] - 1));
                         $phpcsFile->fixer->addContent($operator, $phpcsFile->eolChar.$padding);
                     } else {
-                        // Move the operator to the end of the previous line.
                         if ($tokens[($operator + 1)]['code'] === T_WHITESPACE) {
                             $phpcsFile->fixer->replaceToken(($operator + 1), '');
                         }
@@ -200,7 +187,6 @@ class BooleanOperatorPlacementSniff implements Sniff
             } else {
                 if ($tokens[$prev]['line'] === $tokens[$operator]['line']) {
                     if ($tokens[$next]['line'] === $tokens[$operator]['line']) {
-                        // Move the operator, and the rest of the expression, to the next line.
                         if ($tokens[($operator - 1)]['code'] === T_WHITESPACE) {
                             $phpcsFile->fixer->replaceToken(($operator - 1), '');
                         }
@@ -209,7 +195,6 @@ class BooleanOperatorPlacementSniff implements Sniff
                         $padding = str_repeat(' ', ($tokens[$first]['column'] - 1));
                         $phpcsFile->fixer->addContentBefore($operator, $phpcsFile->eolChar.$padding);
                     } else {
-                        // Move the operator to the start of the next line.
                         if ($tokens[($operator - 1)]['code'] === T_WHITESPACE) {
                             $phpcsFile->fixer->replaceToken(($operator - 1), '');
                         }

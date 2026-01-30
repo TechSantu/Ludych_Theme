@@ -68,7 +68,6 @@ final class DeprecationHelper {
 		}
 
 		if ( \T_DOC_COMMENT_CLOSE_TAG !== $tokens[ $comment_end ]['code'] ) {
-			// Function doesn't have a doc comment or is using the wrong type of comment.
 			return false;
 		}
 

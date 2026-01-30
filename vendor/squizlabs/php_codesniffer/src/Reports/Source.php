@@ -34,7 +34,6 @@ class Source implements Report
     public function generateFileReport($report, File $phpcsFile, $showSources=false, $width=80)
     {
         if ($report['errors'] === 0 && $report['warnings'] === 0) {
-            // Nothing to print.
             return false;
         }
 
@@ -152,7 +151,6 @@ class Source implements Report
 
         $width = max($width, 70);
 
-        // Sort the data based on counts and source code.
         $sourceCodes = array_keys($sources);
         $counts      = [];
         foreach ($sources as $source => $data) {
@@ -304,16 +302,13 @@ class Source implements Report
 
                 $char = strtolower($name[$i]);
                 if ($char === $name[$i]) {
-                    // Lowercase.
                     $lastWasUpper = false;
                 } else {
-                    // Uppercase.
                     if ($lastWasUpper === false) {
                         $friendlyName .= ' ';
                         if ($i < ($length - 1)) {
                             $next = $name[($i + 1)];
                             if (strtolower($next) === $next) {
-                                // Next char is lowercase so it is a word boundary.
                                 $name[$i] = strtolower($name[$i]);
                             }
                         }

@@ -7,7 +7,6 @@ $services_text  = get_field( 'services_text', $post_id );
 $services_title = get_field( 'services_title', $post_id );
 ?>
 
-	<!-- top business partner start -->
 	<section class="our-services">
 		<div class="custom-container">
 			<div class="global-header left-align">
@@ -97,4 +96,3 @@ $services_title = get_field( 'services_title', $post_id );
 			</div>
 		</div>
 	</section>
-	<!-- top business partner end -->

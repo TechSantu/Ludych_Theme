@@ -44,7 +44,6 @@ class NamespaceDeclarationSniff implements Sniff
 
         $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
         if ($tokens[$nextNonEmpty]['code'] === T_NS_SEPARATOR) {
-            // Namespace keyword as operator. Not a declaration.
             return;
         }
 
@@ -57,8 +56,6 @@ class NamespaceDeclarationSniff implements Sniff
             break;
         }
 
-        // The $i var now points to the first token on the line after the
-        // namespace declaration, which must be a blank line.
         $next = $phpcsFile->findNext(T_WHITESPACE, $i, $phpcsFile->numTokens, true);
         if ($next === false) {
             return;

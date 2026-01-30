@@ -93,7 +93,6 @@ class RemovedPHP4StyleConstructorsSniff extends Sniff
 
         $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
         if ($nextNonEmpty === false || $tokens[$nextNonEmpty]['code'] !== \T_STRING) {
-            // Anonymous class in combination with PHPCS 2.3.x.
             return;
         }
 
@@ -110,7 +109,6 @@ class RemovedPHP4StyleConstructorsSniff extends Sniff
         $oldConstructorFound = false;
         $oldConstructorPos   = -1;
         while (($nextFunc = $phpcsFile->findNext(array(\T_FUNCTION, \T_DOC_COMMENT_OPEN_TAG), ($nextFunc + 1), $scopeCloser)) !== false) {
-            // Skip over docblocks.
             if ($tokens[$nextFunc]['code'] === \T_DOC_COMMENT_OPEN_TAG) {
                 $nextFunc = $tokens[$nextFunc]['comment_closer'];
                 continue;
@@ -118,7 +116,6 @@ class RemovedPHP4StyleConstructorsSniff extends Sniff
 
             $functionScopeCloser = $nextFunc;
             if (isset($tokens[$nextFunc]['scope_closer'])) {
-                // Normal (non-interface, non-abstract) method.
                 $functionScopeCloser = $tokens[$nextFunc]['scope_closer'];
             }
 
@@ -139,7 +136,6 @@ class RemovedPHP4StyleConstructorsSniff extends Sniff
                 $oldConstructorPos   = $nextFunc;
             }
 
-            // If both have been found, no need to continue looping through the functions.
             if ($newConstructorFound === true && $oldConstructorFound === true) {
                 break;
             }

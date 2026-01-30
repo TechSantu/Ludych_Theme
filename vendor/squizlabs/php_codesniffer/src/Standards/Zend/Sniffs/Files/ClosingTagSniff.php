@@ -40,7 +40,6 @@ class ClosingTagSniff implements Sniff
      */
     public function process(File $phpcsFile, $stackPtr)
     {
-        // Find the last non-empty token.
         $tokens = $phpcsFile->getTokens();
         for ($last = ($phpcsFile->numTokens - 1); $last > 0; $last--) {
             if (trim($tokens[$last]['content']) !== '') {
@@ -70,7 +69,6 @@ class ClosingTagSniff implements Sniff
             $phpcsFile->recordMetric($stackPtr, 'PHP closing tag at EOF', 'no');
         }//end if
 
-        // Ignore the rest of the file.
         return $phpcsFile->numTokens;
 
     }//end process()

@@ -38,7 +38,6 @@ final class FindEndOfStatementTest extends AbstractMethodUnitTest
 
             $end = self::$phpcsFile->findEndOfStatement($i);
 
-            // Collect all the errors.
             if ($end < $i) {
                 $errors[] = sprintf(
                     'End of statement for token %1$d (%2$s: %3$s) on line %4$d is %5$d (%6$s), which is less than %1$d',
@@ -109,19 +108,16 @@ final class FindEndOfStatementTest extends AbstractMethodUnitTest
      */
     public function testHeredocFunctionArg()
     {
-        // Find the end of the function.
         $start = $this->getTargetToken('/* testHeredocFunctionArg */', T_STRING, 'myFunction');
         $found = self::$phpcsFile->findEndOfStatement($start);
 
         $this->assertSame(($start + 10), $found);
 
-        // Find the end of the heredoc.
         $start += 2;
         $found  = self::$phpcsFile->findEndOfStatement($start);
 
         $this->assertSame(($start + 4), $found);
 
-        // Find the end of the last arg.
         $start = ($found + 2);
         $found = self::$phpcsFile->findEndOfStatement($start);
 
@@ -137,19 +133,16 @@ final class FindEndOfStatementTest extends AbstractMethodUnitTest
      */
     public function testSwitch()
     {
-        // Find the end of the switch.
         $start = $this->getTargetToken('/* testSwitch */', T_SWITCH);
         $found = self::$phpcsFile->findEndOfStatement($start);
 
         $this->assertSame(($start + 28), $found);
 
-        // Find the end of the case.
         $start += 9;
         $found  = self::$phpcsFile->findEndOfStatement($start);
 
         $this->assertSame(($start + 8), $found);
 
-        // Find the end of default case.
         $start += 11;
         $found  = self::$phpcsFile->findEndOfStatement($start);
 
@@ -165,19 +158,16 @@ final class FindEndOfStatementTest extends AbstractMethodUnitTest
      */
     public function testStatementAsArrayValue()
     {
-        // Test short array syntax.
         $start = $this->getTargetToken('/* testStatementAsArrayValue */', T_NEW);
         $found = self::$phpcsFile->findEndOfStatement($start);
 
         $this->assertSame(($start + 2), $found);
 
-        // Test long array syntax.
         $start += 12;
         $found  = self::$phpcsFile->findEndOfStatement($start);
 
         $this->assertSame(($start + 2), $found);
 
-        // Test same statement outside of array.
         $start += 10;
         $found  = self::$phpcsFile->findEndOfStatement($start);
 
@@ -379,13 +369,11 @@ final class FindEndOfStatementTest extends AbstractMethodUnitTest
      */
     public function testMatchFunctionCallArm()
     {
-        // Check the first case.
         $start = $this->getTargetToken('/* testMatchFunctionCallArm */', T_STRING);
         $found = self::$phpcsFile->findEndOfStatement($start);
 
         $this->assertSame(($start + 21), $found);
 
-        // Check the second case.
         $start += 24;
         $found  = self::$phpcsFile->findEndOfStatement($start);
 

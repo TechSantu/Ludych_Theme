@@ -2743,7 +2743,6 @@ namespace {
         /** @var string Dashicon slug */
         var $icon = '';
         /** @var boolean Redirect form to single */
-        // var $redirect = false;
         /**
          * get_name
          *
@@ -4358,7 +4357,6 @@ namespace {
     }
     class acf_field
     {
-        // field information properties.
         public $name = '';
         public $label = '';
         public $category = 'basic';
@@ -4373,10 +4371,8 @@ namespace {
         public $show_in_rest = \true;
         public $supports = array(
             'escaping_html' => \false,
-            // Set true when a field handles its own HTML escaping in format_value
             'required' => \true,
         );
-        // Additional properties used by field types
         public $default_values = array();
         public $have_rows = '';
         public $width = '';
@@ -7736,7 +7732,6 @@ namespace {
     }
     class acf_field_taxonomy extends \acf_field
     {
-        // vars
         var $save_post_terms = array();
         /**
          * This function will setup the field type data
@@ -17790,9 +17785,6 @@ namespace {
      * @param   array $attrs The array of attrs.
      * @return  string
      */
-    // function acf_html_input( $attrs = array() ) {
-    // return sprintf( '<input %s/>', acf_esc_attrs($attrs) );
-    // }
     /**
      * acf_hidden_input
      *
@@ -19538,7 +19530,6 @@ namespace {
     function acf_get_object_id($object)
     {
     }
-    // class_exists check
     /**
      * acf_new_admin_notice
      *
@@ -19584,7 +19575,6 @@ namespace {
     function acf_add_admin_notice($text = '', $type = 'info', $dismissible = \true, $persisted = \false)
     {
     }
-    // class_exists check
     /**
      * alias of acf()->admin_tools->register_tool()
      *
@@ -21809,7 +21799,6 @@ namespace {
     function acf_get_term_post_id($taxonomy, $term_id)
     {
     }
-    // class_exists check
     /**
      * Appends an array of i18n data for localization.
      *
@@ -21870,7 +21859,6 @@ namespace {
     function acf_enqueue_uploader()
     {
     }
-    // class_exists check
     /**
      * Returns true if compatibility is enabled for the given component.
      *
@@ -21974,7 +21962,6 @@ namespace {
     function acf_get_dir($filename = '')
     {
     }
-    // class_exists check
     /**
      * alias of acf()->fields->register_field_type()
      *
@@ -22152,7 +22139,6 @@ namespace {
     function acf_get_pro_field_types()
     {
     }
-    // class_exists check
     /**
      * Functions
      *
@@ -22180,7 +22166,6 @@ namespace {
     function acf_register_form($args)
     {
     }
-//    function determine_locale()
     {
     }
     /**
@@ -22713,7 +22698,6 @@ namespace {
     function _acf_do_prepare_local_fields()
     {
     }
-    // class_exists check
     /**
      * Returns an array of found JSON field group files.
      *
@@ -22750,7 +22734,6 @@ namespace {
     function acf_delete_json_field_group($key)
     {
     }
-    // class_exists check
     /**
      * acf_setup_meta
      *
@@ -22926,7 +22909,6 @@ namespace {
     function acf_get_valid_location_rule($rule)
     {
     }
-    // class_exists check
     /**
      * alias of acf()->loop->add_loop()
      *
@@ -23015,7 +22997,6 @@ namespace {
     function acf_format_value_for_rest($value, $post_id, $field, $format = 'light')
     {
     }
-    // class_exists check
     /**
      * This function will copy meta from a post to it's latest revision
      *
@@ -23218,7 +23199,6 @@ namespace {
     function acf_upgrade_550_taxonomy($taxonomy)
     {
     }
-    // class_exists check
     /**
      * Public functions
      *
@@ -24050,7 +24030,6 @@ namespace {
     function register_options_page($page = '')
     {
     }
-    // class_exists check
     /**
      * Check if a license is defined in wp-config.php and requires activation.
      * Also checks if the license key has been changed and reactivates.

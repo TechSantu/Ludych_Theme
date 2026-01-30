@@ -58,7 +58,6 @@ class NewMultiCatchSniff extends Sniff
         $tokens = $phpcsFile->getTokens();
         $token  = $tokens[$stackPtr];
 
-        // Bow out during live coding.
         if (isset($token['parenthesis_opener'], $token['parenthesis_closer']) === false) {
             return;
         }

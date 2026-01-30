@@ -83,17 +83,13 @@ final class AttributeBlock
              */
             $allowedTokens = Tokens::$emptyTokens;
 
-            // OO constants.
             $allowedTokens += Collections::constantModifierKeywords();
 
-            // Functions, closures, arrow functions and methods.
             $allowedTokens += [\T_STATIC => \T_STATIC];
             $allowedTokens += Tokens::$methodPrefixes;
 
-            // OO declarations.
             $allowedTokens += Collections::classModifierKeywords();
 
-            // Properties and parameters
             $allowedTokens += [\T_NULLABLE => \T_NULLABLE];
             $allowedTokens += Collections::propertyModifierKeywords();
             $allowedTokens += Collections::propertyTypeTokens();
@@ -105,7 +101,6 @@ final class AttributeBlock
         }
 
         for ($i = ($tokens[$stackPtr]['attribute_closer'] + 1); $i <= $phpcsFile->numTokens; $i++) {
-            // Skip over potentially large docblocks.
             if ($tokens[$i]['code'] === \T_DOC_COMMENT_OPEN_TAG
                 && isset($tokens[$i]['comment_closer'])
             ) {
@@ -124,7 +119,6 @@ final class AttributeBlock
                 continue;
             }
 
-            // Okay, so this _must_ be the token for the construct.
             if (isset(Tokens::$ooScopeTokens[$tokens[$i]['code']]) === true
                 || isset(Collections::functionDeclarationTokens()[$tokens[$i]['code']]) === true
                 || $tokens[$i]['code'] === \T_CONST
@@ -206,7 +200,6 @@ final class AttributeBlock
         $start       = ($opener + 1);
 
         for ($i = ($opener + 1); $i <= $closer; $i++) {
-            // Skip over potentially large docblocks.
             if ($tokens[$i]['code'] === \T_DOC_COMMENT_OPEN_TAG
                 && isset($tokens[$i]['comment_closer'])
             ) {
@@ -227,7 +220,6 @@ final class AttributeBlock
             if ($tokens[$i]['code'] === \T_OPEN_PARENTHESIS
                 && isset($tokens[$i]['parenthesis_closer']) === true
             ) {
-                // Skip over whatever is passed to the Attribute constructor.
                 $i = $tokens[$i]['parenthesis_closer'];
                 continue;
             }
@@ -235,9 +227,7 @@ final class AttributeBlock
             if ($tokens[$i]['code'] === \T_COMMA
                 || $i === $closer
             ) {
-                // We've reached the end of the name.
                 if ($currentName === '') {
-                    // Parse error. Stop parsing this attribute block.
                     break;
                 }
 
@@ -253,14 +243,11 @@ final class AttributeBlock
                     break;
                 }
 
-                // Check if there are more tokens before the attribute closer.
-                // Prevents atrtibute blocks with trailing comma's from setting an extra attribute.
                 $hasNext = $phpcsFile->findNext(Tokens::$emptyTokens, ($i + 1), $closer, true);
                 if ($hasNext === false) {
                     break;
                 }
 
-                // Prepare for the next attribute instantiation.
                 $currentName = '';
                 $nameToken   = null;
                 $start       = ($i + 1);

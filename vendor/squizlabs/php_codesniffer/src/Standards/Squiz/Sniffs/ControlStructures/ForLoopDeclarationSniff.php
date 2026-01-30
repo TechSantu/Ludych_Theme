@@ -234,7 +234,6 @@ class ForLoopDeclarationSniff implements Sniff
             if (isset($tokens[$semicolon]['conditions']) === true
                 && count($tokens[$semicolon]['conditions']) > $targetNestinglevel
             ) {
-                // Semicolon doesn't belong to the for().
                 continue;
             }
 
@@ -248,8 +247,6 @@ class ForLoopDeclarationSniff implements Sniff
             $humanReadableCode = ucfirst($humanReadableCount);
             $data = [$humanReadableCount];
 
-            // Only examine the space before the first semicolon if the first expression is not empty.
-            // If it *is* empty, leave it up to the `SpacingAfterOpen` logic.
             $prevNonWhiteSpace = $phpcsFile->findPrevious(T_WHITESPACE, ($semicolon - 1), $openingBracket, true);
             if ($semicolonCount !== 1 || $prevNonWhiteSpace !== $openingBracket) {
                 if ($tokens[($semicolon - 1)]['code'] === T_WHITESPACE) {
@@ -267,8 +264,6 @@ class ForLoopDeclarationSniff implements Sniff
                 }
             }
 
-            // Only examine the space after the second semicolon if the last expression is not empty.
-            // If it *is* empty, leave it up to the `SpacingBeforeClose` logic.
             $nextNonWhiteSpace = $phpcsFile->findNext(T_WHITESPACE, ($semicolon + 1), ($closingBracket + 1), true);
             if ($semicolonCount !== 2 || $nextNonWhiteSpace !== $closingBracket) {
                 if ($tokens[($semicolon + 1)]['code'] !== T_WHITESPACE

@@ -68,18 +68,13 @@ final class RegisterSniffsTest extends TestCase
      */
     public static function initializeConfigAndRuleset()
     {
-        // Set up the ruleset.
         $config        = new ConfigDouble(['--standard=PSR1']);
         self::$ruleset = new Ruleset($config);
 
-        // Remember the original value of the Ruleset::$sniff property as the tests adjust it.
         self::$originalSniffs = self::$ruleset->sniffs;
 
-        // Sort the value to make the tests stable as different OSes will read directories
-        // in a different order and the order is not relevant for these tests. Just the values.
         ksort(self::$originalSniffs);
 
-        // Update the sniff file list.
         $standardsDir  = dirname(dirname(dirname(__DIR__))).DIRECTORY_SEPARATOR;
         $standardsDir .= 'src'.DIRECTORY_SEPARATOR.'Standards'.DIRECTORY_SEPARATOR;
 
@@ -119,7 +114,6 @@ final class RegisterSniffsTest extends TestCase
      */
     protected function clearOutSniffs()
     {
-        // Clear out the Ruleset::$sniffs property.
         self::$ruleset->sniffs = [];
 
     }//end clearOutSniffs()
@@ -134,7 +128,6 @@ final class RegisterSniffsTest extends TestCase
     {
         self::$ruleset->registerSniffs(self::$psr1SniffAbsolutePaths, [], []);
 
-        // Make sure the same sniff list was recreated (but without the objects having been created yet).
         $this->assertSame(array_keys(self::$originalSniffs), array_keys(self::$ruleset->sniffs));
         $this->assertSame(array_keys(self::$originalSniffs), array_values(self::$ruleset->sniffs));
 
@@ -177,7 +170,6 @@ final class RegisterSniffsTest extends TestCase
      */
     public function testRegisteredSniffsWithExclusions()
     {
-        // Set up the ruleset.
         $args    = [
             '--standard=PSR1',
             '--exclude=PSR1.Classes.ClassDeclaration,PSR1.Files.SideEffects,PSR1.Methods.CamelCapsMethodName',
@@ -255,7 +247,6 @@ final class RegisterSniffsTest extends TestCase
 
         self::$ruleset->registerSniffs($fileList, [], []);
 
-        // Make sure the same sniff list was recreated (but without the objects having been created yet).
         $this->assertSame(array_keys(self::$originalSniffs), array_keys(self::$ruleset->sniffs));
         $this->assertSame(array_keys(self::$originalSniffs), array_values(self::$ruleset->sniffs));
 
@@ -283,7 +274,6 @@ final class RegisterSniffsTest extends TestCase
 
         self::$ruleset->registerSniffs($fileList, [], []);
 
-        // Make sure the same sniff list was recreated (but without the objects having been created yet).
         $this->assertSame(array_keys(self::$originalSniffs), array_keys(self::$ruleset->sniffs));
         $this->assertSame(array_keys(self::$originalSniffs), array_values(self::$ruleset->sniffs));
 

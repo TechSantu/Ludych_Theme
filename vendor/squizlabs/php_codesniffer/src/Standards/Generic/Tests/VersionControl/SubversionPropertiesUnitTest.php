@@ -27,7 +27,6 @@ final class SubversionPropertiesUnitTest extends AbstractSniffUnitTest
      */
     protected function shouldSkipTest()
     {
-        // This sniff cannot be tested as no SVN version control directory is available.
         return true;
 
     }//end shouldSkipTest()

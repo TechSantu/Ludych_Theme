@@ -118,7 +118,6 @@ class NewExecutionDirectivesSniff extends AbstractNewFeatureSniff
                 return;
             }
 
-            // Deal with PHPCS 2.3.0-2.3.3 which do not yet set the parenthesis properly for declare statements.
             $openParenthesis = $phpcsFile->findNext(\T_OPEN_PARENTHESIS, ($stackPtr + 1), null, false, null, true);
             if ($openParenthesis === false || isset($tokens[$openParenthesis]['parenthesis_closer']) === false) {
                 return;
@@ -143,13 +142,11 @@ class NewExecutionDirectivesSniff extends AbstractNewFeatureSniff
             $phpcsFile->addError($error, $stackPtr, 'InvalidDirectiveFound', $data);
 
         } else {
-            // Check for valid directive for version.
             $itemInfo = array(
                 'name'   => $directiveContent,
             );
             $this->handleFeature($phpcsFile, $stackPtr, $itemInfo);
 
-            // Check for valid directive value.
             $valuePtr = $phpcsFile->findNext($this->ignoreTokens, $directivePtr + 1, $closeParenthesis, true);
             if ($valuePtr === false) {
                 return;
@@ -227,7 +224,6 @@ class NewExecutionDirectivesSniff extends AbstractNewFeatureSniff
         if (empty($versionArray) === false) {
             foreach ($versionArray as $version => $present) {
                 if (\is_string($present) === true && $this->supportsBelow($version) === true) {
-                    // We cannot test for compilation option (ok, except by scraping the output of phpinfo...).
                     $errorInfo['conditional_version'] = $version;
                     $errorInfo['condition']           = $present;
                 }
@@ -369,7 +365,6 @@ class NewExecutionDirectivesSniff extends AbstractNewFeatureSniff
         }
 
         if (empty($encodings) || \is_array($encodings) === false) {
-            // If we can't test the encoding, let it pass through.
             return true;
         }
 

@@ -36,9 +36,6 @@ class PropertyDeclarationSniff extends AbstractVariableSniff
             $phpcsFile->addWarning($error, $stackPtr, 'Underscore', $data);
         }
 
-        // Detect multiple properties defined at the same time. Throw an error
-        // for this, but also only process the first property in the list so we don't
-        // repeat errors.
         $find   = Tokens::$scopeModifiers;
         $find[] = T_VARIABLE;
         $find[] = T_VAR;
@@ -70,7 +67,6 @@ class PropertyDeclarationSniff extends AbstractVariableSniff
                 return;
             }
         } catch (Exception $e) {
-            // Turns out not to be a property after all.
             return;
         }
 

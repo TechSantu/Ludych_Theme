@@ -71,8 +71,6 @@ class EvalObjectFactorySniff implements Sniff, DeprecatedSniff
 
         foreach ($vars as $varPtr => $varName) {
             while (($prev = $phpcsFile->findPrevious(T_VARIABLE, ($varPtr - 1))) !== false) {
-                // Make sure this is an assignment of the variable. That means
-                // it will be the first thing on the line.
                 $prevContent = $phpcsFile->findPrevious(T_WHITESPACE, ($prev - 1), null, true);
                 if ($tokens[$prevContent]['line'] === $tokens[$prev]['line']) {
                     $varPtr = $prevContent;
@@ -80,17 +78,14 @@ class EvalObjectFactorySniff implements Sniff, DeprecatedSniff
                 }
 
                 if ($tokens[$prev]['content'] !== $varName) {
-                    // This variable has a different name.
                     $varPtr = $prevContent;
                     continue;
                 }
 
-                // We found one.
                 break;
             }//end while
 
             if ($prev !== false) {
-                // Find all strings on the line.
                 $lineEnd = $phpcsFile->findNext(T_SEMICOLON, ($prev + 1));
                 for ($i = ($prev + 1); $i < $lineEnd; $i++) {
                     if (isset(Tokens::$stringTokens[$tokens[$i]['code']]) === true) {
@@ -101,10 +96,6 @@ class EvalObjectFactorySniff implements Sniff, DeprecatedSniff
         }//end foreach
 
         foreach ($strings as $string) {
-            // If the string has "new" in it, it is not allowed.
-            // We don't bother checking if the word "new" is printed to screen
-            // because that is unlikely to happen. We assume the use
-            // of "new" is for object instantiation.
             if (strstr($string, ' new ') !== false) {
                 $error = 'Do not use eval() to create objects dynamically; use reflection instead';
                 $phpcsFile->addWarning($error, $stackPtr, 'Found');

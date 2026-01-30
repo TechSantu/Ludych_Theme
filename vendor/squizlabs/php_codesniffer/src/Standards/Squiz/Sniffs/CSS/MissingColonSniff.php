@@ -52,14 +52,12 @@ class MissingColonSniff implements Sniff, DeprecatedSniff
         $tokens = $phpcsFile->getTokens();
 
         if (isset($tokens[$stackPtr]['bracket_closer']) === false) {
-            // Syntax error or live coding, bow out.
             return;
         }
 
         $lastLine = $tokens[$stackPtr]['line'];
         $end      = $tokens[$stackPtr]['bracket_closer'];
 
-        // Do not check nested style definitions as, for example, in @media style rules.
         $nested = $phpcsFile->findNext(T_OPEN_CURLY_BRACKET, ($stackPtr + 1), $end);
         if ($nested !== false) {
             return;
@@ -69,9 +67,7 @@ class MissingColonSniff implements Sniff, DeprecatedSniff
         $foundString = false;
         for ($i = ($stackPtr + 1); $i <= $end; $i++) {
             if ($tokens[$i]['line'] !== $lastLine) {
-                // We changed lines.
                 if ($foundColon === false && $foundString !== false) {
-                    // We didn't find a colon on the previous line.
                     $error = 'No style definition found on line; check for missing colon';
                     $phpcsFile->addError($error, $foundString, 'Found');
                 }

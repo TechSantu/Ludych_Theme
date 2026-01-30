@@ -69,7 +69,6 @@ final class LowercaseClassResolutionKeywordSniff implements Sniff
 
         $nextToken = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
         if ($nextToken !== false && $tokens[$nextToken]['code'] === \T_OPEN_PARENTHESIS) {
-            // Function call or declaration for a function called "class".
             return;
         }
 

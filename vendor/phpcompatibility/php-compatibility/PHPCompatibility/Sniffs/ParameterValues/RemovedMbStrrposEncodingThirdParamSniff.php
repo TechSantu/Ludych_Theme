@@ -107,12 +107,10 @@ class RemovedMbStrrposEncodingThirdParamSniff extends AbstractFunctionCallParame
     public function processParameters(File $phpcsFile, $stackPtr, $functionName, $parameters)
     {
         if (isset($parameters[3]) === false) {
-            // Optional third parameter not set.
             return;
         }
 
         if (isset($parameters[4]) === true) {
-            // Encoding set as fourth parameter.
             return;
         }
 
@@ -129,7 +127,6 @@ class RemovedMbStrrposEncodingThirdParamSniff extends AbstractFunctionCallParame
 
         $hasString = $phpcsFile->findNext($this->textStringTokens, $targetParam['start'], ($targetParam['end'] + 1));
         if ($hasString === false) {
-            // No text strings found. Undetermined.
             return;
         }
 

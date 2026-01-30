@@ -97,7 +97,6 @@ final class DisallowLogicalAndOrSniff implements Sniff
         $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, $this->metricType[$tokenCode]);
 
         if (isset($this->targetTokenInfo[$tokenCode]) === false) {
-            // Already using boolean operator.
             return;
         }
 

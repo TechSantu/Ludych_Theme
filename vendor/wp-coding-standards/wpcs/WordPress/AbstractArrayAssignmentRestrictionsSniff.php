@@ -74,7 +74,6 @@ abstract class AbstractArrayAssignmentRestrictionsSniff extends Sniff {
 	 * @return array
 	 */
 	public function register() {
-		// Retrieve the groups only once and don't set up a listener if there are no groups.
 		if ( false === $this->setup_groups() ) {
 			return array();
 		}
@@ -118,7 +117,6 @@ abstract class AbstractArrayAssignmentRestrictionsSniff extends Sniff {
 			return false;
 		}
 
-		// Allow for adding extra unit tests.
 		if ( ! empty( self::$groups ) ) {
 			$this->groups_cache = array_merge( $this->groups_cache, self::$groups );
 		}
@@ -137,8 +135,6 @@ abstract class AbstractArrayAssignmentRestrictionsSniff extends Sniff {
 
 		$this->excluded_groups = RulesetPropertyHelper::merge_custom_array( $this->exclude );
 		if ( array_diff_key( $this->groups_cache, $this->excluded_groups ) === array() ) {
-			// All groups have been excluded.
-			// Don't remove the listener as the exclude property can be changed inline.
 			return;
 		}
 
@@ -149,12 +145,10 @@ abstract class AbstractArrayAssignmentRestrictionsSniff extends Sniff {
 			if ( \T_EQUAL !== $this->tokens[ $equalPtr ]['code']
 				&& \T_COALESCE_EQUAL !== $this->tokens[ $equalPtr ]['code']
 			) {
-				// This is not an assignment. Bow out.
 				return;
 			}
 		}
 
-		// Instances: Multi-dimensional array.
 		$inst = array();
 
 		/*
@@ -178,8 +172,6 @@ abstract class AbstractArrayAssignmentRestrictionsSniff extends Sniff {
 				if ( \T_COMMA === $this->tokens[ $valEnd ]['code']
 					|| \T_SEMICOLON === $this->tokens[ $valEnd ]['code']
 				) {
-					// FindEndOfStatement includes the comma/semi-colon if that's the end of the statement.
-					// That's not what we want (and inconsistent), so remove it.
 					--$valEnd;
 				}
 

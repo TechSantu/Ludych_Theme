@@ -65,22 +65,18 @@ class ObjectOperatorIndentSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Make sure this is the first object operator in a chain of them.
         $start = $phpcsFile->findStartOfStatement($stackPtr);
         $prev  = $phpcsFile->findPrevious($this->targets, ($stackPtr - 1), $start);
         if ($prev !== false) {
             return;
         }
 
-        // Make sure this is a chained call.
         $end  = $phpcsFile->findEndOfStatement($stackPtr);
         $next = $phpcsFile->findNext($this->targets, ($stackPtr + 1), $end);
         if ($next === false) {
-            // Not a chained call.
             return;
         }
 
-        // Determine correct indent.
         for ($i = ($start - 1); $i >= 0; $i--) {
             if ($tokens[$i]['line'] !== $tokens[$start]['line']) {
                 $i++;
@@ -95,7 +91,6 @@ class ObjectOperatorIndentSniff implements Sniff
 
         $baseIndent += $this->indent;
 
-        // Determine the scope of the original object operator.
         $origBrackets = null;
         if (isset($tokens[$stackPtr]['nested_parenthesis']) === true) {
             $origBrackets = $tokens[$stackPtr]['nested_parenthesis'];
@@ -106,9 +101,6 @@ class ObjectOperatorIndentSniff implements Sniff
             $origConditions = $tokens[$stackPtr]['conditions'];
         }
 
-        // Check indentation of each object operator in the chain.
-        // If the first object operator is on a different line than
-        // the variable, make sure we check its indentation too.
         if ($tokens[$stackPtr]['line'] > $tokens[$start]['line']) {
             $next = $stackPtr;
         }
@@ -116,7 +108,6 @@ class ObjectOperatorIndentSniff implements Sniff
         $previousIndent = $baseIndent;
 
         while ($next !== false) {
-            // Make sure it is in the same scope, otherwise don't check indent.
             $brackets = null;
             if (isset($tokens[$next]['nested_parenthesis']) === true) {
                 $brackets = $tokens[$next]['nested_parenthesis'];
@@ -128,7 +119,6 @@ class ObjectOperatorIndentSniff implements Sniff
             }
 
             if ($origBrackets === $brackets && $origConditions === $conditions) {
-                // Make sure it starts a line, otherwise don't check indent.
                 $prev   = $phpcsFile->findPrevious(T_WHITESPACE, ($next - 1), $stackPtr, true);
                 $indent = $tokens[($next - 1)];
                 if ($tokens[$prev]['line'] !== $tokens[$next]['line']
@@ -171,7 +161,6 @@ class ObjectOperatorIndentSniff implements Sniff
                     $previousIndent = $expectedIndent;
                 }//end if
 
-                // It cant be the last thing on the line either.
                 $content = $phpcsFile->findNext(T_WHITESPACE, ($next + 1), null, true);
                 if ($tokens[$content]['line'] !== $tokens[$next]['line']) {
                     $error = 'Object operator must be at the start of the line, not the end';

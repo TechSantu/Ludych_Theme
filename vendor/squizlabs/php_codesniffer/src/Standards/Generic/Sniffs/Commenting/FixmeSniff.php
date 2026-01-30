@@ -57,8 +57,6 @@ class FixmeSniff implements Sniff
         $matches = [];
         preg_match('/(?:\A|[^\p{L}]+)fixme([^\p{L}]+(.*)|\Z)/ui', $content, $matches);
         if (empty($matches) === false) {
-            // Clear whitespace and some common characters not required at
-            // the end of a fixme message to make the error more informative.
             $type         = 'CommentFound';
             $fixmeMessage = trim($matches[1]);
             $fixmeMessage = trim($fixmeMessage, '-:[](). ');

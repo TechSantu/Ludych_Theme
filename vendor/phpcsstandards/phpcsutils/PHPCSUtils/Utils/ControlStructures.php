@@ -53,14 +53,12 @@ final class ControlStructures
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Check for the existence of the token.
         if (isset($tokens[$stackPtr]) === false
             || isset(Collections::controlStructureTokens()[$tokens[$stackPtr]['code']]) === false
         ) {
             return false;
         }
 
-        // Handle `else if`.
         if ($tokens[$stackPtr]['code'] === \T_ELSE && isset($tokens[$stackPtr]['scope_opener']) === false) {
             $next = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
             if ($next !== false && $tokens[$next]['code'] === \T_IF) {
@@ -76,7 +74,6 @@ final class ControlStructures
                 return true;
             }
 
-            // Check whether the body is empty.
             $start = ($tokens[$stackPtr]['scope_opener'] + 1);
             $end   = $phpcsFile->numTokens;
             if (isset($tokens[$stackPtr]['scope_closer']) === true) {
@@ -116,7 +113,6 @@ final class ControlStructures
             || $tokens[$nextNonEmpty]['code'] === \T_SEMICOLON
             || $tokens[$nextNonEmpty]['code'] === \T_CLOSE_TAG
         ) {
-            // Parse error or single line statement.
             return false;
         }
 
@@ -125,7 +121,6 @@ final class ControlStructures
                 return true;
             }
 
-            // Unrecognized scope opener due to parse error.
             $nextNext = $phpcsFile->findNext(
                 Tokens::$emptyTokens,
                 ($nextNonEmpty + 1),
@@ -157,7 +152,6 @@ final class ControlStructures
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Check for the existence of the token.
         if (isset($tokens[$stackPtr]) === false) {
             return false;
         }
@@ -252,7 +246,6 @@ final class ControlStructures
             }
 
             if (isset(Collections::namespacedNameTokens()[$tokens[$i]['code']]) === false) {
-                // Add the current exception to the result array if one was found.
                 if ($foundName !== '') {
                     $exceptions[] = [
                         'type'           => $foundName,
@@ -262,7 +255,6 @@ final class ControlStructures
                 }
 
                 if ($tokens[$i]['code'] === \T_BITWISE_OR) {
-                    // Multi-catch. Reset and continue.
                     $foundName  = '';
                     $firstToken = null;
                     $lastToken  = null;

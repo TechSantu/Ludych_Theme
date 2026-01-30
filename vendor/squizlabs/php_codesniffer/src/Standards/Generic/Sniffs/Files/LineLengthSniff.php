@@ -79,7 +79,6 @@ class LineLengthSniff implements Sniff
 
         $this->checkLineLength($phpcsFile, $tokens, $i);
 
-        // Ignore the rest of the file.
         return $phpcsFile->numTokens;
 
     }//end process()
@@ -96,13 +95,11 @@ class LineLengthSniff implements Sniff
      */
     protected function checkLineLength($phpcsFile, $tokens, $stackPtr)
     {
-        // The passed token is the first on the line.
         $stackPtr--;
 
         if ($tokens[$stackPtr]['column'] === 1
             && $tokens[$stackPtr]['length'] === 0
         ) {
-            // Blank line.
             return;
         }
 
@@ -123,7 +120,6 @@ class LineLengthSniff implements Sniff
         if ($onlyComment === true
             && isset(Tokens::$phpcsCommentTokens[$tokens[$stackPtr]['code']]) === true
         ) {
-            // Ignore PHPCS annotation comments that are on a line by themselves.
             return;
         }
 
@@ -132,16 +128,13 @@ class LineLengthSniff implements Sniff
         if ($this->ignoreComments === true
             && isset(Tokens::$commentTokens[$tokens[$stackPtr]['code']]) === true
         ) {
-            // Trailing comments are being ignored in line length calculations.
             if ($onlyComment === true) {
-                // The comment is the only thing on the line, so no need to check length.
                 return;
             }
 
             $lineLength -= $tokens[$stackPtr]['length'];
         }
 
-        // Record metrics for common line length groupings.
         if ($lineLength <= 80) {
             $phpcsFile->recordMetric($stackPtr, 'Line length', '80 or less');
         } else if ($lineLength <= 120) {
@@ -153,10 +146,6 @@ class LineLengthSniff implements Sniff
         }
 
         if ($onlyComment === true) {
-            // If this is a long comment, check if it can be broken up onto multiple lines.
-            // Some comments contain unbreakable strings like URLs and so it makes sense
-            // to ignore the line length in these cases if the URL would be longer than the max
-            // line length once you indent it to the correct level.
             if ($lineLength > $this->lineLimit) {
                 $oldLength = strlen($tokens[$stackPtr]['content']);
                 $newLength = strlen(ltrim($tokens[$stackPtr]['content'], "/#\t "));

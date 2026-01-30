@@ -85,23 +85,18 @@ final class Operators
         $tokenBefore = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($stackPtr - 1), null, true);
 
         if (isset(Collections::functionDeclarationTokens()[$tokens[$tokenBefore]['code']]) === true) {
-            // Function returns a reference.
             return true;
         }
 
         if ($tokens[$tokenBefore]['code'] === \T_DOUBLE_ARROW) {
-            // Inside a foreach loop or array assignment, this is a reference.
             return true;
         }
 
         if ($tokens[$tokenBefore]['code'] === \T_AS) {
-            // Inside a foreach loop, this is a reference.
             return true;
         }
 
         if (isset(Tokens::$assignmentTokens[$tokens[$tokenBefore]['code']]) === true) {
-            // This is directly after an assignment. It's a reference. Even if
-            // it is part of an operation, the other tests will handle it.
             return true;
         }
 
@@ -116,13 +111,11 @@ final class Operators
             $lastOwner = Parentheses::getOwner($phpcsFile, $lastOpener);
 
             if (isset(Collections::functionDeclarationTokens()[$tokens[$lastOwner]['code']]) === true
-                // As of PHPCS 4.x, `T_USE` is a parenthesis owner.
                 || $tokens[$lastOwner]['code'] === \T_USE
             ) {
                 $params = FunctionDeclarations::getParameters($phpcsFile, $lastOwner);
                 foreach ($params as $param) {
                     if ($param['reference_token'] === $stackPtr) {
-                        // Function parameter declared to be passed by reference.
                         return true;
                     }
                 }
@@ -185,12 +178,10 @@ final class Operators
 
         $next = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
         if ($next === false) {
-            // Live coding or parse error.
             return false;
         }
 
         if (isset(Tokens::$operators[$tokens[$next]['code']]) === true) {
-            // Next token is an operator, so this is not a unary.
             return false;
         }
 
@@ -245,7 +236,6 @@ final class Operators
             }
         }
 
-        // Not a ternary operator token.
         return false;
     }
 }

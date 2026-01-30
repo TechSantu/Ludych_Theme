@@ -44,7 +44,6 @@ class GetPostDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynamic
         $args = $functionCall->getArgs();
         $returnType = [new NullType()];
 
-        // When called with an instance of WP_Post
         if (
             $functionReflection->getName() === 'get_post' &&
             count($args) > 0 &&
@@ -60,7 +59,6 @@ class GetPostDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynamic
         if (count($args) >= 2) {
             $outputType = $scope->getType($args[1]->value);
 
-            // When called with an $output that isn't a constant string
             if (count($outputType->getConstantStrings()) === 0) {
                 $returnType[] = new ArrayType(new StringType(), new MixedType());
                 $returnType[] = new ArrayType(new IntegerType(), new MixedType());

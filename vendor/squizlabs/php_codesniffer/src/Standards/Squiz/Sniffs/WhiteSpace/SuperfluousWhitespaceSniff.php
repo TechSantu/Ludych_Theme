@@ -79,10 +79,6 @@ class SuperfluousWhitespaceSniff implements Sniff
             */
 
             if ($phpcsFile->tokenizerType !== 'PHP') {
-                // The first token is always the open tag inserted when tokenized
-                // and the second token is always the first piece of content in
-                // the file. If the second token is whitespace, there was
-                // whitespace at the start of the file.
                 if ($tokens[($stackPtr + 1)]['code'] !== T_WHITESPACE) {
                     return;
                 }
@@ -91,7 +87,6 @@ class SuperfluousWhitespaceSniff implements Sniff
                     $stackPtr = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
                 }
             } else {
-                // If it's the first token, then there is no space.
                 if ($stackPtr === 0) {
                     return;
                 }
@@ -99,7 +94,6 @@ class SuperfluousWhitespaceSniff implements Sniff
                 $beforeOpen = '';
 
                 for ($i = ($stackPtr - 1); $i >= 0; $i--) {
-                    // If we find something that isn't inline html then there is something previous in the file.
                     if ($tokens[$i]['type'] !== 'T_INLINE_HTML') {
                         return;
                     }
@@ -107,7 +101,6 @@ class SuperfluousWhitespaceSniff implements Sniff
                     $beforeOpen .= $tokens[$i]['content'];
                 }
 
-                // If we have ended up with inline html make sure it isn't just whitespace.
                 if (preg_match('`^[\pZ\s]+$`u', $beforeOpen) !== 1) {
                     return;
                 }
@@ -129,15 +122,12 @@ class SuperfluousWhitespaceSniff implements Sniff
 
             if ($phpcsFile->tokenizerType === 'PHP') {
                 if (isset($tokens[($stackPtr + 1)]) === false) {
-                    // The close PHP token is the last in the file.
                     return;
                 }
 
                 $afterClose = '';
 
                 for ($i = ($stackPtr + 1); $i < $phpcsFile->numTokens; $i++) {
-                    // If we find something that isn't inline HTML then there
-                    // is more to the file.
                     if ($tokens[$i]['type'] !== 'T_INLINE_HTML') {
                         return;
                     }
@@ -145,24 +135,16 @@ class SuperfluousWhitespaceSniff implements Sniff
                     $afterClose .= $tokens[$i]['content'];
                 }
 
-                // If we have ended up with inline html make sure it isn't just whitespace.
                 if (preg_match('`^[\pZ\s]+$`u', $afterClose) !== 1) {
                     return;
                 }
             } else {
-                // The last token is always the close tag inserted when tokenized
-                // and the second last token is always the last piece of content in
-                // the file. If the second last token is whitespace, there was
-                // whitespace at the end of the file.
                 $stackPtr--;
 
-                // The pointer is now looking at the last content in the file and
-                // not the fake PHP end tag the tokenizer inserted.
                 if ($tokens[$stackPtr]['code'] !== T_WHITESPACE) {
                     return;
                 }
 
-                // Allow a single newline at the end of the last line in the file.
                 if ($tokens[($stackPtr - 1)]['code'] !== T_WHITESPACE
                     && $tokens[$stackPtr]['content'] === $phpcsFile->eolChar
                 ) {
@@ -189,14 +171,12 @@ class SuperfluousWhitespaceSniff implements Sniff
                 Check for end of line whitespace.
             */
 
-            // Ignore whitespace that is not at the end of a line.
             if (isset($tokens[($stackPtr + 1)]['line']) === true
                 && $tokens[($stackPtr + 1)]['line'] === $tokens[$stackPtr]['line']
             ) {
                 return;
             }
 
-            // Ignore blank lines if required.
             if ($this->ignoreBlankLines === true
                 && $tokens[$stackPtr]['code'] === T_WHITESPACE
                 && $tokens[($stackPtr - 1)]['line'] !== $tokens[$stackPtr]['line']
@@ -229,16 +209,12 @@ class SuperfluousWhitespaceSniff implements Sniff
                 && $tokens[($stackPtr - 1)]['line'] < $tokens[$stackPtr]['line']
                 && $tokens[($stackPtr - 2)]['line'] === $tokens[($stackPtr - 1)]['line']
             ) {
-                // Properties and functions in nested classes have their own rules for spacing.
                 $conditions   = $tokens[$stackPtr]['conditions'];
                 $deepestScope = end($conditions);
                 if ($deepestScope === T_ANON_CLASS) {
                     return;
                 }
 
-                // This is an empty line and the line before this one is not
-                // empty, so this could be the start of a multiple empty
-                // line block.
                 $next  = $phpcsFile->findNext(T_WHITESPACE, $stackPtr, null, true);
                 $lines = ($tokens[$next]['line'] - $tokens[$stackPtr]['line']);
                 if ($lines > 1) {

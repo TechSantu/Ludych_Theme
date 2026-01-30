@@ -74,12 +74,9 @@ class FunctionSpacingSniff implements Sniff
             && $tokens[$previousNonEmpty]['code'] === T_OPEN_TAG
             && $tokens[$previousNonEmpty]['line'] !== 1
         ) {
-            // Ignore functions at the start of an embedded PHP block.
             return;
         }
 
-        // If the ruleset has only overridden the spacing property, use
-        // that value for all spacing rules.
         if ($this->rulesetProperties === null) {
             $this->rulesetProperties = [];
             if (isset($phpcsFile->ruleset->ruleset['Squiz.WhiteSpace.FunctionSpacing']) === true
@@ -103,7 +100,6 @@ class FunctionSpacingSniff implements Sniff
         $this->spacingAfterLast   = (int) $this->spacingAfterLast;
 
         if (isset($tokens[$stackPtr]['scope_closer']) === false) {
-            // Must be an interface method, so the closer is the semicolon.
             $closer = $phpcsFile->findNext(T_SEMICOLON, $stackPtr);
         } else {
             $closer = $tokens[$stackPtr]['scope_closer'];
@@ -126,8 +122,6 @@ class FunctionSpacingSniff implements Sniff
             break;
         }
 
-        // Skip past function docblocks and attributes.
-        // Only the first docblock is a function docblock. Other docblocks should be disregarded.
         $prev         = $startOfDeclarationLine;
         $seenDocblock = false;
         if ($startOfDeclarationLine > 0) {
@@ -159,7 +153,6 @@ class FunctionSpacingSniff implements Sniff
         if (isset(Tokens::$emptyTokens[$tokens[$next]['code']]) === true
             && $tokens[$next]['line'] === $tokens[$closer]['line']
         ) {
-            // Skip past "end" comments.
             $next = $phpcsFile->findNext($ignore, ($next + 1), null, true);
         }
 
@@ -172,10 +165,7 @@ class FunctionSpacingSniff implements Sniff
             after the function.
         */
 
-        // Allow for comments on the same line as the closer.
         for ($nextLineToken = ($closer + 1); $nextLineToken < $phpcsFile->numTokens; $nextLineToken++) {
-            // A doc comment belongs to the next statement and must not be on
-            // this line.
             if ($tokens[$nextLineToken]['code'] === T_DOC_COMMENT_OPEN_TAG) {
                 break;
             }
@@ -194,16 +184,10 @@ class FunctionSpacingSniff implements Sniff
 
         $foundLines = 0;
         if ($nextLineToken === ($phpcsFile->numTokens - 1)) {
-            // We are at the end of the file.
-            // Don't check spacing after the function because this
-            // should be done by an EOF sniff.
             $foundLines = $requiredSpacing;
         } else {
             $nextContent = $phpcsFile->findNext(T_WHITESPACE, $nextLineToken, null, true);
             if ($nextContent === false) {
-                // We are at the end of the file.
-                // Don't check spacing after the function because this
-                // should be done by an EOF sniff.
                 $foundLines = $requiredSpacing;
             } else {
                 $foundLines = ($tokens[$nextContent]['line'] - $tokens[$nextLineToken]['line']);
@@ -262,8 +246,6 @@ class FunctionSpacingSniff implements Sniff
         }
 
         if ($prevLineToken === null) {
-            // Never found the previous line, which means
-            // there are 0 blank lines before the function.
             $foundLines    = 0;
             $prevContent   = 0;
             $prevLineToken = 0;
@@ -272,14 +254,9 @@ class FunctionSpacingSniff implements Sniff
             if ($tokens[$firstBefore]['code'] === T_COMMENT
                 || isset(Tokens::$phpcsCommentTokens[$tokens[$firstBefore]['code']]) === true
             ) {
-                // Ignore comments as they can have different spacing rules, and this
-                // isn't a proper function comment anyway.
                 return;
             }
 
-            // Before we throw an error, check that we are not throwing an error
-            // for another function. We don't want to error for no blank lines after
-            // the previous function and no blank lines before this one as well.
             $stopAt = 0;
             if (isset($tokens[$prevLineToken]['conditions']) === true) {
                 $conditions = $tokens[$prevLineToken]['conditions'];
@@ -297,7 +274,6 @@ class FunctionSpacingSniff implements Sniff
                     if (isset($tokens[$i]['scope_condition']) === true
                         && $tokens[$tokens[$i]['scope_condition']]['code'] === T_FUNCTION
                     ) {
-                        // Found a previous function.
                         return;
                     } else {
                         break;
@@ -305,7 +281,6 @@ class FunctionSpacingSniff implements Sniff
                 }
 
                 if ($tokens[$i]['code'] === T_FUNCTION) {
-                    // Found another interface or abstract function.
                     return;
                 }
 

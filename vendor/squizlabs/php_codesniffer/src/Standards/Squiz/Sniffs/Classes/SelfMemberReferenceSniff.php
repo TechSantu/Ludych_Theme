@@ -45,7 +45,6 @@ class SelfMemberReferenceSniff extends AbstractScopeSniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Determine if this is a double colon which needs to be examined.
         $conditions = $tokens[$stackPtr]['conditions'];
         $conditions = array_reverse($conditions, true);
         foreach ($conditions as $conditionToken => $tokenCode) {
@@ -60,7 +59,6 @@ class SelfMemberReferenceSniff extends AbstractScopeSniff
 
         $calledClassName = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($stackPtr - 1), null, true);
         if ($calledClassName === false) {
-            // Parse error.
             return;
         }
 
@@ -76,8 +74,6 @@ class SelfMemberReferenceSniff extends AbstractScopeSniff
                 return;
             }
         } else if ($tokens[$calledClassName]['code'] === T_STRING) {
-            // If the class is called with a namespace prefix, build fully qualified
-            // namespace calls for both current scope class and requested class.
             $prevNonEmpty = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($calledClassName - 1), null, true);
             if ($prevNonEmpty !== false && $tokens[$prevNonEmpty]['code'] === T_NS_SEPARATOR) {
                 $declarationName        = $this->getDeclarationNameWithNamespace($tokens, $calledClassName);
@@ -96,7 +92,6 @@ class SelfMemberReferenceSniff extends AbstractScopeSniff
             }
 
             if ($declarationName === $fullQualifiedClassName) {
-                // Class name is the same as the current class, which is not allowed.
                 $error = 'Must use "self::" for local static member reference';
                 $fix   = $phpcsFile->addFixableError($error, $calledClassName, 'NotUsed');
 
@@ -120,7 +115,6 @@ class SelfMemberReferenceSniff extends AbstractScopeSniff
                     $phpcsFile->fixer->replaceToken($stackPtr, 'self::');
                     $phpcsFile->fixer->endChangeset();
 
-                    // Fix potential whitespace issues in the next loop.
                     return;
                 }//end if
             }//end if
@@ -227,7 +221,6 @@ class SelfMemberReferenceSniff extends AbstractScopeSniff
         while (($namespaceDeclaration = $phpcsFile->findPrevious(T_NAMESPACE, $stackPtr)) !== false) {
             $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($namespaceDeclaration + 1), null, true);
             if ($tokens[$nextNonEmpty]['code'] === T_NS_SEPARATOR) {
-                // Namespace operator. Ignore.
                 $stackPtr = ($namespaceDeclaration - 1);
                 continue;
             }

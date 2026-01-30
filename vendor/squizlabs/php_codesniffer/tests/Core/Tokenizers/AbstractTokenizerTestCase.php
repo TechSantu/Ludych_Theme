@@ -65,17 +65,14 @@ abstract class AbstractTokenizerTestCase extends TestCase
             $_SERVER['argv'] = [];
             $config          = new ConfigDouble();
 
-            // Also set a tab-width to enable testing tab-replaced vs `orig_content`.
             $config->tabWidth = $this->tabWidth;
 
             $ruleset = new Ruleset($config);
 
-            // Default to a file with the same name as the test class. Extension is property based.
             $relativeCN     = str_replace(__NAMESPACE__, '', get_called_class());
             $relativePath   = str_replace('\\', DIRECTORY_SEPARATOR, $relativeCN);
             $pathToTestFile = realpath(__DIR__).$relativePath.'.'.$this->fileExtension;
 
-            // Make sure the file gets parsed correctly based on the file type.
             $contents  = 'phpcs_input_file: '.$pathToTestFile.PHP_EOL;
             $contents .= file_get_contents($pathToTestFile);
 

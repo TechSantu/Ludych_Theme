@@ -72,15 +72,12 @@ final class YodaConditionsSniff extends Sniff {
 
 		$needs_yoda = false;
 
-		// Note: going backwards!
 		for ( $i = $stackPtr; $i > $start; $i-- ) {
 
-			// Ignore whitespace.
 			if ( isset( Tokens::$emptyTokens[ $this->tokens[ $i ]['code'] ] ) ) {
 				continue;
 			}
 
-			// If this is a variable or array assignment, we've seen all we need to see.
 			if ( \T_VARIABLE === $this->tokens[ $i ]['code']
 				|| \T_CLOSE_SQUARE_BRACKET === $this->tokens[ $i ]['code']
 			) {
@@ -88,7 +85,6 @@ final class YodaConditionsSniff extends Sniff {
 				break;
 			}
 
-			// If this is a function call or something, we are OK.
 			if ( \T_CLOSE_PARENTHESIS === $this->tokens[ $i ]['code'] ) {
 				return;
 			}
@@ -98,7 +94,6 @@ final class YodaConditionsSniff extends Sniff {
 			return;
 		}
 
-		// Check if this is a var to var comparison, e.g.: if ( $var1 == $var2 ).
 		$next_non_empty = $this->phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true );
 
 		if ( isset( Tokens::$castTokens[ $this->tokens[ $next_non_empty ]['code'] ] ) ) {

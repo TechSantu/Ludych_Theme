@@ -81,7 +81,6 @@ class NamedColoursSniff implements Sniff, DeprecatedSniff
         if ($tokens[($stackPtr - 1)]['code'] === T_HASH
             || $tokens[($stackPtr - 1)]['code'] === T_STRING_CONCAT
         ) {
-            // Class name.
             return;
         }
 

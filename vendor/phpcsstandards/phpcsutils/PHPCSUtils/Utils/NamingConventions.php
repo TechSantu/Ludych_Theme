@@ -105,12 +105,10 @@ final class NamingConventions
      */
     public static function isEqual($nameA, $nameB)
     {
-        // Simple quick check first.
         if ($nameA === $nameB) {
             return true;
         }
 
-        // Comparing via strcasecmp will only compare ASCII letters case-insensitively.
         return (\strcasecmp($nameA, $nameB) === 0);
     }
 }

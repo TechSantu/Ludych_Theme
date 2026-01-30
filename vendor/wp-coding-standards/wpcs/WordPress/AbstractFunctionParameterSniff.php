@@ -107,12 +107,10 @@ abstract class AbstractFunctionParameterSniff extends AbstractFunctionRestrictio
 		$next = $this->phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true );
 
 		if ( \T_OPEN_PARENTHESIS !== $this->tokens[ $next ]['code'] ) {
-			// Not a function call (likely a function import).
 			return false;
 		}
 
 		if ( isset( $this->tokens[ $next ]['parenthesis_closer'] ) === false ) {
-			// Syntax error or live coding: missing closing parenthesis.
 			return false;
 		}
 

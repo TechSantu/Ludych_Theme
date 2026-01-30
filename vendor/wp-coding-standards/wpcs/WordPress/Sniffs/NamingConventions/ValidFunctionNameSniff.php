@@ -67,12 +67,10 @@ final class ValidFunctionNameSniff extends Sniff {
 
 		$name = FunctionDeclarations::getName( $this->phpcsFile, $stackPtr );
 		if ( empty( $name ) === true ) {
-			// Live coding or parse error.
 			return;
 		}
 
 		if ( '' === ltrim( $name, '_' ) ) {
-			// Ignore special functions, like __().
 			return;
 		}
 
@@ -98,12 +96,10 @@ final class ValidFunctionNameSniff extends Sniff {
 	 * @return void
 	 */
 	protected function process_function_declaration( $stackPtr, $functionName ) {
-		// PHP magic functions are exempt from our rules.
 		if ( FunctionDeclarations::isMagicFunctionName( $functionName ) === true ) {
 			return;
 		}
 
-		// Is the function name prefixed with "__" ?
 		if ( preg_match( '`^__[^_]`', $functionName ) === 1 ) {
 			$error     = 'Function name "%s" is invalid; only PHP magic methods should be prefixed with a double underscore';
 			$errorData = array( $functionName );
@@ -142,18 +138,15 @@ final class ValidFunctionNameSniff extends Sniff {
 		} else {
 			$className = ObjectDeclarations::getName( $this->phpcsFile, $currScope );
 
-			// PHP4 constructors are allowed to break our rules.
 			if ( NamingConventions::isEqual( $methodName, $className ) === true ) {
 				return;
 			}
 
-			// PHP4 destructors are allowed to break our rules.
 			if ( NamingConventions::isEqual( $methodName, '_' . $className ) === true ) {
 				return;
 			}
 		}
 
-		// PHP magic methods are exempt from our rules.
 		if ( FunctionDeclarations::isMagicMethodName( $methodName ) === true ) {
 			return;
 		}
@@ -161,19 +154,16 @@ final class ValidFunctionNameSniff extends Sniff {
 		$extended   = ObjectDeclarations::findExtendedClassName( $this->phpcsFile, $currScope );
 		$interfaces = ObjectDeclarations::findImplementedInterfaceNames( $this->phpcsFile, $currScope );
 
-		// If this is a child class or interface implementation, it may have to use camelCase or double underscores.
 		if ( ! empty( $extended ) || ! empty( $interfaces ) ) {
 			return;
 		}
 
-		// Is the method name prefixed with "__" ?
 		if ( preg_match( '`^__[^_]`', $methodName ) === 1 ) {
 			$error     = 'Method name "%s" is invalid; only PHP magic methods should be prefixed with a double underscore';
 			$errorData = array( $className . '::' . $methodName );
 			$this->phpcsFile->addError( $error, $stackPtr, 'MethodDoubleUnderscore', $errorData );
 		}
 
-		// Check for all lowercase.
 		$suggested_name = SnakeCaseHelper::get_suggestion( $methodName );
 		if ( $suggested_name !== $methodName ) {
 			$error     = 'Method name "%s" in class %s is not in snake case format, try "%s"';

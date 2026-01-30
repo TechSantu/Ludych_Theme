@@ -43,8 +43,6 @@ class ValidDefaultValueSniff implements Sniff
      */
     public function process(File $phpcsFile, $stackPtr)
     {
-        // Flag for when we have found a default in our arg list.
-        // If there is a value without a default after this, it is an error.
         $defaultFound = false;
 
         $params = $phpcsFile->getMethodParameters($stackPtr);
@@ -56,9 +54,6 @@ class ValidDefaultValueSniff implements Sniff
             if (array_key_exists('default', $param) === true) {
                 $defaultFound   = true;
                 $defaultValueLc = strtolower($param['default']);
-                // Check if the arg is type hinted and using NULL for the default.
-                // This does not make the argument optional - it just allows NULL
-                // to be passed in.
                 if ($param['type_hint'] !== ''
                     && ($defaultValueLc === 'null' || $defaultValueLc === '\null')
                 ) {

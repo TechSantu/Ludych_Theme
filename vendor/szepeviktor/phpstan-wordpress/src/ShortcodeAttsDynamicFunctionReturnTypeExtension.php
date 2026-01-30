@@ -43,7 +43,6 @@ final class ShortcodeAttsDynamicFunctionReturnTypeExtension implements \PHPStan\
 
         $returnType = [];
         foreach ($type->getConstantArrays() as $constantArray) {
-            // shortcode_atts values are coming from the defined defaults or from the actual string shortcode attributes
             $returnType[] = new ConstantArrayType(
                 $constantArray->getKeyTypes(),
                 array_map(

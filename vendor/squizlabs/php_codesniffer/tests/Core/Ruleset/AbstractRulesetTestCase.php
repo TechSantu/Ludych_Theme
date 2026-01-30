@@ -36,7 +36,6 @@ abstract class AbstractRulesetTestCase extends TestCase
         if (method_exists($this, 'assertObjectHasProperty') === true) {
             $this->assertObjectHasProperty($propertyName, $object, $message);
         } else {
-            // PHPUnit < 9.6.11.
             $this->assertObjectHasAttribute($propertyName, $object, $message);
         }
 
@@ -58,7 +57,6 @@ abstract class AbstractRulesetTestCase extends TestCase
         if (method_exists($this, 'assertObjectNotHasProperty') === true) {
             $this->assertObjectNotHasProperty($propertyName, $object, $message);
         } else {
-            // PHPUnit < 9.6.11.
             $this->assertObjectNotHasAttribute($propertyName, $object, $message);
         }
 
@@ -76,11 +74,9 @@ abstract class AbstractRulesetTestCase extends TestCase
     protected function expectRuntimeExceptionMessage($message)
     {
         if (method_exists($this, 'expectException') === true) {
-            // PHPUnit 5+.
             $this->expectException(self::RUNTIME_EXCEPTION);
             $this->expectExceptionMessage($message);
         } else {
-            // PHPUnit 4.
             $this->setExpectedException(self::RUNTIME_EXCEPTION, $message);
         }
 
@@ -101,11 +97,9 @@ abstract class AbstractRulesetTestCase extends TestCase
             $this->expectException(self::RUNTIME_EXCEPTION);
             $this->expectExceptionMessageMatches($regex);
         } else if (method_exists($this, 'expectExceptionMessageRegExp') === true) {
-            // PHPUnit < 8.4.0.
             $this->expectException(self::RUNTIME_EXCEPTION);
             $this->expectExceptionMessageRegExp($regex);
         } else {
-            // PHPUnit < 5.2.0.
             $this->setExpectedExceptionRegExp(self::RUNTIME_EXCEPTION, $regex);
         }
 

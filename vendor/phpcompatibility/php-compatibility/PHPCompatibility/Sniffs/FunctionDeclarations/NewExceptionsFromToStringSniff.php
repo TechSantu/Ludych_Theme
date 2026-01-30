@@ -64,7 +64,6 @@ class NewExceptionsFromToStringSniff extends Sniff
      */
     public function register()
     {
-        // Enhance the array of tokens to ignore for finding the docblock.
         $this->docblockIgnoreTokens += Tokens::$methodPrefixes;
         if (isset(Tokens::$phpcsCommentTokens)) {
             $this->docblockIgnoreTokens += Tokens::$phpcsCommentTokens;
@@ -92,18 +91,15 @@ class NewExceptionsFromToStringSniff extends Sniff
 
         $tokens = $phpcsFile->getTokens();
         if (isset($tokens[$stackPtr]['scope_opener'], $tokens[$stackPtr]['scope_closer']) === false) {
-            // Abstract function, interface function, live coding or parse error.
             return;
         }
 
         $functionName = $phpcsFile->getDeclarationName($stackPtr);
         if (strtolower($functionName) !== '__tostring') {
-            // Not the right function.
             return;
         }
 
         if ($this->validDirectScope($phpcsFile, $stackPtr, $this->ooScopeTokens) === false) {
-            // Function, not method.
             return;
         }
 
@@ -130,7 +126,6 @@ class NewExceptionsFromToStringSniff extends Sniff
                 }
 
                 if ($ptr === $stackPtr) {
-                    // Don't check the conditions outside the function scope.
                     break;
                 }
             }
@@ -142,7 +137,6 @@ class NewExceptionsFromToStringSniff extends Sniff
         } while (true);
 
         if ($errorThrown === true) {
-            // We've already thrown an error for this method, no need to examine the docblock.
             return;
         }
 
@@ -163,7 +157,6 @@ class NewExceptionsFromToStringSniff extends Sniff
                 continue;
             }
 
-            // Found a throws tag.
             $phpcsFile->addError($error, $stackPtr, 'ThrowsTagFoundInDocblock');
             break;
         }

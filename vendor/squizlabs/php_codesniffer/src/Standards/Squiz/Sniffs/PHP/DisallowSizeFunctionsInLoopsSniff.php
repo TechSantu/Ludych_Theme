@@ -72,7 +72,6 @@ class DisallowSizeFunctionsInLoopsSniff implements Sniff
         $closeBracket = $tokens[$stackPtr]['parenthesis_closer'];
 
         if ($tokens[$stackPtr]['code'] === T_FOR) {
-            // We only want to check the condition in FOR loops.
             $start = $phpcsFile->findNext(T_SEMICOLON, ($openBracket + 1));
             $end   = $phpcsFile->findPrevious(T_SEMICOLON, ($closeBracket - 1));
         } else {
@@ -86,7 +85,6 @@ class DisallowSizeFunctionsInLoopsSniff implements Sniff
             ) {
                 $functionName = $tokens[$i]['content'];
                 if ($tokenizer === 'JS') {
-                    // Needs to be in the form object.function to be valid.
                     $prev = $phpcsFile->findPrevious(T_WHITESPACE, ($i - 1), null, true);
                     if ($prev === false || $tokens[$prev]['code'] !== T_OBJECT_OPERATOR) {
                         continue;
@@ -94,7 +92,6 @@ class DisallowSizeFunctionsInLoopsSniff implements Sniff
 
                     $functionName = 'object.'.$functionName;
                 } else {
-                    // Make sure it isn't a member var.
                     if ($tokens[($i - 1)]['code'] === T_OBJECT_OPERATOR
                         || $tokens[($i - 1)]['code'] === T_NULLSAFE_OBJECT_OPERATOR
                     ) {

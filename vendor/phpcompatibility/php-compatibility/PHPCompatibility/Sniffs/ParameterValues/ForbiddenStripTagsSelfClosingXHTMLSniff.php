@@ -90,7 +90,6 @@ class ForbiddenStripTagsSelfClosingXHTMLSniff extends AbstractFunctionCallParame
             if ($tokens[$i]['code'] === \T_STRING
                 || $tokens[$i]['code'] === \T_VARIABLE
             ) {
-                // Variable, constant, function call. Ignore as undetermined.
                 return;
             }
 
@@ -105,7 +104,6 @@ class ForbiddenStripTagsSelfClosingXHTMLSniff extends AbstractFunctionCallParame
                     array($targetParam['raw'])
                 );
 
-                // Only throw one error per function call.
                 return;
             }
         }

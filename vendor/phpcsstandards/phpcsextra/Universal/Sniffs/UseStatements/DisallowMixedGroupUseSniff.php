@@ -65,7 +65,6 @@ final class DisallowMixedGroupUseSniff implements Sniff
     public function process(File $phpcsFile, $stackPtr)
     {
         if (UseStatements::isImportUse($phpcsFile, $stackPtr) === false) {
-            // Closure or trait use statement. Bow out.
             return;
         }
 
@@ -77,16 +76,13 @@ final class DisallowMixedGroupUseSniff implements Sniff
         $totalCount    = $ooCount + $functionCount + $constantCount;
 
         if ($totalCount === 0) {
-            // There must have been a parse error. Bow out.
             return;
         }
 
-        // End of statement will always be found, otherwise the import statement parsing would have failed.
         $endOfStatement = $phpcsFile->findNext([\T_SEMICOLON, \T_CLOSE_TAG], ($stackPtr + 1));
         $groupStart     = $phpcsFile->findNext(\T_OPEN_USE_GROUP, ($stackPtr + 1), $endOfStatement);
 
         if ($groupStart === false) {
-            // Not a group use statement. Just record the metric.
             if ($totalCount === 1) {
                 $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'single import');
             } else {
@@ -101,14 +97,12 @@ final class DisallowMixedGroupUseSniff implements Sniff
             || ($ooCount === 0 && $functionCount !== 0 && $constantCount === 0)
             || ($ooCount === 0 && $functionCount === 0 && $constantCount !== 0)
         ) {
-            // Not a *mixed* group use statement.
             $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'group use, single type');
             return;
         }
 
         $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'group use, multi type');
 
-        // Build up the error message.
         $foundPhrases = [];
         if ($ooCount > 1) {
             $foundPhrases[] = \sprintf('%d namespaces/OO names', $ooCount);
@@ -142,7 +136,6 @@ final class DisallowMixedGroupUseSniff implements Sniff
 
         $hasComment = $phpcsFile->findNext(Tokens::$commentTokens, ($stackPtr + 1), $endOfStatement);
         if ($hasComment !== false) {
-            // Don't attempt to auto-fix is there are comments or PHPCS annotations in the statement.
             $phpcsFile->addError($error, $stackPtr, $code, $data);
             return;
         }
@@ -173,19 +166,16 @@ final class DisallowMixedGroupUseSniff implements Sniff
 
         $phpcsFile->fixer->beginChangeset();
 
-        // Ensure that a potential close PHP tag ending the statement is not removed.
         $tokens     = $phpcsFile->getTokens();
         $endRemoval = $endOfStatement;
         if ($tokens[$endOfStatement]['code'] !== \T_SEMICOLON) {
             $endRemoval = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($endOfStatement - 1), null, true);
         }
 
-        // Remove old statement with the exception of the `use` keyword.
         for ($i = ($stackPtr + 1); $i <= $endRemoval; $i++) {
             $phpcsFile->fixer->replaceToken($i, '');
         }
 
-        // Build up the new use import statements.
         $newStatements = [];
 
         $useIndent    = \str_repeat(' ', ($tokens[$stackPtr]['column'] - 1));
@@ -221,7 +211,6 @@ final class DisallowMixedGroupUseSniff implements Sniff
                 continue;
             }
 
-            // Multiple statements, add a single-type group use statement.
             $newStatement = 'use ' . $typeName . $baseGroupName . '{' . $phpcsFile->eolChar;
 
             foreach ($statements as $alias => $qualifiedName) {
@@ -236,7 +225,6 @@ final class DisallowMixedGroupUseSniff implements Sniff
                 $newStatement .= ',' . $phpcsFile->eolChar;
             }
 
-            // Remove trailing comma after last statement as that's PHP 7.2+.
             $newStatement = \rtrim($newStatement, ',' . $phpcsFile->eolChar);
 
             $newStatement   .= $phpcsFile->eolChar . $useIndent . '};';

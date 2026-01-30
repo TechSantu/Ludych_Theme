@@ -196,7 +196,6 @@ final class GetTokensAsStringTest extends AbstractMethodUnitTest
                 'startTokenType' => T_LNUMBER,
                 'length'         => 10,
                 'expected'       => '1 + 2 +
-        // Comment.
 ',
             ],
             'length-11'         => [
@@ -204,7 +203,6 @@ final class GetTokensAsStringTest extends AbstractMethodUnitTest
                 'startTokenType' => T_LNUMBER,
                 'length'         => 11,
                 'expected'       => '1 + 2 +
-        // Comment.
         ',
             ],
             'length-12'         => [
@@ -212,7 +210,6 @@ final class GetTokensAsStringTest extends AbstractMethodUnitTest
                 'startTokenType' => T_LNUMBER,
                 'length'         => 12,
                 'expected'       => '1 + 2 +
-        // Comment.
         3',
             ],
             'length-13'         => [
@@ -220,7 +217,6 @@ final class GetTokensAsStringTest extends AbstractMethodUnitTest
                 'startTokenType' => T_LNUMBER,
                 'length'         => 13,
                 'expected'       => '1 + 2 +
-        // Comment.
         3 ',
             ],
             'length-14'         => [
@@ -228,7 +224,6 @@ final class GetTokensAsStringTest extends AbstractMethodUnitTest
                 'startTokenType' => T_LNUMBER,
                 'length'         => 14,
                 'expected'       => '1 + 2 +
-        // Comment.
         3 +',
             ],
             'length-34'         => [
@@ -236,7 +231,6 @@ final class GetTokensAsStringTest extends AbstractMethodUnitTest
                 'startTokenType' => T_LNUMBER,
                 'length'         => 34,
                 'expected'       => '1 + 2 +
-        // Comment.
         3 + 4
         + 5 + 6 + 7 > 20;',
             ],
@@ -251,7 +245,6 @@ final class GetTokensAsStringTest extends AbstractMethodUnitTest
                 'startTokenType' => T_USE,
                 'length'         => 17,
                 'expected'       => 'use Foo /*comment*/ \ Bar
-    // phpcs:ignore Stnd.Cat.Sniff --    For reasons.
     \ Bah;',
             ],
             'echo-with-tabs'    => [
@@ -309,7 +302,6 @@ final class GetTokensAsStringTest extends AbstractMethodUnitTest
                 'startTokenType' => T_USE,
                 'length'         => 17,
                 'expected'       => 'use Foo /*comment*/ \ Bar
-	// phpcs:ignore Stnd.Cat.Sniff --	 For reasons.
 	\ Bah;',
             ],
             'echo-with-tabs'    => [

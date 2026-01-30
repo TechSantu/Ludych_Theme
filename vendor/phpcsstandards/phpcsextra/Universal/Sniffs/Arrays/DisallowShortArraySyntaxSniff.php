@@ -70,7 +70,6 @@ final class DisallowShortArraySyntaxSniff implements Sniff
         }
 
         if (Arrays::isShortArray($phpcsFile, $stackPtr) === false) {
-            // Square brackets, but not a short array. Probably short list or real square brackets.
             return;
         }
 

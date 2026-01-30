@@ -19,6 +19,5 @@ final class TooDeeplyNestedSniff implements Sniff
 
     public function process(File $phpcsFile, $stackPtr)
     {
-        // Do something.
     }
 }

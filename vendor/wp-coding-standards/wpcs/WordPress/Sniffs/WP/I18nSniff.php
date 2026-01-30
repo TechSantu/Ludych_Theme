@@ -223,11 +223,9 @@ final class I18nSniff extends AbstractFunctionParameterSniff {
 	 */
 	public function process_token( $stackPtr ) {
 
-		// Reset defaults.
 		$this->text_domain_contains_default = false;
 		$this->text_domain_is_default       = false;
 
-		// Allow overruling the text_domain set in a ruleset via the command line.
 		$cl_text_domain = Helper::getConfigData( 'text_domain' );
 		if ( ! empty( $cl_text_domain ) ) {
 			$cl_text_domain = trim( $cl_text_domain );
@@ -247,7 +245,6 @@ final class I18nSniff extends AbstractFunctionParameterSniff {
 			}
 		}
 
-		// Prevent exclusion of the i18n group.
 		$this->exclude = array();
 
 		parent::process_token( $stackPtr );
@@ -269,7 +266,6 @@ final class I18nSniff extends AbstractFunctionParameterSniff {
 
 		$func_open_paren_token = $this->phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true );
 		if ( ! isset( $this->tokens[ $func_open_paren_token ]['parenthesis_closer'] ) ) {
-			// Live coding, parse error or not a function call.
 			return;
 		}
 
@@ -344,7 +340,6 @@ final class I18nSniff extends AbstractFunctionParameterSniff {
 
 		foreach ( $function_param_specs as $position => $name ) {
 			if ( 'number' === $name ) {
-				// This sniff does not examine the $number parameter.
 				continue;
 			}
 
@@ -466,7 +461,6 @@ final class I18nSniff extends AbstractFunctionParameterSniff {
 			 */
 			if ( 'domain' === $param_name ) {
 				if ( empty( $this->text_domain ) ) {
-					// If no text domain is passed, presume WP Core.
 					return false;
 				}
 
@@ -568,7 +562,6 @@ final class I18nSniff extends AbstractFunctionParameterSniff {
 		}
 
 		if ( empty( $this->text_domain ) ) {
-			// Nothing more to do, the other checks all depend on a text domain being known.
 			return;
 		}
 
@@ -592,7 +585,6 @@ final class I18nSniff extends AbstractFunctionParameterSniff {
 
 			$first_non_empty = $this->phpcsFile->findNext( Tokens::$emptyTokens, $param_info['start'], ( $param_info['end'] + 1 ), true );
 
-			// Prevent removing comments when auto-fixing.
 			$remove_from = ( $param_info['start'] - 1 );
 			$remove_to   = $first_non_empty;
 
@@ -612,7 +604,6 @@ final class I18nSniff extends AbstractFunctionParameterSniff {
 				}
 			}
 
-			// Now, make sure there are no comments in the tokens we want to remove.
 			if ( $this->phpcsFile->findNext( Tokens::$commentTokens, $remove_from, ( $remove_to + 1 ) ) === false ) {
 				$fixable = true;
 			}
@@ -649,7 +640,6 @@ final class I18nSniff extends AbstractFunctionParameterSniff {
 	private function check_placeholders_in_string( $matched_content, $param_name, $param_info ) {
 		$content = $param_info['clean'];
 
-		// UnorderedPlaceholders: Check for multiple unordered placeholders.
 		$unordered_matches_count = preg_match_all( self::UNORDERED_SPRINTF_PLACEHOLDER_REGEX, $content, $unordered_matches );
 		$unordered_matches       = $unordered_matches[0];
 		$all_matches_count       = preg_match_all( self::SPRINTF_PLACEHOLDER_REGEX, $content, $all_matches );
@@ -682,11 +672,8 @@ final class I18nSniff extends AbstractFunctionParameterSniff {
 				$to_insert        .= ( '"' !== $content[0] ) ? '$' : '\$';
 				$suggestions[ $i ] = substr_replace( $unordered_matches[ $i ], $to_insert, 1, 0 );
 
-				// Prepare the strings for use in a regex.
 				$replace_regexes[ $i ] = '`\Q' . $unordered_matches[ $i ] . '\E`';
-				// Note: the initial \\ is a literal \, the four \ in the replacement translate also to a literal \.
 				$replacements[ $i ] = str_replace( '\\', '\\\\', $suggestions[ $i ] );
-				// Note: the $ needs escaping to prevent numeric sequences after the $ being interpreted as match replacements.
 				$replacements[ $i ] = str_replace( '$', '\\$', $replacements[ $i ] );
 			}
 
@@ -729,7 +716,6 @@ final class I18nSniff extends AbstractFunctionParameterSniff {
 	 * @return bool Whether or not the text string has translatable content.
 	 */
 	private function check_string_has_translatable_content( $matched_content, $param_name, $param_info ) {
-		// Strip placeholders and surrounding quotes.
 		$content_without_quotes  = trim( TextStrings::stripQuotes( $param_info['clean'] ) );
 		$non_placeholder_content = preg_replace( self::SPRINTF_PLACEHOLDER_REGEX, '', $content_without_quotes );
 
@@ -764,19 +750,15 @@ final class I18nSniff extends AbstractFunctionParameterSniff {
 	 * @return void
 	 */
 	private function check_string_has_no_html_wrapper( $matched_content, $param_name, $param_info ) {
-		// Strip surrounding quotes.
 		$content_without_quotes = trim( TextStrings::stripQuotes( $param_info['clean'] ) );
 
 		$reader = new XMLReader();
 		$reader->XML( $content_without_quotes, 'UTF-8', \LIBXML_NOERROR | \LIBXML_ERR_NONE | \LIBXML_NOWARNING );
 
-		// Is the first node an HTML element?
 		if ( ! $reader->read() || XMLReader::ELEMENT !== $reader->nodeType ) {
 			return;
 		}
 
-		// If the opening HTML element includes placeholders in its attributes, we don't warn.
-		// E.g. '<option id="%1$s" value="%2$s">Translatable option name</option>'.
 		$i = 0;
 		while ( $attr = $reader->getAttributeNo( $i ) ) {
 			if ( preg_match( self::SPRINTF_PLACEHOLDER_REGEX, $attr ) === 1 ) {
@@ -786,12 +768,10 @@ final class I18nSniff extends AbstractFunctionParameterSniff {
 			++$i;
 		}
 
-		// We don't flag strings wrapped in `<a href="...">...</a>`, as the link target might actually need localization.
 		if ( 'a' === $reader->name && $reader->getAttribute( 'href' ) ) {
 			return;
 		}
 
-		// Does the entire string only consist of this HTML node?
 		if ( $reader->readOuterXml() === $content_without_quotes ) {
 			$first_non_empty = $this->phpcsFile->findNext( Tokens::$emptyTokens, $param_info['start'], ( $param_info['end'] + 1 ), true );
 
@@ -829,8 +809,6 @@ final class I18nSniff extends AbstractFunctionParameterSniff {
 		preg_match_all( self::SPRINTF_PLACEHOLDER_REGEX, $plural_content, $plural_placeholders );
 		$plural_placeholders = $plural_placeholders[0];
 
-		// English conflates "singular" with "only one", described in the codex:
-		// https://codex.wordpress.org/I18n_for_WordPress_Developers#Plurals .
 		if ( \count( $single_placeholders ) < \count( $plural_placeholders ) ) {
 			$error_string           = 'Missing singular placeholder, needed for some languages. See https://codex.wordpress.org/I18n_for_WordPress_Developers#Plurals';
 			$first_non_empty_single = $this->phpcsFile->findNext( Tokens::$emptyTokens, $param_info_single['start'], ( $param_info_single['end'] + 1 ), true );
@@ -839,7 +817,6 @@ final class I18nSniff extends AbstractFunctionParameterSniff {
 			return;
 		}
 
-		// Reordering is fine, but mismatched placeholders is probably wrong.
 		sort( $single_placeholders, \SORT_NATURAL );
 		sort( $plural_placeholders, \SORT_NATURAL );
 
@@ -880,7 +857,6 @@ final class I18nSniff extends AbstractFunctionParameterSniff {
 		}
 
 		if ( false === $needs_translators_comment ) {
-			// No text string with placeholders found, no translation comment needed.
 			return;
 		}
 
@@ -898,7 +874,6 @@ final class I18nSniff extends AbstractFunctionParameterSniff {
 			} else {
 				$next_non_whitespace = $this->phpcsFile->findNext( \T_WHITESPACE, ( $previous_comment + 1 ), $stackPtr, true );
 				if ( false === $next_non_whitespace || $this->tokens[ $next_non_whitespace ]['line'] === $this->tokens[ $stackPtr ]['line'] ) {
-					// No non-whitespace found or next non-whitespace is on same line as gettext call.
 					$correctly_placed = true;
 				}
 				unset( $next_non_whitespace );
@@ -911,7 +886,6 @@ final class I18nSniff extends AbstractFunctionParameterSniff {
 				if ( \T_COMMENT === $this->tokens[ $previous_comment ]['code'] ) {
 					$comment_text = trim( $this->tokens[ $previous_comment ]['content'] );
 
-					// If it's multi-line /* */ comment, collect all the parts.
 					if ( '*/' === substr( $comment_text, -2 ) && '/*' !== substr( $comment_text, 0, 2 ) ) {
 						for ( $i = ( $previous_comment - 1 ); 0 <= $i; $i-- ) {
 							if ( \T_COMMENT !== $this->tokens[ $i ]['code'] ) {
@@ -923,13 +897,11 @@ final class I18nSniff extends AbstractFunctionParameterSniff {
 					}
 
 					if ( true === $this->is_translators_comment( $comment_text ) ) {
-						// Comment is ok.
 						return;
 					}
 				}
 
 				if ( \T_DOC_COMMENT_CLOSE_TAG === $this->tokens[ $previous_comment ]['code'] ) {
-					// If it's docblock comment (wrong style) make sure that it's a translators comment.
 					if ( isset( $this->tokens[ $previous_comment ]['comment_opener'] ) ) {
 						$db_start = $this->tokens[ $previous_comment ]['comment_opener'];
 					} else {
@@ -950,7 +922,6 @@ final class I18nSniff extends AbstractFunctionParameterSniff {
 			}
 		}
 
-		// Found placeholders but no translators comment.
 		$this->phpcsFile->addWarning(
 			'A function call to %s() with texts containing placeholders was found, but was not accompanied by a "translators:" comment on the line above to clarify the meaning of the placeholders.',
 			$stackPtr,

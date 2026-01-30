@@ -120,7 +120,6 @@ final class AttributeHelper
                     throw ValueError::create(2, '$stackPtr', $message);
                 }
 
-                // Allow for multi-property declarations.
                 if ($isOOProperty === true) {
                     do {
                         $prevNonEmpty = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($stackPtr - 1), null, true);
@@ -198,7 +197,6 @@ final class AttributeHelper
 
         for ($i = ($stackPtr - 1); $i >= 0; $i--) {
             if (isset($tokens[$i]['comment_opener'])) {
-                // Skip over docblocks.
                 $i = $tokens[$i]['comment_opener'];
                 continue;
             }
@@ -213,7 +211,6 @@ final class AttributeHelper
                 continue;
             }
 
-            // In all other cases, we've reached the end of our search.
             break;
         }
 

@@ -32,24 +32,20 @@ class WpDieDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFu
     {
         $args = $functionCall->getArgs();
 
-        // Called without $args parameter
         if (count($args) < 3) {
             return new NonAcceptingNeverType();
         }
 
         $argType = $scope->getType($args[2]->value);
 
-        // Return void for non constant arrays.
         if (! $argType->isConstantArray()->yes()) {
             return new VoidType();
         }
 
-        // Return never if the key 'exit' is not set.
         if (! $argType->hasOffsetValueType(new ConstantStringType('exit'))->yes()) {
             return new NonAcceptingNeverType();
         }
 
-        // Note WP's wp_die handlers do lazy comparison
         return $argType->getOffsetValueType(new ConstantStringType('exit'))->toBoolean()->isTrue()->yes()
             ? new NonAcceptingNeverType()
             : new VoidType();

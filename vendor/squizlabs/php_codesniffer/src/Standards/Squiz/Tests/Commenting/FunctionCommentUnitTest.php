@@ -146,7 +146,6 @@ final class FunctionCommentUnitTest extends AbstractSniffUnitTest
             1192 => 1,
         ];
 
-        // Scalar type hints only work from PHP 7 onwards.
         if (PHP_VERSION_ID >= 70000) {
             $errors[17]   = 3;
             $errors[128]  = 1;
@@ -172,14 +171,12 @@ final class FunctionCommentUnitTest extends AbstractSniffUnitTest
             $errors[982] = 1;
         }//end if
 
-        // Object type hints only work from PHP 7.2 onwards.
         if (PHP_VERSION_ID >= 70200) {
             $errors[627] = 2;
         } else {
             $errors[992] = 2;
         }
 
-        // Mixed type hints only work from PHP 8.0 onwards.
         if (PHP_VERSION_ID >= 80000) {
             $errors[265] = 1;
             $errors[459] = 1;

@@ -78,7 +78,6 @@ class Performance implements Report
             return;
         }
 
-        // First collect the accumulated timings.
         $timings        = [];
         $totalSniffTime = 0;
         foreach ($lines as $line) {
@@ -94,7 +93,6 @@ class Performance implements Report
             $totalSniffTime       += $time;
         }
 
-        // Next, tidy up the sniff names and determine max needed column width.
         $totalTimes   = [];
         $maxNameWidth = 0;
         foreach ($timings as $sniffClass => $secs) {
@@ -103,11 +101,8 @@ class Performance implements Report
             $totalTimes[$sniffCode] = $secs;
         }
 
-        // Leading space + up to 12 chars for the number.
         $maxTimeWidth = 13;
-        // Leading space, open parenthesis, up to 5 chars for the number, space + % and close parenthesis.
         $maxPercWidth = 10;
-        // Calculate the maximum width available for the sniff name.
         $maxNameWidth = min(($width - $maxTimeWidth - $maxPercWidth), max(($width - $maxTimeWidth - $maxPercWidth), $maxNameWidth));
 
         arsort($totalTimes);
@@ -117,9 +112,6 @@ class Performance implements Report
         echo "\033[1m".'SNIFF'.str_repeat(' ', ($width - 31)).'TIME TAKEN (SECS)     (%)'."\033[0m".PHP_EOL;
         echo str_repeat('-', $width).PHP_EOL;
 
-        // Mark sniffs which take more than twice as long as the average processing time per sniff
-        // in orange and when they take more than three times as long as the average,
-        // mark them in red.
         $avgSniffTime       = ($totalSniffTime / count($totalTimes));
         $doubleAvgSniffTime = (2 * $avgSniffTime);
         $tripleAvgSniffTime = (3 * $avgSniffTime);

@@ -35,7 +35,6 @@ final class GetMemberPropertiesTest extends AbstractMethodUnitTest
         $variable = $this->getTargetToken($identifier, T_VARIABLE);
         $result   = self::$phpcsFile->getMemberProperties($variable);
 
-        // Convert offsets to absolute positions in the token stream.
         if (isset($expected['type_token']) === true && is_int($expected['type_token']) === true) {
             $expected['type_token'] += $variable;
         }
@@ -845,7 +844,6 @@ final class GetMemberPropertiesTest extends AbstractMethodUnitTest
                     'is_readonly'     => false,
                     'is_final'        => false,
                     'is_abstract'     => false,
-                    // Missing static, but that's OK as not an allowed syntax.
                     'type'            => 'callable|void',
                     'type_token'      => -4,
                     'type_end_token'  => -2,

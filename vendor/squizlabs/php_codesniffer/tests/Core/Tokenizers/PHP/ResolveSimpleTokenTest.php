@@ -406,7 +406,6 @@ final class ResolveSimpleTokenTest extends AbstractTokenizerTestCase
 
         for ($i = $startPtr; $sequenceKey < $sequenceCount; $i++) {
             if (isset(Tokens::$emptyTokens[$tokens[$i]['code']]) === true) {
-                // Ignore whitespace and comments, not interested in the tokenization of those for these tests.
                 continue;
             }
 

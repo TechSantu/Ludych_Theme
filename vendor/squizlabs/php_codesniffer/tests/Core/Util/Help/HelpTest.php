@@ -143,11 +143,9 @@ final class HelpTest extends TestCase
         $message   = 'The $shortOptions parameter must be a string';
 
         if (method_exists($this, 'expectException') === true) {
-            // PHPUnit 5+.
             $this->expectException($exception);
             $this->expectExceptionMessage($message);
         } else {
-            // PHPUnit 4.
             $this->setExpectedException($exception, $message);
         }
 
@@ -179,7 +177,6 @@ final class HelpTest extends TestCase
 
         $activeOptions = $this->getReflectionProperty($help, 'activeOptions');
 
-        // Simplify the value to make it comparible.
         foreach ($activeOptions as $category => $options) {
             $activeOptions[$category] = count($options);
         }
@@ -498,7 +495,6 @@ final class HelpTest extends TestCase
             'generator',
         ];
 
-        // phpcs:disable Squiz.Strings.ConcatenationSpacing.PaddingFound -- Test readability is more important.
         return [
             'Report width small: 40; forces report width to minimum width of 60'                                                    => [
                 'reportWidth'    => 40,
@@ -538,7 +534,6 @@ final class HelpTest extends TestCase
                     .'  --generator=<generator> Show documentation for a standard. Use either the "HTML", "Markdown" or "Text" generator.'.PHP_EOL,
             ],
         ];
-        // phpcs:enable
 
     }//end dataReportWidthCalculations()
 
@@ -662,8 +657,6 @@ final class HelpTest extends TestCase
         $indentLength = strlen(Help::INDENT);
         $gutterLength = strlen(Help::GUTTER);
 
-        // phpcs:disable Squiz.Strings.ConcatenationSpacing.PaddingFound -- Test readability is more important.
-        // phpcs:disable Generic.Strings.UnnecessaryStringConcat.Found -- Test readability is more important.
         return [
             'Input: arg, spacer, arg; new lines in description get preserved' => [
                 'input'         => [
@@ -718,7 +711,6 @@ final class HelpTest extends TestCase
                 ],
             ],
         ];
-        // phpcs:enable
 
     }//end dataPrintCategoryOptions()
 

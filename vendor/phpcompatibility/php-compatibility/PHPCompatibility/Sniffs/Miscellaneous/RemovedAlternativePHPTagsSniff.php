@@ -48,7 +48,6 @@ class RemovedAlternativePHPTagsSniff extends Sniff
     public function register()
     {
         if (version_compare(\PHP_VERSION_ID, '70000', '<') === true) {
-            // phpcs:ignore PHPCompatibility.IniDirectives.RemovedIniDirectives.asp_tagsRemoved
             $this->aspTags = (bool) ini_get('asp_tags');
         }
 
@@ -104,8 +103,6 @@ class RemovedAlternativePHPTagsSniff extends Sniff
                 return;
             }
         }
-        // Account for incorrect script open tags.
-        // The "(?:<s)?" in the regex is to work-around a bug in the tokenizer in PHP 5.2.
         elseif ($openTag['code'] === \T_INLINE_HTML
             && preg_match('`((?:<s)?cript (?:[^>]+)?language=[\'"]?php[\'"]?(?:[^>]+)?>)`i', $content, $match) === 1
         ) {
@@ -127,7 +124,6 @@ class RemovedAlternativePHPTagsSniff extends Sniff
             return;
         }
 
-        // If we're still here, we can't be sure if what we found was really intended as ASP open tags.
         if ($openTag['code'] === \T_INLINE_HTML && $this->aspTags === false) {
             if (strpos($content, '<%') !== false) {
                 $error   = 'Possible use of ASP style opening tags detected. ASP style opening tags have been removed in PHP 7.0. Found: %s';

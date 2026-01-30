@@ -67,16 +67,10 @@ class Runner
                 define('PHP_CODESNIFFER_CBF', false);
             }
 
-            // Creating the Config object populates it with all required settings
-            // based on the CLI arguments provided to the script and any config
-            // values the user has set.
             $this->config = new Config();
 
-            // Init the run and load the rulesets to set additional config vars.
             $this->init();
 
-            // Print a list of sniffs in each of the supplied standards.
-            // We fudge the config here so that each standard is explained in isolation.
             if ($this->config->explain === true) {
                 $standards = $this->config->standards;
                 foreach ($standards as $standard) {
@@ -88,7 +82,6 @@ class Runner
                 return 0;
             }
 
-            // Generate documentation for each of the supplied standards.
             if ($this->config->generator !== null) {
                 $standards = $this->config->standards;
                 foreach ($standards as $standard) {
@@ -102,31 +95,20 @@ class Runner
                 return 0;
             }
 
-            // Other report formats don't really make sense in interactive mode
-            // so we hard-code the full report here and when outputting.
-            // We also ensure parallel processing is off because we need to do one file at a time.
             if ($this->config->interactive === true) {
                 $this->config->reports      = ['full' => null];
                 $this->config->parallel     = 1;
                 $this->config->showProgress = false;
             }
 
-            // Disable caching if we are processing STDIN as we can't be 100%
-            // sure where the file came from or if it will change in the future.
             if ($this->config->stdin === true) {
                 $this->config->cache = false;
             }
 
             $numErrors = $this->run();
 
-            // Print all the reports for this run.
             $toScreen = $this->reporter->printReports();
 
-            // Only print timer output if no reports were
-            // printed to the screen so we don't put additional output
-            // in something like an XML report. If we are printing to screen,
-            // the report types would have already worked out who should
-            // print the timer info.
             if ($this->config->interactive === false
                 && ($toScreen === false
                 || (($this->reporter->totalErrors + $this->reporter->totalWarnings) === 0 && $this->config->showProgress === true))
@@ -139,13 +121,10 @@ class Runner
         }//end try
 
         if ($numErrors === 0) {
-            // No errors found.
             return 0;
         } else if ($this->reporter->totalFixable === 0) {
-            // Errors found, but none of them can be fixed by PHPCBF.
             return 1;
         } else {
-            // Errors found, and some can be fixed by PHPCBF.
             return 2;
         }
 
@@ -169,28 +148,18 @@ class Runner
             Timing::startTiming();
             Runner::checkRequirements();
 
-            // Creating the Config object populates it with all required settings
-            // based on the CLI arguments provided to the script and any config
-            // values the user has set.
             $this->config = new Config();
 
-            // When processing STDIN, we can't output anything to the screen
-            // or it will end up mixed in with the file output.
             if ($this->config->stdin === true) {
                 $this->config->verbosity = 0;
             }
 
-            // Init the run and load the rulesets to set additional config vars.
             $this->init();
 
-            // When processing STDIN, we only process one file at a time and
-            // we don't process all the way through, so we can't use the parallel
-            // running system.
             if ($this->config->stdin === true) {
                 $this->config->parallel = 1;
             }
 
-            // Override some of the command line settings that might break the fixes.
             $this->config->generator    = null;
             $this->config->explain      = false;
             $this->config->interactive  = false;
@@ -199,7 +168,6 @@ class Runner
             $this->config->recordErrors = false;
             $this->config->reportFile   = null;
 
-            // Only use the "Cbf" report, but allow for the Performance report as well.
             $originalReports = array_change_key_case($this->config->reports, CASE_LOWER);
             $newReports      = ['cbf' => null];
             if (array_key_exists('performance', $originalReports) === true) {
@@ -208,9 +176,6 @@ class Runner
 
             $this->config->reports = $newReports;
 
-            // If a standard tries to set command line arguments itself, some
-            // may be blocked because PHPCBF is running, so stop the script
-            // dying if any are found.
             $this->config->dieOnUnknownArg = false;
 
             $this->run();
@@ -224,22 +189,17 @@ class Runner
         }//end try
 
         if ($this->reporter->totalFixed === 0) {
-            // Nothing was fixed by PHPCBF.
             if ($this->reporter->totalFixable === 0) {
-                // Nothing found that could be fixed.
                 return 0;
             } else {
-                // Something failed to fix.
                 return 2;
             }
         }
 
         if ($this->reporter->totalFixable === 0) {
-            // PHPCBF fixed all fixable errors.
             return 1;
         }
 
-        // PHPCBF fixed some fixable errors, but others failed to fix.
         return 2;
 
     }//end runPHPCBF()
@@ -253,7 +213,6 @@ class Runner
      */
     public function checkRequirements()
     {
-        // Check the PHP version.
         if (PHP_VERSION_ID < 50400) {
             $error = 'ERROR: PHP_CodeSniffer requires PHP version 5.4.0 or greater.'.PHP_EOL;
             throw new DeepExitException($error, 3);
@@ -305,18 +264,12 @@ class Runner
             define('PHP_CODESNIFFER_CBF', false);
         }
 
-        // Ensure this option is enabled or else line endings will not always
-        // be detected properly for files created on a Mac with the /r line ending.
         @ini_set('auto_detect_line_endings', true);
 
-        // Disable the PCRE JIT as this caused issues with parallel running.
         ini_set('pcre.jit', false);
 
-        // Check that the standards are valid.
         foreach ($this->config->standards as $standard) {
             if (Standards::isInstalledStandard($standard) === false) {
-                // They didn't select a valid coding standard, so help them
-                // out by letting them know which standards are installed.
                 $error = 'ERROR: the "'.$standard.'" coding standard is not installed. ';
                 ob_start();
                 Standards::printInstalledStandards();
@@ -326,24 +279,17 @@ class Runner
             }
         }
 
-        // Saves passing the Config object into other objects that only need
-        // the verbosity flag for debug output.
         if (defined('PHP_CODESNIFFER_VERBOSITY') === false) {
             define('PHP_CODESNIFFER_VERBOSITY', $this->config->verbosity);
         }
 
-        // Create this class so it is autoloaded and sets up a bunch
-        // of PHP_CodeSniffer-specific token type constants.
         new Tokens();
 
-        // Allow autoloading of custom files inside installed standards.
         $installedStandards = Standards::getInstalledStandardDetails();
         foreach ($installedStandards as $details) {
             Autoload::addSearchPath($details['path'], $details['namespace']);
         }
 
-        // The ruleset contains all the information about how the files
-        // should be checked and/or fixed.
         try {
             $this->ruleset = new Ruleset($this->config);
 
@@ -368,10 +314,8 @@ class Runner
      */
     private function run()
     {
-        // The class that manages all reporters for the run.
         $this->reporter = new Reporter($this->config);
 
-        // Include bootstrap files.
         foreach ($this->config->bootstrap as $bootstrap) {
             include $bootstrap;
         }
@@ -420,16 +364,12 @@ class Runner
             }
         }//end if
 
-        // Turn all sniff errors into exceptions.
         set_error_handler([$this, 'handleErrors']);
 
-        // If verbosity is too high, turn off parallelism so the
-        // debug output is clean.
         if (PHP_CODESNIFFER_VERBOSITY > 1) {
             $this->config->parallel = 1;
         }
 
-        // If the PCNTL extension isn't installed, we can't fork.
         if (function_exists('pcntl_fork') === false) {
             $this->config->parallel = 1;
         }
@@ -438,7 +378,6 @@ class Runner
         $numFiles = count($todo);
 
         if ($this->config->parallel === 1) {
-            // Running normally.
             $numProcessed = 0;
             foreach ($todo as $path => $file) {
                 if ($file->ignored === false) {
@@ -460,7 +399,6 @@ class Runner
                 $this->printProgress($file, $numFiles, $numProcessed);
             }
         } else {
-            // Batching and forking.
             $childProcs  = [];
             $numPerBatch = ceil($numFiles / $this->config->parallel);
 
@@ -482,21 +420,17 @@ class Runner
                 } else if ($pid !== 0) {
                     $childProcs[$pid] = $childOutFilename;
                 } else {
-                    // Move forward to the start of the batch.
                     $todo->rewind();
                     for ($i = 0; $i < $startAt; $i++) {
                         $todo->next();
                     }
 
-                    // Reset the reporter to make sure only figures from this
-                    // file batch are recorded.
                     $this->reporter->totalFiles    = 0;
                     $this->reporter->totalErrors   = 0;
                     $this->reporter->totalWarnings = 0;
                     $this->reporter->totalFixable  = 0;
                     $this->reporter->totalFixed    = 0;
 
-                    // Process the files.
                     $pathsProcessed = [];
                     ob_start();
                     for ($i = $startAt; $i < $endAt; $i++) {
@@ -526,8 +460,6 @@ class Runner
                     $debugOutput = ob_get_contents();
                     ob_end_clean();
 
-                    // Write information about the run to the filesystem
-                    // so it can be picked up by the main process.
                     $childOutput = [
                         'totalFiles'    => $this->reporter->totalFiles,
                         'totalErrors'   => $this->reporter->totalErrors,
@@ -617,7 +549,6 @@ class Runner
     public function handleErrors($code, $message, $file, $line)
     {
         if ((error_reporting() & $code) === 0) {
-            // This type of error is being muted.
             return true;
         }
 
@@ -669,7 +600,6 @@ class Runner
         } catch (Exception $e) {
             $error = 'An error occurred during processing; checking has been aborted. The error message was: '.$e->getMessage();
 
-            // Determine which sniff caused the error.
             $sniffStack = null;
             $nextStack  = null;
             foreach ($e->getTrace() as $step) {
@@ -698,7 +628,6 @@ class Runner
                         $sniffCode = 'the '.Common::getSniffCode($nextStack['class']).' sniff';
                     }
                 } catch (InvalidArgumentException $e) {
-                    // Sniff code could not be determined. This may be an abstract sniff class.
                 }
 
                 if ($sniffCode === '') {
@@ -719,8 +648,6 @@ class Runner
                 Print the error report for the current file and then wait for user input.
             */
 
-            // Get current violations and then clear the list to make sure
-            // we only print violations for a single file each time.
             $numErrors = null;
             while ($numErrors !== 0) {
                 $numErrors = ($file->getErrorCount() + $file->getWarningCount());
@@ -740,9 +667,6 @@ class Runner
                 case 'q':
                     throw new DeepExitException('', 0);
                 default:
-                    // Repopulate the sniffs because some of them save their state
-                    // and only clear it when the file changes, but we are rechecking
-                    // the same file.
                     $file->ruleset->populateTokenListeners();
                     $file->reloadContent();
                     $file->process();
@@ -752,7 +676,6 @@ class Runner
             }//end while
         }//end if
 
-        // Clean up the file to save (a lot of) memory.
         $file->cleanUp();
 
     }//end processFile()
@@ -778,7 +701,6 @@ class Runner
         while (count($childProcs) > 0) {
             $pid = pcntl_waitpid(0, $status);
             if ($pid <= 0 || isset($childProcs[$pid]) === false) {
-                // No child or a child with an unmanaged PID was returned.
                 continue;
             }
 
@@ -799,7 +721,6 @@ class Runner
             $numProcessed++;
 
             if (isset($childOutput) === false) {
-                // The child process died, so the run has failed.
                 $file = new DummyFile('', $this->ruleset, $this->config);
                 $file->setErrorCounts(1, 0, 0, 0);
                 $this->printProgress($file, $totalBatches, $numProcessed);
@@ -823,7 +744,6 @@ class Runner
                 }
             }
 
-            // Fake a processed file so we can print progress output for the batch.
             $file = new DummyFile('', $this->ruleset, $this->config);
             $file->setErrorCounts(
                 $childOutput['totalErrors'],
@@ -862,7 +782,6 @@ class Runner
         $progressDot = '.';
         $colorClose  = '';
 
-        // Show progress information.
         if ($file->ignored === true) {
             $progressDot = 'S';
         } else {
@@ -872,9 +791,6 @@ class Runner
             $fixed    = $file->getFixedCount();
 
             if (PHP_CODESNIFFER_CBF === true) {
-                // Files with fixed errors or warnings are F (green).
-                // Files with unfixable errors or warnings are E (red).
-                // Files with no errors or warnings are . (black).
                 if ($fixable > 0) {
                     $progressDot = 'E';
 
@@ -891,11 +807,6 @@ class Runner
                     }
                 }//end if
             } else {
-                // Files with errors are E (red).
-                // Files with fixable errors are E (green).
-                // Files with warnings are W (yellow).
-                // Files with fixable warnings are W (green).
-                // Files with no errors or warnings are . (black).
                 if ($errors > 0) {
                     $progressDot = 'E';
 
@@ -954,7 +865,6 @@ class Runner
      */
     private function registerOutOfMemoryShutdownMessage($command)
     {
-        // Allocate all needed memory beforehand as much as possible.
         $errorMsg    = PHP_EOL.'The PHP_CodeSniffer "%1$s" command ran out of memory.'.PHP_EOL;
         $errorMsg   .= 'Either raise the "memory_limit" of PHP in the php.ini file or raise the memory limit at runtime'.PHP_EOL;
         $errorMsg   .= 'using "%1$s -d memory_limit=512M" (replace 512M with the desired memory limit).'.PHP_EOL;

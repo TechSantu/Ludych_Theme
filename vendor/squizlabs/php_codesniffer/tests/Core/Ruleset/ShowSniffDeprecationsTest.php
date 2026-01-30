@@ -338,7 +338,6 @@ final class ShowSniffDeprecationsTest extends AbstractRulesetTestCase
      */
     public function testReportWidthIsRespected($reportWidth, $expectedOutput)
     {
-        // Set up the ruleset.
         $standard = __DIR__.'/ShowSniffDeprecationsReportWidthTest.xml';
         $config   = new ConfigDouble(['.', "--standard=$standard", "--report-width=$reportWidth", '--no-colors']);
         $ruleset  = new Ruleset($config);
@@ -361,7 +360,6 @@ final class ShowSniffDeprecationsTest extends AbstractRulesetTestCase
     {
         $summaryLine = 'WARNING: The ShowSniffDeprecationsTest standard uses 1 deprecated sniff'.PHP_EOL;
 
-        // phpcs:disable Squiz.Strings.ConcatenationSpacing.PaddingFound -- Test readability is more important.
         return [
             'Report width small: 40; with truncated sniff name and wrapped header and footer lines' => [
                 'reportWidth'    => 40,
@@ -411,7 +409,6 @@ final class ShowSniffDeprecationsTest extends AbstractRulesetTestCase
                     .'future.'.PHP_EOL.PHP_EOL,
             ],
             'Report width matches longest line: 666; the message should not wrap'                   => [
-                // Length = 4 padding + 75 base line + 587 custom message.
                 'reportWidth'    => 666,
                 'expectedOutput' => $summaryLine.str_repeat('-', 666).PHP_EOL
                     .'-  TestStandard.Deprecated.WithLongReplacement'.PHP_EOL
@@ -428,7 +425,6 @@ final class ShowSniffDeprecationsTest extends AbstractRulesetTestCase
                     .'Deprecated sniffs are still run, but will stop working at some point in the future.'.PHP_EOL.PHP_EOL,
             ],
         ];
-        // phpcs:enable
 
     }//end dataReportWidthIsRespected()
 
@@ -442,7 +438,6 @@ final class ShowSniffDeprecationsTest extends AbstractRulesetTestCase
      */
     public function testDeprecatedSniffsAreListedAlphabetically()
     {
-        // Set up the ruleset.
         $standard = __DIR__.'/ShowSniffDeprecationsOrderTest.xml';
         $config   = new ConfigDouble(["--standard=$standard", '--no-colors']);
         $ruleset  = new Ruleset($config);
@@ -461,7 +456,6 @@ final class ShowSniffDeprecationsTest extends AbstractRulesetTestCase
 
         $ruleset->showSniffDeprecations();
 
-        // Verify that the sniffs have been registered to run.
         $this->assertCount(2, $ruleset->sniffCodes, 'Incorrect number of sniff codes registered');
         $this->assertArrayHasKey(
             'TestStandard.Deprecated.WithoutReplacement',
@@ -492,7 +486,6 @@ final class ShowSniffDeprecationsTest extends AbstractRulesetTestCase
     {
         $this->expectRuntimeExceptionMessage($exceptionMessage);
 
-        // Set up the ruleset.
         $standard = __DIR__.'/'.$standard;
         $config   = new ConfigDouble(["--standard=$standard"]);
         $ruleset  = new Ruleset($config);

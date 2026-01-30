@@ -165,7 +165,6 @@ final class NoReservedKeywordParameterNamesSniff implements Sniff
      */
     public function process(File $phpcsFile, $stackPtr)
     {
-        // Get all parameters from method signature.
         $parameters = FunctionDeclarations::getParameters($phpcsFile, $stackPtr);
         if (empty($parameters)) {
             return;

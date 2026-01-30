@@ -37,7 +37,6 @@ class Summary implements Report
             && $report['errors'] === 0
             && $report['warnings'] === 0
         ) {
-            // Nothing to print.
             return false;
         }
 

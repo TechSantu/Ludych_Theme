@@ -89,12 +89,10 @@ final class DuplicateArrayKeySniff extends AbstractArrayDeclarationSniff
      */
     public function processArray(File $phpcsFile)
     {
-        // Reset properties before processing this array.
         $this->keysSeenLt8 = [];
         $this->keysSeenGt8 = [];
 
         if (isset($this->phpVersion) === false) {
-            // Set default value to prevent this code from running every time the sniff is triggered.
             $this->phpVersion = -1;
 
             $phpVersion = Helper::getConfigData('php_version');
@@ -128,7 +126,6 @@ final class DuplicateArrayKeySniff extends AbstractArrayDeclarationSniff
         $key = $this->getActualArrayKey($phpcsFile, $startPtr, $endPtr);
 
         if (isset($key) === false) {
-            // Key could not be determined.
             return;
         }
 
@@ -199,7 +196,6 @@ final class DuplicateArrayKeySniff extends AbstractArrayDeclarationSniff
             if (isset($errors['phplt8'], $errors['phpgt8'])
                 && $errors['phplt8']['data_subset'] === $errors['phpgt8']['data_subset']
             ) {
-                // Only throw the error once if it would be the same for PHP < 8.0 and PHP >= 8.0.
                 $data = $errors['phplt8']['data_subset'];
                 \array_unshift($data, '');
 
@@ -269,7 +265,6 @@ final class DuplicateArrayKeySniff extends AbstractArrayDeclarationSniff
      */
     public function processNoKey(File $phpcsFile, $startPtr, $itemNr)
     {
-        // Track the key for PHP < 8.0.
         if (isset($this->currentMaxIntKeyLt8) === false) {
             $this->currentMaxIntKeyLt8 = -1;
         }
@@ -280,7 +275,6 @@ final class DuplicateArrayKeySniff extends AbstractArrayDeclarationSniff
             'ptr'  => $startPtr,
         ];
 
-        // Track the key for PHP 8.0+.
         if (isset($this->currentMaxIntKeyGt8) === false) {
             $this->currentMaxIntKeyGt8 = -1;
         }

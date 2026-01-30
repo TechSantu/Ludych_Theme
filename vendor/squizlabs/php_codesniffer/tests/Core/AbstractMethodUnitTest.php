@@ -60,17 +60,14 @@ abstract class AbstractMethodUnitTest extends TestCase
     {
         $_SERVER['argv'] = [];
         $config          = new ConfigDouble();
-        // Also set a tab-width to enable testing tab-replaced vs `orig_content`.
         $config->tabWidth = static::$tabWidth;
 
         $ruleset = new Ruleset($config);
 
-        // Default to a file with the same name as the test class. Extension is property based.
         $relativeCN     = str_replace(__NAMESPACE__, '', get_called_class());
         $relativePath   = str_replace('\\', DIRECTORY_SEPARATOR, $relativeCN);
         $pathToTestFile = realpath(__DIR__).$relativePath.'.'.static::$fileExtension;
 
-        // Make sure the file gets parsed correctly based on the file type.
         $contents  = 'phpcs_input_file: '.$pathToTestFile.PHP_EOL;
         $contents .= file_get_contents($pathToTestFile);
 
@@ -92,10 +89,6 @@ abstract class AbstractMethodUnitTest extends TestCase
      */
     public static function reset()
     {
-        // Explicitly trigger __destruct() on the ConfigDouble to reset the Config statics.
-        // The explicit method call prevents potential stray test-local references to the $config object
-        // preventing the destructor from running the clean up (which without stray references would be
-        // automagically triggered when `self::$phpcsFile` is reset, but we can't definitively rely on that).
         if (isset(self::$phpcsFile) === true) {
             self::$phpcsFile->config->__destruct();
         }
@@ -139,7 +132,6 @@ abstract class AbstractMethodUnitTest extends TestCase
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Collect all marker comments in the file.
         $seenComments = [];
         for ($i = 0; $i < $phpcsFile->numTokens; $i++) {
             if ($tokens[$i]['code'] !== T_COMMENT) {
@@ -213,7 +205,6 @@ abstract class AbstractMethodUnitTest extends TestCase
         $tokens = $phpcsFile->getTokens();
         $end    = ($start + 1);
 
-        // Limit the token finding to between this and the next delimiter comment.
         for ($i = ($comment + 1); $i < $end; $i++) {
             if ($tokens[$i]['code'] !== T_COMMENT) {
                 continue;
@@ -260,11 +251,9 @@ abstract class AbstractMethodUnitTest extends TestCase
         $exception = 'PHP_CodeSniffer\Exceptions\RuntimeException';
 
         if (method_exists($this, 'expectException') === true) {
-            // PHPUnit 5+.
             $this->expectException($exception);
             $this->expectExceptionMessage($message);
         } else {
-            // PHPUnit 4.
             $this->setExpectedException($exception, $message);
         }
 

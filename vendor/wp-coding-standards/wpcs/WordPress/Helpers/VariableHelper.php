@@ -63,7 +63,6 @@ final class VariableHelper {
 		$current = $stackPtr;
 
 		do {
-			// Find the next non-empty token.
 			$open_bracket = $phpcsFile->findNext(
 				Tokens::$emptyTokens,
 				( $current + 1 ),
@@ -71,7 +70,6 @@ final class VariableHelper {
 				true
 			);
 
-			// If it isn't a bracket, this isn't an array-access.
 			if ( false === $open_bracket
 				|| \T_OPEN_SQUARE_BRACKET !== $tokens[ $open_bracket ]['code']
 				|| ! isset( $tokens[ $open_bracket ]['bracket_closer'] )
@@ -153,23 +151,18 @@ final class VariableHelper {
 			unset( $comparisonTokens[ \T_COALESCE ] );
 		}
 
-		// We first check if this is a switch or match statement (switch ( $var )).
 		if ( Parentheses::lastOwnerIn( $phpcsFile, $stackPtr, array( \T_SWITCH, \T_MATCH ) ) !== false ) {
 			return true;
 		}
 
-		// Find the previous non-empty token. We check before the var first because
-		// yoda conditions are usually expected.
 		$previous_token = $phpcsFile->findPrevious( Tokens::$emptyTokens, ( $stackPtr - 1 ), null, true );
 
 		if ( isset( $comparisonTokens[ $tokens[ $previous_token ]['code'] ] ) ) {
 			return true;
 		}
 
-		// Maybe the comparison operator is after this.
 		$next_token = $phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true );
 
-		// This might be an opening square bracket in the case of arrays ($var['a']).
 		while ( false !== $next_token
 			&& \T_OPEN_SQUARE_BRACKET === $tokens[ $next_token ]['code']
 			&& isset( $tokens[ $next_token ]['bracket_closer'] )
@@ -228,14 +221,12 @@ final class VariableHelper {
 			\T_CLOSE_SQUARE_BRACKET => true,
 		);
 
-		// Must be a variable or closing square bracket (see below).
 		if ( ! isset( $valid[ $tokens[ $stackPtr ]['code'] ] ) ) {
 			return false;
 		}
 
 		$next_non_empty = $phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true, null, true );
 
-		// No token found.
 		if ( false === $next_non_empty ) {
 			return false;
 		}
@@ -245,12 +236,10 @@ final class VariableHelper {
 			unset( $assignmentTokens[ \T_COALESCE_EQUAL ] );
 		}
 
-		// If the next token is an assignment, that's all we need to know.
 		if ( isset( $assignmentTokens[ $tokens[ $next_non_empty ]['code'] ] ) ) {
 			return true;
 		}
 
-		// Check if this is an array assignment, e.g., `$var['key'] = 'val';` .
 		if ( \T_OPEN_SQUARE_BRACKET === $tokens[ $next_non_empty ]['code']
 			&& isset( $tokens[ $next_non_empty ]['bracket_closer'] )
 		) {

@@ -92,7 +92,6 @@ final class DisallowStandalonePostIncrementDecrementSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
 
         if (empty($tokens[$stackPtr]['nested_parenthesis']) === false) {
-            // Not a stand-alone statement.
             return;
         }
 
@@ -100,14 +99,12 @@ final class DisallowStandalonePostIncrementDecrementSniff implements Sniff
         $end   = BCFile::findEndOfStatement($phpcsFile, $stackPtr);
 
         if (isset(Collections::incrementDecrementOperators()[$tokens[$end]['code']])) {
-            // Statement ends on a PHP close tag, set the end pointer to the close tag.
             $end = $phpcsFile->findNext(Tokens::$emptyTokens, ($end + 1), null, true);
         }
 
         if ($tokens[$end]['code'] !== \T_SEMICOLON
             && $tokens[$end]['code'] !== \T_CLOSE_TAG
         ) {
-            // Not a stand-alone statement.
             return $end;
         }
 
@@ -134,12 +131,10 @@ final class DisallowStandalonePostIncrementDecrementSniff implements Sniff
                 && isset($tokens[$i]['bracket_closer'])
                 && ($lastCode === \T_VARIABLE || $lastCode === \T_STRING)
             ) {
-                // Array access.
                 $i = $tokens[$i]['bracket_closer'];
                 continue;
             }
 
-            // Came across an unexpected token. This is (probably) not a stand-alone statement.
             return $end;
         }
 
@@ -162,13 +157,11 @@ final class DisallowStandalonePostIncrementDecrementSniff implements Sniff
 
         $lastNonEmpty = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($end - 1), $start, true);
         if ($start === $stackPtr && $lastNonEmpty !== $stackPtr) {
-            // This is already pre-in/decrement.
             $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'pre-' . $type);
             return $end;
         }
 
         if ($lastNonEmpty === false || $lastNonEmpty === $start || $lastNonEmpty !== $stackPtr) {
-            // Parse error or otherwise unsupported syntax. Ignore.
             return $end;
         }
 

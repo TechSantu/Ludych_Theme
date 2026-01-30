@@ -43,7 +43,6 @@ final class FilePath
      */
     public static function getName(File $phpcsFile)
     {
-        // Usage of `stripQuotes` is to ensure `stdin_path` passed by IDEs does not include quotes.
         $fileName = TextStrings::stripQuotes($phpcsFile->getFileName());
         if ($fileName !== 'STDIN') {
             $fileName = self::normalizeAbsolutePath($fileName);
@@ -118,7 +117,6 @@ final class FilePath
         $extension = '';
         $lastChar  = \substr($path, -1);
         if ($lastChar !== '/' && $lastChar !== '\\') {
-            // This may be a file, check if it has a file extension.
             $extension = \pathinfo($path, \PATHINFO_EXTENSION);
         }
 

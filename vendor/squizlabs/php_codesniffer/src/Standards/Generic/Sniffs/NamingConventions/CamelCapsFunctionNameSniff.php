@@ -103,7 +103,6 @@ class CamelCapsFunctionNameSniff extends AbstractScopeSniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Determine if this is a function which needs to be examined.
         $conditions = $tokens[$stackPtr]['conditions'];
         end($conditions);
         $deepestScope = key($conditions);
@@ -113,7 +112,6 @@ class CamelCapsFunctionNameSniff extends AbstractScopeSniff
 
         $methodName = $phpcsFile->getDeclarationName($stackPtr);
         if ($methodName === null) {
-            // Live coding or parse error. Bow out.
             return;
         }
 
@@ -127,7 +125,6 @@ class CamelCapsFunctionNameSniff extends AbstractScopeSniff
         $methodNameLc = strtolower($methodName);
         $classNameLc  = strtolower($className);
 
-        // Is this a magic method. i.e., is prefixed with "__" ?
         if (preg_match('|^__[^_]|', $methodName) !== 0) {
             $magicPart = substr($methodNameLc, 2);
             if (isset($this->magicMethods[$magicPart]) === true
@@ -140,17 +137,14 @@ class CamelCapsFunctionNameSniff extends AbstractScopeSniff
             $phpcsFile->addError($error, $stackPtr, 'MethodDoubleUnderscore', $errorData);
         }
 
-        // PHP4 constructors are allowed to break our rules.
         if ($methodNameLc === $classNameLc) {
             return;
         }
 
-        // PHP4 destructors are allowed to break our rules.
         if ($methodNameLc === '_'.$classNameLc) {
             return;
         }
 
-        // Ignore leading underscores in the method name.
         $methodName = ltrim($methodName, '_');
 
         $methodProps = $phpcsFile->getMethodProperties($stackPtr);
@@ -188,13 +182,11 @@ class CamelCapsFunctionNameSniff extends AbstractScopeSniff
     {
         $functionName = $phpcsFile->getDeclarationName($stackPtr);
         if ($functionName === null) {
-            // Live coding or parse error. Bow out.
             return;
         }
 
         $errorData = [$functionName];
 
-        // Is this a magic function. i.e., it is prefixed with "__".
         if (preg_match('|^__[^_]|', $functionName) !== 0) {
             $magicPart = strtolower(substr($functionName, 2));
             if (isset($this->magicFunctions[$magicPart]) === true) {
@@ -205,7 +197,6 @@ class CamelCapsFunctionNameSniff extends AbstractScopeSniff
             $phpcsFile->addError($error, $stackPtr, 'FunctionDoubleUnderscore', $errorData);
         }
 
-        // Ignore leading underscores in the method name.
         $functionName = ltrim($functionName, '_');
 
         if (Common::isCamelCaps($functionName, false, true, $this->strict) === false) {

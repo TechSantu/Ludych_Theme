@@ -47,7 +47,6 @@ class RequireStrictTypesSniff implements Sniff
 
         if ($declare !== false) {
             if (isset($tokens[$declare]['parenthesis_opener'], $tokens[$declare]['parenthesis_closer']) === false) {
-                // Live coding, ignore for now.
                 return $phpcsFile->numTokens;
             }
 
@@ -65,7 +64,6 @@ class RequireStrictTypesSniff implements Sniff
                     && $tokens[$next]['code'] === T_STRING
                     && strtolower($tokens[$next]['content']) === 'strict_types'
                 ) {
-                    // There is a strict types declaration.
                     $found = true;
                     break;
                 }
@@ -81,7 +79,6 @@ class RequireStrictTypesSniff implements Sniff
             return $phpcsFile->numTokens;
         }
 
-        // Strict types declaration found, make sure strict types is enabled.
         $skip     = Tokens::$emptyTokens;
         $skip[]   = T_EQUAL;
         $valuePtr = $phpcsFile->findNext($skip, ($next + 1), null, true);
@@ -98,8 +95,6 @@ class RequireStrictTypesSniff implements Sniff
             }
         }
 
-        // Skip the rest of the file so we don't pick up additional
-        // open tags, typically embedded in HTML.
         return $phpcsFile->numTokens;
 
     }//end process()

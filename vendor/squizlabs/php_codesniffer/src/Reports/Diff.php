@@ -83,7 +83,6 @@ class Diff implements Report
 
         $diff = $phpcsFile->fixer->generateDiff();
         if ($diff === '') {
-            // Nothing to print.
             return false;
         }
 

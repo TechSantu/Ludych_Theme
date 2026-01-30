@@ -56,7 +56,6 @@ class ForLoopShouldBeWhileLoopSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
         $token  = $tokens[$stackPtr];
 
-        // Skip invalid statement.
         if (isset($token['parenthesis_opener'], $token['parenthesis_closer']) === false) {
             return;
         }

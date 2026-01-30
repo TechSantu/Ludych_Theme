@@ -44,8 +44,6 @@ class DoubleQuoteUsageSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // If tabs are being converted to spaces by the tokeniser, the
-        // original content should be used instead of the converted content.
         if (isset($tokens[$stackPtr]['orig_content']) === true) {
             $workingString = $tokens[$stackPtr]['orig_content'];
         } else {
@@ -72,12 +70,10 @@ class DoubleQuoteUsageSniff implements Sniff
 
         $skipTo = ($lastStringToken + 1);
 
-        // Check if it's a double quoted string.
         if ($workingString[0] !== '"' || substr($workingString, -1) !== '"') {
             return $skipTo;
         }
 
-        // The use of variables in double quoted strings is not allowed.
         if ($tokens[$stackPtr]['code'] === T_DOUBLE_QUOTED_STRING) {
             $stringTokens = token_get_all('<?php '.$workingString);
             foreach ($stringTokens as $token) {

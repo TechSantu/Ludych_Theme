@@ -39,7 +39,6 @@ final class ExpandSniffDirectoryTest extends TestCase
      */
     public function testExpandSniffDirectory()
     {
-        // Set up the ruleset.
         $standard = __DIR__.'/ExpandSniffDirectoryTest.xml';
         $config   = new ConfigDouble(["--standard=$standard"]);
         $ruleset  = new Ruleset($config);
@@ -54,8 +53,6 @@ final class ExpandSniffDirectoryTest extends TestCase
             'MyStandard.CategoryB.FindMe' => 'MyStandard\\Sniffs\\CategoryB\\FindMeSniff',
         ];
 
-        // Sort the value to make the tests stable as different OSes will read directories
-        // in a different order and the order is not relevant for these tests. Just the values.
         $actual = $ruleset->sniffCodes;
         ksort($actual);
 

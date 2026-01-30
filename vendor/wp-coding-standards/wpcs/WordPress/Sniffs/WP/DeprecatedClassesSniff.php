@@ -47,19 +47,16 @@ final class DeprecatedClassesSniff extends AbstractClassRestrictionsSniff {
 	 */
 	private $deprecated_classes = array(
 
-		// WP 3.1.0.
 		'WP_User_Search' => array(
 			'alt'     => 'WP_User_Query',
 			'version' => '3.1.0',
 		),
 
-		// WP 3.7.0.
 		'WP_HTTP_Fsockopen' => array(
 			'alt'     => 'WP_HTTP::request()',
 			'version' => '3.7.0',
 		),
 
-		// WP 4.9.0.
 		'WP_Customize_New_Menu_Section' => array(
 			'version' => '4.9.0',
 		),
@@ -67,7 +64,6 @@ final class DeprecatedClassesSniff extends AbstractClassRestrictionsSniff {
 			'version' => '4.9.0',
 		),
 
-		// WP 5.3.0.
 		'WP_Privacy_Data_Export_Requests_Table' => array(
 			'alt'     => 'WP_Privacy_Data_Export_Requests_List_Table',
 			'version' => '5.3.0',
@@ -85,7 +81,6 @@ final class DeprecatedClassesSniff extends AbstractClassRestrictionsSniff {
 			'version' => '5.3.0',
 		),
 
-		// WP 6.4.0.
 		'WP_Http_Curl' => array(
 			'alt'     => 'WP_Http',
 			'version' => '6.4.0',
@@ -102,7 +97,6 @@ final class DeprecatedClassesSniff extends AbstractClassRestrictionsSniff {
 	 * @return array
 	 */
 	public function getGroups() {
-		// Make sure all array keys are lowercase.
 		$this->deprecated_classes = array_change_key_case( $this->deprecated_classes, \CASE_LOWER );
 
 		return array(

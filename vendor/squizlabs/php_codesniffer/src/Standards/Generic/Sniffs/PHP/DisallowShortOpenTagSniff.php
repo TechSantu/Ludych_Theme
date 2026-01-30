@@ -60,7 +60,6 @@ class DisallowShortOpenTagSniff implements Sniff
             if ($fix === true) {
                 $correctOpening = '<?php';
                 if (isset($tokens[($stackPtr + 1)]) === true && $tokens[($stackPtr + 1)]['code'] !== T_WHITESPACE) {
-                    // Avoid creation of invalid open tags like <?phpecho if the original was <?echo .
                     $correctOpening .= ' ';
                 }
 
@@ -102,7 +101,6 @@ class DisallowShortOpenTagSniff implements Sniff
 
             $closerFound = false;
 
-            // Inspect current token and subsequent inline HTML token to find a close tag.
             for ($i = $stackPtr; $i < $phpcsFile->numTokens; $i++) {
                 if ($tokens[$i]['code'] !== T_INLINE_HTML) {
                     break;
@@ -127,7 +125,6 @@ class DisallowShortOpenTagSniff implements Sniff
 
                 $phpcsFile->addWarning($error, $stackPtr, 'PossibleFound', $data);
 
-                // Skip forward to the token containing the closer.
                 if (($i - 1) > $stackPtr) {
                     return $i;
                 }

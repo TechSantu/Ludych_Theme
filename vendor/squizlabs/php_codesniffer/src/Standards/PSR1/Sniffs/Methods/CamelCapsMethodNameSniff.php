@@ -31,7 +31,6 @@ class CamelCapsMethodNameSniff extends GenericCamelCapsFunctionNameSniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Determine if this is a function which needs to be examined.
         $conditions = $tokens[$stackPtr]['conditions'];
         end($conditions);
         $deepestScope = key($conditions);
@@ -41,11 +40,9 @@ class CamelCapsMethodNameSniff extends GenericCamelCapsFunctionNameSniff
 
         $methodName = $phpcsFile->getDeclarationName($stackPtr);
         if ($methodName === null) {
-            // Ignore closures.
             return;
         }
 
-        // Ignore magic methods.
         if (preg_match('|^__[^_]|', $methodName) !== 0) {
             $magicPart = strtolower(substr($methodName, 2));
             if (isset($this->magicMethods[$magicPart]) === true

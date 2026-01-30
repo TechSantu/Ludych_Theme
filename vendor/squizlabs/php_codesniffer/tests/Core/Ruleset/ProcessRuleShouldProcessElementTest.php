@@ -40,7 +40,6 @@ final class ProcessRuleShouldProcessElementTest extends AbstractRulesetTestCase
     protected function initializeConfigAndRuleset()
     {
         if (isset(self::$ruleset) === false) {
-            // Set up the ruleset.
             $standard      = __DIR__.'/ProcessRuleShouldProcessElementTest.xml';
             $config        = new ConfigDouble(["--standard=$standard"]);
             self::$ruleset = new Ruleset($config);
@@ -63,18 +62,15 @@ final class ProcessRuleShouldProcessElementTest extends AbstractRulesetTestCase
 
         $key = 'severity';
 
-        // Verify that the non-selective severity directive IS applied.
         $sniffCode = 'Internal.NoCodeFound';
         $this->assertRulesetPropertySame(0, $sniffCode, $key);
 
         $sniffCode = 'PSR1.Files.SideEffects';
         $this->assertRulesetPropertySame(3, $sniffCode, $key);
 
-        // Verify that the CS-only severity directive IS applied.
         $sniffCode = 'Generic.Metrics.CyclomaticComplexity';
         $this->assertRulesetPropertySame(2, $sniffCode, $key);
 
-        // Verify that the CBF-only severity directive is NOT applied.
         $sniffCode = 'PSR2.Namespaces.NamespaceDeclaration';
         $this->assertNotHasRulesetDirective($sniffCode, $key);
 
@@ -97,15 +93,12 @@ final class ProcessRuleShouldProcessElementTest extends AbstractRulesetTestCase
 
         $key = 'severity';
 
-        // Verify that the non-selective severity directive IS applied.
         $sniffCode = 'PSR1.Files.SideEffects';
         $this->assertRulesetPropertySame(3, $sniffCode, $key);
 
-        // Verify that the CS-only severity directive is NOT applied.
         $sniffCode = 'Generic.Metrics.CyclomaticComplexity';
         $this->assertNotHasRulesetDirective($sniffCode, $key);
 
-        // Verify that the CBF-only severity directive IS applied.
         $sniffCode = 'PSR2.Namespaces.NamespaceDeclaration';
         $this->assertRulesetPropertySame(4, $sniffCode, $key);
 
@@ -126,15 +119,12 @@ final class ProcessRuleShouldProcessElementTest extends AbstractRulesetTestCase
 
         $key = 'type';
 
-        // Verify that the non-selective type directive IS applied.
         $sniffCode = 'PSR1.Files.SideEffects';
         $this->assertRulesetPropertySame('warning', $sniffCode, $key);
 
-        // Verify that the CS-only type directive IS applied.
         $sniffCode = 'Generic.Metrics.CyclomaticComplexity';
         $this->assertRulesetPropertySame('warning', $sniffCode, $key);
 
-        // Verify that the CBF-only type directive is NOT applied.
         $sniffCode = 'PSR2.Namespaces.NamespaceDeclaration';
         $this->assertNotHasRulesetDirective($sniffCode, $key);
 
@@ -157,15 +147,12 @@ final class ProcessRuleShouldProcessElementTest extends AbstractRulesetTestCase
 
         $key = 'type';
 
-        // Verify that the non-selective type directive IS applied.
         $sniffCode = 'PSR1.Files.SideEffects';
         $this->assertRulesetPropertySame('warning', $sniffCode, $key);
 
-        // Verify that the CS-only type directive is NOT applied.
         $sniffCode = 'Generic.Metrics.CyclomaticComplexity';
         $this->assertNotHasRulesetDirective($sniffCode, $key);
 
-        // Verify that the CBF-only type directive IS applied.
         $sniffCode = 'PSR2.Namespaces.NamespaceDeclaration';
         $this->assertRulesetPropertySame('error', $sniffCode, $key);
 
@@ -186,15 +173,12 @@ final class ProcessRuleShouldProcessElementTest extends AbstractRulesetTestCase
 
         $key = 'message';
 
-        // Verify that the non-selective message directive IS applied.
         $sniffCode = 'PSR1.Files.SideEffects';
         $this->assertRulesetPropertySame('A different warning message', $sniffCode, $key);
 
-        // Verify that the CS-only message directive IS applied.
         $sniffCode = 'Generic.Metrics.CyclomaticComplexity';
         $this->assertRulesetPropertySame('A different warning but only for phpcs', $sniffCode, $key);
 
-        // Verify that the CBF-only message directive is NOT applied.
         $sniffCode = 'PSR2.Namespaces.NamespaceDeclaration';
         $this->assertNotHasRulesetDirective($sniffCode, $key);
 
@@ -217,18 +201,15 @@ final class ProcessRuleShouldProcessElementTest extends AbstractRulesetTestCase
 
         $key = 'message';
 
-        // Verify that the non-selective message directive IS applied.
         $sniffCode = 'Internal.NoCodeFound';
         $this->assertRulesetPropertySame("We don't to be notified if files don't contain code", $sniffCode, $key);
 
         $sniffCode = 'PSR1.Files.SideEffects';
         $this->assertRulesetPropertySame('A different warning message', $sniffCode, $key);
 
-        // Verify that the CS-only message directive is NOT applied.
         $sniffCode = 'Generic.Metrics.CyclomaticComplexity';
         $this->assertNotHasRulesetDirective($sniffCode, $key);
 
-        // Verify that the CBF-only message directive IS applied.
         $sniffCode = 'PSR2.Namespaces.NamespaceDeclaration';
         $this->assertRulesetPropertySame('A different warning but only for phpcbf', $sniffCode, $key);
 
@@ -249,17 +230,14 @@ final class ProcessRuleShouldProcessElementTest extends AbstractRulesetTestCase
 
         $includedKey = './vendor/';
 
-        // Verify that the non-selective include-pattern directive IS applied.
         $sniffCode = 'PSR1.Methods.CamelCapsMethodName';
         $this->assertArrayHasKey($sniffCode, self::$ruleset->includePatterns, "Sniff $sniffCode not registered");
         $this->assertArrayHasKey($includedKey, self::$ruleset->includePatterns[$sniffCode], "Include pattern for sniff $sniffCode not registered");
 
-        // Verify that the CS-only include-pattern directive IS applied.
         $sniffCode = 'Generic.Files.LineLength';
         $this->assertArrayHasKey($sniffCode, self::$ruleset->includePatterns, "Sniff $sniffCode not registered");
         $this->assertArrayHasKey($includedKey, self::$ruleset->includePatterns[$sniffCode], "Include pattern for sniff $sniffCode not registered");
 
-        // Verify that the CBF-only include-pattern directive is NOT applied.
         $sniffCode = 'PSR2.Files.ClosingTag';
         $this->assertArrayNotHasKey($sniffCode, self::$ruleset->includePatterns, "Sniff $sniffCode was registered");
 
@@ -282,16 +260,13 @@ final class ProcessRuleShouldProcessElementTest extends AbstractRulesetTestCase
 
         $includedKey = './vendor/';
 
-        // Verify that the non-selective include-pattern directive IS applied.
         $sniffCode = 'PSR1.Methods.CamelCapsMethodName';
         $this->assertArrayHasKey($sniffCode, self::$ruleset->includePatterns, "Sniff $sniffCode not registered");
         $this->assertArrayHasKey($includedKey, self::$ruleset->includePatterns[$sniffCode], "Include pattern for sniff $sniffCode not registered");
 
-        // Verify that the CS-only include-pattern directive is NOT applied.
         $sniffCode = 'Generic.Files.LineLength';
         $this->assertArrayNotHasKey($sniffCode, self::$ruleset->includePatterns, "Sniff $sniffCode was registered");
 
-        // Verify that the CBF-only include-pattern directive is IS applied.
         $sniffCode = 'PSR2.Files.ClosingTag';
         $this->assertArrayHasKey($sniffCode, self::$ruleset->includePatterns, "Sniff $sniffCode not registered");
         $this->assertArrayHasKey($includedKey, self::$ruleset->includePatterns[$sniffCode], "Include pattern for sniff $sniffCode not registered");
@@ -313,17 +288,14 @@ final class ProcessRuleShouldProcessElementTest extends AbstractRulesetTestCase
 
         $excludedKey = './tests/';
 
-        // Verify that the non-selective exclude-pattern directive IS applied.
         $sniffCode = 'PSR1.Classes.ClassDeclaration';
         $this->assertArrayHasKey($sniffCode, self::$ruleset->ignorePatterns, "Sniff $sniffCode not registered");
         $this->assertArrayHasKey($excludedKey, self::$ruleset->ignorePatterns[$sniffCode], "Ignore pattern for sniff $sniffCode not registered");
 
-        // Verify that the CS-only exclude-pattern directive IS applied.
         $sniffCode = 'Generic.Formatting.SpaceAfterCast';
         $this->assertArrayHasKey($sniffCode, self::$ruleset->ignorePatterns, "Sniff $sniffCode not registered");
         $this->assertArrayHasKey($excludedKey, self::$ruleset->ignorePatterns[$sniffCode], "Ignore pattern for sniff $sniffCode not registered");
 
-        // Verify that the CBF-only exclude-pattern directive is NOT applied.
         $sniffCode = 'PSR2.Methods.FunctionClosingBrace';
         $this->assertArrayNotHasKey($sniffCode, self::$ruleset->ignorePatterns, "Sniff $sniffCode was registered");
 
@@ -346,16 +318,13 @@ final class ProcessRuleShouldProcessElementTest extends AbstractRulesetTestCase
 
         $excludedKey = './tests/';
 
-        // Verify that the non-selective exclude-pattern directive IS applied.
         $sniffCode = 'PSR1.Classes.ClassDeclaration';
         $this->assertArrayHasKey($sniffCode, self::$ruleset->ignorePatterns, "Sniff $sniffCode not registered");
         $this->assertArrayHasKey($excludedKey, self::$ruleset->ignorePatterns[$sniffCode], "Ignore pattern for sniff $sniffCode not registered");
 
-        // Verify that the CS-only exclude-pattern directive is NOT applied.
         $sniffCode = 'Generic.Formatting.SpaceAfterCast';
         $this->assertArrayNotHasKey($sniffCode, self::$ruleset->ignorePatterns, "Sniff $sniffCode was registered");
 
-        // Verify that the CBF-only exclude-pattern directive is IS applied.
         $sniffCode = 'PSR2.Methods.FunctionClosingBrace';
         $this->assertArrayHasKey($sniffCode, self::$ruleset->ignorePatterns, "Sniff $sniffCode not registered");
         $this->assertArrayHasKey($excludedKey, self::$ruleset->ignorePatterns[$sniffCode], "Ignore pattern for sniff $sniffCode not registered");
@@ -382,14 +351,12 @@ final class ProcessRuleShouldProcessElementTest extends AbstractRulesetTestCase
         $propertyDefault = 4;
         $propertyChanged = '2';
 
-        // Verify that the CS-only property directive IS applied.
         $this->assertArrayHasKey($csSniffClass, self::$ruleset->sniffs, "Sniff $csSniffClass not registered");
         $this->assertXObjectHasProperty($propertyName, self::$ruleset->sniffs[$csSniffClass]);
 
         $actualValue = self::$ruleset->sniffs[$csSniffClass]->$propertyName;
         $this->assertSame($propertyChanged, $actualValue, 'cs-only property change directive not applied');
 
-        // Verify that the CBF-only property directive is NOT applied.
         $this->assertArrayHasKey($cbfSniffClass, self::$ruleset->sniffs, "Sniff $cbfSniffClass not registered");
         $this->assertXObjectHasProperty($propertyName, self::$ruleset->sniffs[$cbfSniffClass]);
 
@@ -420,14 +387,12 @@ final class ProcessRuleShouldProcessElementTest extends AbstractRulesetTestCase
         $propertyDefault = 4;
         $propertyChanged = '2';
 
-        // Verify that the CS-only property directive is NOT applied.
         $this->assertArrayHasKey($csSniffClass, self::$ruleset->sniffs, "Sniff $csSniffClass not registered");
         $this->assertXObjectHasProperty($propertyName, self::$ruleset->sniffs[$csSniffClass]);
 
         $actualValue = self::$ruleset->sniffs[$csSniffClass]->$propertyName;
         $this->assertSame($propertyDefault, $actualValue, 'cs-only property change directive was applied');
 
-        // Verify that the CBF-only property directive IS applied.
         $this->assertArrayHasKey($cbfSniffClass, self::$ruleset->sniffs, "Sniff $cbfSniffClass not registered");
         $this->assertXObjectHasProperty($propertyName, self::$ruleset->sniffs[$cbfSniffClass]);
 
@@ -449,27 +414,23 @@ final class ProcessRuleShouldProcessElementTest extends AbstractRulesetTestCase
             $this->markTestSkipped('This test needs CS mode to run');
         }
 
-        // Verify the sniff is registed.
         $sniffClass = 'PHP_CodeSniffer\Standards\Generic\Sniffs\WhiteSpace\ScopeIndentSniff';
         $this->assertArrayHasKey($sniffClass, self::$ruleset->sniffs, "Sniff $sniffClass not registered");
 
         $sniffObject = self::$ruleset->sniffs[$sniffClass];
 
-        // Verify that the non-selective property directive IS applied.
         $propertyName = 'exact';
         $expected     = true;
 
         $this->assertXObjectHasProperty($propertyName, $sniffObject);
         $this->assertSame($expected, $sniffObject->$propertyName, 'Non-selective property change directive not applied');
 
-        // Verify that the CS-only property directive IS applied.
         $propertyName = 'indent';
         $expected     = '2';
 
         $this->assertXObjectHasProperty($propertyName, $sniffObject);
         $this->assertSame($expected, $sniffObject->$propertyName, 'cs-only property change directive not applied');
 
-        // Verify that the CBF-only property directive is NOT applied.
         $propertyName    = 'tabIndent';
         $expectedDefault = false;
 
@@ -493,27 +454,23 @@ final class ProcessRuleShouldProcessElementTest extends AbstractRulesetTestCase
             $this->markTestSkipped('This test needs CBF mode to run');
         }
 
-        // Verify the sniff is registed.
         $sniffClass = 'PHP_CodeSniffer\Standards\Generic\Sniffs\WhiteSpace\ScopeIndentSniff';
         $this->assertArrayHasKey($sniffClass, self::$ruleset->sniffs, "Sniff $sniffClass not registered");
 
         $sniffObject = self::$ruleset->sniffs[$sniffClass];
 
-        // Verify that the non-selective property directive IS applied.
         $propertyName = 'exact';
         $expected     = true;
 
         $this->assertXObjectHasProperty($propertyName, $sniffObject);
         $this->assertSame($expected, $sniffObject->$propertyName, 'Non-selective property change directive not applied');
 
-        // Verify that the CS-only property directive is NOT applied.
         $propertyName    = 'indent';
         $expectedDefault = 4;
 
         $this->assertXObjectHasProperty($propertyName, $sniffObject);
         $this->assertSame($expectedDefault, $sniffObject->$propertyName, 'cs-only property change directive was applied');
 
-        // Verify that the CBF-only property directive IS applied.
         $propertyName = 'tabIndent';
         $expected     = true;
 
@@ -536,13 +493,9 @@ final class ProcessRuleShouldProcessElementTest extends AbstractRulesetTestCase
         }
 
         $expected = [
-            // Non-selective element directive.
             'T_COMMENT',
-            // Phpcs-only element directive.
             'T_CLASS',
-            // Non-selective element directive via `extend`.
             'T_BACKTICK',
-            // Phpcs-only element directive via `extend`.
             'T_INTERFACE',
         ];
 
@@ -566,13 +519,9 @@ final class ProcessRuleShouldProcessElementTest extends AbstractRulesetTestCase
         }
 
         $expected = [
-            // Non-selective element directive.
             'T_COMMENT',
-            // Phpcbf-only element directive.
             'T_ENUM',
-            // Non-selective element directive via `extend`.
             'T_BACKTICK',
-            // Phpcbf-only element directive via `extend`.
             'T_TRAIT',
         ];
 
@@ -590,17 +539,14 @@ final class ProcessRuleShouldProcessElementTest extends AbstractRulesetTestCase
      */
     private function verifyShouldProcessElement($expected)
     {
-        // Verify the sniff is registed.
         $sniffClass = 'PHP_CodeSniffer\Standards\Generic\Sniffs\WhiteSpace\ScopeIndentSniff';
         $this->assertArrayHasKey($sniffClass, self::$ruleset->sniffs, "Sniff $sniffClass not registered");
 
-        // Verify the target property exists.
         $sniffObject  = self::$ruleset->sniffs[$sniffClass];
         $propertyName = 'ignoreIndentationTokens';
 
         $this->assertXObjectHasProperty($propertyName, $sniffObject);
 
-        // Verify the value.
         $actualValue = $sniffObject->$propertyName;
         $this->assertSame($expected, $actualValue, 'Selective element directives not applied correctly');
 

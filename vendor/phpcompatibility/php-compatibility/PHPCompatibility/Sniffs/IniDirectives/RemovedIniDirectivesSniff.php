@@ -332,7 +332,6 @@ class RemovedIniDirectivesSniff extends AbstractRemovedFeatureSniff
 
         $prevToken = $phpcsFile->findPrevious(\T_WHITESPACE, ($stackPtr - 1), null, true);
         if (isset($ignore[$tokens[$prevToken]['code']]) === true) {
-            // Not a call to a PHP function.
             return;
         }
 
@@ -388,7 +387,6 @@ class RemovedIniDirectivesSniff extends AbstractRemovedFeatureSniff
     {
         $errorInfo = parent::getErrorInfo($itemArray, $itemInfo);
 
-        // Lower error level to warning if the function used was ini_get.
         if ($errorInfo['error'] === true && $itemInfo['functionLc'] === 'ini_get') {
             $errorInfo['error'] = false;
         }

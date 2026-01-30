@@ -73,33 +73,27 @@ final class LowercaseFunctionConstSniff implements Sniff
     public function process(File $phpcsFile, $stackPtr)
     {
         if (UseStatements::isImportUse($phpcsFile, $stackPtr) === false) {
-            // Trait or closure use statement.
             return;
         }
 
         $tokens       = $phpcsFile->getTokens();
         $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
         if ($nextNonEmpty === false) {
-            // Live coding or parse error.
             return;
         }
 
         if (isset($this->keywords[\strtolower($tokens[$nextNonEmpty]['content'])]) === true) {
-            // Keyword found at start of statement, applies to whole statement.
             $this->processKeyword($phpcsFile, $nextNonEmpty, $tokens[$nextNonEmpty]['content']);
             return;
         }
 
-        // This may still be a group use statement with function/const substatements.
         $openGroup = $phpcsFile->findNext([\T_SEMICOLON, \T_CLOSE_TAG, \T_OPEN_USE_GROUP], ($stackPtr + 1));
         if ($openGroup === false || $tokens[$openGroup]['code'] !== \T_OPEN_USE_GROUP) {
-            // Not a group use statement.
             return;
         }
 
         $closeGroup = $phpcsFile->findNext([\T_SEMICOLON, \T_CLOSE_TAG, \T_CLOSE_USE_GROUP], ($openGroup + 1));
         if ($closeGroup === false || $tokens[$closeGroup]['code'] !== \T_CLOSE_USE_GROUP) {
-            // Live coding or parse error.
             return;
         }
 
@@ -114,7 +108,6 @@ final class LowercaseFunctionConstSniff implements Sniff
                 $this->processKeyword($phpcsFile, $current, $tokens[$current]['content']);
             }
 
-            // We're within the use group, so find the next comma.
             $current = $phpcsFile->findNext(\T_COMMA, ($current + 1), $closeGroup);
         } while ($current !== false);
     }
@@ -135,7 +128,6 @@ final class LowercaseFunctionConstSniff implements Sniff
         $contentLC  = \strtolower($content);
         $metricName = \sprintf(self::METRIC_NAME, $contentLC);
         if ($contentLC === $content) {
-            // Already lowercase. Bow out.
             $phpcsFile->recordMetric($stackPtr, $metricName, 'lowercase');
             return;
         }

@@ -46,7 +46,6 @@ class StringOrArrayDynamicFunctionReturnTypeExtension implements \PHPStan\Type\D
             $scope->getType($functionCall->getArgs()[0]->value),
             function (Type $type, callable $traverse) use ($defaultReturnType): Type {
                 if ($type instanceof UnionType || $type instanceof IntersectionType) {
-                    // phpcs:ignore NeutronStandard.Functions.VariableFunctions.VariableFunction
                     return $traverse($type);
                 }
 

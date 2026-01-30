@@ -305,8 +305,6 @@ class JS extends Tokenizer
             'content' => '',
         ];
 
-        // Convert newlines to single characters for ease of
-        // processing. We will change them back later.
         $string = str_replace($this->eolChar, "\n", $string);
 
         $chars    = str_split($string);
@@ -330,8 +328,6 @@ class JS extends Tokenizer
             }//end if
 
             if ($inString === '' && $inComment === '' && $buffer !== '') {
-                // If the buffer only has whitespace and we are about to
-                // add a character, store the whitespace first.
                 if (trim($char) !== '' && trim($buffer) === '') {
                     $tokens[] = [
                         'code'    => T_WHITESPACE,
@@ -347,8 +343,6 @@ class JS extends Tokenizer
                     $buffer = '';
                 }
 
-                // If the buffer is not whitespace and we are about to
-                // add a whitespace character, store the content first.
                 if ($inString === ''
                     && $inComment === ''
                     && trim($char) === ''
@@ -369,11 +363,8 @@ class JS extends Tokenizer
                 }
             }//end if
 
-            // Process strings.
             if ($inComment === '' && isset($this->stringTokens[$char]) === true) {
                 if ($inString === $char) {
-                    // This could be the end of the string, but make sure it
-                    // is not escaped first.
                     $escapes = 0;
                     for ($x = ($i - 1); $x >= 0; $x--) {
                         if ($chars[$x] !== '\\') {
@@ -384,8 +375,6 @@ class JS extends Tokenizer
                     }
 
                     if ($escapes === 0 || ($escapes % 2) === 0) {
-                        // There is an even number escape chars,
-                        // so this is not escaped, it is the end of the string.
                         $tokens[] = [
                             'code'    => T_CONSTANT_ENCAPSED_STRING,
                             'type'    => 'T_CONSTANT_ENCAPSED_STRING',
@@ -416,9 +405,6 @@ class JS extends Tokenizer
             }//end if
 
             if ($inString !== '' && $char === "\n") {
-                // Unless this newline character is escaped, the string did not
-                // end before the end of the line, which means it probably
-                // wasn't a string at all (maybe a regex).
                 if ($chars[($i - 1)] !== '\\') {
                     $i      = $stringChar;
                     $buffer = $preStringBuffer;
@@ -435,15 +421,10 @@ class JS extends Tokenizer
 
             $buffer .= $char;
 
-            // We don't look for special tokens inside strings,
-            // so if we are in a string, we can continue here now
-            // that the current char is in the buffer.
             if ($inString !== '') {
                 continue;
             }
 
-            // Special case for T_DIVIDE which can actually be
-            // the start of a regular expression.
             if ($buffer === $char && $char === '/' && $chars[($i + 1)] !== '*') {
                 $regex = $this->getRegexToken($i, $string, $chars, $tokens);
                 if ($regex !== null) {
@@ -465,8 +446,6 @@ class JS extends Tokenizer
                 }//end if
             }//end if
 
-            // Check for known tokens, but ignore tokens found that are not at
-            // the end of a string, like FOR and this.FORmat.
             if (isset($this->tokenValues[strtolower($buffer)]) === true
                 && (preg_match('|[a-zA-z0-9_]|', $char) === 0
                 || isset($chars[($i + 1)]) === false
@@ -476,10 +455,6 @@ class JS extends Tokenizer
                 $lookAheadLength = ($maxTokenLength - strlen($buffer));
 
                 if ($lookAheadLength > 0) {
-                    // The buffer contains a token type, but we need
-                    // to look ahead at the next chars to see if this is
-                    // actually part of a larger token. For example,
-                    // FOR and FOREACH.
                     if (PHP_CODESNIFFER_VERBOSITY > 1) {
                         echo "\t\t* buffer possibly contains token, looking ahead $lookAheadLength chars *".PHP_EOL;
                     }
@@ -498,10 +473,6 @@ class JS extends Tokenizer
                         }
 
                         if (isset($this->tokenValues[strtolower($charBuffer)]) === true) {
-                            // We've found something larger that matches
-                            // so we can ignore this char. Except for 1 very specific
-                            // case where a comment like /**/ needs to tokenize as
-                            // T_COMMENT and not T_DOC_COMMENT.
                             $oldType = $this->tokenValues[strtolower($buffer)];
                             $newType = $this->tokenValues[strtolower($charBuffer)];
                             if ($oldType === 'T_COMMENT'
@@ -531,8 +502,6 @@ class JS extends Tokenizer
                     $value = $this->tokenValues[strtolower($buffer)];
 
                     if ($value === 'T_FUNCTION' && $buffer !== 'function') {
-                        // The function keyword needs to be all lowercase or else
-                        // it is just a function called "Function".
                         $value = 'T_STRING';
                     }
 
@@ -550,9 +519,6 @@ class JS extends Tokenizer
                     $cleanBuffer = true;
                 }//end if
             } else if (isset($this->tokenValues[strtolower($char)]) === true) {
-                // No matter what token we end up using, we don't
-                // need the content in the buffer any more because we have
-                // found a valid token.
                 $newContent = substr(str_replace("\n", $this->eolChar, $buffer), 0, -1);
                 if ($newContent !== '') {
                     $tokens[] = [
@@ -571,9 +537,6 @@ class JS extends Tokenizer
                     echo "\t\t* char is token, looking ahead ".($maxTokenLength - 1).' chars *'.PHP_EOL;
                 }
 
-                // The char is a token type, but we need to look ahead at the
-                // next chars to see if this is actually part of a larger token.
-                // For example, = and ===.
                 $charBuffer   = $char;
                 $matchedToken = false;
                 for ($x = 1; $x <= $maxTokenLength; $x++) {
@@ -589,8 +552,6 @@ class JS extends Tokenizer
                     }
 
                     if (isset($this->tokenValues[strtolower($charBuffer)]) === true) {
-                        // We've found something larger that matches
-                        // so we can ignore this char.
                         if (PHP_CODESNIFFER_VERBOSITY > 1) {
                             $type = $this->tokenValues[strtolower($charBuffer)];
                             echo "\t\t* look ahead found more specific token ($type), ignoring $i *".PHP_EOL;
@@ -621,12 +582,9 @@ class JS extends Tokenizer
                 }//end if
             }//end if
 
-            // Keep track of content inside comments.
             if ($inComment === ''
                 && array_key_exists($buffer, $this->commentTokens) === true
             ) {
-                // This is not really a comment if the content
-                // looks like \// (i.e., it is escaped).
                 if (isset($chars[($i - 2)]) === true && $chars[($i - 2)] === '\\') {
                     $lastToken   = array_pop($tokens);
                     $lastContent = $lastToken['content'];
@@ -653,7 +611,6 @@ class JS extends Tokenizer
                         }
                     }
                 } else {
-                    // We have started a comment.
                     $inComment = $buffer;
 
                     if (PHP_CODESNIFFER_VERBOSITY > 1) {
@@ -662,7 +619,6 @@ class JS extends Tokenizer
                 }//end if
             } else if ($inComment !== '') {
                 if ($this->commentTokens[$inComment] === null) {
-                    // Comment ends at the next newline.
                     if (strpos($buffer, "\n") !== false) {
                         $inComment = '';
                     }
@@ -702,8 +658,6 @@ class JS extends Tokenizer
 
         if (empty($buffer) === false) {
             if ($inString !== '') {
-                // The string did not end before the end of the file,
-                // which means there was probably a syntax error somewhere.
                 $tokens[] = [
                     'code'    => T_STRING,
                     'type'    => 'T_STRING',
@@ -715,7 +669,6 @@ class JS extends Tokenizer
                     echo "\t=> Added token T_STRING ($content)".PHP_EOL;
                 }
             } else {
-                // Buffer contains whitespace from the end of the file.
                 $tokens[] = [
                     'code'    => T_WHITESPACE,
                     'type'    => 'T_WHITESPACE',
@@ -764,8 +717,6 @@ class JS extends Tokenizer
                     if ($endContent === null
                         && strpos($tokenContent, $this->eolChar) !== false
                     ) {
-                        // A null end token means the comment ends at the end of
-                        // the line so we look for newlines and split the token.
                         $tokens[$stackPtr]['content'] = substr(
                             $tokenContent,
                             (strpos($tokenContent, $this->eolChar) + strlen($this->eolChar))
@@ -777,8 +728,6 @@ class JS extends Tokenizer
                             (strpos($tokenContent, $this->eolChar) + strlen($this->eolChar))
                         );
 
-                        // If the substr failed, skip the token as the content
-                        // will now be blank.
                         if ($tokens[$stackPtr]['content'] !== false
                             && $tokens[$stackPtr]['content'] !== ''
                         ) {
@@ -806,8 +755,6 @@ class JS extends Tokenizer
 
                     continue;
                 } else {
-                    // Save the new content in the current token so
-                    // the code below can chop it up on newlines.
                     $token['content'] = $newContent.$tokenContent;
                 }
             }//end if
@@ -843,7 +790,6 @@ class JS extends Tokenizer
                 $newStackPtr++;
             }//end if
 
-            // Convert numbers, including decimals.
             if ($token['code'] === T_STRING
                 || $token['code'] === T_OBJECT_OPERATOR
             ) {
@@ -871,7 +817,6 @@ class JS extends Tokenizer
                 }
             }//end if
 
-            // Convert the token after an object operator into a string, in most cases.
             if ($token['code'] === T_OBJECT_OPERATOR) {
                 for ($i = ($stackPtr + 1); $i < $numTokens; $i++) {
                     if (isset(Util\Tokens::$emptyTokens[$tokens[$i]['code']]) === true) {
@@ -945,8 +890,6 @@ class JS extends Tokenizer
             $this->eolChar => true,
         ];
 
-        // Find the last non-whitespace token that was added
-        // to the tokens array.
         $numTokens = count($tokens);
         for ($prev = ($numTokens - 1); $prev >= 0; $prev--) {
             if (isset(Util\Tokens::$emptyTokens[$tokens[$prev]['code']]) === false) {
@@ -958,7 +901,6 @@ class JS extends Tokenizer
             return null;
         }
 
-        // This is probably a regular expression, so look for the end of it.
         if (PHP_CODESNIFFER_VERBOSITY > 1) {
             echo "\t* token possibly starts a regular expression *".PHP_EOL;
         }
@@ -966,20 +908,14 @@ class JS extends Tokenizer
         $numChars = count($chars);
         for ($next = ($char + 1); $next < $numChars; $next++) {
             if ($chars[$next] === '/') {
-                // Just make sure this is not escaped first.
                 if ($chars[($next - 1)] !== '\\') {
-                    // In the simple form: /.../ so we found the end.
                     break;
                 } else if ($chars[($next - 2)] === '\\') {
-                    // In the form: /...\\/ so we found the end.
                     break;
                 }
             } else {
                 $possibleEolChar = substr($string, $next, strlen($this->eolChar));
                 if ($possibleEolChar === $this->eolChar) {
-                    // This is the last token on the line and regular
-                    // expressions need to be defined on a single line,
-                    // so this is not a regular expression.
                     break;
                 }
             }
@@ -994,9 +930,6 @@ class JS extends Tokenizer
         }
 
         while (preg_match('|[a-zA-Z]|', $chars[($next + 1)]) !== 0) {
-            // The token directly after the end of the regex can
-            // be modifiers like global and case insensitive
-            // (.e.g, /pattern/gi).
             $next++;
         }
 
@@ -1011,7 +944,6 @@ class JS extends Tokenizer
             } else {
                 $possibleEolChar = substr($string, $next, strlen($this->eolChar));
                 if ($possibleEolChar === $this->eolChar) {
-                    // This is the last token on the line.
                     break;
                 }
             }
@@ -1025,7 +957,6 @@ class JS extends Tokenizer
             return null;
         }
 
-        // This is a regular expression, so join all the tokens together.
         $content = '';
         for ($x = $char; $x <= $regexEnd; $x++) {
             $content .= $chars[$x];
@@ -1067,7 +998,6 @@ class JS extends Tokenizer
                 echo "\tProcess token $i: $type => $content".PHP_EOL;
             }
 
-            // Looking for functions that are actually closures.
             if ($this->tokens[$i]['code'] === T_FUNCTION && isset($this->tokens[$i]['scope_opener']) === true) {
                 for ($x = ($i + 1); $x < $numTokens; $x++) {
                     if (isset(Util\Tokens::$emptyTokens[$this->tokens[$x]['code']]) === false) {
@@ -1106,9 +1036,6 @@ class JS extends Tokenizer
                 $condition = $this->tokens[$i]['conditions'];
                 $condition = end($condition);
                 if ($condition === T_CLASS) {
-                    // Possibly an ES6 method. To be classified as one, the previous
-                    // non-empty tokens need to be a set of parenthesis, and then a string
-                    // (the method name).
                     for ($parenCloser = ($i - 1); $parenCloser > 0; $parenCloser--) {
                         if (isset(Util\Tokens::$emptyTokens[$this->tokens[$parenCloser]['code']]) === false) {
                             break;
@@ -1124,7 +1051,6 @@ class JS extends Tokenizer
                         }
 
                         if ($this->tokens[$name]['code'] === T_STRING) {
-                            // We found a method name.
                             if (PHP_CODESNIFFER_VERBOSITY > 1) {
                                 $line = $this->tokens[$name]['line'];
                                 echo str_repeat("\t", count($classStack));
@@ -1190,13 +1116,10 @@ class JS extends Tokenizer
             } else if ($this->tokens[$i]['code'] === T_CLOSE_OBJECT) {
                 array_pop($classStack);
             } else if ($this->tokens[$i]['code'] === T_COLON) {
-                // If it is a scope opener, it belongs to a
-                // DEFAULT or CASE statement.
                 if (isset($this->tokens[$i]['scope_condition']) === true) {
                     continue;
                 }
 
-                // Make sure this is not part of an inline IF statement.
                 for ($x = ($i - 1); $x >= 0; $x--) {
                     if ($this->tokens[$x]['code'] === T_INLINE_THEN) {
                         $this->tokens[$i]['code'] = T_INLINE_ELSE;
@@ -1213,7 +1136,6 @@ class JS extends Tokenizer
                     }
                 }
 
-                // The string to the left of the colon is either a property or label.
                 for ($label = ($i - 1); $label >= 0; $label--) {
                     if (isset(Util\Tokens::$emptyTokens[$this->tokens[$label]['code']]) === false) {
                         break;

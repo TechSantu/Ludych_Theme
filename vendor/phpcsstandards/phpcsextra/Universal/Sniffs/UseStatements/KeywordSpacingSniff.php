@@ -83,21 +83,17 @@ final class KeywordSpacingSniff implements Sniff
     public function process(File $phpcsFile, $stackPtr)
     {
         if (UseStatements::isImportUse($phpcsFile, $stackPtr) === false) {
-            // Trait or closure use statement.
             return;
         }
 
         $tokens         = $phpcsFile->getTokens();
         $endOfStatement = $phpcsFile->findNext([\T_SEMICOLON, \T_CLOSE_TAG], ($stackPtr + 1));
         if ($endOfStatement === false) {
-            // Live coding or parse error.
             return;
         }
 
-        // Check the spacing after the `use` keyword.
         $this->checkSpacingAfterKeyword($phpcsFile, $stackPtr, $tokens[$stackPtr]['content']);
 
-        // Check the spacing before and after each `as` keyword.
         $current = $stackPtr;
         do {
             $current = $phpcsFile->findNext(\T_AS, ($current + 1), $endOfStatement);
@@ -105,7 +101,6 @@ final class KeywordSpacingSniff implements Sniff
                 break;
             }
 
-            // Prevent false positives when "as" is used within a "name".
             if (isset(Tokens::$emptyTokens[$tokens[($current - 1)]['code']]) === true) {
                 $this->checkSpacingBeforeKeyword($phpcsFile, $current, $tokens[$current]['content']);
                 $this->checkSpacingAfterKeyword($phpcsFile, $current, $tokens[$current]['content']);
@@ -117,15 +112,12 @@ final class KeywordSpacingSniff implements Sniff
          */
         $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
         if (isset($this->keywords[\strtolower($tokens[$nextNonEmpty]['content'])]) === true) {
-            // Keyword found at start of statement, applies to whole statement.
             $this->checkSpacingAfterKeyword($phpcsFile, $nextNonEmpty, $tokens[$nextNonEmpty]['content']);
             return;
         }
 
-        // This may still be a group use statement with function/const substatements.
         $openGroup = $phpcsFile->findNext(\T_OPEN_USE_GROUP, ($stackPtr + 1), $endOfStatement);
         if ($openGroup === false) {
-            // Not a group use statement.
             return;
         }
 
@@ -142,7 +134,6 @@ final class KeywordSpacingSniff implements Sniff
                 $this->checkSpacingAfterKeyword($phpcsFile, $current, $tokens[$current]['content']);
             }
 
-            // We're within the use group, so find the next comma.
             $current = $phpcsFile->findNext(\T_COMMA, ($current + 1), $closeGroup);
         } while ($current !== false);
     }

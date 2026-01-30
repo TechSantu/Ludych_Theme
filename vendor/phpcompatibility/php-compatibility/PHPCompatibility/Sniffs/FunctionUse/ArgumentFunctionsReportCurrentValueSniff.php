@@ -142,17 +142,14 @@ class ArgumentFunctionsReportCurrentValueSniff extends Sniff
         $tokens = $phpcsFile->getTokens();
 
         if (isset($tokens[$stackPtr]['scope_opener'], $tokens[$stackPtr]['scope_closer']) === false) {
-            // Abstract function, interface function, live coding or parse error.
             return;
         }
 
         $scopeOpener = $tokens[$stackPtr]['scope_opener'];
         $scopeCloser = $tokens[$stackPtr]['scope_closer'];
 
-        // Does the function declaration have parameters ?
         $params = PHPCSHelper::getMethodParameters($phpcsFile, $stackPtr);
         if (empty($params)) {
-            // No named arguments found, so no risk of them being changed.
             return;
         }
 
@@ -163,7 +160,6 @@ class ArgumentFunctionsReportCurrentValueSniff extends Sniff
 
         for ($i = ($scopeOpener + 1); $i < $scopeCloser; $i++) {
             if (isset($this->skipPastNested[$tokens[$i]['type']]) && isset($tokens[$i]['scope_closer'])) {
-                // Skip past nested structures.
                 $i = $tokens[$i]['scope_closer'];
                 continue;
             }
@@ -175,7 +171,6 @@ class ArgumentFunctionsReportCurrentValueSniff extends Sniff
             $foundFunctionName = strtolower($tokens[$i]['content']);
 
             if (isset($this->changedFunctions[$foundFunctionName]) === false) {
-                // Not one of the target functions.
                 continue;
             }
 
@@ -184,7 +179,6 @@ class ArgumentFunctionsReportCurrentValueSniff extends Sniff
              */
             $next = $phpcsFile->findNext(Tokens::$emptyTokens, ($i + 1), null, true);
             if ($next === false || $tokens[$next]['code'] !== \T_OPEN_PARENTHESIS) {
-                // Live coding, parse error or not a function call.
                 continue;
             }
 
@@ -194,7 +188,6 @@ class ArgumentFunctionsReportCurrentValueSniff extends Sniff
                     continue;
                 }
 
-                // Check for namespaced functions, ie: \foo\bar() not \bar().
                 if ($tokens[ $prev ]['code'] === \T_NS_SEPARATOR) {
                     $pprev = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($prev - 1), null, true);
                     if ($pprev !== false && $tokens[ $pprev ]['code'] === \T_STRING) {
@@ -225,7 +218,6 @@ class ArgumentFunctionsReportCurrentValueSniff extends Sniff
                             );
 
                             if ($hasIgnoreArgs !== false) {
-                                // Debug_backtrace() called with ignore args option.
                                 continue 2;
                             }
                             break;
@@ -246,7 +238,6 @@ class ArgumentFunctionsReportCurrentValueSniff extends Sniff
                                 $argNumber = $tokens[$number]['content'];
 
                                 if (isset($paramNames[$argNumber]) === false) {
-                                    // Requesting a non-named additional parameter. Ignore.
                                     continue 2;
                                 }
                             }
@@ -278,11 +269,9 @@ class ArgumentFunctionsReportCurrentValueSniff extends Sniff
                         );
 
                         if ($number !== false && isset($paramNames[$tokens[$number]['content']]) === false) {
-                            // Requesting non-named additional parameters. Ignore.
                             continue ;
                         }
 
-                        // Slice starts at a named argument, but we know which params are being accessed.
                         $paramNamesSubset = \array_slice($paramNames, $tokens[$number]['content']);
                     }
                 }
@@ -347,7 +336,6 @@ class ArgumentFunctionsReportCurrentValueSniff extends Sniff
                 if (isset($this->skipPastNested[$tokens[$j]['type']])
                     && isset($tokens[$j]['scope_closer'])
                 ) {
-                    // Skip past nested structures.
                     $j = $tokens[$j]['scope_closer'];
                     continue;
                 }
@@ -360,16 +348,13 @@ class ArgumentFunctionsReportCurrentValueSniff extends Sniff
                     if (isset($paramNames[$argNumber])
                         && $tokens[$j]['content'] !== $paramNames[$argNumber]
                     ) {
-                        // Different param than the one requested by func_get_arg().
                         continue;
                     }
                 } elseif ($foundFunctionName === 'func_get_args' && isset($paramNamesSubset)) {
                     if (\in_array($tokens[$j]['content'], $paramNamesSubset, true) === false) {
-                        // Different param than the ones requested by func_get_args().
                         continue;
                     }
                 } elseif (\in_array($tokens[$j]['content'], $paramNames, true) === false) {
-                    // Variable is not one of the function parameters.
                     continue;
                 }
 
@@ -385,7 +370,6 @@ class ArgumentFunctionsReportCurrentValueSniff extends Sniff
 
                 $beforeVar = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($j - 1), null, true);
                 if ($beforeVar !== false && isset($this->plusPlusMinusMinus[$tokens[$beforeVar]['code']])) {
-                    // Variable is being (pre-)incremented/decremented.
                     $scanResult    = 'error';
                     $variableToken = $j;
                     break;
@@ -393,12 +377,10 @@ class ArgumentFunctionsReportCurrentValueSniff extends Sniff
 
                 $afterVar = $phpcsFile->findNext(Tokens::$emptyTokens, ($j + 1), null, true);
                 if ($afterVar === false) {
-                    // Shouldn't be possible, but just in case.
                     continue;
                 }
 
                 if (isset($this->plusPlusMinusMinus[$tokens[$afterVar]['code']])) {
-                    // Variable is being (post-)incremented/decremented.
                     $scanResult    = 'error';
                     $variableToken = $j;
                     break;
@@ -407,7 +389,6 @@ class ArgumentFunctionsReportCurrentValueSniff extends Sniff
                 if ($tokens[$afterVar]['code'] === \T_OPEN_SQUARE_BRACKET
                     && isset($tokens[$afterVar]['bracket_closer'])
                 ) {
-                    // Skip past array access on the variable.
                     while (($afterVar = $phpcsFile->findNext(Tokens::$emptyTokens, ($tokens[$afterVar]['bracket_closer'] + 1), null, true)) !== false) {
                         if ($tokens[$afterVar]['code'] !== \T_OPEN_SQUARE_BRACKET
                             || isset($tokens[$afterVar]['bracket_closer']) === false
@@ -420,7 +401,6 @@ class ArgumentFunctionsReportCurrentValueSniff extends Sniff
                 if ($afterVar !== false
                     && isset(Tokens::$assignmentTokens[$tokens[$afterVar]['code']])
                 ) {
-                    // Variable is being assigned something.
                     $scanResult    = 'error';
                     $variableToken = $j;
                     break;

@@ -85,7 +85,6 @@ class ClassCommentSniff extends FileCommentSniff
             return;
         }
 
-        // Check each tag.
         $this->processTags($phpcsFile, $stackPtr, $tokens[$commentEnd]['comment_opener']);
 
     }//end process()
@@ -104,7 +103,6 @@ class ClassCommentSniff extends FileCommentSniff
         $tokens = $phpcsFile->getTokens();
         foreach ($tags as $tag) {
             if ($tokens[($tag + 2)]['code'] !== T_DOC_COMMENT_STRING) {
-                // No content.
                 continue;
             }
 

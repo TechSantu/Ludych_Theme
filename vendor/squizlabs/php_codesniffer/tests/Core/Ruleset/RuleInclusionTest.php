@@ -56,8 +56,6 @@ final class RuleInclusionTest extends AbstractRulesetTestCase
             $standard       = __DIR__.'/'.basename(__FILE__, '.php').'.xml';
             self::$standard = $standard;
 
-            // On-the-fly adjust the ruleset test file to be able to test
-            // sniffs included with relative paths.
             $contents       = file_get_contents($standard);
             self::$contents = $contents;
 
@@ -415,7 +413,6 @@ final class RuleInclusionTest extends AbstractRulesetTestCase
                 'expectedValue' => true,
             ],
 
-            // Testing that setting a property at error code level does *not* work.
             'Set property for error code will not change the sniff property value: CyclomaticComplexity' => [
                 'sniffClass'    => 'PHP_CodeSniffer\Standards\Generic\Sniffs\Metrics\CyclomaticComplexitySniff',
                 'propertyName'  => 'complexity',

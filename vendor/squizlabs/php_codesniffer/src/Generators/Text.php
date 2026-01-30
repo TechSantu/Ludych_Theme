@@ -191,7 +191,6 @@ class Text extends Generator
         $secondCodeElm = $codeBlocks->item(1);
 
         if (isset($firstCodeElm, $secondCodeElm) === false) {
-            // Missing at least one code block.
             return '';
         }
 

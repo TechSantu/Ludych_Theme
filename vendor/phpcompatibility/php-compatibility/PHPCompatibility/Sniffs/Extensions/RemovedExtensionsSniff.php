@@ -178,7 +178,6 @@ class RemovedExtensionsSniff extends AbstractRemovedFeatureSniff
             '5.4' => true,
             'alternative' => null,
         ),
-        // Has to be before `sybase` as otherwise it will never match.
         'sybase_ct' => array(
             '7.0' => true,
             'alternative' => null,
@@ -210,7 +209,6 @@ class RemovedExtensionsSniff extends AbstractRemovedFeatureSniff
      */
     public function register()
     {
-        // Handle case-insensitivity of function names.
         $this->removedExtensions = $this->arrayKeysToLowercase($this->removedExtensions);
 
         return array(\T_STRING);
@@ -231,35 +229,28 @@ class RemovedExtensionsSniff extends AbstractRemovedFeatureSniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Find the next non-empty token.
         $openBracket = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
 
         if ($tokens[$openBracket]['code'] !== \T_OPEN_PARENTHESIS) {
-            // Not a function call.
             return;
         }
 
         if (isset($tokens[$openBracket]['parenthesis_closer']) === false) {
-            // Not a function call.
             return;
         }
 
-        // Find the previous non-empty token.
         $search   = Tokens::$emptyTokens;
         $search[] = \T_BITWISE_AND;
         $previous = $phpcsFile->findPrevious($search, ($stackPtr - 1), null, true);
         if ($tokens[$previous]['code'] === \T_FUNCTION) {
-            // It's a function definition, not a function call.
             return;
         }
 
         if ($tokens[$previous]['code'] === \T_NEW) {
-            // We are creating an object, not calling a function.
             return;
         }
 
         if ($tokens[$previous]['code'] === \T_OBJECT_OPERATOR) {
-            // We are calling a method of an object.
             return;
         }
 
@@ -267,7 +258,6 @@ class RemovedExtensionsSniff extends AbstractRemovedFeatureSniff
         $functionLc = strtolower($function);
 
         if ($this->isWhiteListed($functionLc) === true) {
-            // Function is whitelisted.
             return;
         }
 

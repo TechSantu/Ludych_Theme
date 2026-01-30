@@ -116,7 +116,6 @@ class NewIconvMbstringCharsetDefaultSniff extends AbstractFunctionCallParameterS
     {
         $functionLC = strtolower($functionName);
         if ($functionLC === 'iconv_mime_encode') {
-            // Special case the iconv_mime_encode() function.
             return $this->processIconvMimeEncode($phpcsFile, $stackPtr, $functionName, $parameters);
         }
 
@@ -176,7 +175,6 @@ class NewIconvMbstringCharsetDefaultSniff extends AbstractFunctionCallParameterS
         $targetParam   = $parameters[$this->targetFunctions[$functionLC]];
         $firstNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, $targetParam['start'], ($targetParam['end'] + 1), true);
         if ($firstNonEmpty === false) {
-            // Parse error or live coding.
             return;
         }
 
@@ -186,7 +184,6 @@ class NewIconvMbstringCharsetDefaultSniff extends AbstractFunctionCallParameterS
             $hasInputCharset  = preg_match('`([\'"])input-charset\1\s*=>`', $targetParam['raw']);
             $hasOutputCharset = preg_match('`([\'"])output-charset\1\s*=>`', $targetParam['raw']);
             if ($hasInputCharset === 1 && $hasOutputCharset === 1) {
-                // Both input as well as output charset are set.
                 return;
             }
 
@@ -217,7 +214,6 @@ class NewIconvMbstringCharsetDefaultSniff extends AbstractFunctionCallParameterS
             return;
         }
 
-        // The $preferences parameter was passed, but it was a variable/constant/output of a function call.
         $phpcsFile->addWarning(
             $error,
             $firstNonEmpty,

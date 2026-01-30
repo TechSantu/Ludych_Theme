@@ -60,7 +60,6 @@ final class AnonClassKeywordSpacingSniff implements Sniff
         $tokens       = $phpcsFile->getTokens();
         $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
         if ($nextNonEmpty === false || $tokens[$nextNonEmpty]['code'] !== \T_OPEN_PARENTHESIS) {
-            // No parentheses, nothing to do.
             return;
         }
 

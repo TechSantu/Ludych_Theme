@@ -244,7 +244,6 @@ final class DeprecatedParameterValuesSniff extends AbstractFunctionParameterSnif
 		foreach ( $this->target_functions[ $matched_content ] as $position => $parameter_args ) {
 			$found_param = PassedParameters::getParameterFromStack( $parameters, $position, $parameter_args['name'] );
 
-			// Skip if the parameter was not found.
 			if ( false === $found_param ) {
 				continue;
 			}

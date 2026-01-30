@@ -11,7 +11,6 @@ $about_image       = get_field( 'about_image', $post_id );
 $author_name       = get_field( 'author_name', $post_id );
 $author_about      = get_field( 'author_about', $post_id );
 ?>
-	<!-- about us start -->
 	<section class="about-us">
 		<div class="custom-container">
 			<div class="row">
@@ -73,4 +72,3 @@ $author_about      = get_field( 'author_about', $post_id );
 			</div>
 		</div>
 	</section>
-	<!-- about us end -->

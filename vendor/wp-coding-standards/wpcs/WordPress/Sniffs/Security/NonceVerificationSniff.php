@@ -140,7 +140,6 @@ class NonceVerificationSniff extends Sniff {
 	 *                  normal file processing.
 	 */
 	public function process_token( $stackPtr ) {
-		// Skip over lists as whatever is in those will always be assignments.
 		if ( isset( Collections::listOpenTokensBC()[ $this->tokens[ $stackPtr ]['code'] ] ) ) {
 			$open_close = Lists::getOpenClose( $this->phpcsFile, $stackPtr );
 			$skip_to    = $stackPtr;
@@ -156,19 +155,15 @@ class NonceVerificationSniff extends Sniff {
 		}
 
 		if ( Scopes::isOOProperty( $this->phpcsFile, $stackPtr ) ) {
-			// Property with the same name as a superglobal. Not our target.
 			return;
 		}
 
-		// Determine the cache keys for this item.
 		$cache_keys = array(
 			'file'  => $this->phpcsFile->getFilename(),
 			'start' => 0,
 			'end'   => $stackPtr,
 		);
 
-		// If we're in a function, only look inside of it.
-		// This doesn't take arrow functions into account as those are "open".
 		$functionPtr = Conditions::getLastCondition( $this->phpcsFile, $stackPtr, array( \T_FUNCTION, \T_CLOSURE ) );
 		if ( false !== $functionPtr ) {
 			$cache_keys['start'] = $this->tokens[ $functionPtr ]['scope_opener'];
@@ -185,7 +180,6 @@ class NonceVerificationSniff extends Sniff {
 			return;
 		}
 
-		// If we're still here, no nonce-verification function was found.
 		$error_code = 'Missing';
 		if ( false === $this->superglobals[ $this->tokens[ $stackPtr ]['content'] ] ) {
 			$error_code = 'Recommended';
@@ -214,19 +208,15 @@ class NonceVerificationSniff extends Sniff {
 	protected function needs_nonce_check( $stackPtr, array $cache_keys ) {
 		$in_nonce_check = ContextHelper::is_in_function_call( $this->phpcsFile, $stackPtr, $this->nonceVerificationFunctions );
 		if ( false !== $in_nonce_check ) {
-			// This *is* the nonce check, so bow out, but do store to cache.
-			// @todo Change to use arg unpacking once PHP < 5.6 has been dropped.
 			$this->set_cache( $cache_keys['file'], $cache_keys['start'], $cache_keys['end'], $in_nonce_check );
 			return false;
 		}
 
 		if ( Context::inUnset( $this->phpcsFile, $stackPtr ) ) {
-			// Variable is only being unset, no nonce check needed.
 			return false;
 		}
 
 		if ( VariableHelper::is_assignment( $this->phpcsFile, $stackPtr, false ) ) {
-			// Overwriting the value of a superglobal.
 			return false;
 		}
 
@@ -265,36 +255,23 @@ class NonceVerificationSniff extends Sniff {
 		$start = $cache_keys['start'];
 		$end   = $cache_keys['end'];
 
-		// We allow for certain actions, such as an isset() check to come before the nonce check.
-		// If this superglobal is inside such a check, look for the nonce after it as well,
-		// all the way to the end of the scope.
 		if ( true === $allow_nonce_after ) {
 			$end = ( 0 === $start ) ? $this->phpcsFile->numTokens : $this->tokens[ $start ]['scope_closer'];
 		}
 
-		// Check against the cache.
 		$current_cache = $this->get_cache( $cache_keys['file'], $start );
 		if ( false !== $current_cache['nonce'] ) {
-			// If we have already found a nonce check in this scope, we just
-			// need to check whether it comes before this token. It is OK if the
-			// check is after the token though, if this was only an isset() check.
 			return ( true === $allow_nonce_after || $current_cache['nonce'] < $stackPtr );
 		} elseif ( $end <= $current_cache['end'] ) {
-			// If not, we can still go ahead and return false if we've already
-			// checked to the end of the search area.
 			return false;
 		}
 
 		$search_start = $start;
 		if ( $current_cache['end'] > $start ) {
-			// We haven't checked this far yet, but we can still save work by
-			// skipping over the part we've already checked.
 			$search_start = $this->cached_results['cache'][ $start ]['end'];
 		}
 
-		// Loop through the tokens looking for nonce verification functions.
 		for ( $i = $search_start; $i < $end; $i++ ) {
-			// Skip over nested closed scope constructs.
 			if ( isset( Collections::closedScopes()[ $this->tokens[ $i ]['code'] ] )
 				|| \T_FN === $this->tokens[ $i ]['code']
 			) {
@@ -304,14 +281,12 @@ class NonceVerificationSniff extends Sniff {
 				continue;
 			}
 
-			// If this isn't a function name, skip it.
 			if ( \T_STRING !== $this->tokens[ $i ]['code'] ) {
 				continue;
 			}
 
 			$content_lc = \strtolower( $this->tokens[ $i ]['content'] );
 
-			// If this is one of the nonce verification functions, we can bail out.
 			if ( isset( $this->nonceVerificationFunctions[ $content_lc ] ) ) {
 				/*
 				 * Now, make sure it is a call to a global function.
@@ -329,7 +304,6 @@ class NonceVerificationSniff extends Sniff {
 			}
 		}
 
-		// We're still here, so no luck.
 		$this->set_cache( $cache_keys['file'], $start, $end, false );
 
 		return false;
@@ -387,7 +361,6 @@ class NonceVerificationSniff extends Sniff {
 			return;
 		}
 
-		// Okay, so we know the current cache is for the current file. Check if we've seen this start pointer before.
 		if ( isset( $this->cached_results['cache'][ $start ] ) === false ) {
 			$this->cached_results['cache'][ $start ] = array(
 				'end'   => $end,
@@ -396,7 +369,6 @@ class NonceVerificationSniff extends Sniff {
 			return;
 		}
 
-		// Update existing entry.
 		if ( $end > $this->cached_results['cache'][ $start ]['end'] ) {
 			$this->cached_results['cache'][ $start ]['end'] = $end;
 		}

@@ -75,7 +75,6 @@ class HookDocsRule implements \PHPStan\Rules\Rule
 
         $resolvedPhpDoc = $this->hookDocBlock->getNullableHookDocBlock($node, $scope);
 
-        // A docblock is optional.
         if ($resolvedPhpDoc === null) {
             return [];
         }
@@ -90,24 +89,18 @@ class HookDocsRule implements \PHPStan\Rules\Rule
      */
     public function validateDocBlock(ResolvedPhpDocBlock $resolvedPhpDoc): void
     {
-        // Count all documented `@param` tag strings in the docblock.
         $numberOfParamTagStrings = substr_count($resolvedPhpDoc->getPhpDocString(), '* @param ');
 
-        // A docblock with no param tags is allowed and gets skipped.
         if ($numberOfParamTagStrings === 0) {
             return;
         }
 
         $this->validateParamCount($numberOfParamTagStrings);
 
-        // If the number of param tags doesn't match the number of
-        // parameters, bail out early. There's no point trying to
-        // reconcile param tags in this situation.
         if ($this->errors !== []) {
             return;
         }
 
-        // Fetch the parsed `@param` tags from the docblock.
         $paramTags = $resolvedPhpDoc->getParamTags();
 
         $this->validateParamDocumentation(count($paramTags), $resolvedPhpDoc);
@@ -129,10 +122,8 @@ class HookDocsRule implements \PHPStan\Rules\Rule
      */
     public function validateParamCount(int $numberOfParamTagStrings): void
     {
-        // The first parameter is the hook name, so we subtract 1.
         $numberOfParams = count($this->currentNode->getArgs()) - 1;
 
-        // Correct number of `@param` tags.
         if ($numberOfParams === $numberOfParamTagStrings) {
             return;
         }
@@ -156,15 +147,10 @@ class HookDocsRule implements \PHPStan\Rules\Rule
         $nodeArgs = $this->currentNode->getArgs();
         $numberOfParams = count($nodeArgs) - 1;
 
-        // No invalid `@param` tags.
         if ($numberOfParams === $numberOfParamTags) {
             return;
         }
 
-        // We might have an invalid `@param` tag because it's named `$this`.
-        // PHPStan does not detect param tags named `$this`, it skips the tag.
-        // We can indirectly detect this by checking the actual parameter name,
-        // and if one of them is `$this` assume that's the problem.
         $namedThis = false;
         if (strpos($resolvedPhpDoc->getPhpDocString(), ' $this') !== false) {
             foreach ($nodeArgs as $param) {

@@ -59,7 +59,6 @@
 		}
 	};
 
-	// Bind gallery items
 	items.forEach((tile, i) => {
 		tile.addEventListener('click', e => { e.preventDefault(); openLightbox(i); });
 		tile.addEventListener('keydown', e => {
@@ -71,7 +70,6 @@
 	tile.setAttribute('aria-label','Open image: ' + ($('img', tile) ? .alt || ''));
 	});
 
-	// Controls
 	btnNext.addEventListener('click', next);
 	btnPrev.addEventListener('click', prev);
 	btnClose.addEventListener('click', closeLightbox);
@@ -79,7 +77,6 @@
 			closeLightbox();
 	} });
 
-	// Touch swipe
 	let startX = 0;
 	lbImage.addEventListener('touchstart', e => { startX = e.changedTouches[0].screenX; }, {passive:true});
 	lbImage.addEventListener('touchend', e => {

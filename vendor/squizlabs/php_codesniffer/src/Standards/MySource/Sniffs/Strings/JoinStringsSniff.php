@@ -65,9 +65,6 @@ class JoinStringsSniff implements Sniff, DeprecatedSniff
         if ($tokens[$prev]['code'] === T_CLOSE_SQUARE_BRACKET) {
             $opener = $tokens[$prev]['bracket_opener'];
             if ($tokens[($opener - 1)]['code'] !== T_STRING) {
-                // This means the array is declared inline, like x = [a,b,c].join()
-                // and not elsewhere, like x = y[a].join()
-                // The first is not allowed while the second is.
                 $error = 'Joining strings using inline arrays is not allowed; use the + operator instead';
                 $phpcsFile->addError($error, $stackPtr, 'ArrayNotAllowed');
             }

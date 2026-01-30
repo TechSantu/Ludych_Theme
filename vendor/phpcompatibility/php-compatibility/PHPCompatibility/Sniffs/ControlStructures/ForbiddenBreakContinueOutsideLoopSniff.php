@@ -85,7 +85,6 @@ class ForbiddenBreakContinueOutsideLoopSniff extends Sniff
         $tokens = $phpcsFile->getTokens();
         $token  = $tokens[$stackPtr];
 
-        // Check if the break/continue is within a valid loop structure.
         if (empty($token['conditions']) === false) {
             foreach ($token['conditions'] as $tokenCode) {
                 if (isset($this->validLoopStructures[$tokenCode]) === true) {
@@ -93,13 +92,11 @@ class ForbiddenBreakContinueOutsideLoopSniff extends Sniff
                 }
             }
         } else {
-            // Deal with older PHPCS versions.
             if (isset($token['scope_condition']) === true && isset($this->backCompat[$tokens[$token['scope_condition']]['code']]) === true) {
                 return;
             }
         }
 
-        // If we're still here, no valid loop structure container has been found, so throw an error.
         $error     = "Using '%s' outside of a loop or switch structure is invalid";
         $isError   = false;
         $errorCode = 'Found';

@@ -47,7 +47,6 @@ class GlobalFunctionSniff implements Sniff
                 return;
             }
 
-            // Special exception for __autoload as it needs to be global.
             if ($functionName !== '__autoload') {
                 $error = 'Consider putting global function "%s" in a static class';
                 $data  = [$functionName];

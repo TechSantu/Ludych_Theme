@@ -235,7 +235,6 @@ final class ContextHelper {
 
 			if ( isset( $valid_functions[ strtolower( $tokens[ $prev_non_empty ]['content'] ) ] ) === false ) {
 				if ( false === $allow_nested ) {
-					// Function call encountered, but not to one of the allowed functions.
 					return false;
 				}
 

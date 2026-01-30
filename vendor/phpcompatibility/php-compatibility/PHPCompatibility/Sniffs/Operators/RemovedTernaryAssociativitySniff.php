@@ -85,7 +85,6 @@ class RemovedTernaryAssociativitySniff extends Sniff
             && $tokens[$endOfStatement]['code'] !== \T_OPEN_TAG
             && $tokens[$endOfStatement]['code'] !== \T_CLOSE_TAG
         ) {
-            // End of statement is last non-empty before close brace, so make sure we examine that token too.
             ++$endOfStatement;
         }
 
@@ -93,14 +92,12 @@ class RemovedTernaryAssociativitySniff extends Sniff
         $elseCount         = 0;
         $shortTernaryCount = 0;
 
-        // Start at $stackPtr so we don't need duplicate code for short ternary determination.
         for ($i = $stackPtr; $i < $endOfStatement; $i++) {
             if (($tokens[$i]['code'] === \T_OPEN_SHORT_ARRAY
                 || $tokens[$i]['code'] === \T_OPEN_SQUARE_BRACKET
                 || $tokens[$i]['code'] === \T_OPEN_CURLY_BRACKET)
                 && isset($tokens[$i]['bracket_closer'])
             ) {
-                // Skip over short arrays, array access keys and curlies.
                 $i = $tokens[$i]['bracket_closer'];
                 continue;
             }
@@ -108,12 +105,10 @@ class RemovedTernaryAssociativitySniff extends Sniff
             if ($tokens[$i]['code'] === \T_OPEN_PARENTHESIS
                 && isset($tokens[$i]['parenthesis_closer'])
             ) {
-                // Skip over anything between parentheses.
                 $i = $tokens[$i]['parenthesis_closer'];
                 continue;
             }
 
-            // Check for operators with lower operator precedence.
             if (isset(Tokens::$assignmentTokens[$tokens[$i]['code']])
                 || isset($this->tokensWithLowerPrecedence[$tokens[$i]['code']])
             ) {
@@ -132,7 +127,6 @@ class RemovedTernaryAssociativitySniff extends Sniff
 
             if ($tokens[$i]['code'] === \T_INLINE_ELSE) {
                 if (($ternaryCount - $elseCount) >= 2) {
-                    // This is the `else` for a ternary in the middle part of a previous ternary.
                     --$ternaryCount;
                 } else {
                     ++$elseCount;

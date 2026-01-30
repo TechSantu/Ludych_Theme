@@ -42,7 +42,6 @@ class ClassInstantiationSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Find the class name.
         $allowed = [
             T_STRING                   => T_STRING,
             T_NS_SEPARATOR             => T_NS_SEPARATOR,
@@ -64,9 +63,6 @@ class ClassInstantiationSniff implements Sniff
                 continue;
             }
 
-            // Bow out when this is an anonymous class.
-            // Anonymous classes are the only situation which would allow for an attribute
-            // or for the readonly keyword between "new" and the class "name".
             if ($tokens[$i]['code'] === T_ATTRIBUTE
                 || $tokens[$i]['code'] === T_READONLY
                 || $tokens[$i]['code'] === T_ANON_CLASS
@@ -90,12 +86,10 @@ class ClassInstantiationSniff implements Sniff
         }
 
         if ($tokens[$classNameEnd]['code'] === T_OPEN_PARENTHESIS) {
-            // Using parenthesis.
             return;
         }
 
         if ($classNameEnd === $stackPtr) {
-            // Failed to find the class name.
             return;
         }
 

@@ -58,19 +58,16 @@ final class DisallowDeclarationWithoutNameSniff implements Sniff
     {
         $name = Namespaces::getDeclaredName($phpcsFile, $stackPtr);
         if ($name === false) {
-            // Use of the namespace keyword as an operator or live coding/parse error.
             return;
         }
 
         if ($name !== '') {
-            // Named namespace.
             $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'yes');
             return;
         }
 
         $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'no');
 
-        // Namespace declaration without namespace name (= global namespace).
         $phpcsFile->addError(
             'Namespace declarations without a namespace name are not allowed.',
             $stackPtr,

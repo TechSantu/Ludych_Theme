@@ -32,12 +32,10 @@ final class PopulateTokenListenersNamingConventionsTest extends TestCase
      */
     public function testBrokenNamingConventions()
     {
-        // Set up the ruleset.
         $standard = __DIR__.'/PopulateTokenListenersNamingConventionsTest.xml';
         $config   = new ConfigDouble(["--standard=$standard"]);
         $ruleset  = new Ruleset($config);
 
-        // The "Generic.PHP.BacktickOperator" sniff is the only valid sniff.
         $expectedSniffCodes = [
             '..NoNamespace'                                       => 'NoNamespaceSniff',
             '.Sniffs.MissingCategoryDir'                          => 'BrokenNamingConventions\\Sniffs\\MissingCategoryDirSniff',
@@ -48,8 +46,6 @@ final class PopulateTokenListenersNamingConventionsTest extends TestCase
             'Sniffs.SubDir.TooDeeplyNested'                       => 'BrokenNamingConventions\\Sniffs\\Category\\SubDir\\TooDeeplyNestedSniff',
         ];
 
-        // Sort the value to make the tests stable as different OSes will read directories
-        // in a different order and the order is not relevant for these tests. Just the values.
         $actual = $ruleset->sniffCodes;
         ksort($actual);
 

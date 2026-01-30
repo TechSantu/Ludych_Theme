@@ -10,7 +10,6 @@ $why_title      = get_field('why_choose_us_title', $post_id);
 $why_image      = get_field('why_choose_us_image', $post_id);
 ?>
 
-<!-- why choose us start -->
 <section class="why-Onchoose-us">
 	<div class="custom-container">
 		<div class="global-header left-align">
@@ -89,4 +88,3 @@ $why_image      = get_field('why_choose_us_image', $post_id);
 		</div>
 	</div>
 </section>
-<!-- why choose us end -->

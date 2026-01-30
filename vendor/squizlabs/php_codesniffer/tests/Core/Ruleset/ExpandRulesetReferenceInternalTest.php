@@ -29,7 +29,6 @@ final class ExpandRulesetReferenceInternalTest extends AbstractRulesetTestCase
      */
     public function testInternalRefDoesNotGetExpanded()
     {
-        // Set up the ruleset.
         $standard = __DIR__.'/ExpandRulesetReferenceInternalIgnoreTest.xml';
         $config   = new ConfigDouble(["--standard=$standard"]);
         $ruleset  = new Ruleset($config);
@@ -56,7 +55,6 @@ final class ExpandRulesetReferenceInternalTest extends AbstractRulesetTestCase
 
         $this->expectOutputString($message);
 
-        // Set up the ruleset.
         $standard = __DIR__.'/ExpandRulesetReferenceInternalStandardTest.xml';
         $config   = new ConfigDouble(["--standard=$standard"]);
         $ruleset  = new Ruleset($config);

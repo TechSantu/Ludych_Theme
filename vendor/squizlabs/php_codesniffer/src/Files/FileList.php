@@ -117,8 +117,6 @@ class FileList implements Iterator, Countable
      */
     public function addFile($path, $file=null)
     {
-        // No filtering is done for STDIN when the filename
-        // has not been specified.
         if ($path === 'STDIN') {
             $this->files[$path] = $file;
             $this->numFiles++;
@@ -133,7 +131,6 @@ class FileList implements Iterator, Countable
 
         foreach ($iterator as $path) {
             if (array_key_exists($path, $this->files) === true) {
-                // The path has already been added.
                 continue;
             }
 
@@ -158,7 +155,6 @@ class FileList implements Iterator, Countable
             $filterClass = '\PHP_CodeSniffer\Filters\Filter';
         } else {
             if (strpos($filterType, '.') !== false) {
-                // This is a path to a custom filter class.
                 $filename = realpath($filterType);
                 if ($filename === false) {
                     $error = "ERROR: Custom filter \"$filterType\" not found".PHP_EOL;

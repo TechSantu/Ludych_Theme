@@ -53,8 +53,6 @@ class GetRequestDataSniff implements Sniff, DeprecatedSniff
             return;
         }
 
-        // The only place these super globals can be accessed directly is
-        // in the getRequestData() method of the Security class.
         $inClass = false;
         foreach ($tokens[$stackPtr]['conditions'] as $i => $type) {
             if ($tokens[$i]['code'] === T_CLASS) {
@@ -63,24 +61,19 @@ class GetRequestDataSniff implements Sniff, DeprecatedSniff
                 if (strtolower($className) === 'security') {
                     $inClass = true;
                 } else {
-                    // We don't have nested classes.
                     break;
                 }
             } else if ($inClass === true && $tokens[$i]['code'] === T_FUNCTION) {
                 $funcName = $phpcsFile->findNext(T_STRING, $i);
                 $funcName = $tokens[$funcName]['content'];
                 if (strtolower($funcName) === 'getrequestdata') {
-                    // This is valid.
                     return;
                 } else {
-                    // We don't have nested functions.
                     break;
                 }
             }//end if
         }//end foreach
 
-        // If we get to here, the super global was used incorrectly.
-        // First find out how it is being used.
         $globalName = strtolower(substr($varName, 2));
         $usedVar    = '';
 

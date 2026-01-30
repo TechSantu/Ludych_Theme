@@ -98,18 +98,15 @@ trait MinimumWPVersionTrait {
 	final protected function set_minimum_wp_version() {
 		$minimum_wp_version = '';
 
-		// Use a ruleset provided value if available.
 		if ( ! empty( $this->minimum_wp_version ) ) {
 			$minimum_wp_version = $this->minimum_wp_version;
 		}
 
-		// A CLI provided value overrules a ruleset provided value.
 		$cli_supported_version = Helper::getConfigData( 'minimum_wp_version' );
 		if ( ! empty( $cli_supported_version ) ) {
 			$minimum_wp_version = $cli_supported_version;
 		}
 
-		// If no valid value was provided, use the default.
 		if ( filter_var( $minimum_wp_version, \FILTER_VALIDATE_FLOAT ) === false ) {
 			$minimum_wp_version = $this->default_minimum_wp_version;
 		}

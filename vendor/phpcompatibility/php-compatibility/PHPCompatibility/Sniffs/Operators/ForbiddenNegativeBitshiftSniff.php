@@ -82,7 +82,6 @@ class ForbiddenNegativeBitshiftSniff extends Sniff
 
         $tokens = $phpcsFile->getTokens();
 
-        // Determine the start and end of the part of the statement we need to examine.
         $start = ($stackPtr + 1);
         $next  = $phpcsFile->findNext(Tokens::$emptyTokens, $start, null, true);
         if ($next !== false && $tokens[$next]['code'] === \T_OPEN_PARENTHESIS) {
@@ -95,7 +94,6 @@ class ForbiddenNegativeBitshiftSniff extends Sniff
         }
 
         if ($this->isNegativeNumber($phpcsFile, $start, $end, true) !== true) {
-            // Not a negative number or undetermined.
             return;
         }
 

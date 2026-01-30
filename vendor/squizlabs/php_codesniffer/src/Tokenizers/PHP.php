@@ -541,7 +541,6 @@ class PHP extends Tokenizer
         $commentTokenizer = new Comment();
 
         for ($stackPtr = 0; $stackPtr < $numTokens; $stackPtr++) {
-            // Special case for tokens we have needed to blank out.
             if ($tokens[$stackPtr] === null) {
                 continue;
             }
@@ -597,8 +596,6 @@ class PHP extends Tokenizer
                     }
 
                     if ($tokens[($stackPtr + 1)][1] === "\n") {
-                        // This token's content has been merged into the previous,
-                        // so we can skip it.
                         $tokens[($stackPtr + 1)] = '';
                     } else {
                         $tokens[($stackPtr + 1)][1] = substr($tokens[($stackPtr + 1)][1], 1);
@@ -622,8 +619,6 @@ class PHP extends Tokenizer
                 && strtolower($token[1]) === 'yield'
                 && isset($this->tstringContexts[$finalTokens[$lastNotEmptyToken]['code']]) === false
             ) {
-                // Could still be a context sensitive keyword or "yield from" and potentially multi-line,
-                // so adjust the token stack in place.
                 $token[0] = T_YIELD;
 
                 if (PHP_CODESNIFFER_VERBOSITY > 1) {
@@ -644,7 +639,6 @@ class PHP extends Tokenizer
                 if (isset($this->tstringContexts[$finalTokens[$lastNotEmptyToken]['code']]) === true) {
                     $preserveKeyword = false;
 
-                    // `new class`, and `new static` should be preserved.
                     if ($finalTokens[$lastNotEmptyToken]['code'] === T_NEW
                         && ($token[0] === T_CLASS
                         || $token[0] === T_STATIC)
@@ -652,7 +646,6 @@ class PHP extends Tokenizer
                         $preserveKeyword = true;
                     }
 
-                    // `new readonly class` should be preserved.
                     if ($finalTokens[$lastNotEmptyToken]['code'] === T_NEW
                         && strtolower($token[1]) === 'readonly'
                     ) {
@@ -669,14 +662,12 @@ class PHP extends Tokenizer
                         }
                     }
 
-                    // `new class extends` `new class implements` should be preserved
                     if (($token[0] === T_EXTENDS || $token[0] === T_IMPLEMENTS)
                         && $finalTokens[$lastNotEmptyToken]['code'] === T_CLASS
                     ) {
                         $preserveKeyword = true;
                     }
 
-                    // `namespace\` should be preserved
                     if ($token[0] === T_NAMESPACE) {
                         for ($i = ($stackPtr + 1); $i < $numTokens; $i++) {
                             if (is_array($tokens[$i]) === false) {
@@ -695,7 +686,6 @@ class PHP extends Tokenizer
                         }
                     }
 
-                    // Fully Qualified `\exit`/`\die` should be preserved.
                     if ($token[0] === T_EXIT
                         && $finalTokens[$lastNotEmptyToken]['code'] === T_NS_SEPARATOR
                     ) {
@@ -715,14 +705,12 @@ class PHP extends Tokenizer
                     }
                 }//end if
 
-                // Types in typed constants should not be touched, but the constant name should be.
                 if ((isset($this->tstringContexts[$finalTokens[$lastNotEmptyToken]['code']]) === true
                     && $finalTokens[$lastNotEmptyToken]['code'] === T_CONST)
                     || $insideConstDeclaration === true
                 ) {
                     $preserveKeyword = true;
 
-                    // Find the next non-empty token.
                     for ($i = ($stackPtr + 1); $i < $numTokens; $i++) {
                         if (is_array($tokens[$i]) === true
                             && isset(Tokens::$emptyTokens[$tokens[$i][0]]) === true
@@ -833,11 +821,9 @@ class PHP extends Tokenizer
 
             if (PHP_VERSION_ID < 70400
                 && $tokenIsArray === true
-                // PHP < 7.4 with short open tags off.
                 && (($stackPtr === ($numTokens - 1)
                 && $token[0] === T_INLINE_HTML
                 && stripos($token[1], '<?php') === 0)
-                // PHP < 7.4 with short open tags on.
                 || ($stackPtr === ($numTokens - 2)
                 && $token[0] === T_OPEN_TAG
                 && $token[1] === '<?'
@@ -895,8 +881,6 @@ class PHP extends Tokenizer
             ) {
                 $nextToken = $tokens[($stackPtr + 1)];
 
-                // If the next token is a single new line, merge it into the comment token
-                // and set to it up to be skipped.
                 if ($nextToken[1] === "\n" || $nextToken[1] === "\r\n" || $nextToken[1] === "\n\r") {
                     $token[1] .= $nextToken[1];
                     $tokens[($stackPtr + 1)] = null;
@@ -905,7 +889,6 @@ class PHP extends Tokenizer
                         echo "\t\t* merged newline after comment into comment token $stackPtr".PHP_EOL;
                     }
                 } else {
-                    // This may be a whitespace token consisting of multiple new lines.
                     if (strpos($nextToken[1], "\r\n") === 0) {
                         $token[1] .= "\r\n";
                         $tokens[($stackPtr + 1)][1] = substr($nextToken[1], 2);
@@ -991,7 +974,6 @@ class PHP extends Tokenizer
             */
 
             if ($tokenIsArray === false && ($token[0] === '"' || $token[0] === 'b"')) {
-                // Binary casts need a special token.
                 if ($token[0] === 'b"') {
                     $finalTokens[$newStackPtr] = [
                         'code'    => T_BINARY_CAST,
@@ -1026,15 +1008,12 @@ class PHP extends Tokenizer
                         && $subToken[0] === '"'
                         && empty($nestedVars) === true
                     ) {
-                        // We found the other end of the double quoted string.
                         break;
                     }
                 }//end for
 
                 $stackPtr = $i;
 
-                // Convert each line within the double quoted string to a
-                // new token, so it conforms with other multiple line tokens.
                 $tokenLines = explode($this->eolChar, $tokenContent);
                 $numLines   = count($tokenLines);
                 $newToken   = [];
@@ -1055,7 +1034,6 @@ class PHP extends Tokenizer
                     $newStackPtr++;
                 }
 
-                // Continue, as we're done with this token.
                 continue;
             }//end if
 
@@ -1099,11 +1077,8 @@ class PHP extends Tokenizer
             */
 
             if ($tokenIsArray === true && $token[0] === T_START_HEREDOC) {
-                // Add the start heredoc token to the final array.
                 $finalTokens[$newStackPtr] = self::standardiseToken($token);
 
-                // Check if this is actually a nowdoc and use a different token
-                // to help the sniffs.
                 $nowdoc = false;
                 if (strpos($token[1], "'") !== false) {
                     $finalTokens[$newStackPtr]['code'] = T_START_NOWDOC;
@@ -1117,7 +1092,6 @@ class PHP extends Tokenizer
                     if ($subTokenIsArray === true
                         && $tokens[$i][0] === T_END_HEREDOC
                     ) {
-                        // We found the other end of the heredoc.
                         break;
                     }
 
@@ -1129,9 +1103,6 @@ class PHP extends Tokenizer
                 }
 
                 if ($i === $numTokens) {
-                    // We got to the end of the file and never
-                    // found the closing token, so this probably wasn't
-                    // a heredoc.
                     if (PHP_CODESNIFFER_VERBOSITY > 1) {
                         $type = $finalTokens[$newStackPtr]['type'];
                         echo "\t\t* failed to find the end of the here/nowdoc".PHP_EOL;
@@ -1147,8 +1118,6 @@ class PHP extends Tokenizer
                 $stackPtr = $i;
                 $newStackPtr++;
 
-                // Convert each line within the heredoc to a
-                // new token, so it conforms with other multiple line tokens.
                 $tokenLines = explode($this->eolChar, $tokenContent);
                 $numLines   = count($tokenLines);
                 $newToken   = [];
@@ -1175,7 +1144,6 @@ class PHP extends Tokenizer
                     $newStackPtr++;
                 }//end for
 
-                // Add the end heredoc token to the final array.
                 $finalTokens[$newStackPtr] = self::standardiseToken($tokens[$stackPtr]);
 
                 if ($nowdoc === true) {
@@ -1185,7 +1153,6 @@ class PHP extends Tokenizer
 
                 $newStackPtr++;
 
-                // Continue, as we're done with this token.
                 continue;
             }//end if
 
@@ -1197,7 +1164,6 @@ class PHP extends Tokenizer
                 && $token[0] === T_STRING
                 && strtolower($token[1]) === 'enum'
             ) {
-                // Get the next non-empty token.
                 for ($i = ($stackPtr + 1); $i < $numTokens; $i++) {
                     if (is_array($tokens[$i]) === false
                         || isset(Tokens::$emptyTokens[$tokens[$i][0]]) === false
@@ -1210,7 +1176,6 @@ class PHP extends Tokenizer
                     && is_array($tokens[$i]) === true
                     && $tokens[$i][0] === T_STRING
                 ) {
-                    // Modify $tokens directly so we can use it later when converting enum "case".
                     $tokens[$stackPtr][0] = T_ENUM;
 
                     $newToken            = [];
@@ -1269,7 +1234,6 @@ class PHP extends Tokenizer
                 }//end for
 
                 if ($isEnumCase === true) {
-                    // Modify $tokens directly so we can use it as optimisation for other enum "case".
                     $tokens[$stackPtr][0] = T_ENUM_CASE;
 
                     $newToken            = [];
@@ -1324,7 +1288,6 @@ class PHP extends Tokenizer
                     echo "\t\t* tokens from $stackPtr changed from $oldCode to $newCode".PHP_EOL;
                 }
 
-                // We processed an extra 3 tokens, for `(`, `set`, and `)`.
                 $stackPtr += 3;
 
                 continue;
@@ -1374,7 +1337,6 @@ class PHP extends Tokenizer
                     $name = substr($name, 10);
                 }
 
-                // Special case keywords which can be used in fully qualified form.
                 if ($token[0] === T_NAME_FULLY_QUALIFIED) {
                     $specialCasedType = null;
                     $nameLc           = strtolower($name);
@@ -1456,7 +1418,6 @@ class PHP extends Tokenizer
             if ($tokenIsArray === true
                 && $token[0] === T_ATTRIBUTE
             ) {
-                // Go looking for the close bracket.
                 $bracketCloser = $this->findCloser($tokens, ($stackPtr + 1), ['[', '#['], ']');
 
                 $newToken            = [];
@@ -1488,7 +1449,6 @@ class PHP extends Tokenizer
                 && ($token[0] === T_STRING
                 || preg_match('`^[a-zA-Z_\x80-\xff]`', $token[1]) === 1)
             ) {
-                // Get the next non-empty token.
                 for ($i = ($stackPtr + 1); $i < $numTokens; $i++) {
                     if (is_array($tokens[$i]) === false
                         || isset(Tokens::$emptyTokens[$tokens[$i][0]]) === false
@@ -1501,7 +1461,6 @@ class PHP extends Tokenizer
                     && is_array($tokens[$i]) === false
                     && $tokens[$i] === ':'
                 ) {
-                    // Get the previous non-empty token.
                     for ($j = ($stackPtr - 1); $j > 0; $j--) {
                         if (is_array($tokens[$j]) === false
                             || isset(Tokens::$emptyTokens[$tokens[$j][0]]) === false
@@ -1522,8 +1481,6 @@ class PHP extends Tokenizer
 
                         $newStackPtr++;
 
-                        // Modify the original token stack so that future checks, like
-                        // determining T_COLON vs T_INLINE_ELSE can handle this correctly.
                         $tokens[$stackPtr][0] = T_PARAM_NAME;
 
                         if (PHP_CODESNIFFER_VERBOSITY > 1) {
@@ -1545,7 +1502,6 @@ class PHP extends Tokenizer
                 && (isset($this->tstringContexts[$finalTokens[$lastNotEmptyToken]['code']]) === false
                 || $finalTokens[$lastNotEmptyToken]['code'] === T_NEW)
             ) {
-                // Get the next non-whitespace token.
                 for ($i = ($stackPtr + 1); $i < $numTokens; $i++) {
                     if (is_array($tokens[$i]) === false
                         || isset(Tokens::$emptyTokens[$tokens[$i][0]]) === false
@@ -1610,7 +1566,6 @@ class PHP extends Tokenizer
                             continue;
                         }
 
-                        // Reached the next token after.
                         if (($foundDNFParens % 2) === 0
                             && $foundDNFPipe >= 1
                             && ($tokenType === T_VARIABLE
@@ -1631,9 +1586,6 @@ class PHP extends Tokenizer
                     ];
                     $newStackPtr++;
 
-                    // Also modify the original token stack so that
-                    // future checks (like looking for T_NULLABLE) can
-                    // detect the T_READONLY token more easily.
                     $tokens[$stackPtr][0] = T_READONLY;
                     $token[0] = T_READONLY;
 
@@ -1672,7 +1624,6 @@ class PHP extends Tokenizer
                 && $tokens[($stackPtr + 2)][0] === T_STRING
                 && strtolower($tokens[($stackPtr + 2)][1]) === 'from'
             ) {
-                // Single-line "yield from" with only whitespace between.
                 $finalTokens[$newStackPtr] = [
                     'code'    => T_YIELD_FROM,
                     'type'    => 'T_YIELD_FROM',
@@ -1793,15 +1744,12 @@ class PHP extends Tokenizer
                 $newStackPtr++;
 
                 $yieldFromSubtokens = @token_get_all("<?php\n".substr($token[1], 5, -4));
-                // Remove the PHP open tag token.
                 array_shift($yieldFromSubtokens);
-                // Add the "from" keyword.
                 $yieldFromSubtokens[] = [
                     0 => T_YIELD_FROM,
                     1 => substr($token[1], -4),
                 ];
 
-                // Inject the new tokens into the token stack.
                 array_splice($tokens, ($stackPtr + 1), 0, $yieldFromSubtokens);
                 $numTokens = count($tokens);
 
@@ -1911,7 +1859,6 @@ class PHP extends Tokenizer
                 $stackPtr++;
 
                 if ($tokenIsArray === false) {
-                    // Pre PHP 7.
                     $stackPtr++;
                 }
 
@@ -2003,7 +1950,6 @@ class PHP extends Tokenizer
                     ) {
                         $newContent .= $tokens[$i][1];
 
-                        // Support floats.
                         if (substr(strtolower($tokens[$i][1]), -1) === 'e'
                             && ($tokens[($i + 1)] === '-'
                             || $tokens[($i + 1)] === '+')
@@ -2062,12 +2008,10 @@ class PHP extends Tokenizer
                     }
 
                     if ($tokens[$x] !== '(') {
-                        // This is not a match expression.
                         break;
                     }
 
                     if (isset($this->tstringContexts[$finalTokens[$lastNotEmptyToken]['code']]) === true) {
-                        // Also not a match expression.
                         break;
                     }
 
@@ -2089,7 +2033,6 @@ class PHP extends Tokenizer
                     $newStackPtr++;
                     continue;
                 } else if ($isMatch === false && $token[0] === T_MATCH) {
-                    // PHP 8.0, match keyword, but not a match expression.
                     $newToken            = [];
                     $newToken['code']    = T_STRING;
                     $newToken['type']    = 'T_STRING';
@@ -2117,14 +2060,12 @@ class PHP extends Tokenizer
             ) {
                 for ($x = ($stackPtr + 1); $x < $numTokens; $x++) {
                     if ($tokens[$x] === ',') {
-                        // Skip over potential trailing comma (supported in PHP).
                         continue;
                     }
 
                     if (is_array($tokens[$x]) === false
                         || isset(Tokens::$emptyTokens[$tokens[$x][0]]) === false
                     ) {
-                        // Non-empty, non-comma content.
                         break;
                     }
                 }
@@ -2133,10 +2074,6 @@ class PHP extends Tokenizer
                     && is_array($tokens[$x]) === true
                     && $tokens[$x][0] === T_DOUBLE_ARROW
                 ) {
-                    // Modify the original token stack for the double arrow so that
-                    // future checks can disregard the double arrow token more easily.
-                    // For match expression "case" statements, this is handled
-                    // in PHP::processAdditional().
                     $tokens[$x][0] = T_MATCH_ARROW;
                     if (PHP_CODESNIFFER_VERBOSITY > 1) {
                         echo "\t\t* token $x changed from T_DOUBLE_ARROW to T_MATCH_ARROW".PHP_EOL;
@@ -2165,7 +2102,6 @@ class PHP extends Tokenizer
                 $newToken            = [];
                 $newToken['content'] = '?';
 
-                // For typed constants, we only need to check the token before the ? to be sure.
                 if ($finalTokens[$lastNotEmptyToken]['code'] === T_CONST) {
                     $newToken['code'] = T_NULLABLE;
                     $newToken['type'] = 'T_NULLABLE';
@@ -2240,9 +2176,6 @@ class PHP extends Tokenizer
                     break;
                 }//end for
 
-                // Handle live coding/parse errors elegantly.
-                // If the "?" is the last non-empty token in the file, we cannot draw a definitive conclusion,
-                // so tokenize as T_INLINE_THEN.
                 if ($i === $numTokens) {
                     if (PHP_CODESNIFFER_VERBOSITY > 1) {
                         echo "\t\t* token $stackPtr at end of file changed from ? to T_INLINE_THEN".PHP_EOL;
@@ -2268,7 +2201,6 @@ class PHP extends Tokenizer
 
                 for ($i = ($stackPtr - 1); $i >= 0; $i--) {
                     if (isset($tokens[$i]) === false) {
-                        // Ignore skipped tokens (related to PHP 8+ slash/hash comment vs new line retokenization).
                         continue;
                     }
 
@@ -2289,7 +2221,6 @@ class PHP extends Tokenizer
                     if ($prevNonEmpty === null
                         && isset(Tokens::$emptyTokens[$tokenType]) === false
                     ) {
-                        // Found the previous non-empty token.
                         if ($tokenType === ':' || $tokenType === ',' || $tokenType === T_ATTRIBUTE_END) {
                             $newToken['code'] = T_NULLABLE;
                             $newToken['type'] = 'T_NULLABLE';
@@ -2373,9 +2304,6 @@ class PHP extends Tokenizer
                 && $token[0] === T_STRING
                 && strtolower($token[1]) === 'fn'
             ) {
-                // Modify the original token stack so that
-                // future checks (like looking for T_NULLABLE) can
-                // detect the T_FN token more easily.
                 $tokens[$stackPtr][0] = T_FN;
                 $token[0] = T_FN;
                 if (PHP_CODESNIFFER_VERBOSITY > 1) {
@@ -2394,8 +2322,6 @@ class PHP extends Tokenizer
                 || $token[0] === T_FN)
                 && $finalTokens[$lastNotEmptyToken]['code'] !== T_USE
             ) {
-                // Go looking for the colon to start the return type hint.
-                // Start by finding the closing parenthesis of the function.
                 $parenthesisStack  = [];
                 $parenthesisCloser = false;
                 for ($x = ($stackPtr + 1); $x < $numTokens; $x++) {
@@ -2415,9 +2341,7 @@ class PHP extends Tokenizer
                         if (is_array($tokens[$x]) === false
                             || isset(Tokens::$emptyTokens[$tokens[$x][0]]) === false
                         ) {
-                            // Non-empty content.
                             if (is_array($tokens[$x]) === true && $tokens[$x][0] === T_USE) {
-                                // Found a use statement, so search ahead for the closing parenthesis.
                                 for ($x += 1; $x < $numTokens; $x++) {
                                     if (is_array($tokens[$x]) === false && $tokens[$x] === ')') {
                                         continue(2);
@@ -2433,19 +2357,14 @@ class PHP extends Tokenizer
                         && is_array($tokens[$x]) === false
                         && $tokens[$x] === ':'
                     ) {
-                        // Find the start of the return type.
                         for ($x += 1; $x < $numTokens; $x++) {
                             if (is_array($tokens[$x]) === true
                                 && isset(Tokens::$emptyTokens[$tokens[$x][0]]) === true
                             ) {
-                                // Whitespace or comments before the return type.
                                 continue;
                             }
 
                             if (is_array($tokens[$x]) === false && $tokens[$x] === '?') {
-                                // Found a nullable operator, so skip it.
-                                // But also convert the token to save the tokenizer
-                                // a bit of time later on.
                                 $tokens[$x] = [
                                     T_NULLABLE,
                                     '?',
@@ -2567,17 +2486,13 @@ class PHP extends Tokenizer
                     $newStackPtr++;
                 }
             } else {
-                // Some T_STRING tokens should remain that way due to their context.
                 if ($tokenIsArray === true && $token[0] === T_STRING) {
                     $preserveTstring = false;
 
-                    // True/false/parent/self/static in typed constants should be fixed to their own token,
-                    // but the constant name should not be.
                     if ((isset($this->tstringContexts[$finalTokens[$lastNotEmptyToken]['code']]) === true
                         && $finalTokens[$lastNotEmptyToken]['code'] === T_CONST)
                         || $insideConstDeclaration === true
                     ) {
-                        // Find the next non-empty token.
                         for ($i = ($stackPtr + 1); $i < $numTokens; $i++) {
                             if (is_array($tokens[$i]) === true
                                 && isset(Tokens::$emptyTokens[$tokens[$i][0]]) === true
@@ -2598,17 +2513,12 @@ class PHP extends Tokenizer
                         $preserveTstring   = true;
                         $tokenContentLower = strtolower($token[1]);
 
-                        // Special case for syntax like: return new self/new parent
-                        // where self/parent should not be a string.
                         if ($finalTokens[$lastNotEmptyToken]['code'] === T_NEW
                             && ($tokenContentLower === 'self' || $tokenContentLower === 'parent')
                         ) {
                             $preserveTstring = false;
                         }
 
-                        // Special case for fully qualified \true, \false and \null
-                        // where true/false/null should not be a string.
-                        // Note: if this is the _start_ of a longer namespaced name, this will undone again later.
                         if ($finalTokens[$lastNotEmptyToken]['code'] === T_NS_SEPARATOR
                             && ($tokenContentLower === 'true' || $tokenContentLower === 'false' || $tokenContentLower === 'null')
                         ) {
@@ -2627,7 +2537,6 @@ class PHP extends Tokenizer
                             }
                         }
                     } else if ($finalTokens[$lastNotEmptyToken]['content'] === '&') {
-                        // Function names for functions declared to return by reference.
                         for ($i = ($lastNotEmptyToken - 1); $i >= 0; $i--) {
                             if (isset(Tokens::$emptyTokens[$finalTokens[$i]['code']]) === true) {
                                 continue;
@@ -2640,7 +2549,6 @@ class PHP extends Tokenizer
                             break;
                         }
                     } else {
-                        // Keywords with special PHPCS token when used as a function call.
                         for ($i = ($stackPtr + 1); $i < $numTokens; $i++) {
                             if (is_array($tokens[$i]) === true
                                 && isset(Tokens::$emptyTokens[$tokens[$i][0]]) === true
@@ -2691,13 +2599,9 @@ class PHP extends Tokenizer
                     $newToken = self::standardiseToken($token);
                 }
 
-                // Convert colons that are actually the ELSE component of an
-                // inline IF statement.
                 if (empty($insideInlineIf) === false && $newToken['code'] === T_COLON) {
                     $isInlineIf = true;
 
-                    // Make sure this isn't a named parameter label.
-                    // Get the previous non-empty token.
                     for ($i = ($stackPtr - 1); $i > 0; $i--) {
                         if (is_array($tokens[$i]) === false
                             || isset(Tokens::$emptyTokens[$tokens[$i][0]]) === false
@@ -2714,7 +2618,6 @@ class PHP extends Tokenizer
                     }
 
                     if ($isInlineIf === true) {
-                        // Make sure this isn't a return type separator.
                         for ($i = ($stackPtr - 1); $i > 0; $i--) {
                             if (is_array($tokens[$i]) === false
                                 || ($tokens[$i][0] !== T_DOC_COMMENT
@@ -2738,10 +2641,6 @@ class PHP extends Tokenizer
                                 }
                             }
 
-                            // We've found the open parenthesis, so if the previous
-                            // non-empty token is FUNCTION or USE, this is a return type.
-                            // Note that we need to skip T_STRING tokens here as these
-                            // can be function names.
                             for ($i--; $i > 0; $i--) {
                                 if (is_array($tokens[$i]) === false
                                     || ($tokens[$i][0] !== T_DOC_COMMENT
@@ -2762,7 +2661,6 @@ class PHP extends Tokenizer
                         }//end if
                     }//end if
 
-                    // Check to see if this is a CASE or DEFAULT opener.
                     if ($isInlineIf === true) {
                         $inlineIfToken = $insideInlineIf[(count($insideInlineIf) - 1)];
                         for ($i = $stackPtr; $i > $inlineIfToken; $i--) {
@@ -2799,17 +2697,11 @@ class PHP extends Tokenizer
                     }
                 }//end if
 
-                // This is a special condition for T_ARRAY tokens used for anything else
-                // but array declarations, like type hinting function arguments as
-                // being arrays.
-                // We want to keep the parenthesis map clean, so let's tag these tokens as
-                // T_STRING.
                 if ($newToken['code'] === T_ARRAY) {
                     for ($i = ($stackPtr + 1); $i < $numTokens; $i++) {
                         if (is_array($tokens[$i]) === false
                             || isset(Tokens::$emptyTokens[$tokens[$i][0]]) === false
                         ) {
-                            // Non-empty content.
                             break;
                         }
                     }
@@ -2820,8 +2712,6 @@ class PHP extends Tokenizer
                     }
                 }
 
-                // This is a special case when checking PHP 5.5+ code in PHP < 5.5
-                // where "finally" should be T_FINALLY instead of T_STRING.
                 if ($newToken['code'] === T_STRING
                     && strtolower($newToken['content']) === 'finally'
                     && $finalTokens[$lastNotEmptyToken]['code'] === T_CLOSE_CURLY_BRACKET
@@ -2830,9 +2720,6 @@ class PHP extends Tokenizer
                     $newToken['type'] = 'T_FINALLY';
                 }
 
-                // This is a special case for PHP 5.6 use function and use const
-                // where "function" and "const" should be T_STRING instead of T_FUNCTION
-                // and T_CONST.
                 if (($newToken['code'] === T_FUNCTION
                     || $newToken['code'] === T_CONST)
                     && ($finalTokens[$lastNotEmptyToken]['code'] === T_USE || $insideUseGroup === true)
@@ -2841,9 +2728,6 @@ class PHP extends Tokenizer
                     $newToken['type'] = 'T_STRING';
                 }
 
-                // This is a special case for use groups in PHP 7+ where leaving
-                // the curly braces as their normal tokens would confuse
-                // the scope map and sniffs.
                 if ($newToken['code'] === T_OPEN_CURLY_BRACKET
                     && $finalTokens[$lastNotEmptyToken]['code'] === T_NS_SEPARATOR
                 ) {
@@ -2896,7 +2780,6 @@ class PHP extends Tokenizer
         $lastSeenTypeToken = $numTokens;
 
         for ($i = ($numTokens - 1); $i >= 0; $i--) {
-            // Check for any unset scope conditions due to alternate IF/ENDIF syntax.
             if (isset($this->tokens[$i]['scope_opener']) === true
                 && isset($this->tokens[$i]['scope_condition']) === false
             ) {
@@ -2996,12 +2879,10 @@ class PHP extends Tokenizer
 
                 continue;
             } else if ($this->tokens[$i]['code'] === T_FN && isset($this->tokens[($i + 1)]) === true) {
-                // Possible arrow function.
                 for ($x = ($i + 1); $x < $numTokens; $x++) {
                     if (isset(Tokens::$emptyTokens[$this->tokens[$x]['code']]) === false
                         && $this->tokens[$x]['code'] !== T_BITWISE_AND
                     ) {
-                        // Non-whitespace content.
                         break;
                     }
                 }
@@ -3055,18 +2936,14 @@ class PHP extends Tokenizer
                         $lastEndToken = null;
 
                         for ($scopeCloser = ($arrow + 1); $scopeCloser < $numTokens; $scopeCloser++) {
-                            // Arrow function closer should never be shared with the closer of a match
-                            // control structure.
                             if (isset($this->tokens[$scopeCloser]['scope_closer'], $this->tokens[$scopeCloser]['scope_condition']) === true
                                 && $scopeCloser === $this->tokens[$scopeCloser]['scope_closer']
                                 && $this->tokens[$this->tokens[$scopeCloser]['scope_condition']]['code'] === T_MATCH
                             ) {
                                 if ($arrow < $this->tokens[$scopeCloser]['scope_condition']) {
-                                    // Match in return value of arrow function. Move on to the next token.
                                     continue;
                                 }
 
-                                // Arrow function as return value for the last match case without trailing comma.
                                 if ($lastEndToken !== null) {
                                     $scopeCloser = $lastEndToken;
                                     break;
@@ -3103,8 +2980,6 @@ class PHP extends Tokenizer
                                 && $scopeCloser === $this->tokens[$scopeCloser]['scope_closer']
                                 && $this->tokens[$this->tokens[$scopeCloser]['scope_condition']]['code'] === T_FN
                             ) {
-                                // Found a nested arrow function that already has the closer set and is in
-                                // the same scope as us, so we can use its closer.
                                 break;
                             }
 
@@ -3113,7 +2988,6 @@ class PHP extends Tokenizer
                                 && $this->tokens[$scopeCloser]['code'] !== T_END_HEREDOC
                                 && $this->tokens[$scopeCloser]['code'] !== T_END_NOWDOC
                             ) {
-                                // We minus 1 here in case the closer can be shared with us.
                                 $scopeCloser = ($this->tokens[$scopeCloser]['scope_closer'] - 1);
                                 continue;
                             }
@@ -3187,7 +3061,6 @@ class PHP extends Tokenizer
                     }//end if
                 }//end if
 
-                // If after all that, the extra tokens are not set, this is not a (valid) arrow function.
                 if (isset($this->tokens[$i]['scope_closer']) === false) {
                     if (PHP_CODESNIFFER_VERBOSITY > 1) {
                         $line = $this->tokens[$i]['line'];
@@ -3203,8 +3076,6 @@ class PHP extends Tokenizer
                     continue;
                 }
 
-                // Unless there is a variable or a bracket before this token,
-                // it is the start of an array being defined using the short syntax.
                 $isShortArray = false;
                 $allowed      = [
                     T_CLOSE_SQUARE_BRACKET     => T_CLOSE_SQUARE_BRACKET,
@@ -3220,20 +3091,16 @@ class PHP extends Tokenizer
                 $allowed     += Tokens::$magicConstants;
 
                 for ($x = ($i - 1); $x >= 0; $x--) {
-                    // Allow for PHP 8.4 anon class dereferencing without wrapping parentheses.
-                    // Note: the T_CLASS token has not yet been retokenized to T_ANON_CLASS!
                     if ($this->tokens[$x]['code'] === T_CLOSE_CURLY_BRACKET
                         && isset($this->tokens[$x]['scope_condition']) === true
                         && $this->tokens[$this->tokens[$x]['scope_condition']]['code'] === T_CLASS
                     ) {
-                        // Now, make sure it is an anonymous class and not a normal class.
                         for ($y = ($this->tokens[$x]['scope_condition'] + 1); $y < $numTokens; $y++) {
                             if (isset(Tokens::$emptyTokens[$this->tokens[$y]['code']]) === false) {
                                 break;
                             }
                         }
 
-                        // Use the same check as used for the anon class retokenization.
                         if ($this->tokens[$y]['code'] === T_OPEN_PARENTHESIS
                             || $this->tokens[$y]['code'] === T_OPEN_CURLY_BRACKET
                             || $this->tokens[$y]['code'] === T_EXTENDS
@@ -3243,16 +3110,12 @@ class PHP extends Tokenizer
                         }
                     }
 
-                    // If we hit a scope opener, the statement has ended
-                    // without finding anything, so it's probably an array
-                    // using PHP 7.1 short list syntax.
                     if (isset($this->tokens[$x]['scope_opener']) === true) {
                         $isShortArray = true;
                         break;
                     }
 
                     if (isset(Tokens::$emptyTokens[$this->tokens[$x]['code']]) === false) {
-                        // Allow for control structures without braces.
                         if (($this->tokens[$x]['code'] === T_CLOSE_PARENTHESIS
                             && isset($this->tokens[$x]['parenthesis_owner']) === true
                             && isset(Tokens::$scopeOpeners[$this->tokens[$this->tokens[$x]['parenthesis_owner']]['code']]) === true)
@@ -3283,7 +3146,6 @@ class PHP extends Tokenizer
                 continue;
             } else if ($this->tokens[$i]['code'] === T_MATCH) {
                 if (isset($this->tokens[$i]['scope_opener'], $this->tokens[$i]['scope_closer']) === false) {
-                    // Not a match expression after all.
                     $this->tokens[$i]['code'] = T_STRING;
                     $this->tokens[$i]['type'] = 'T_STRING';
 
@@ -3309,7 +3171,6 @@ class PHP extends Tokenizer
                         }
                     }
                 } else {
-                    // Retokenize the double arrows for match expression cases to `T_MATCH_ARROW`.
                     $searchFor  = [
                         T_OPEN_CURLY_BRACKET  => T_OPEN_CURLY_BRACKET,
                         T_OPEN_SQUARE_BRACKET => T_OPEN_SQUARE_BRACKET,
@@ -3339,7 +3200,6 @@ class PHP extends Tokenizer
                             continue;
                         }
 
-                        // This must be a double arrow, but make sure anyhow.
                         if ($this->tokens[$x]['code'] === T_DOUBLE_ARROW) {
                             $this->tokens[$x]['code'] = T_MATCH_ARROW;
                             $this->tokens[$x]['type'] = 'T_MATCH_ARROW';
@@ -3357,8 +3217,6 @@ class PHP extends Tokenizer
                 || $this->tokens[$i]['code'] === T_CLOSE_PARENTHESIS
             ) {
                 if ($lastSeenTypeToken < $i) {
-                    // We've already examined this code to check if it is a type declaration and concluded it wasn't.
-                    // No need to do it again.
                     continue;
                 }
 
@@ -3402,24 +3260,20 @@ class PHP extends Tokenizer
                         && ($this->tokens[$x]['code'] === T_BITWISE_AND
                         || $this->tokens[$x]['code'] === T_ELLIPSIS)
                     ) {
-                        // Skip past reference and variadic indicators for parameter types.
                         continue;
                     }
 
                     if ($this->tokens[$x]['code'] === T_VARIABLE) {
-                        // Parameter/Property defaults can not contain variables, so this could be a type.
                         $suspectedType = 'property or parameter';
                         break;
                     }
 
                     if ($this->tokens[$x]['code'] === T_DOUBLE_ARROW) {
-                        // Possible arrow function.
                         $suspectedType = 'return';
                         break;
                     }
 
                     if ($this->tokens[$x]['code'] === T_SEMICOLON) {
-                        // Possible abstract method or interface method.
                         $suspectedType = 'return';
                         break;
                     }
@@ -3433,7 +3287,6 @@ class PHP extends Tokenizer
                     }
 
                     if ($this->tokens[$x]['code'] === T_EQUAL) {
-                        // Possible constant declaration, the `T_STRING` name will have been skipped over already.
                         $suspectedType = 'constant';
                         break;
                     }
@@ -3446,7 +3299,6 @@ class PHP extends Tokenizer
                     || isset($this->tokens[$i]['parenthesis_owner']) === true))
                     || isset($suspectedType) === false
                 ) {
-                    // Definitely not a union, intersection or DNF type, move on.
                     continue;
                 }
 
@@ -3473,8 +3325,6 @@ class PHP extends Tokenizer
                         && $this->tokens[$x]['code'] === T_STRING
                         && strtolower($this->tokens[$x]['content']) === 'static'
                     ) {
-                        // Static keyword followed directly by an open parenthesis for a DNF type.
-                        // This token should be T_STATIC and was incorrectly identified as a function call before.
                         $this->tokens[$x]['code'] = T_STATIC;
                         $this->tokens[$x]['type'] = 'T_STATIC';
 
@@ -3487,20 +3337,16 @@ class PHP extends Tokenizer
                     if ($suspectedType === 'property or parameter'
                         && $this->tokens[$x]['code'] === T_OPEN_PARENTHESIS
                     ) {
-                        // We need to prevent the open parenthesis for a function/fn declaration from being retokenized
-                        // to T_TYPE_OPEN_PARENTHESIS if this is the first parameter in the declaration.
                         if (isset($this->tokens[$x]['parenthesis_owner']) === true
                             && $this->tokens[$this->tokens[$x]['parenthesis_owner']]['code'] === T_FUNCTION
                         ) {
                             $confirmed = true;
                             break;
                         } else {
-                            // This may still be an arrow function which hasn't been handled yet.
                             for ($y = ($x - 1); $y > 0; $y--) {
                                 if (isset(Tokens::$emptyTokens[$this->tokens[$y]['code']]) === false
                                     && $this->tokens[$y]['code'] !== T_BITWISE_AND
                                 ) {
-                                    // Non-whitespace content.
                                     break;
                                 }
                             }
@@ -3517,7 +3363,6 @@ class PHP extends Tokenizer
                         continue;
                     }
 
-                    // Union, intersection and DNF types can't use the nullable operator, but be tolerant to parse errors.
                     if (($typeTokenCountBefore > 0
                         || ($this->tokens[$x]['code'] === T_OPEN_PARENTHESIS && isset($this->tokens[$x]['parenthesis_owner']) === false))
                         && ($this->tokens[$x]['code'] === T_NULLABLE
@@ -3542,7 +3387,6 @@ class PHP extends Tokenizer
                     }
 
                     if ($suspectedType === 'return' && $this->tokens[$x]['code'] === T_COLON) {
-                        // Make sure this is the colon for a return type.
                         for ($y = ($x - 1); $y > 0; $y--) {
                             if (isset(Tokens::$emptyTokens[$this->tokens[$y]['code']]) === false) {
                                 break;
@@ -3550,7 +3394,6 @@ class PHP extends Tokenizer
                         }
 
                         if ($this->tokens[$y]['code'] !== T_CLOSE_PARENTHESIS) {
-                            // Definitely not a union, intersection or DNF return type, move on.
                             continue 2;
                         }
 
@@ -3565,8 +3408,6 @@ class PHP extends Tokenizer
                             break;
                         }
 
-                        // Arrow functions may not have the parenthesis_owner set correctly yet.
-                        // Closure use tokens won't be parentheses owners until PHPCS 4.0.
                         if (isset($this->tokens[$y]['parenthesis_opener']) === true) {
                             for ($z = ($this->tokens[$y]['parenthesis_opener'] - 1); $z > 0; $z--) {
                                 if (isset(Tokens::$emptyTokens[$this->tokens[$z]['code']]) === false) {
@@ -3595,14 +3436,12 @@ class PHP extends Tokenizer
                         || $this->tokens[$x]['code'] === T_FINAL
                         || $this->tokens[$x]['code'] === T_ABSTRACT)
                     ) {
-                        // This will also confirm constructor property promotion parameters, but that's fine.
                         $confirmed = true;
                     }
 
                     break;
                 }//end for
 
-                // Remember the last token we examined as part of the (non-)"type declaration".
                 $lastSeenTypeToken = $x;
 
                 if ($confirmed === false
@@ -3617,8 +3456,6 @@ class PHP extends Tokenizer
                     ) {
                         $confirmed = true;
                     } else {
-                        // No parenthesis owner set, this may be an arrow function which has not yet
-                        // had additional processing done.
                         if (isset($this->tokens[$last]['parenthesis_opener']) === true) {
                             for ($x = ($this->tokens[$last]['parenthesis_opener'] - 1); $x >= 0; $x--) {
                                 if (isset(Tokens::$emptyTokens[$this->tokens[$x]['code']]) === true) {
@@ -3650,7 +3487,6 @@ class PHP extends Tokenizer
                 }//end if
 
                 if ($confirmed === false || ($parenthesesCount % 2) !== 0) {
-                    // Not a (valid) union, intersection or DNF type after all, move on.
                     continue;
                 }
 
@@ -3726,7 +3562,6 @@ class PHP extends Tokenizer
             ) {
                 for ($x = ($i + 1); $x < $numTokens; $x++) {
                     if (isset(Tokens::$emptyTokens[$this->tokens[$x]['code']]) === false) {
-                        // Non-whitespace content.
                         break;
                     }
                 }
@@ -3749,29 +3584,19 @@ class PHP extends Tokenizer
                 && $this->tokens[$i]['code'] !== T_DEFAULT)
                 || isset($this->tokens[$i]['scope_opener']) === false
             ) {
-                // Only interested in CASE and DEFAULT statements from here on in.
                 continue;
             }
 
             $scopeOpener = $this->tokens[$i]['scope_opener'];
             $scopeCloser = $this->tokens[$i]['scope_closer'];
 
-            // If the first char after the opener is a curly brace
-            // and that brace has been ignored, it is actually
-            // opening this case statement and the opener and closer are
-            // probably set incorrectly.
             for ($x = ($scopeOpener + 1); $x < $numTokens; $x++) {
                 if (isset(Tokens::$emptyTokens[$this->tokens[$x]['code']]) === false) {
-                    // Non-whitespace content.
                     break;
                 }
             }
 
             if ($this->tokens[$x]['code'] === T_CASE || $this->tokens[$x]['code'] === T_DEFAULT) {
-                // Special case for multiple CASE statements that share the same
-                // closer. Because we are going backwards through the file, this next
-                // CASE statement is already fixed, so just use its closer and don't
-                // worry about fixing anything.
                 $newCloser = $this->tokens[$x]['scope_closer'];
                 $this->tokens[$i]['scope_closer'] = $newCloser;
                 if (PHP_CODESNIFFER_VERBOSITY > 1) {
@@ -3787,13 +3612,9 @@ class PHP extends Tokenizer
             if ($this->tokens[$x]['code'] !== T_OPEN_CURLY_BRACKET
                 || isset($this->tokens[$x]['scope_condition']) === true
             ) {
-                // Not a CASE/DEFAULT with a curly brace opener.
                 continue;
             }
 
-            // The closer for this CASE/DEFAULT should be the closing curly brace and
-            // not whatever it already is. The opener needs to be the opening curly
-            // brace so everything matches up.
             $newCloser = $this->tokens[$x]['bracket_closer'];
             foreach ([$i, $x, $newCloser] as $index) {
                 $this->tokens[$index]['scope_condition'] = $i;
@@ -3825,9 +3646,6 @@ class PHP extends Tokenizer
                 unset($this->tokens[$scopeCloser]['scope_opener']);
                 unset($this->tokens[$scopeCloser]['scope_closer']);
             } else {
-                // We were using a shared closer. All tokens that were
-                // sharing this closer with us, except for the scope condition
-                // and it's opener, need to now point to the new closer.
                 $condition = $this->tokens[$scopeCloser]['scope_condition'];
                 $start     = ($this->tokens[$condition]['scope_opener'] + 1);
                 for ($y = $start; $y < $scopeCloser; $y++) {
@@ -3853,8 +3671,6 @@ class PHP extends Tokenizer
             unset($this->tokens[$newCloser]['bracket_closer']);
             $this->tokens[$scopeCloser]['conditions'][] = $i;
 
-            // Now fix up all the tokens that think they are
-            // inside the CASE/DEFAULT statement when they are really outside.
             for ($x = $newCloser; $x < $scopeCloser; $x++) {
                 foreach ($this->tokens[$x]['conditions'] as $num => $oldCond) {
                     if ($oldCond === $this->tokens[$i]['code']) {
@@ -4145,7 +3961,6 @@ class PHP extends Tokenizer
 
         array_splice($subTokens, 0, 1, [[T_ATTRIBUTE, '#[']]);
 
-        // Go looking for the close bracket.
         $bracketCloser = $this->findCloser($subTokens, 1, '[', ']');
 
         /*
@@ -4171,7 +3986,6 @@ class PHP extends Tokenizer
 
             $bracketCloser = $this->findCloser($newSubTokens, 1, '[', ']');
             if ($bracketCloser !== null) {
-                // We found the closer, overwrite the original $subTokens array.
                 array_splice($tokens, ($stackPtr + 1), count($tokens), array_slice($newSubTokens, ($bracketCloser + 1)));
                 $subTokens = array_slice($newSubTokens, 0, ($bracketCloser + 1));
             }

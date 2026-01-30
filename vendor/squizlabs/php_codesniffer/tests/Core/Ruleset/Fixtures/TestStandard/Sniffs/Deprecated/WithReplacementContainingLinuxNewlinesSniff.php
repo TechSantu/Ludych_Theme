@@ -40,6 +40,5 @@ class WithReplacementContainingLinuxNewlinesSniff implements Sniff, DeprecatedSn
 
     public function process(File $phpcsFile, $stackPtr)
     {
-        // Do something.
     }
 }

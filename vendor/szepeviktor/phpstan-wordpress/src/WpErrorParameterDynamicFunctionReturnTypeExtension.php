@@ -155,7 +155,6 @@ class WpErrorParameterDynamicFunctionReturnTypeExtension implements \PHPStan\Typ
             $wpErrorArgumentType = $scope->getType($wpErrorArgument->value);
         }
 
-        // When called with a $wp_error parameter that isn't a constant boolean, return default type
         $type = $functionTypes['maybe'];
 
         if ($wpErrorArgumentType->isTrue()->yes()) {

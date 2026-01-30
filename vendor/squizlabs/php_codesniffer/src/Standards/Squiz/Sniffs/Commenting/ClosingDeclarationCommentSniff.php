@@ -50,13 +50,10 @@ class ClosingDeclarationCommentSniff implements Sniff
         if ($tokens[$stackPtr]['code'] === T_FUNCTION) {
             $methodProps = $phpcsFile->getMethodProperties($stackPtr);
 
-            // Abstract methods do not require a closing comment.
             if ($methodProps['is_abstract'] === true) {
                 return;
             }
 
-            // If this function is in an interface then we don't require
-            // a closing comment.
             if ($phpcsFile->hasCondition($stackPtr, T_INTERFACE) === true) {
                 return;
             }
@@ -92,7 +89,6 @@ class ClosingDeclarationCommentSniff implements Sniff
         if (isset($tokens[($closingBracket + 1)]) === false || $tokens[($closingBracket + 1)]['code'] !== T_COMMENT) {
             $next = $phpcsFile->findNext(T_WHITESPACE, ($closingBracket + 1), null, true);
             if ($next !== false && rtrim($tokens[$next]['content']) === $comment) {
-                // The comment isn't really missing; it is just in the wrong place.
                 $fix = $phpcsFile->addFixableError('Expected %s directly after closing brace', $closingBracket, 'Misplaced', $data);
                 if ($fix === true) {
                     $phpcsFile->fixer->beginChangeset();
@@ -100,8 +96,6 @@ class ClosingDeclarationCommentSniff implements Sniff
                         $phpcsFile->fixer->replaceToken($i, '');
                     }
 
-                    // Just in case, because indentation fixes can add indents onto
-                    // these comments and cause us to be unable to fix them.
                     $phpcsFile->fixer->replaceToken($next, $comment.$phpcsFile->eolChar);
                     $phpcsFile->fixer->endChangeset();
                 }

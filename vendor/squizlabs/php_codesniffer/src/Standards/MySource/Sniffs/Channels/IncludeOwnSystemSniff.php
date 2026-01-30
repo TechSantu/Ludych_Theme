@@ -45,7 +45,6 @@ class IncludeOwnSystemSniff implements Sniff, DeprecatedSniff
         $fileName = $phpcsFile->getFilename();
         $matches  = [];
         if (preg_match('|/systems/(.*)/([^/]+)?actions.inc$|i', $fileName, $matches) === 0) {
-            // Not an actions file.
             return;
         }
 

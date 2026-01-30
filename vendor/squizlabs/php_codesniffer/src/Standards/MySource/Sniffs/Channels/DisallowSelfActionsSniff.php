@@ -45,13 +45,11 @@ class DisallowSelfActionsSniff implements Sniff, DeprecatedSniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // We are not interested in abstract classes.
         $prev = $phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), null, true);
         if ($prev !== false && $tokens[$prev]['code'] === T_ABSTRACT) {
             return;
         }
 
-        // We are only interested in Action classes.
         $classNameToken = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
         $className      = $tokens[$classNameToken]['content'];
         if (substr($className, -7) !== 'Actions') {
@@ -61,12 +59,10 @@ class DisallowSelfActionsSniff implements Sniff, DeprecatedSniff
         $foundFunctions = [];
         $foundCalls     = [];
 
-        // Find all static method calls in the form self::method() in the class.
         $classEnd = $tokens[$stackPtr]['scope_closer'];
         for ($i = ($classNameToken + 1); $i < $classEnd; $i++) {
             if ($tokens[$i]['code'] !== T_DOUBLE_COLON) {
                 if ($tokens[$i]['code'] === T_FUNCTION) {
-                    // Cache the function information.
                     $funcName  = $phpcsFile->findNext(T_STRING, ($i + 1));
                     $funcScope = $phpcsFile->findPrevious(Tokens::$scopeModifiers, ($i - 1));
 
@@ -85,15 +81,11 @@ class DisallowSelfActionsSniff implements Sniff, DeprecatedSniff
 
             $funcNameToken = $phpcsFile->findNext(T_WHITESPACE, ($i + 1), null, true);
             if ($tokens[$funcNameToken]['code'] === T_VARIABLE) {
-                // We are only interested in function calls.
                 continue;
             }
 
             $funcName = $tokens[$funcNameToken]['content'];
 
-            // We've found the function, now we need to find it and see if it is
-            // public, private or protected. If it starts with an underscore we
-            // can assume it is private.
             if ($funcName[0] === '_') {
                 continue;
             }
@@ -108,8 +100,6 @@ class DisallowSelfActionsSniff implements Sniff, DeprecatedSniff
 
         foreach ($foundCalls as $token => $funcData) {
             if (isset($foundFunctions[$funcData['name']]) === false) {
-                // Function was not in this class, might have come from the parent.
-                // Either way, we can't really check this.
                 continue;
             } else if ($foundFunctions[$funcData['name']] === 'public') {
                 $type  = $funcData['type'];

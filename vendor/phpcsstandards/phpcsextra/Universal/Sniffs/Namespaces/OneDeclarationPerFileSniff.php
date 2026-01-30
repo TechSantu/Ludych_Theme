@@ -67,25 +67,21 @@ final class OneDeclarationPerFileSniff implements Sniff
     {
         $fileName = $phpcsFile->getFilename();
         if ($this->currentFile !== $fileName) {
-            // Reset the properties for each new file.
             $this->currentFile     = $fileName;
             $this->declarationSeen = false;
         }
 
         if (Namespaces::isDeclaration($phpcsFile, $stackPtr) === false) {
-            // Namespace operator, not a declaration; or live coding/parse error.
             return;
         }
 
         if ($this->declarationSeen === false) {
-            // This is the first namespace declaration in the file.
             $this->declarationSeen = $stackPtr;
             return;
         }
 
         $tokens = $phpcsFile->getTokens();
 
-        // OK, so this is a file with multiple namespace declarations.
         $phpcsFile->addError(
             'There should be only one namespace declaration per file. The first declaration was found on line %d',
             $stackPtr,

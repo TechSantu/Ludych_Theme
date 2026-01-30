@@ -76,7 +76,6 @@ final class CurrentTimeTimestampSniff extends AbstractFunctionParameterSniff {
 		 */
 		$type_param = PassedParameters::getParameterFromStack( $parameters, 1, 'type' );
 		if ( false === $type_param ) {
-			// Type parameter not found. Bow out.
 			return;
 		}
 
@@ -89,7 +88,6 @@ final class CurrentTimeTimestampSniff extends AbstractFunctionParameterSniff {
 			if ( isset( Tokens::$textStringTokens[ $this->tokens[ $i ]['code'] ] ) ) {
 				$content_type = trim( TextStrings::stripQuotes( $this->tokens[ $i ]['content'] ) );
 				if ( 'U' !== $content_type && 'timestamp' !== $content_type ) {
-					// Most likely valid use of current_time().
 					return;
 				}
 
@@ -148,7 +146,6 @@ final class CurrentTimeTimestampSniff extends AbstractFunctionParameterSniff {
 		$code_snippet .= ' )';
 
 		if ( false !== $has_comment ) {
-			// If there are comments, we don't auto-fix as it would remove those comments.
 			$this->phpcsFile->addError( $error, $stackPtr, $error_code, array( $code_snippet ) );
 			return;
 		}

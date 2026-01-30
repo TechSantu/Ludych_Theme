@@ -56,7 +56,6 @@ class RemovedNamespacedAssertSniff extends Sniff
      */
     public function register()
     {
-        // Enrich the scopes list.
         if (\defined('T_ANON_CLASS')) {
             $this->scopes[] = \T_ANON_CLASS;
         }
@@ -92,7 +91,6 @@ class RemovedNamespacedAssertSniff extends Sniff
         }
 
         if ($this->determineNamespace($phpcsFile, $stackPtr) === '') {
-            // Not a namespaced function declaration. This may be a parse error, but not our concern.
             return;
         }
 

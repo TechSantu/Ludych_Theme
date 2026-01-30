@@ -62,7 +62,6 @@ class Timing
     public static function getDuration()
     {
         if (self::$startTime === null) {
-            // Timing was never started.
             return 0;
         }
 
@@ -110,12 +109,10 @@ class Timing
     public static function printRunTime($force=false)
     {
         if ($force === false && self::$printed === true) {
-            // A double call.
             return;
         }
 
         if (self::$startTime === null) {
-            // Timing was never started.
             return;
         }
 

@@ -53,18 +53,14 @@ class ClassDefinitionNameSpacingSniff implements Sniff, DeprecatedSniff
         $tokens = $phpcsFile->getTokens();
 
         if (isset($tokens[$stackPtr]['bracket_closer']) === false) {
-            // Syntax error or live coding, bow out.
             return;
         }
 
-        // Do not check nested style definitions as, for example, in @media style rules.
         $nested = $phpcsFile->findNext(T_OPEN_CURLY_BRACKET, ($stackPtr + 1), $tokens[$stackPtr]['bracket_closer']);
         if ($nested !== false) {
             return;
         }
 
-        // Find the first blank line before this opening brace, unless we get
-        // to another style definition, comment or the start of the file.
         $endTokens  = [
             T_OPEN_CURLY_BRACKET  => T_OPEN_CURLY_BRACKET,
             T_CLOSE_CURLY_BRACKET => T_CLOSE_CURLY_BRACKET,
@@ -89,10 +85,7 @@ class ClassDefinitionNameSpacingSniff implements Sniff, DeprecatedSniff
                 continue;
             }
 
-            // We changed lines.
             if ($foundContent === false) {
-                // Before we throw an error, make sure we are not looking
-                // at a gap before the style definition.
                 $prev = $phpcsFile->findPrevious(T_WHITESPACE, $i, null, true);
                 if ($prev !== false
                     && isset($endTokens[$tokens[$prev]['code']]) === false

@@ -62,7 +62,6 @@ final class UseStatements
             throw UnexpectedTokenType::create(2, '$stackPtr', 'T_USE', $tokens[$stackPtr]['type']);
         }
 
-        // More efficient & simpler check for closure use in PHPCS 4.x.
         if (isset($tokens[$stackPtr]['parenthesis_owner'])
             && $tokens[$stackPtr]['parenthesis_owner'] === $stackPtr
         ) {
@@ -71,7 +70,6 @@ final class UseStatements
 
         $prev = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($stackPtr - 1), null, true);
         if ($prev !== false && $tokens[$prev]['code'] === \T_CLOSE_PARENTHESIS
-            // T_FUNCTION is included to handle certain parse errors, which are still clearly closure use, correctly.
             && Parentheses::isOwnerIn($phpcsFile, $prev, [\T_CLOSURE, \T_FUNCTION]) === true
         ) {
             return 'closure';
@@ -79,18 +77,15 @@ final class UseStatements
 
         $next = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
         if ($next === false) {
-            // Live coding or parse error.
             return '';
         }
 
         $lastCondition = Conditions::getLastCondition($phpcsFile, $stackPtr);
         if ($lastCondition === false || $tokens[$lastCondition]['code'] === \T_NAMESPACE) {
-            // Global or scoped namespace and not a closure use statement.
             return 'import';
         }
 
         $traitScopes = Tokens::$ooScopeTokens;
-        // Only classes, traits and enums can import traits.
         unset($traitScopes[\T_INTERFACE]);
 
         if (isset($traitScopes[$tokens[$lastCondition]['code']]) === true) {
@@ -222,7 +217,6 @@ final class UseStatements
 
         $endOfStatement = $phpcsFile->findNext([\T_SEMICOLON, \T_CLOSE_TAG], ($stackPtr + 1));
         if ($endOfStatement === false) {
-            // Live coding or parse error.
             Cache::set($phpcsFile, __METHOD__, $stackPtr, $statements);
             return $statements;
         }
@@ -246,7 +240,6 @@ final class UseStatements
             $tokenCode = $tokens[$i]['code'];
             switch ($tokenCode) {
                 case \T_STRING:
-                    // Only when either at the start of the statement or at the start of a new sub within a group.
                     if ($start === true && $fixedType === false) {
                         $content = \strtolower($tokens[$i]['content']);
                         if ($content === 'function'
@@ -321,7 +314,6 @@ final class UseStatements
                         break 2;
                     }
 
-                    // Reset.
                     $start    = true;
                     $name     = '';
                     $hasAlias = false;
@@ -340,7 +332,6 @@ final class UseStatements
                  */
                 default:
                     if ($hasAlias === false) {
-                        // Defensive coding, just in case. Should no longer be possible since PHPCS 3.7.0.
                         $name .= $tokens[$i]['content']; // @codeCoverageIgnore
                     }
 
@@ -390,7 +381,6 @@ final class UseStatements
             $useStatements         = self::splitImportUseStatement($phpcsFile, $stackPtr);
             $previousUseStatements = self::mergeImportUseStatements($previousUseStatements, $useStatements);
         } catch (ValueError $e) {
-            // Not an import use statement.
         }
 
         return $previousUseStatements;

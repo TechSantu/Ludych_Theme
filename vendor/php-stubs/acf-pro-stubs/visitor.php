@@ -699,7 +699,6 @@ return new class extends NodeVisitor {
         $tagVariableName = $tag->getVariableName();
         $tagVariableType = $tag->getType();
 
-        // Skip if information we need is missing.
         if (!$tagDescription || !$tagVariableName || !$tagVariableType) {
             return null;
         }
@@ -727,8 +726,6 @@ return new class extends NodeVisitor {
             return null;
         }
 
-        // It's common for an args parameter to accept a query var string or array with `string|array`.
-        // Remove the accepted string type for these so we get the strongest typing we can manage.
         $tagVariableType = str_replace(['|string', 'string|'], '', $tagVariableType);
 
         $tag = new WordPressTag();
@@ -745,7 +742,6 @@ return new class extends NodeVisitor {
         $tagDescription = $tag->getDescription();
         $tagVariableType = $tag->getType();
 
-        // Skip if information we need is missing.
         if (!$tagDescription || !$tagVariableType) {
             return null;
         }
@@ -785,7 +781,6 @@ return new class extends NodeVisitor {
         $tagDescription = $tag->getDescription();
         $tagVariableType = $tag->getType();
 
-        // Skip if information we need is missing.
         if (!$tagDescription || !$tagVariableType) {
             return null;
         }
@@ -847,12 +842,10 @@ return new class extends NodeVisitor {
 
         list(, $items, $final) = $matches;
 
-        // Pluck out phrases between single quotes, so messy sentences are handled:
         preg_match_all("#'([^']+)'#", $items, $matches);
 
         list(,$accepted) = $matches;
 
-        // Append the final item:
         $accepted[] = $final;
 
         return "'" . implode("'|'", $accepted) . "'";
@@ -865,8 +858,6 @@ return new class extends NodeVisitor {
 
     private static function getTypeNameFromString(string $tagVariable): ?string
     {
-        // PHPStan doesn't support typed array shapes (`int[]{...}`) so replace
-        // typed arrays such as `int[]` with `array`.
         $tagVariableType = preg_replace('#[a-zA-Z0-9_]+\[\]#', 'array', $tagVariable);
 
         if ($tagVariableType === null) {
@@ -891,7 +882,6 @@ return new class extends NodeVisitor {
             if (strpos($tagVariableType, "{$supportedType}|") === false) {
                 continue;
             }
-            // Move the type that uses the hash notation to the end of union types so the shape works.
             $tagVariableType = str_replace("{$supportedType}|", '', $tagVariableType) . "|{$supportedType}";
         }
 
@@ -905,8 +895,6 @@ return new class extends NodeVisitor {
     {
         $text = $tagDescription->__toString();
 
-        // Skip if the description doesn't contain at least one correctly
-        // formatted `@type`, which indicates an array hash.
         if (strpos($text, '    @type ') === false) {
             return [];
         }
@@ -919,7 +907,6 @@ return new class extends NodeVisitor {
      */
     private static function getTypesAtLevel(string $text, bool $optional, int $level): array
     {
-        // Populate `$types` with the value of each top level `@type`.
         $spaces = str_repeat(' ', ($level * 4));
         $types = preg_split("/\R+{$spaces}@type /", $text);
 
@@ -994,16 +981,12 @@ return new class extends NodeVisitor {
         }
 
         if (!isset($node->stmts) || count($node->stmts) === 0) {
-            // Interfaces and abstract methods.
             return '';
         }
 
         $return = $this->nodeFinder->findInstanceOf($node, Stmt_Return::class);
 
-        // If there is a return statement, it's not return type never.
         if (count($return) !== 0) {
-            // If there is at least one return statement that is not void,
-            // it's not return type void.
             if (
                 $this->nodeFinder->findFirst(
                     $return,
@@ -1014,17 +997,13 @@ return new class extends NodeVisitor {
             ) {
                 return '';
             }
-            // If there is no return statement that is not void,
-            // it's return type void.
             return 'void';
         }
 
-        // Check for never return type.
         foreach ($node->stmts as $stmt) {
             if (!($stmt instanceof Expression)) {
                 continue;
             }
-            // If a first level statement is exit/die, it's return type never.
             if ($stmt->expr instanceof Exit_) {
                 if ($stmt->expr->expr instanceof String_) {
                     if (strpos($stmt->expr->expr->value, 'must be overridden') !== false) {
@@ -1037,25 +1016,19 @@ return new class extends NodeVisitor {
                 continue;
             }
             $name = $stmt->expr->name;
-            // If a first level statement is a call to wp_send_json(_success/error),
-            // it's return type never.
             if (strpos($name->toString(), 'wp_send_json') === 0) {
                 return 'never';
             }
-            // Skip all functions but wp_die().
             if (strpos($name->toString(), 'wp_die') !== 0) {
                 continue;
             }
             $args = $stmt->expr->getArgs();
-            // If wp_die is called without 3rd parameter, it's return type never.
             if (count($args) < 3) {
                 return 'never';
             }
-            // If wp_die is called with 3rd parameter, we need additional checks.
             try {
                 $arg = (new ConstExprEvaluator())->evaluateSilently($args[2]->value);
             } catch (\PhpParser\ConstExprEvaluationException $e) {
-                // If we don't know the value of the 3rd parameter, we can't be sure.
                 continue;
             }
 

@@ -24,7 +24,6 @@ class HTMLDouble extends HTML
  </body>
 </html>';
 
-        // Use the correct line endings based on the OS.
         return str_replace("\n", PHP_EOL, $output).PHP_EOL;
     }
 

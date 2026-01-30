@@ -72,7 +72,6 @@ class InlineControlStructureSniff implements Sniff
             return;
         }
 
-        // Ignore the ELSE in ELSE IF. We'll process the IF part later.
         if ($tokens[$stackPtr]['code'] === T_ELSE) {
             $next = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
             if ($tokens[$next]['code'] === T_IF) {
@@ -81,11 +80,9 @@ class InlineControlStructureSniff implements Sniff
         }
 
         if ($tokens[$stackPtr]['code'] === T_WHILE || $tokens[$stackPtr]['code'] === T_FOR) {
-            // This could be from a DO WHILE, which doesn't have an opening brace or a while/for without body.
             if (isset($tokens[$stackPtr]['parenthesis_closer']) === true) {
                 $afterParensCloser = $phpcsFile->findNext(Tokens::$emptyTokens, ($tokens[$stackPtr]['parenthesis_closer'] + 1), null, true);
                 if ($afterParensCloser === false) {
-                    // Live coding.
                     return;
                 }
 
@@ -100,7 +97,6 @@ class InlineControlStructureSniff implements Sniff
             && $tokens[$stackPtr]['code'] !== T_ELSE
         ) {
             if ($tokens[$stackPtr]['code'] !== T_DO) {
-                // Live coding or parse error.
                 return;
             }
 
@@ -108,7 +104,6 @@ class InlineControlStructureSniff implements Sniff
             if ($nextWhile !== false
                 && isset($tokens[$nextWhile]['parenthesis_opener'], $tokens[$nextWhile]['parenthesis_closer']) === false
             ) {
-                // Live coding or parse error.
                 return;
             }
 
@@ -122,25 +117,17 @@ class InlineControlStructureSniff implements Sniff
 
         $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($start + 1), null, true);
         if ($nextNonEmpty === false) {
-            // Live coding or parse error.
             return;
         }
 
         if ($tokens[$nextNonEmpty]['code'] === T_OPEN_CURLY_BRACKET
             || $tokens[$nextNonEmpty]['code'] === T_COLON
         ) {
-            // T_CLOSE_CURLY_BRACKET missing, or alternative control structure with
-            // T_END... missing. Either live coding, parse error or end
-            // tag in short open tags and scan run with short_open_tag=Off.
-            // Bow out completely as any further detection will be unreliable
-            // and create incorrect fixes or cause fixer conflicts.
             return $phpcsFile->numTokens;
         }
 
         unset($nextNonEmpty, $start);
 
-        // This is a control structure without an opening brace,
-        // so it is an inline statement.
         if ($this->error === true) {
             $fix = $phpcsFile->addFixableError('Inline control structures are not allowed', $stackPtr, 'NotAllowed');
         } else {
@@ -149,7 +136,6 @@ class InlineControlStructureSniff implements Sniff
 
         $phpcsFile->recordMetric($stackPtr, 'Control structure defined inline', 'yes');
 
-        // Stop here if we are not fixing the error.
         if ($fix !== true) {
             return;
         }
@@ -185,8 +171,6 @@ class InlineControlStructureSniff implements Sniff
             if (in_array($tokens[$end]['code'], $fixableScopeOpeners, true) === true
                 && isset($tokens[$end]['scope_opener']) === false
             ) {
-                // The best way to fix nested inline scopes is middle-out.
-                // So skip this one. It will be detected and fixed on a future loop.
                 $phpcsFile->fixer->rollbackChangeset();
                 return;
             }
@@ -205,7 +189,6 @@ class InlineControlStructureSniff implements Sniff
 
                     $nextType = $tokens[$next]['code'];
 
-                    // Let additional conditions loop and find their ending.
                     if (($type === T_IF
                         || $type === T_ELSEIF)
                         && ($nextType === T_ELSEIF
@@ -214,7 +197,6 @@ class InlineControlStructureSniff implements Sniff
                         continue;
                     }
 
-                    // Account for TRY... CATCH/FINALLY statements.
                     if (($type === T_TRY
                         || $type === T_CATCH
                         || $type === T_FINALLY)
@@ -224,12 +206,10 @@ class InlineControlStructureSniff implements Sniff
                         continue;
                     }
 
-                    // Account for DO... WHILE conditions.
                     if ($type === T_DO && $nextType === T_WHILE) {
                         $end = $phpcsFile->findNext(T_SEMICOLON, ($next + 1));
                     }
                 } else if ($type === T_CLOSURE) {
-                    // There should be a semicolon after the closing brace.
                     $next = $phpcsFile->findNext(Tokens::$emptyTokens, ($end + 1), null, true);
                     if ($next !== false && $tokens[$next]['code'] === T_SEMICOLON) {
                         $end = $next;
@@ -260,7 +240,6 @@ class InlineControlStructureSniff implements Sniff
 
         $nextContent = $phpcsFile->findNext(Tokens::$emptyTokens, ($end + 1), null, true);
         if ($nextContent === false || $tokens[$nextContent]['line'] !== $tokens[$end]['line']) {
-            // Looks for completely empty statements.
             $next = $phpcsFile->findNext(T_WHITESPACE, ($closer + 1), ($end + 1), true);
         } else {
             $next    = ($end + 1);
@@ -269,7 +248,6 @@ class InlineControlStructureSniff implements Sniff
 
         if ($next !== $end) {
             if ($nextContent === false || $tokens[$nextContent]['line'] !== $tokens[$end]['line']) {
-                // Account for a comment on the end of the line.
                 for ($endLine = $end; $endLine < $phpcsFile->numTokens; $endLine++) {
                     if (isset($tokens[($endLine + 1)]) === false
                         || $tokens[$endLine]['line'] !== $tokens[($endLine + 1)]['line']
@@ -331,7 +309,6 @@ class InlineControlStructureSniff implements Sniff
             }//end if
         } else {
             if ($nextContent === false || $tokens[$nextContent]['line'] !== $tokens[$end]['line']) {
-                // Account for a comment on the end of the line.
                 for ($endLine = $end; $endLine < $phpcsFile->numTokens; $endLine++) {
                     if (isset($tokens[($endLine + 1)]) === false
                         || $tokens[$endLine]['line'] !== $tokens[($endLine + 1)]['line']

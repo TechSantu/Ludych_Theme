@@ -9,7 +9,6 @@ get_header();
 ?>
 
 
-	<!-- hero banner start -->
 	<section class="hero-banner">
 		<div class="bg-overlay"></div>
 		<div class="custom-container">
@@ -47,8 +46,6 @@ get_header();
 			</div>
 		</div>
 	</section>
-	<!-- hero banner end -->
-	<!-- about us start -->
 	<section class="about-us">
 		<div class="custom-container">
 			<div class="row">
@@ -123,8 +120,6 @@ get_header();
 			</div>
 		</div>
 	</section>
-	<!-- about us end -->
-	<!-- top business partner start -->
 	<section class="our-services">
 		<div class="custom-container">
 			<div class="global-header left-align">
@@ -414,8 +409,6 @@ get_header();
 			</div>
 		</div>
 	</section>
-	<!-- top business partner end -->
-	<!-- our work progress start -->
 	<section class="work-progress">
 		<div class="custom-container">
 			<div class="global-header middle-align">
@@ -669,7 +662,6 @@ get_header();
 		</div>
 	</section>
 
-	<!-- why choose us start -->
 	<section class="why-Onchoose-us">
 		<div class="custom-container">
 			<div class="global-header left-align">
@@ -726,9 +718,7 @@ get_header();
 			</div>
 		</div>
 	</section>
-	<!-- why choose us end -->
 
-	<!-- our work progress start -->
 	<section class="our-work-progress">
 		<div class="custom-container">
 			<div class="global-header middle-align">
@@ -944,8 +934,6 @@ get_header();
 			</div>
 		</div>
 	</section>
-	<!-- our work progress end -->
-	<!-- about our services start -->
 	<section class="client-testimonial">
 		<div class="custom-container">
 			<div class="global-header middle-align">
@@ -1024,8 +1012,6 @@ get_header();
 			</div>
 		</div>
 	</section>
-	<!-- about our services end -->
-	<!-- our blog start -->
 	<section class="our-blog">
 		<div class="custom-container">
 			<div class="global-header middle-align">
@@ -1108,9 +1094,7 @@ get_header();
 			</div>
 		</div>
 	</section>
-	<!-- our blog end -->
 
-	<!-- faq section start -->
 	<section class="faq-outer">
 		<div class="custom-container">
 			<div class="row">
@@ -1200,8 +1184,6 @@ get_header();
 			</div>
 		</div>
 	</section>
-	<!-- faq section end -->
-	<!-- contact us start -->
 	<section class="contact-us">
 		<div class="custom-container">
 			<div class="row">
@@ -1298,7 +1280,6 @@ get_header();
 			</div>
 		</div>
 	</section>
-	<!-- contact us end -->
 
 <?php
 get_footer();

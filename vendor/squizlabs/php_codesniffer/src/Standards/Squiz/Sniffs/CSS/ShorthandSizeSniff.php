@@ -66,7 +66,6 @@ class ShorthandSizeSniff implements Sniff, DeprecatedSniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Some styles look like shorthand but are not actually a set of 4 sizes.
         $style = strtolower($tokens[$stackPtr]['content']);
         if (isset($this->excludeStyles[$style]) === true) {
             return;
@@ -74,23 +73,19 @@ class ShorthandSizeSniff implements Sniff, DeprecatedSniff
 
         $end = $phpcsFile->findNext(T_SEMICOLON, ($stackPtr + 1));
         if ($end === false) {
-            // Live coding or parse error.
             return;
         }
 
-        // Get the whole style content.
         $origContent = $phpcsFile->getTokensAsString(($stackPtr + 1), ($end - $stackPtr - 1));
         $origContent = trim($origContent, ':');
         $origContent = trim($origContent);
 
-        // Account for a !important annotation.
         $content = $origContent;
         if (substr($content, -10) === '!important') {
             $content = substr($content, 0, -10);
             $content = trim($content);
         }
 
-        // Check if this style value is a set of numbers with optional prefixes.
         $content = preg_replace('/\s+/', ' ', $content);
         $values  = [];
         $num     = preg_match_all(
@@ -100,12 +95,10 @@ class ShorthandSizeSniff implements Sniff, DeprecatedSniff
             PREG_SET_ORDER
         );
 
-        // Only interested in styles that have multiple sizes defined.
         if ($num < 2) {
             return;
         }
 
-        // Rebuild the content we matched to ensure we got everything.
         $matched = '';
         foreach ($values as $value) {
             $matched .= $value[0];
@@ -141,16 +134,13 @@ class ShorthandSizeSniff implements Sniff, DeprecatedSniff
 
         if ($num === 2) {
             if ($values[0][0] !== $values[1][0]) {
-                // Both values are different, so it is already shorthand.
                 return;
             }
         } else if ($values[0][0] !== $values[2][0] || $values[1][0] !== $values[3][0]) {
-            // Can't shorthand this.
             return;
         }
 
         if ($values[0][0] === $values[1][0]) {
-            // All values are the same.
             $expected = trim($values[0][0]);
         } else {
             $expected = trim($values[0][0]).' '.trim($values[1][0]);

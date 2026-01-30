@@ -207,7 +207,6 @@ final class SpacesFixer
         $fixable           = true;
         $nextNonWhitespace = $phpcsFile->findNext(\T_WHITESPACE, ($ptrA + 1), null, true);
         if ($nextNonWhitespace !== $ptrB) {
-            // Comment found between the tokens and we don't know where it should go, so don't auto-fix.
             $fixable = false;
         }
 
@@ -252,7 +251,6 @@ final class SpacesFixer
             $phpcsFile->fixer->replaceToken($i, '');
         }
 
-        // If necessary: add the correct amount whitespace.
         if ($expected !== 0) {
             if ($expected === 'newline') {
                 $phpcsFile->fixer->addContent($ptrA, $phpcsFile->eolChar);

@@ -82,7 +82,6 @@ abstract class AbstractVariableSniff extends AbstractScopeSniff
         if ($tokens[$stackPtr]['code'] === T_DOUBLE_QUOTED_STRING
             || $tokens[$stackPtr]['code'] === T_HEREDOC
         ) {
-            // Check to see if this string has a variable in it.
             $pattern = '|(?<!\\\\)(?:\\\\{2})*\${?[a-zA-Z0-9_]+}?|';
             if (preg_match($pattern, $tokens[$stackPtr]['content']) !== 0) {
                 return $this->processVariableInString($phpcsFile, $stackPtr);
@@ -91,9 +90,6 @@ abstract class AbstractVariableSniff extends AbstractScopeSniff
             return;
         }
 
-        // If this token is nested inside a function at a deeper
-        // level than the current OO scope that was found, it's a normal
-        // variable and not a member var.
         $conditions = array_reverse($tokens[$stackPtr]['conditions'], true);
         $inFunction = false;
         foreach ($conditions as $scope => $code) {
@@ -107,18 +103,12 @@ abstract class AbstractVariableSniff extends AbstractScopeSniff
         }
 
         if ($scope !== $currScope) {
-            // We found a closer scope to this token, so ignore
-            // this particular time through the sniff. We will process
-            // this token when this closer scope is found to avoid
-            // duplicate checks.
             return;
         }
 
-        // Just make sure this isn't a variable in a function declaration.
         if ($inFunction === false && isset($tokens[$stackPtr]['nested_parenthesis']) === true) {
             foreach ($tokens[$stackPtr]['nested_parenthesis'] as $opener => $closer) {
                 if (isset($tokens[$opener]['parenthesis_owner']) === false) {
-                    // Check if this is a USE statement for a closure.
                     $prev = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($opener - 1), null, true);
                     if ($tokens[$prev]['code'] === T_USE) {
                         $inFunction = true;
@@ -162,13 +152,11 @@ abstract class AbstractVariableSniff extends AbstractScopeSniff
     final protected function processTokenOutsideScope(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
-        // These variables are not member vars.
         if ($tokens[$stackPtr]['code'] === T_VARIABLE) {
             return $this->processVariable($phpcsFile, $stackPtr);
         } else if ($tokens[$stackPtr]['code'] === T_DOUBLE_QUOTED_STRING
             || $tokens[$stackPtr]['code'] === T_HEREDOC
         ) {
-            // Check to see if this string has a variable in it.
             $pattern = '|(?<!\\\\)(?:\\\\{2})*\${?[a-zA-Z0-9_]+}?|';
             if (preg_match($pattern, $tokens[$stackPtr]['content']) !== 0) {
                 return $this->processVariableInString($phpcsFile, $stackPtr);

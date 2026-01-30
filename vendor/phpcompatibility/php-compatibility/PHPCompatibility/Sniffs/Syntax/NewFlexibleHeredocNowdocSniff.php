@@ -48,7 +48,6 @@ class NewFlexibleHeredocNowdocSniff extends Sniff
         );
 
         if (version_compare(\PHP_VERSION_ID, '70299', '>') === false) {
-            // Start identifier of a PHP 7.3 flexible heredoc/nowdoc.
             $targets[] = \T_STRING;
         }
 
@@ -121,13 +120,11 @@ class NewFlexibleHeredocNowdocSniff extends Sniff
                 $phpcsFile->addError($trailingError, $stackPtr, $trailingErrorCode);
             }
         } else {
-            // For PHP < 7.3, we're only interested in T_STRING tokens.
             if ($tokens[$stackPtr]['code'] !== \T_STRING) {
                 return;
             }
 
             if (preg_match('`^<<<([\'"]?)([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\1[\r\n]+`', $tokens[$stackPtr]['content'], $matches) !== 1) {
-                // Not the start of a PHP 7.3 flexible heredoc/nowdoc.
                 return;
             }
 
@@ -144,24 +141,19 @@ class NewFlexibleHeredocNowdocSniff extends Sniff
                     continue;
                 }
 
-                // OK, we've found the PHP 7.3 flexible heredoc/nowdoc closing marker.
 
                 /*
                  * Check for indented closing marker.
                  */
                 if ($trimmed !== $tokens[$i]['content']) {
-                    // Indent found before closing marker.
                     $phpcsFile->addError($indentError, $i, $indentErrorCode);
                 }
 
                 /*
                  * Check for tokens after the closing marker.
                  */
-                // Remove the identifier.
                 $afterMarker = substr($trimmed, \strlen($identifier));
-                // Remove a potential semi-colon at the beginning of what's left of the string.
                 $afterMarker = ltrim($afterMarker, ';');
-                // Remove new line characters at the end of the string.
                 $afterMarker = rtrim($afterMarker, "\r\n");
 
                 if ($afterMarker !== '') {
@@ -199,11 +191,9 @@ class NewFlexibleHeredocNowdocSniff extends Sniff
                     || $tokens[$nextNonWhitespace]['code'] === \T_STRING_CONCAT)
                     && $tokens[$nextNonWhitespace]['line'] !== $tokens[$stackPtr]['line'])
             ) {
-                // This is most likely a correctly identified closing marker.
                 return;
             }
 
-            // The real closing tag has to be before the next heredoc/nowdoc.
             $nextHereNowDoc = $phpcsFile->findNext(array(\T_START_HEREDOC, \T_START_NOWDOC), ($stackPtr + 1));
             if ($nextHereNowDoc === false) {
                 $nextHereNowDoc = null;
@@ -218,12 +208,9 @@ class NewFlexibleHeredocNowdocSniff extends Sniff
                 if ($prevNonWhitespace === false
                     || $tokens[$prevNonWhitespace]['line'] === $tokens[$realClosingMarker]['line']
                 ) {
-                    // Marker text found, but not at the start of the line.
                     continue;
                 }
 
-                // The original T_END_HEREDOC/T_END_NOWDOC was most likely incorrect as we've found
-                // a possible alternative closing marker.
                 $phpcsFile->addError($error, $stackPtr, $errorCode);
 
                 break;
@@ -235,7 +222,6 @@ class NewFlexibleHeredocNowdocSniff extends Sniff
             ) {
                 $opener = $tokens[$stackPtr]['scope_opener'];
             } else {
-                // PHPCS < 3.0.2 did not add scope_* values for Nowdocs.
                 $opener = $phpcsFile->findPrevious(\T_START_NOWDOC, ($stackPtr - 1));
                 if ($opener === false) {
                     return;
@@ -244,7 +230,6 @@ class NewFlexibleHeredocNowdocSniff extends Sniff
 
             $quotedIdentifier = preg_quote($tokens[$stackPtr]['content'], '`');
 
-            // Throw an error for each line in the body which starts with the identifier.
             for ($i = ($opener + 1); $i < $stackPtr; $i++) {
                 if (preg_match('`^[ \t]*' . $quotedIdentifier . '\b`', $tokens[$i]['content']) === 1) {
                     $phpcsFile->addError($error, $i, $errorCode);

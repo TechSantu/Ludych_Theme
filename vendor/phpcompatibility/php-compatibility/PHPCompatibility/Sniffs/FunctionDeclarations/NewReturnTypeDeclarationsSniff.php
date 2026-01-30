@@ -138,8 +138,6 @@ class NewReturnTypeDeclarationsSniff extends AbstractNewFeatureSniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Deal with older PHPCS version which don't recognize return type hints
-        // as well as newer PHPCS versions (3.3.0+) where the tokenization has changed.
         if ($tokens[$stackPtr]['code'] === \T_FUNCTION || $tokens[$stackPtr]['code'] === \T_CLOSURE) {
             $returnTypeHint = $this->getReturnTypeHintToken($phpcsFile, $stackPtr);
             if ($returnTypeHint !== false) {
@@ -153,7 +151,6 @@ class NewReturnTypeDeclarationsSniff extends AbstractNewFeatureSniff
             );
             $this->handleFeature($phpcsFile, $stackPtr, $itemInfo);
         }
-        // Handle class name based return types.
         elseif ($tokens[$stackPtr]['code'] === \T_STRING
             || (\defined('T_RETURN_TYPE') && $tokens[$stackPtr]['code'] === \T_RETURN_TYPE)
         ) {

@@ -35,14 +35,12 @@ final class MarkdownTest extends TestCase
      */
     public function testDocs($standard, $pathToExpected)
     {
-        // Set up the ruleset.
         $config  = new ConfigDouble(["--standard=$standard"]);
         $ruleset = new Ruleset($config);
 
         $expected = file_get_contents($pathToExpected);
         $this->assertNotFalse($expected, 'Output expectation file could not be found');
 
-        // Make the test OS independent.
         $expected = str_replace("\n", PHP_EOL, $expected);
         $this->expectOutputString($expected);
 
@@ -89,12 +87,10 @@ final class MarkdownTest extends TestCase
      */
     public function testDocSpecifics($sniffs, $pathToExpected)
     {
-        // Set up the ruleset.
         $standard = __DIR__.'/AllValidDocsTest.xml';
         $config   = new ConfigDouble(["--standard=$standard", "--sniffs=$sniffs"]);
         $ruleset  = new Ruleset($config);
 
-        // In tests, the `--sniffs` setting doesn't work out of the box.
         $sniffParts = explode('.', $sniffs);
         $sniffFile  = __DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.$sniffParts[0].DIRECTORY_SEPARATOR;
         $sniffFile .= 'Sniffs'.DIRECTORY_SEPARATOR.$sniffParts[1].DIRECTORY_SEPARATOR.$sniffParts[2].'Sniff.php';
@@ -107,7 +103,6 @@ final class MarkdownTest extends TestCase
         $expected = file_get_contents($pathToExpected);
         $this->assertNotFalse($expected, 'Output expectation file could not be found');
 
-        // Make the test OS independent.
         $expected = str_replace("\n", PHP_EOL, $expected);
         $this->expectOutputString($expected);
 
@@ -249,7 +244,6 @@ final class MarkdownTest extends TestCase
      */
     public function testFooter()
     {
-        // Set up the ruleset.
         $standard = __DIR__.'/OneDocTest.xml';
         $config   = new ConfigDouble(["--standard=$standard"]);
         $ruleset  = new Ruleset($config);
@@ -263,7 +257,6 @@ final class MarkdownTest extends TestCase
         if (method_exists($this, 'assertMatchesRegularExpression') === true) {
             $this->assertMatchesRegularExpression($regex, $footer);
         } else {
-            // PHPUnit < 9.1.0.
             $this->assertRegExp($regex, $footer);
         }
 
@@ -282,7 +275,6 @@ final class MarkdownTest extends TestCase
     {
         $expected = error_reporting();
 
-        // Set up the ruleset.
         $standard = __DIR__.'/OneDocTest.xml';
         $config   = new ConfigDouble(["--standard=$standard"]);
         $ruleset  = new Ruleset($config);
@@ -321,7 +313,6 @@ final class MarkdownTest extends TestCase
     {
         $originalIni = @ini_set('date.timezone', '');
 
-        // Set up the ruleset.
         $standard = __DIR__.'/OneDocTest.xml';
         $config   = new ConfigDouble(["--standard=$standard"]);
         $ruleset  = new Ruleset($config);
@@ -329,7 +320,6 @@ final class MarkdownTest extends TestCase
         $generator = new MarkdownDouble($ruleset);
         $generator->getRealFooter();
 
-        // Reset the timezone to its original state.
         ini_set('date.timezone', $originalIni);
 
     }//end testFooterDoesntThrowWarningOnMissingTimezone()
@@ -360,15 +350,12 @@ final class MarkdownTest extends TestCase
             $this->expectException($exceptionClass);
             $this->expectExceptionMessageMatches($regex);
         } else if (method_exists($this, 'expectExceptionMessageRegExp') === true) {
-            // PHPUnit < 8.4.0.
             $this->expectException($exceptionClass);
             $this->expectExceptionMessageRegExp($regex);
         } else {
-            // PHPUnit < 5.2.0.
             $this->setExpectedExceptionRegExp($exceptionClass, $regex);
         }
 
-        // Set up the ruleset.
         $standard = __DIR__.'/OneDocTest.xml';
         $config   = new ConfigDouble(["--standard=$standard"]);
         $ruleset  = new Ruleset($config);

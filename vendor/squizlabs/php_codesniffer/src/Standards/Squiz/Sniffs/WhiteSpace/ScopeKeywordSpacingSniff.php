@@ -47,7 +47,6 @@ class ScopeKeywordSpacingSniff implements Sniff
 
         $nextNonWhitespace = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
         if ($nextNonWhitespace === false) {
-            // Parse error/live coding. Bow out.
             return;
         }
 
@@ -58,21 +57,18 @@ class ScopeKeywordSpacingSniff implements Sniff
             if (($nextToken === false || $tokens[$nextToken]['code'] === T_DOUBLE_COLON)
                 || $tokens[$prevToken]['code'] === T_NEW
             ) {
-                // Late static binding, e.g., static:: OR new static() usage or live coding.
                 return;
             }
 
             if ($prevToken !== false
                 && $tokens[$prevToken]['code'] === T_TYPE_UNION
             ) {
-                // Not a scope keyword, but a union return type.
                 return;
             }
 
             if ($prevToken !== false
                 && $tokens[$prevToken]['code'] === T_NULLABLE
             ) {
-                // Not a scope keyword, but a return type.
                 return;
             }
 
@@ -83,21 +79,17 @@ class ScopeKeywordSpacingSniff implements Sniff
                 if ($prevPrevToken !== false
                     && $tokens[$prevPrevToken]['code'] === T_CLOSE_PARENTHESIS
                 ) {
-                    // Not a scope keyword, but a return type.
                     return;
                 }
             }
         }//end if
 
         if ($tokens[$prevToken]['code'] === T_AS) {
-            // Trait visibility change, e.g., "use HelloWorld { sayHello as private; }".
             return;
         }
 
         $isInFunctionDeclaration = false;
         if (empty($tokens[$stackPtr]['nested_parenthesis']) === false) {
-            // Check if this is PHP 8.0 constructor property promotion.
-            // In that case, we can't have multi-property definitions.
             $nestedParens    = $tokens[$stackPtr]['nested_parenthesis'];
             $lastCloseParens = end($nestedParens);
             if (isset($tokens[$lastCloseParens]['parenthesis_owner']) === true
@@ -113,7 +105,6 @@ class ScopeKeywordSpacingSniff implements Sniff
         ) {
             $endOfStatement = $phpcsFile->findNext(T_SEMICOLON, ($nextToken + 1));
             if ($endOfStatement === false) {
-                // Live coding.
                 return;
             }
 
@@ -122,7 +113,6 @@ class ScopeKeywordSpacingSniff implements Sniff
                 && $tokens[$stackPtr]['line'] !== $tokens[$nextToken]['line']
                 && $tokens[$nextToken]['line'] !== $tokens[$endOfStatement]['line']
             ) {
-                // Allow for multiple properties definitions to each be on their own line.
                 return;
             }
         }

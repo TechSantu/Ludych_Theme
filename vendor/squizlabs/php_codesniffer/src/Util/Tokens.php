@@ -90,7 +90,6 @@ define('T_TYPE_CLOSE_PARENTHESIS', 'PHPCS_T_TYPE_CLOSE_PARENTHESIS');
  * `PHP_CodeSniffer\Tests\Core\Util\Tokens\TokenNameTest::dataPolyfilledPHPNativeTokens()` test method!}
  */
 
-// Some PHP 5.5 tokens, replicated for lower versions.
 if (defined('T_FINALLY') === false) {
     define('T_FINALLY', 'PHPCS_T_FINALLY');
 }
@@ -99,7 +98,6 @@ if (defined('T_YIELD') === false) {
     define('T_YIELD', 'PHPCS_T_YIELD');
 }
 
-// Some PHP 5.6 tokens, replicated for lower versions.
 if (defined('T_ELLIPSIS') === false) {
     define('T_ELLIPSIS', 'PHPCS_T_ELLIPSIS');
 }
@@ -112,7 +110,6 @@ if (defined('T_POW_EQUAL') === false) {
     define('T_POW_EQUAL', 'PHPCS_T_POW_EQUAL');
 }
 
-// Some PHP 7 tokens, replicated for lower versions.
 if (defined('T_SPACESHIP') === false) {
     define('T_SPACESHIP', 'PHPCS_T_SPACESHIP');
 }
@@ -129,7 +126,6 @@ if (defined('T_YIELD_FROM') === false) {
     define('T_YIELD_FROM', 'PHPCS_T_YIELD_FROM');
 }
 
-// Some PHP 7.4 tokens, replicated for lower versions.
 if (defined('T_BAD_CHARACTER') === false) {
     define('T_BAD_CHARACTER', 'PHPCS_T_BAD_CHARACTER');
 }
@@ -138,7 +134,6 @@ if (defined('T_FN') === false) {
     define('T_FN', 'PHPCS_T_FN');
 }
 
-// Some PHP 8.0 tokens, replicated for lower versions.
 if (defined('T_NULLSAFE_OBJECT_OPERATOR') === false) {
     define('T_NULLSAFE_OBJECT_OPERATOR', 'PHPCS_T_NULLSAFE_OBJECT_OPERATOR');
 }
@@ -163,7 +158,6 @@ if (defined('T_ATTRIBUTE') === false) {
     define('T_ATTRIBUTE', 'PHPCS_T_ATTRIBUTE');
 }
 
-// Some PHP 8.1 tokens, replicated for lower versions.
 if (defined('T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG') === false) {
     define('T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG', 'PHPCS_T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG');
 }
@@ -180,7 +174,6 @@ if (defined('T_ENUM') === false) {
     define('T_ENUM', 'PHPCS_T_ENUM');
 }
 
-// Some PHP 8.4 tokens, replicated for lower versions.
 if (defined('T_PUBLIC_SET') === false) {
     define('T_PUBLIC_SET', 'PHPCS_T_PUBLIC_SET');
 }
@@ -193,7 +186,6 @@ if (defined('T_PRIVATE_SET') === false) {
     define('T_PRIVATE_SET', 'PHPCS_T_PRIVATE_SET');
 }
 
-// Tokens used for parsing doc blocks.
 define('T_DOC_COMMENT_STAR', 'PHPCS_T_DOC_COMMENT_STAR');
 define('T_DOC_COMMENT_WHITESPACE', 'PHPCS_T_DOC_COMMENT_WHITESPACE');
 define('T_DOC_COMMENT_TAG', 'PHPCS_T_DOC_COMMENT_TAG');
@@ -201,7 +193,6 @@ define('T_DOC_COMMENT_OPEN_TAG', 'PHPCS_T_DOC_COMMENT_OPEN_TAG');
 define('T_DOC_COMMENT_CLOSE_TAG', 'PHPCS_T_DOC_COMMENT_CLOSE_TAG');
 define('T_DOC_COMMENT_STRING', 'PHPCS_T_DOC_COMMENT_STRING');
 
-// Tokens used for PHPCS instruction comments.
 define('T_PHPCS_ENABLE', 'PHPCS_T_PHPCS_ENABLE');
 define('T_PHPCS_DISABLE', 'PHPCS_T_PHPCS_DISABLE');
 define('T_PHPCS_SET', 'PHPCS_T_PHPCS_SET');
@@ -781,7 +772,6 @@ final class Tokens
     public static function tokenName($token)
     {
         if (is_string($token) === false) {
-            // PHP-supplied token name.
             return token_name($token);
         }
 

@@ -63,7 +63,6 @@ class UnconditionalIfStatementSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
         $token  = $tokens[$stackPtr];
 
-        // Skip if statement without body.
         if (isset($token['parenthesis_opener'], $token['parenthesis_closer']) === false) {
             return;
         }

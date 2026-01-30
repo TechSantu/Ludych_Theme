@@ -122,7 +122,6 @@ final class EnqueuedResourceParametersSniff extends AbstractFunctionParameterSni
 	 * @return void
 	 */
 	public function process_parameters( $stackPtr, $group_name, $matched_content, $parameters ) {
-		// Check to see if a source ($src) is specified.
 		$src_param = PassedParameters::getParameterFromStack( $parameters, 2, 'src' );
 		if ( false === $src_param ) {
 			return;
@@ -154,7 +153,6 @@ final class EnqueuedResourceParametersSniff extends AbstractFunctionParameterSni
 				'MissingVersion',
 				array( $matched_content, $type )
 			);
-			// The version argument should have a non-false value.
 		} elseif ( $this->is_falsy( $version_param['start'], $version_param['end'] ) ) {
 			$this->phpcsFile->addError(
 				'Version parameter is not explicitly set or has been set to an equivalent of "false" for %s; ' .
@@ -180,7 +178,6 @@ final class EnqueuedResourceParametersSniff extends AbstractFunctionParameterSni
 
 		$infooter_param = PassedParameters::getParameterFromStack( $parameters, 5, 'in_footer' );
 		if ( false === $infooter_param ) {
-			// If in footer is not set, throw a warning about the default.
 			$this->phpcsFile->addWarning(
 				'In footer ($in_footer) is not set explicitly %s; ' .
 				'It is recommended to load scripts in the footer. Please set this value to `true` to load it in the footer, or explicitly `false` if it should be loaded in the header.',
@@ -203,9 +200,7 @@ final class EnqueuedResourceParametersSniff extends AbstractFunctionParameterSni
 	 */
 	protected function is_falsy( $start, $end ) {
 
-		// Find anything excluding the false tokens.
 		$has_non_false = $this->phpcsFile->findNext( $this->false_tokens, $start, ( $end + 1 ), true );
-		// If no non-false tokens are found, we are good.
 		if ( false === $has_non_false ) {
 			return true;
 		}
@@ -213,8 +208,6 @@ final class EnqueuedResourceParametersSniff extends AbstractFunctionParameterSni
 		$code_string = '';
 		for ( $i = $start; $i <= $end; $i++ ) {
 			if ( isset( $this->safe_tokens[ $this->tokens[ $i ]['code'] ] ) === false ) {
-				// Function call/variable or other token which makes it neigh impossible
-				// to determine whether the actual value would evaluate to false.
 				return false;
 			}
 
@@ -222,7 +215,6 @@ final class EnqueuedResourceParametersSniff extends AbstractFunctionParameterSni
 				continue;
 			}
 
-			// Make sure that PHP 7.4 numeric literals and PHP 8.1 explicit octals don't cause problems.
 			if ( \T_LNUMBER === $this->tokens[ $i ]['code'] || \T_DNUMBER === $this->tokens[ $i ]['code'] ) {
 				$number_info  = Numbers::getCompleteNumber( $this->phpcsFile, $i );
 				$code_string .= $number_info['decimal'];
@@ -230,8 +222,6 @@ final class EnqueuedResourceParametersSniff extends AbstractFunctionParameterSni
 				continue;
 			}
 
-			// Make sure that when deprecated casts are used in the code under scan and the sniff is run on PHP 8.5,
-			// the eval() won't cause a deprecation notice, borking the scan of the file.
 			if ( \PHP_VERSION_ID >= 80500 ) {
 				if ( \T_INT_CAST === $this->tokens[ $i ]['code'] ) {
 					$code_string .= '(int)';
@@ -261,8 +251,6 @@ final class EnqueuedResourceParametersSniff extends AbstractFunctionParameterSni
 			return false;
 		}
 
-		// Evaluate the argument to figure out the outcome is false or not.
-		// phpcs:ignore Squiz.PHP.Eval -- No harm here.
 		return ( false === eval( "return (bool) $code_string;" ) );
 	}
 }

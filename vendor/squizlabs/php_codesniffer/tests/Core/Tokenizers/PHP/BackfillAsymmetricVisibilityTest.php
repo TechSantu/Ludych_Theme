@@ -73,7 +73,6 @@ final class BackfillAsymmetricVisibilityTest extends AbstractTokenizerTestCase
     public static function dataAsymmetricVisibility()
     {
         return [
-            // Normal property declarations.
             'property, public set, no read visibility, lowercase'      => [
                 'testMarker'  => '/* testPublicSetProperty */',
                 'testType'    => 'T_PUBLIC_SET',
@@ -135,7 +134,6 @@ final class BackfillAsymmetricVisibilityTest extends AbstractTokenizerTestCase
                 'testContent' => 'PRIVATE(SET)',
             ],
 
-            // Constructor property promotion.
             'promotion, public set, no read visibility, lowercase'     => [
                 'testMarker'  => '/* testPublicSetCPP */',
                 'testType'    => 'T_PUBLIC_SET',
@@ -273,7 +271,6 @@ final class BackfillAsymmetricVisibilityTest extends AbstractTokenizerTestCase
                 'testContent' => 'private',
             ],
 
-            // Constructor property promotion.
             'promotion, invalid case 1'  => [
                 'testMarker'  => '/* testInvalidUnsetCPP */',
                 'testType'    => 'T_PUBLIC',
@@ -300,7 +297,6 @@ final class BackfillAsymmetricVisibilityTest extends AbstractTokenizerTestCase
                 'testContent' => 'private',
             ],
 
-            // Context sensitivitiy.
             'protected as function name' => [
                 'testMarker'  => '/* testProtectedFunctionName */',
                 'testType'    => 'T_STRING',
@@ -317,7 +313,6 @@ final class BackfillAsymmetricVisibilityTest extends AbstractTokenizerTestCase
                 'testContent' => 'Set',
             ],
 
-            // Live coding.
             'live coding'                => [
                 'testMarker'  => '/* testLiveCoding */',
                 'testType'    => 'T_PRIVATE',

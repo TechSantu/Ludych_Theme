@@ -130,7 +130,6 @@ class DisallowAlternativePHPTagsSniff implements Sniff
             return;
         }//end if
 
-        // Account for incorrect script open tags.
         if ($openTag['code'] === T_INLINE_HTML
             && preg_match('`(<script (?:[^>]+)?language=[\'"]?php[\'"]?(?:[^>]+)?>)`i', $content, $match) === 1
         ) {
@@ -228,7 +227,6 @@ class DisallowAlternativePHPTagsSniff implements Sniff
      */
     protected function addChangeset(File $phpcsFile, $tokens, $openTagPointer, $closeTagPointer, $echo=false)
     {
-        // Build up the open tag replacement and make sure there's always whitespace behind it.
         $openReplacement = '<?php';
         if ($echo === true) {
             $openReplacement .= ' echo';
@@ -238,7 +236,6 @@ class DisallowAlternativePHPTagsSniff implements Sniff
             $openReplacement .= ' ';
         }
 
-        // Make sure we don't remove any line breaks after the closing tag.
         $regex            = '`'.preg_quote(trim($tokens[$closeTagPointer]['content'])).'`';
         $closeReplacement = preg_replace($regex, '?>', $tokens[$closeTagPointer]['content']);
 

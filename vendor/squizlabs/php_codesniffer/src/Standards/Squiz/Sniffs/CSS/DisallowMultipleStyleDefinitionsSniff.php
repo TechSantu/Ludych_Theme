@@ -56,7 +56,6 @@ class DisallowMultipleStyleDefinitionsSniff implements Sniff, DeprecatedSniff
         }
 
         if ($tokens[$next]['content'] === 'progid') {
-            // Special case for IE filters.
             return;
         }
 

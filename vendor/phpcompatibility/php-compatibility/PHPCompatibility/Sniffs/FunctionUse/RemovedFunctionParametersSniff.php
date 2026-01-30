@@ -95,7 +95,6 @@ class RemovedFunctionParametersSniff extends AbstractRemovedFeatureSniff
      */
     public function register()
     {
-        // Handle case-insensitivity of function names.
         $this->removedFunctionParameters = $this->arrayKeysToLowercase($this->removedFunctionParameters);
 
         return array(\T_STRING);
@@ -125,7 +124,6 @@ class RemovedFunctionParametersSniff extends AbstractRemovedFeatureSniff
 
         $prevToken = $phpcsFile->findPrevious(\T_WHITESPACE, ($stackPtr - 1), null, true);
         if (isset($ignore[$tokens[$prevToken]['code']]) === true) {
-            // Not a call to a PHP function.
             return;
         }
 
@@ -142,7 +140,6 @@ class RemovedFunctionParametersSniff extends AbstractRemovedFeatureSniff
             return;
         }
 
-        // If the parameter count returned > 0, we know there will be valid open parenthesis.
         $openParenthesis      = $phpcsFile->findNext(Tokens::$emptyTokens, $stackPtr + 1, null, true, null, true);
         $parameterOffsetFound = $parameterCount - 1;
 

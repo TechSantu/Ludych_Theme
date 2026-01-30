@@ -49,7 +49,6 @@ abstract class ExactMatch extends Filter
         if ($this->disallowedFiles === null) {
             $this->disallowedFiles = $this->getDisallowedFiles();
 
-            // BC-layer.
             if ($this->disallowedFiles === null) {
                 $this->disallowedFiles = $this->getBlacklist();
             }
@@ -58,7 +57,6 @@ abstract class ExactMatch extends Filter
         if ($this->allowedFiles === null) {
             $this->allowedFiles = $this->getAllowedFiles();
 
-            // BC-layer.
             if ($this->allowedFiles === null) {
                 $this->allowedFiles = $this->getWhitelist();
             }
@@ -66,13 +64,11 @@ abstract class ExactMatch extends Filter
 
         $filePath = Common::realpath($this->current());
 
-        // If a file is both disallowed and allowed, the disallowed files list takes precedence.
         if (isset($this->disallowedFiles[$filePath]) === true) {
             return false;
         }
 
         if (empty($this->allowedFiles) === true && empty($this->disallowedFiles) === false) {
-            // We are only checking the disallowed files list, so everything else should be allowed.
             return true;
         }
 

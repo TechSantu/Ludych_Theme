@@ -370,7 +370,6 @@ final class CapabilitiesSniff extends AbstractFunctionParameterSniff {
 			return;
 		}
 
-		// If the parameter is anything other than T_CONSTANT_ENCAPSED_STRING throw a warning and bow out.
 		$first_non_empty = null;
 		for ( $i = $parameter['start']; $i <= $parameter['end']; $i++ ) {
 			if ( isset( Tokens::$emptyTokens[ $this->tokens[ $i ]['code'] ] ) ) {
@@ -380,7 +379,6 @@ final class CapabilitiesSniff extends AbstractFunctionParameterSniff {
 			if ( \T_CONSTANT_ENCAPSED_STRING !== $this->tokens[ $i ]['code']
 				|| null !== $first_non_empty
 			) {
-				// Throw warning at low severity.
 				$this->phpcsFile->addWarning(
 					'Couldn\'t determine the value passed to the $%s parameter in function call to %s(). Please check if it matches a valid capability. Found: %s',
 					$i,
@@ -399,7 +397,6 @@ final class CapabilitiesSniff extends AbstractFunctionParameterSniff {
 		}
 
 		if ( null === $first_non_empty ) {
-			// Parse error. Bow out.
 			return;
 		}
 
@@ -426,7 +423,6 @@ final class CapabilitiesSniff extends AbstractFunctionParameterSniff {
 			return;
 		}
 
-		// Check if additional capabilities were registered via the ruleset and if the found capability matches any of those.
 		$custom_capabilities = RulesetPropertyHelper::merge_custom_array( $this->custom_capabilities, array() );
 		if ( isset( $custom_capabilities[ $matched_parameter ] ) ) {
 			return;

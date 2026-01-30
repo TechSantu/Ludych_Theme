@@ -85,7 +85,6 @@ class NewTypedPropertiesSniff extends Sniff
             || $tokens[$modifier]['code'] === \T_SEMICOLON
             || $tokens[$modifier]['code'] === \T_OPEN_CURLY_BRACKET
         ) {
-            // Parse error. Ignore.
             return;
         }
 
@@ -94,7 +93,6 @@ class NewTypedPropertiesSniff extends Sniff
             return;
         }
 
-        // Still here ? In that case, this will be a typed property.
         if ($this->supportsBelow('7.3') === true) {
             $phpcsFile->addError(
                 'Typed properties are not supported in PHP 7.3 or earlier',
@@ -104,9 +102,7 @@ class NewTypedPropertiesSniff extends Sniff
         }
 
         if ($this->supportsAbove('7.4') === true) {
-            // Examine the type to verify it's valid.
             if ($tokens[$type]['type'] === 'T_NULLABLE'
-                // Needed to support PHPCS < 3.5.0 which doesn't correct to the nullable token type yet.
                 || $tokens[$type]['code'] === \T_INLINE_THEN
             ) {
                 $type = $phpcsFile->findNext(Tokens::$emptyTokens, ($type + 1), null, true);
@@ -125,7 +121,6 @@ class NewTypedPropertiesSniff extends Sniff
 
         $endOfStatement = $phpcsFile->findNext(\T_SEMICOLON, ($stackPtr + 1));
         if ($endOfStatement !== false) {
-            // Don't throw the same error multiple times for multi-property declarations.
             return ($endOfStatement + 1);
         }
     }

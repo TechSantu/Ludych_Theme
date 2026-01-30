@@ -63,14 +63,12 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
 
         $args = $node->getArgs();
 
-        // If we don't have enough arguments, let PHPStan handle the error:
         if (count($args) < self::CALLBACK_INDEX + 1) {
             return [];
         }
 
         $callbackType = $scope->getType($args[self::CALLBACK_INDEX]->value);
 
-        // If the callback is not valid, let PHPStan handle the error:
         if (! $callbackType->isCallable()->yes()) {
             return [];
         }
@@ -182,7 +180,6 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
 
     protected function validateActionReturnType(Type $returnType): void
     {
-        // Will be handled by PHPStan.
         if ($returnType instanceof MixedType && ! $returnType->isExplicitMixed()) {
             return;
         }

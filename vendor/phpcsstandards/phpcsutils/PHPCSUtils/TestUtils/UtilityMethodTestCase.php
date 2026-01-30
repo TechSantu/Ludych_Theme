@@ -221,10 +221,8 @@ abstract class UtilityMethodTestCase extends TestCase
          */
         $config->sniffs = static::$selectedSniff;
 
-        // Disable caching.
         $config->cache = false;
 
-        // Also set a tab-width to enable testing tab-replaced vs `orig_content`.
         $config->tabWidth = static::$tabWidth;
 
         $ruleset = new RulesetDouble($config);
@@ -255,14 +253,11 @@ abstract class UtilityMethodTestCase extends TestCase
 
         $file = new LocalFile($caseFile, $ruleset, $config);
 
-        // Only tokenize the file, do not process it.
         try {
             $file->parse();
         } catch (TokenizerException $e) {
-            // PHPCS 3.5.0 and higher. This is handled below.
         }
 
-        // Fail the test if the file failed to tokenize.
         if ($file->numTokens === 0) {
             parent::fail("Tokenizing of the test case file failed for case file: $caseFile");
         }
@@ -409,7 +404,6 @@ abstract class UtilityMethodTestCase extends TestCase
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Collect all marker comments in the file.
         $seenComments = [];
         for ($i = 0; $i < $phpcsFile->numTokens; $i++) {
             if ($tokens[$i]['code'] !== \T_COMMENT) {
@@ -466,7 +460,6 @@ abstract class UtilityMethodTestCase extends TestCase
         $tokens = self::$phpcsFile->getTokens();
         $end    = ($start + 1);
 
-        // Limit the token finding to between this and the next delimiter comment.
         for ($i = ($comment + 1); $i < $end; $i++) {
             if ($tokens[$i]['code'] !== \T_COMMENT) {
                 continue;
@@ -513,11 +506,9 @@ abstract class UtilityMethodTestCase extends TestCase
         }
 
         if (\method_exists($this, 'expectException')) {
-            // PHPUnit 5+.
             $this->expectException($exception);
             $this->expectExceptionMessage($msg);
         } else {
-            // PHPUnit 4.
             $this->setExpectedException($exception, $msg);
         }
     }

@@ -20,6 +20,5 @@ class ValidSniff implements Sniff
 
     public function process(File $phpcsFile, $stackPtr)
     {
-        // Do something.
     }
 }

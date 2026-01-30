@@ -59,7 +59,6 @@ class SwitchDeclarationSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // We can't process SWITCH statements unless we know where they start and end.
         if (isset($tokens[$stackPtr]['scope_opener']) === false
             || isset($tokens[$stackPtr]['scope_closer']) === false
         ) {
@@ -73,7 +72,6 @@ class SwitchDeclarationSniff implements Sniff
         $foundDefault  = false;
 
         while (($nextCase = $phpcsFile->findNext([T_CASE, T_DEFAULT, T_SWITCH], ($nextCase + 1), $switch['scope_closer'])) !== false) {
-            // Skip nested SWITCH statements; they are handled on their own.
             if ($tokens[$nextCase]['code'] === T_SWITCH) {
                 $nextCase = $tokens[$nextCase]['scope_closer'];
                 continue;
@@ -156,9 +154,6 @@ class SwitchDeclarationSniff implements Sniff
                 || $tokens[$nextBreak]['code'] === T_GOTO
             ) {
                 if ($tokens[$nextBreak]['scope_condition'] === $nextCase) {
-                    // Only need to check a couple of things once, even if the
-                    // break is shared between multiple case statements, or even
-                    // the default case.
                     if ($tokens[$nextBreak]['column'] !== $caseAlignment) {
                         $error = 'Case breaking statement must be indented '.$this->indent.' spaces from SWITCH keyword';
                         $fix   = $phpcsFile->addFixableError($error, $nextBreak, 'BreakIndent');
@@ -191,8 +186,6 @@ class SwitchDeclarationSniff implements Sniff
                     }
 
                     if ($type === 'Case') {
-                        // Ensure the BREAK statement is followed by
-                        // a single blank line, or the end switch brace.
                         if ($nextLine !== ($tokens[$semicolon]['line'] + 2) && $i !== $tokens[$stackPtr]['scope_closer']) {
                             $error = 'Case breaking statements must be followed by a single blank line';
                             $fix   = $phpcsFile->addFixableError($error, $nextBreak, 'SpacingAfterBreak');
@@ -215,7 +208,6 @@ class SwitchDeclarationSniff implements Sniff
                             }
                         }//end if
                     } else {
-                        // Ensure the BREAK statement is not followed by a blank line.
                         if ($nextLine !== ($tokens[$semicolon]['line'] + 1)) {
                             $error = 'Blank lines are not allowed after the DEFAULT case\'s breaking statement';
                             $phpcsFile->addError($error, $nextBreak, 'SpacingAfterDefaultBreak');
@@ -239,10 +231,6 @@ class SwitchDeclarationSniff implements Sniff
 
                 if ($tokens[$nextBreak]['code'] === T_BREAK) {
                     if ($type === 'Case') {
-                        // Ensure empty CASE statements are not allowed.
-                        // They must have some code content in them. A comment is not enough.
-                        // But count RETURN statements as valid content if they also
-                        // happen to close the CASE statement.
                         $foundContent = false;
                         for ($i = ($tokens[$nextCase]['scope_opener'] + 1); $i < $nextBreak; $i++) {
                             if ($tokens[$i]['code'] === T_CASE) {
@@ -261,9 +249,6 @@ class SwitchDeclarationSniff implements Sniff
                             $phpcsFile->addError($error, $nextCase, 'EmptyCase');
                         }
                     } else {
-                        // Ensure empty DEFAULT statements are not allowed.
-                        // They must (at least) have a comment describing why
-                        // the default case is being ignored.
                         $foundContent = false;
                         for ($i = ($tokens[$nextCase]['scope_opener'] + 1); $i < $nextBreak; $i++) {
                             if ($tokens[$i]['type'] !== 'T_WHITESPACE') {

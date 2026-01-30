@@ -10,7 +10,6 @@ $section_description = get_field( 'section_description', $post_id );
 $section_button      = get_field( 'section_button', $post_id );
 $banner_image        = get_field( 'banner_image', $post_id );
 ?>
-	<!-- hero banner start -->
 	<section class="hero-banner">
 		<div class="bg-overlay"></div>
 		<div class="custom-container">
@@ -44,4 +43,3 @@ $banner_image        = get_field( 'banner_image', $post_id );
 			</div>
 		</div>
 	</section>
-	<!-- hero banner end -->

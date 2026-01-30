@@ -54,9 +54,6 @@ class Cbf implements Report
         }
 
         if ($phpcsFile->config->stdin === true) {
-            // Replacing STDIN, so output current file to STDOUT
-            // even if nothing was fixed. Exit here because we
-            // can't process any more than 1 file in this setup.
             $fixedContent = $phpcsFile->fixer->getContents();
             throw new DeepExitException($fixedContent, 1);
         }
@@ -83,9 +80,6 @@ class Cbf implements Report
         }
 
         if ($fixed === true) {
-            // The filename in the report may be truncated due to a basepath setting
-            // but we are using it for writing here and not display,
-            // so find the correct path if basepath is in use.
             $newFilename = $report['filename'].$phpcsFile->config->suffix;
             if ($phpcsFile->config->basepath !== null) {
                 $newFilename = $phpcsFile->config->basepath.DIRECTORY_SEPARATOR.$newFilename;

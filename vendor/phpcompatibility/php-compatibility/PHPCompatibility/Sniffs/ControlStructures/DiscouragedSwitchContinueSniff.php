@@ -118,7 +118,6 @@ class DiscouragedSwitchContinueSniff extends Sniff
         $switchOpener = $tokens[$stackPtr]['scope_opener'];
         $switchCloser = $tokens[$stackPtr]['scope_closer'];
 
-        // Quick check whether we need to bother with the more complex logic.
         $hasContinue = $phpcsFile->findNext(\T_CONTINUE, ($switchOpener + 1), $switchCloser);
         if ($hasContinue === false) {
             return;
@@ -133,7 +132,6 @@ class DiscouragedSwitchContinueSniff extends Sniff
             }
 
             if (isset($tokens[$caseDefault]['scope_opener']) === false) {
-                // Unknown start of the case, skip.
                 continue;
             }
 
@@ -145,7 +143,6 @@ class DiscouragedSwitchContinueSniff extends Sniff
                 $caseCloser = $nextCaseDefault;
             }
 
-            // Check for unscoped control structures within the case.
             $controlStructure = $caseOpener;
             $doCount          = 0;
             while (($controlStructure = $phpcsFile->findNext($this->loopStructures, ($controlStructure + 1), $caseCloser)) !== false) {
@@ -155,17 +152,14 @@ class DiscouragedSwitchContinueSniff extends Sniff
 
                 if (isset($tokens[$controlStructure]['scope_opener'], $tokens[$controlStructure]['scope_closer']) === false) {
                     if ($tokens[$controlStructure]['code'] === \T_WHILE && $doCount > 0) {
-                        // While in a do-while construct.
                         $doCount--;
                         continue;
                     }
 
-                    // Control structure without braces found within the case, ignore this case.
                     continue 2;
                 }
             }
 
-            // Examine the contents of the case.
             $continue = $caseOpener;
 
             do {
@@ -178,7 +172,6 @@ class DiscouragedSwitchContinueSniff extends Sniff
                 $codeString    = '';
                 for ($i = ($continue + 1); $i < $nextSemicolon; $i++) {
                     if (isset($this->acceptedLevelTokens[$tokens[$i]['code']]) === false) {
-                        // Function call/variable or other token which make numeric level impossible to determine.
                         continue 2;
                     }
 
@@ -194,7 +187,6 @@ class DiscouragedSwitchContinueSniff extends Sniff
                     if (is_numeric($codeString)) {
                         $level = (int) $codeString;
                     } else {
-                        // With the above logic, the string can only contain digits and operators, eval!
                         $level = eval("return ( $codeString );");
                     }
                 }
@@ -203,14 +195,11 @@ class DiscouragedSwitchContinueSniff extends Sniff
                     $level = 1;
                 }
 
-                // Examine which control structure is being targeted by the continue statement.
                 if (isset($tokens[$continue]['conditions']) === false) {
                     continue;
                 }
 
                 $conditions = array_reverse($tokens[$continue]['conditions'], true);
-                // PHPCS adds more structures to the conditions array than we want to take into
-                // consideration, so clean up the array.
                 foreach ($conditions as $tokenPtr => $tokenCode) {
                     if (isset($this->loopStructures[$tokenCode]) === false) {
                         unset($conditions[$tokenPtr]);

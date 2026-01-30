@@ -35,7 +35,6 @@ class OperatorSpacingSniff extends SquizOperatorSpacingSniff
         $targets[] = T_STRING_CONCAT;
         $targets[] = T_INSTANCEOF;
 
-        // Also register the contexts we want to specifically skip over.
         $targets[] = T_DECLARE;
 
         return $targets;
@@ -59,10 +58,8 @@ class OperatorSpacingSniff extends SquizOperatorSpacingSniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Skip over declare statements as those should be handled by different sniffs.
         if ($tokens[$stackPtr]['code'] === T_DECLARE) {
             if (isset($tokens[$stackPtr]['parenthesis_closer']) === false) {
-                // Parse error / live coding.
                 return $phpcsFile->numTokens;
             }
 
@@ -78,14 +75,12 @@ class OperatorSpacingSniff extends SquizOperatorSpacingSniff
         $checkBefore = true;
         $checkAfter  = true;
 
-        // Skip short ternary.
         if ($tokens[($stackPtr)]['code'] === T_INLINE_ELSE
             && $tokens[($stackPtr - 1)]['code'] === T_INLINE_THEN
         ) {
             $checkBefore = false;
         }
 
-        // Skip operator with comment on previous line.
         if ($tokens[($stackPtr - 1)]['code'] === T_COMMENT
             && $tokens[($stackPtr - 1)]['line'] < $tokens[$stackPtr]['line']
         ) {
@@ -93,14 +88,12 @@ class OperatorSpacingSniff extends SquizOperatorSpacingSniff
         }
 
         if (isset($tokens[($stackPtr + 1)]) === true) {
-            // Skip short ternary.
             if ($tokens[$stackPtr]['code'] === T_INLINE_THEN
                 && $tokens[($stackPtr + 1)]['code'] === T_INLINE_ELSE
             ) {
                 $checkAfter = false;
             }
         } else {
-            // Skip partial files.
             $checkAfter = false;
         }
 

@@ -18,7 +18,6 @@ final class HookDocsVisitor extends \PhpParser\NodeVisitorAbstract
     /** @var \PhpParser\Comment\Doc|null */
     protected $latestDocComment = null;
 
-    // phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter
     public function beforeTraverse(array $nodes): ?array
     {
         $this->latestStartLine = null;

@@ -256,8 +256,6 @@ final class GetTokensAsString
                 continue;
             }
 
-            // If tabs are being converted to spaces by the tokenizer, the
-            // original content should be used instead of the converted content.
             if ($origContent === true && isset($tokens[$i]['orig_content']) === true) {
                 $str .= $tokens[$i]['orig_content'];
             } else {

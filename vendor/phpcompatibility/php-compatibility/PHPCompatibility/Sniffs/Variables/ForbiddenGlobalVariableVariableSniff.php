@@ -58,7 +58,6 @@ class ForbiddenGlobalVariableVariableSniff extends Sniff
         $tokens         = $phpcsFile->getTokens();
         $endOfStatement = $phpcsFile->findNext(array(\T_SEMICOLON, \T_CLOSE_TAG), ($stackPtr + 1));
         if ($endOfStatement === false) {
-            // No semi-colon - live coding.
             return;
         }
 
@@ -115,7 +114,6 @@ class ForbiddenGlobalVariableVariableSniff extends Sniff
                 }
             }
 
-            // Move the stack pointer forward to the next variable for multi-variable statements.
             if ($nextComma === false) {
                 break;
             }

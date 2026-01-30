@@ -48,7 +48,6 @@ class AllSniffs
 
         $suite = new TestSuite('PHP CodeSniffer Standards');
 
-        // Optionally allow for ignoring the tests for one or more standards.
         $ignoreTestsForStandards = getenv('PHPCS_IGNORE_TESTS');
         if ($ignoreTestsForStandards === false) {
             $ignoreTestsForStandards = [];
@@ -67,19 +66,16 @@ class AllSniffs
 
             $testsDir = $details['path'].DIRECTORY_SEPARATOR.'Tests'.DIRECTORY_SEPARATOR;
             if (is_dir($testsDir) === false) {
-                // No tests for this standard.
                 continue;
             }
 
             $di = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($testsDir));
 
             foreach ($di as $file) {
-                // Skip hidden files.
                 if (substr($file->getFilename(), 0, 1) === '.') {
                     continue;
                 }
 
-                // Tests must have the extension 'php'.
                 $parts = explode('.', $file);
                 $ext   = array_pop($parts);
                 if ($ext !== 'php') {

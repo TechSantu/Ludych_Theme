@@ -81,7 +81,6 @@ class OpeningFunctionBraceBsdAllmanSniff implements Sniff
             }
         }
 
-        // Find the end of the function declaration.
         $prev = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($openingBrace - 1), $closeBracket, true);
 
         $functionLine = $tokens[$prev]['line'];
@@ -142,8 +141,6 @@ class OpeningFunctionBraceBsdAllmanSniff implements Sniff
 
             $prevNonWs = $phpcsFile->findPrevious(T_WHITESPACE, ($openingBrace - 1), $closeBracket, true);
             if ($prevNonWs !== $prev) {
-                // There must be a comment between the end of the function declaration and the open brace.
-                // Report, but don't fix.
                 $phpcsFile->addError($error, $openingBrace, 'BraceSpacing', $data);
             } else {
                 $fix = $phpcsFile->addFixableError($error, $openingBrace, 'BraceSpacing', $data);
@@ -170,7 +167,6 @@ class OpeningFunctionBraceBsdAllmanSniff implements Sniff
         $ignore[] = T_WHITESPACE;
         $next     = $phpcsFile->findNext($ignore, ($openingBrace + 1), null, true);
         if ($tokens[$next]['line'] === $tokens[$openingBrace]['line']) {
-            // Only throw this error when this is not an empty function.
             if ($next !== $tokens[$stackPtr]['scope_closer']) {
                 $error = 'Opening brace must be the last content on the line';
                 $fix   = $phpcsFile->addFixableError($error, $openingBrace, 'ContentAfterBrace');
@@ -180,19 +176,12 @@ class OpeningFunctionBraceBsdAllmanSniff implements Sniff
             }
         }
 
-        // Only continue checking if the opening brace looks good.
         if ($lineDifference !== 1) {
             return;
         }
 
-        // We need to actually find the first piece of content on this line,
-        // as if this is a method with tokens before it (public, static etc)
-        // or an if with an else before it, then we need to start the scope
-        // checking from there, rather than the current token.
         $lineStart = $phpcsFile->findFirstOnLine(T_WHITESPACE, $stackPtr, true);
 
-        // The opening brace is on the correct line, now it needs to be
-        // checked to be correctly indented.
         $startColumn = $tokens[$lineStart]['column'];
         $braceIndent = $tokens[$openingBrace]['column'];
 

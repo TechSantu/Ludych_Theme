@@ -73,7 +73,6 @@ final class ArrayKeySpacingRestrictionsSniff extends Sniff {
 		 */
 		$needs_spaces = true;
 
-		// Skip over a potential plus/minus sign for integers.
 		$first_effective = $first_non_ws;
 		if ( \T_MINUS === $this->tokens[ $first_effective ]['code'] || \T_PLUS === $this->tokens[ $first_effective ]['code'] ) {
 			$first_effective = $this->phpcsFile->findNext( \T_WHITESPACE, ( $first_effective + 1 ), null, true );
@@ -90,7 +89,6 @@ final class ArrayKeySpacingRestrictionsSniff extends Sniff {
 		$has_space_after_opener = ( \T_WHITESPACE === $this->tokens[ ( $stackPtr + 1 ) ]['code'] );
 		$has_space_before_close = ( \T_WHITESPACE === $this->tokens[ ( $token['bracket_closer'] - 1 ) ]['code'] );
 
-		// The array key should be surrounded by spaces unless the key only consists of a string or an integer.
 		if ( true === $needs_spaces
 			&& ( false === $has_space_after_opener || false === $has_space_before_close )
 		) {
@@ -143,7 +141,6 @@ final class ArrayKeySpacingRestrictionsSniff extends Sniff {
 			}
 		}
 
-		// If spaces are needed, check that there is only one space.
 		if ( true === $needs_spaces ) {
 			if ( $has_space_after_opener ) {
 				$error = 'There should be exactly %1$s before the array key. Found: %2$s';

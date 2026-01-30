@@ -135,11 +135,9 @@ class RemovedPredefinedGlobalVariablesSniff extends AbstractRemovedFeatureSniff
         }
 
         if ($this->isClassProperty($phpcsFile, $stackPtr) === true) {
-            // Ok, so this was a class property declaration, not our concern.
             return;
         }
 
-        // Check for static usage of class properties shadowing the removed global variables.
         if ($this->inClassScope($phpcsFile, $stackPtr, false) === true) {
             $prevToken = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($stackPtr - 1), null, true, null, true);
             if ($prevToken !== false && $tokens[$prevToken]['code'] === \T_DOUBLE_COLON) {
@@ -147,14 +145,12 @@ class RemovedPredefinedGlobalVariablesSniff extends AbstractRemovedFeatureSniff
             }
         }
 
-        // Do some additional checks for the $php_errormsg variable.
         if ($varName === 'php_errormsg'
             && $this->isTargetPHPErrormsgVar($phpcsFile, $stackPtr, $tokens) === false
         ) {
             return;
         }
 
-        // Still here, so throw an error/warning.
         $itemInfo = array(
             'name' => $varName,
         );
@@ -233,7 +229,6 @@ class RemovedPredefinedGlobalVariablesSniff extends AbstractRemovedFeatureSniff
             $function = $phpcsFile->getCondition($stackPtr, \T_FUNCTION);
         }
 
-        // It could also be a function param, which is not in the function scope.
         if ($function === false && isset($tokens[$stackPtr]['nested_parenthesis']) === true) {
             $nestedParentheses = $tokens[$stackPtr]['nested_parenthesis'];
             $parenthesisCloser = end($nestedParentheses);
@@ -254,21 +249,16 @@ class RemovedPredefinedGlobalVariablesSniff extends AbstractRemovedFeatureSniff
          */
         $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
 
-        // Is the variable being used as an array ?
         if ($nextNonEmpty !== false && $tokens[$nextNonEmpty]['code'] === \T_OPEN_SQUARE_BRACKET) {
-            // The PHP native variable is a string, so this is probably not it
-            // (except for array access to string, but why would you in this case ?).
             return false;
         }
 
-        // Is this a variable assignment ?
         if ($nextNonEmpty !== false
             && isset(Tokens::$assignmentTokens[$tokens[$nextNonEmpty]['code']]) === true
         ) {
             return false;
         }
 
-        // Is this a function param shadowing the PHP native one ?
         if ($function !== false) {
             $parameters = PHPCSHelper::getMethodParameters($phpcsFile, $function);
             if (\is_array($parameters) === true && empty($parameters) === false) {
@@ -289,13 +279,11 @@ class RemovedPredefinedGlobalVariablesSniff extends AbstractRemovedFeatureSniff
             'T_CLOSURE'    => true,
         );
 
-        // Walk back and see if there is an assignment to the variable within the same scope.
         for ($i = ($stackPtr - 1); $i >= $scopeStart; $i--) {
             if ($tokens[$i]['code'] === \T_CLOSE_CURLY_BRACKET
                 && isset($tokens[$i]['scope_condition'])
                 && isset($skipPast[$tokens[$tokens[$i]['scope_condition']]['type']])
             ) {
-                // Skip past functions, classes etc.
                 $i = $tokens[$i]['scope_condition'];
                 continue;
             }

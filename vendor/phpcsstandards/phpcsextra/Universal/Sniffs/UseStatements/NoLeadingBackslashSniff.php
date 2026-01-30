@@ -62,13 +62,11 @@ final class NoLeadingBackslashSniff implements Sniff
     public function process(File $phpcsFile, $stackPtr)
     {
         if (UseStatements::isImportUse($phpcsFile, $stackPtr) === false) {
-            // Trait or closure use statement.
             return;
         }
 
         $endOfStatement = $phpcsFile->findNext([\T_SEMICOLON, \T_CLOSE_TAG, \T_OPEN_USE_GROUP], ($stackPtr + 1));
         if ($endOfStatement === false) {
-            // Live coding or parse error.
             return;
         }
 
@@ -81,19 +79,16 @@ final class NoLeadingBackslashSniff implements Sniff
                 break;
             }
 
-            // Move the stackPtr forward to the next part of the use statement, if any.
             $current = $phpcsFile->findNext(\T_COMMA, ($current + 1), $endOfStatement);
         } while ($current !== false);
 
         if ($tokens[$endOfStatement]['code'] !== \T_OPEN_USE_GROUP) {
-            // Finished the statement.
             return;
         }
 
         $current        = $endOfStatement; // Group open brace.
         $endOfStatement = $phpcsFile->findNext([\T_CLOSE_USE_GROUP], ($endOfStatement + 1));
         if ($endOfStatement === false) {
-            // Live coding or parse error.
             return;
         }
 
@@ -103,7 +98,6 @@ final class NoLeadingBackslashSniff implements Sniff
                 break;
             }
 
-            // Move the stackPtr forward to the next part of the use statement, if any.
             $current = $phpcsFile->findNext(\T_COMMA, ($current + 1), $endOfStatement);
         } while ($current !== false);
     }
@@ -125,18 +119,15 @@ final class NoLeadingBackslashSniff implements Sniff
 
         $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), $endOfStatement, true);
         if ($nextNonEmpty === false) {
-            // Reached the end of the statement.
             return false;
         }
 
-        // Skip past 'function'/'const' keyword.
         $contentLC = \strtolower($tokens[$nextNonEmpty]['content']);
         if ($tokens[$nextNonEmpty]['code'] === \T_STRING
             && ($contentLC === 'function' || $contentLC === 'const')
         ) {
             $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($nextNonEmpty + 1), $endOfStatement, true);
             if ($nextNonEmpty === false) {
-                // Reached the end of the statement.
                 return false;
             }
         }
@@ -158,14 +149,12 @@ final class NoLeadingBackslashSniff implements Sniff
 
             if ($fix === true) {
                 if ($tokens[$nextNonEmpty]['code'] === \T_NS_SEPARATOR) {
-                    // PHPCS 3.x.
                     if ($tokens[$nextNonEmpty - 1]['code'] !== \T_WHITESPACE) {
                         $phpcsFile->fixer->replaceToken($nextNonEmpty, ' ');
                     } else {
                         $phpcsFile->fixer->replaceToken($nextNonEmpty, '');
                     }
                 } else {
-                    // PHPCS 4.x / T_NAME_FULLY_QUALIFIED.
                     $phpcsFile->fixer->replaceToken($nextNonEmpty, \ltrim($tokens[$nextNonEmpty]['content'], '\\'));
                 }
             }

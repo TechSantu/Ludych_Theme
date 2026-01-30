@@ -67,12 +67,7 @@ if (class_exists('PHP_CodeSniffer\Autoload', false) === false) {
          */
         public static function load($class)
         {
-            // Include the composer autoloader if there is one, but re-register it
-            // so this autoloader runs before the composer one as we need to include
-            // all files so we can figure out what the class/interface/trait name is.
             if (self::$composerAutoloader === null) {
-                // Make sure we don't try to load any of Composer's classes
-                // while the autoloader is being setup.
                 if (strpos($class, 'Composer\\') === 0) {
                     return false;
                 }
@@ -85,8 +80,6 @@ if (class_exists('PHP_CodeSniffer\Autoload', false) === false) {
                         self::$composerAutoloader->unregister();
                         self::$composerAutoloader->register();
                     } else {
-                        // Something went wrong, so keep going without the autoloader
-                        // although namespaced sniffs might error.
                         self::$composerAutoloader = false;
                     }
                 } else {
@@ -112,12 +105,10 @@ if (class_exists('PHP_CodeSniffer\Autoload', false) === false) {
                 }
             }
 
-            // See if the composer autoloader knows where the class is.
             if ($path === false && self::$composerAutoloader !== false) {
                 $path = self::$composerAutoloader->findFile($class);
             }
 
-            // See if the class is inside one of our alternate search paths.
             if ($path === false) {
                 foreach (self::$searchPaths as $searchPath => $nsPrefix) {
                     $className = $class;
@@ -204,10 +195,6 @@ if (class_exists('PHP_CodeSniffer\Autoload', false) === false) {
                 $newClasses = array_reverse($newClasses);
             }
 
-            // Since PHP 7.4 get_declared_classes() does not guarantee any order, making
-            // it impossible to use order to determine which is the parent and which is the child.
-            // Let's reduce the list of candidates by removing all the classes known to be "parents".
-            // That way, at the end, only the "main" class just included will remain.
             $newClasses = array_reduce(
                 $newClasses,
                 static function ($remaining, $current) {
@@ -339,8 +326,5 @@ if (class_exists('PHP_CodeSniffer\Autoload', false) === false) {
 
     }//end class
 
-    // Register the autoloader before any existing autoloaders to ensure
-    // it gets a chance to hear about every autoload request, and record
-    // the file and class name for it.
     spl_autoload_register(__NAMESPACE__.'\Autoload::load', true, true);
 }//end if

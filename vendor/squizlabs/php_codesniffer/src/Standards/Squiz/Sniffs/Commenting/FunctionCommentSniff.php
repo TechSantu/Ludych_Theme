@@ -65,7 +65,6 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
             }
         }
 
-        // Skip constructor and destructor.
         $methodName      = $phpcsFile->getDeclarationName($stackPtr);
         $isSpecialMethod = in_array($methodName, $this->specialMethods, true);
 
@@ -75,7 +74,6 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
                 $error = 'Return type missing for @return tag in function comment';
                 $phpcsFile->addError($error, $return, 'MissingReturnType');
             } else {
-                // Support both a return type and a description.
                 preg_match('`^((?:\|?(?:array\([^\)]*\)|[\\\\a-z0-9_\[\]]+))*)( .*)?`i', $content, $returnParts);
                 if (isset($returnParts[1]) === false) {
                     return;
@@ -83,7 +81,6 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
 
                 $returnType = $returnParts[1];
 
-                // Check return type (can be multiple, separated by '|').
                 $typeNames      = explode('|', $returnType);
                 $suggestedNames = [];
                 foreach ($typeNames as $typeName) {
@@ -112,8 +109,6 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
                     }
                 }
 
-                // If the return type is void, make sure there is
-                // no return statement in the function.
                 if ($returnType === 'void') {
                     if (isset($tokens[$stackPtr]['scope_closer']) === true) {
                         $endToken = $tokens[$stackPtr]['scope_closer'];
@@ -134,8 +129,6 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
                         }
 
                         if ($returnToken !== $endToken) {
-                            // If the function is not returning anything, just
-                            // exiting, then there is no problem.
                             $semicolon = $phpcsFile->findNext(T_WHITESPACE, ($returnToken + 1), null, true);
                             if ($tokens[$semicolon]['code'] !== T_SEMICOLON) {
                                 $error = 'Function return type is void, but function contains return statement';
@@ -147,8 +140,6 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
                     && $returnType !== 'never'
                     && in_array('void', $typeNames, true) === false
                 ) {
-                    // If return type is not void, never, or mixed, there needs to be a
-                    // return statement somewhere in the function that returns something.
                     if (isset($tokens[$stackPtr]['scope_closer']) === true) {
                         $endToken = $tokens[$stackPtr]['scope_closer'];
                         for ($returnToken = $stackPtr; $returnToken < $endToken; $returnToken++) {
@@ -235,7 +226,6 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
                 $error = 'Comment missing for @throws tag in function comment';
                 $phpcsFile->addError($error, $tag, 'EmptyThrows');
             } else {
-                // Any strings until the next tag belong to this comment.
                 if (isset($tokens[$commentStart]['comment_tags'][($pos + 1)]) === true) {
                     $end = $tokens[$commentStart]['comment_tags'][($pos + 1)];
                 } else {
@@ -250,7 +240,6 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
 
                 $comment = trim($comment);
 
-                // Starts with a capital letter and ends with a fullstop.
                 $firstChar = $comment[0];
                 if (strtoupper($firstChar) !== $firstChar) {
                     $error = '@throws tag comment must start with a capital letter';
@@ -342,7 +331,6 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
                             'indent'  => $varSpace,
                         ];
 
-                        // Any strings until the next tag belong to this comment.
                         if (isset($tokens[$commentStart]['comment_tags'][($pos + 1)]) === true) {
                             $end = $tokens[$commentStart]['comment_tags'][($pos + 1)];
                         } else {
@@ -392,8 +380,6 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
         $realParams  = $phpcsFile->getMethodParameters($stackPtr);
         $foundParams = [];
 
-        // We want to use ... for all variable length arguments, so added
-        // this prefix to the variable name so comparisons are easier.
         foreach ($realParams as $pos => $param) {
             if ($param['variable_length'] === true) {
                 $realParams[$pos]['name'] = '...'.$realParams[$pos]['name'];
@@ -401,12 +387,10 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
         }
 
         foreach ($params as $pos => $param) {
-            // If the type is empty, the whole line is empty.
             if ($param['type'] === '') {
                 continue;
             }
 
-            // Check the param type value.
             $typeNames          = explode('|', $param['type']);
             $suggestedTypeNames = [];
 
@@ -415,7 +399,6 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
                     continue;
                 }
 
-                // Strip nullable operator.
                 if ($typeName[0] === '?') {
                     $typeName = substr($typeName, 1);
                 }
@@ -427,7 +410,6 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
                     continue;
                 }
 
-                // Check type hint for array and custom type.
                 $suggestedTypeHint = '';
                 if (strpos($suggestedName, 'array') !== false || substr($suggestedName, -2) === '[]') {
                     $suggestedTypeHint = 'array';
@@ -466,7 +448,6 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
                 if ($suggestedTypeHint !== '' && isset($realParams[$pos]) === true && $param['var'] !== '') {
                     $typeHint = $realParams[$pos]['type_hint'];
 
-                    // Remove namespace prefixes when comparing.
                     $compareTypeHint = substr($suggestedTypeHint, (strlen($typeHint) * -1));
 
                     if ($typeHint === '') {
@@ -530,7 +511,6 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
 
                     $phpcsFile->fixer->replaceToken(($param['tag'] + 2), $content);
 
-                    // Fix up the indent of additional comment lines.
                     foreach ($param['commentLines'] as $lineNum => $line) {
                         if ($lineNum === 0
                             || $param['commentLines'][$lineNum]['indent'] === 0
@@ -556,30 +536,22 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
 
             $foundParams[] = $param['var'];
 
-            // Check number of spaces after the type.
             $this->checkSpacingAfterParamType($phpcsFile, $param, $maxType);
 
-            // Make sure the param name is correct.
             if (isset($realParams[$pos]) === true) {
                 $realName     = $realParams[$pos]['name'];
                 $paramVarName = $param['var'];
 
                 if ($param['var'][0] === '&') {
-                    // Even when passed by reference, the variable name in $realParams does not have
-                    // a leading '&'. This sniff will accept both '&$var' and '$var' in these cases.
                     $paramVarName = substr($param['var'], 1);
 
-                    // This makes sure that the 'MissingParamTag' check won't throw a false positive.
                     $foundParams[(count($foundParams) - 1)] = $paramVarName;
 
                     if ($realParams[$pos]['pass_by_reference'] !== true && $realName === $paramVarName) {
-                        // Don't complain about this unless the param name is otherwise correct.
                         $error = 'Doc comment for parameter %s is prefixed with "&" but parameter is not passed by reference';
                         $code  = 'ParamNameUnexpectedAmpersandPrefix';
                         $data  = [$paramVarName];
 
-                        // We're not offering an auto-fix here because we can't tell if the docblock
-                        // is wrong, or the parameter should be passed by reference.
                         $phpcsFile->addError($error, $param['tag'], $code, $data);
                     }
                 }
@@ -602,7 +574,6 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
                     $phpcsFile->addError($error, $param['tag'], $code, $data);
                 }//end if
             } else if (substr($param['var'], -4) !== ',...') {
-                // We must have an extra parameter comment.
                 $error = 'Superfluous parameter comment';
                 $phpcsFile->addError($error, $param['tag'], 'ExtraParamComment');
             }//end if
@@ -611,10 +582,8 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
                 continue;
             }
 
-            // Check number of spaces after the var name.
             $this->checkSpacingAfterParamName($phpcsFile, $param, $maxVar);
 
-            // Param comments must start with a capital letter and end with a full stop.
             if (preg_match('/^(\p{Ll}|\P{L})/u', $param['comment']) === 1) {
                 $error = 'Parameter comment must start with a capital letter';
                 $phpcsFile->addError($error, $param['tag'], 'ParamCommentNotCapital');
@@ -632,7 +601,6 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
             $realNames[] = $realParam['name'];
         }
 
-        // Report missing comments.
         $diff = array_diff($realNames, $foundParams);
         foreach ($diff as $neededParam) {
             $error = 'Doc comment for parameter "%s" missing';
@@ -655,7 +623,6 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
      */
     protected function checkSpacingAfterParamType(File $phpcsFile, $param, $maxType, $spacing=1)
     {
-        // Check number of spaces after the type.
         $spaces = ($maxType - strlen($param['type']) + $spacing);
         if ($param['type_space'] !== $spaces) {
             $error = 'Expected %s spaces after parameter type; %s found';
@@ -675,7 +642,6 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
                 $content .= $param['commentLines'][0]['comment'];
                 $phpcsFile->fixer->replaceToken(($param['tag'] + 2), $content);
 
-                // Fix up the indent of additional comment lines.
                 $diff = ($param['type_space'] - $spaces);
                 foreach ($param['commentLines'] as $lineNum => $line) {
                     if ($lineNum === 0
@@ -714,7 +680,6 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
      */
     protected function checkSpacingAfterParamName(File $phpcsFile, $param, $maxVar, $spacing=1)
     {
-        // Check number of spaces after the var name.
         $spaces = ($maxVar - strlen($param['var']) + $spacing);
         if ($param['var_space'] !== $spaces) {
             $error = 'Expected %s spaces after parameter name; %s found';
@@ -734,7 +699,6 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
                 $content .= $param['commentLines'][0]['comment'];
                 $phpcsFile->fixer->replaceToken(($param['tag'] + 2), $content);
 
-                // Fix up the indent of additional comment lines.
                 foreach ($param['commentLines'] as $lineNum => $line) {
                     if ($lineNum === 0
                         || $param['commentLines'][$lineNum]['indent'] === 0

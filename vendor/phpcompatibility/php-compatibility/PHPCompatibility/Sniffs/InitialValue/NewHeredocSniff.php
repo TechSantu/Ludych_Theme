@@ -91,7 +91,6 @@ class NewHeredocSniff extends NewConstantScalarExpressionsSniff
         $tokens = $phpcsFile->getTokens();
         $next   = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), $end, true);
         if ($next === false || $tokens[$next]['code'] !== \T_EQUAL) {
-            // No value assigned.
             return true;
         }
 

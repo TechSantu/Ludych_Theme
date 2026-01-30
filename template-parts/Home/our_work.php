@@ -7,7 +7,6 @@ $tech_stack_title = get_field( 'tech_stack_title', $current_post_id );
 $tech_stack_text  = get_field( 'tech_stack_text', $current_post_id );
 ?>
 
-<!-- our work progress start -->
 <section class="work-progress">
 	<div class="custom-container">
 		<div class="global-header middle-align">

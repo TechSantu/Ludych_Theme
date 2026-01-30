@@ -98,7 +98,6 @@ final class Context
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Check for the existence of the token.
         if (isset($tokens[$stackPtr]) === false) {
             return false;
         }
@@ -128,7 +127,6 @@ final class Context
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Check for the existence of the token.
         if (isset($tokens[$stackPtr]) === false) {
             return false;
         }
@@ -142,13 +140,11 @@ final class Context
         $closer = $tokens[$foreach]['parenthesis_closer'];
 
         for ($i = ($opener + 1); $i < $closer; $i++) {
-            // Skip past a short array declaration in the "before as" part.
             if (isset($tokens[$i]['bracket_closer'])) {
                 $i = $tokens[$i]['bracket_closer'];
                 continue;
             }
 
-            // Skip past a long array declaration in the "before as" part.
             if (isset($tokens[$i]['parenthesis_closer'])) {
                 $i = $tokens[$i]['parenthesis_closer'];
                 continue;
@@ -161,7 +157,6 @@ final class Context
         }
 
         if (isset($asPtr) === false) {
-            // Parse error or live coding.
             return false;
         }
 
@@ -196,7 +191,6 @@ final class Context
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Check for the existence of the token.
         if (isset($tokens[$stackPtr]) === false) {
             return false;
         }
@@ -225,7 +219,6 @@ final class Context
             if ($tokens[$i]['level'] !== $level
                 || \count($tokens[$i]['nested_parenthesis']) !== $parens
             ) {
-                // Disregard semicolons at lower nesting/condition levels.
                 continue;
             }
 

@@ -61,8 +61,6 @@ class ForbiddenFunctionsSniff implements Sniff
      */
     public function register()
     {
-        // Everyone has had a chance to figure out what forbidden functions
-        // they want to check for, so now we can cache out the list.
         $this->forbiddenFunctionNames = array_keys($this->forbiddenFunctions);
 
         if ($this->patternMatch === true) {
@@ -73,8 +71,6 @@ class ForbiddenFunctionsSniff implements Sniff
             return [T_STRING];
         }
 
-        // If we are not pattern matching, we need to work out what
-        // tokens to listen for.
         $hasHaltCompiler = false;
         $string          = '<?php ';
         foreach ($this->forbiddenFunctionNames as $name) {
@@ -138,34 +134,27 @@ class ForbiddenFunctionsSniff implements Sniff
 
         $prevToken = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($stackPtr - 1), null, true);
 
-        // If function call is directly preceded by a NS_SEPARATOR it points to the
-        // global namespace, so we should still catch it.
         if ($tokens[$prevToken]['code'] === T_NS_SEPARATOR) {
             $prevToken = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($prevToken - 1), null, true);
             if ($tokens[$prevToken]['code'] === T_STRING) {
-                // Not in the global namespace.
                 return;
             }
         }
 
         if (isset($ignore[$tokens[$prevToken]['code']]) === true) {
-            // Not a call to a PHP function.
             return;
         }
 
         $nextToken = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
         if (isset($ignore[$tokens[$nextToken]['code']]) === true) {
-            // Not a call to a PHP function.
             return;
         }
 
         if ($tokens[$stackPtr]['code'] === T_STRING && $tokens[$nextToken]['code'] !== T_OPEN_PARENTHESIS) {
-            // Not a call to a PHP function.
             return;
         }
 
         if (empty($tokens[$stackPtr]['nested_attributes']) === false) {
-            // Class instantiation in attribute, not function call.
             return;
         }
 
@@ -186,7 +175,6 @@ class ForbiddenFunctionsSniff implements Sniff
                 return;
             }
 
-            // Remove the pattern delimiters and modifier.
             $pattern = substr($pattern, 1, -2);
         } else {
             if (in_array($function, $this->forbiddenFunctionNames, true) === false) {

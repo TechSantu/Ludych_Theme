@@ -54,7 +54,6 @@ final class ListHelper {
 	public static function get_list_variables( File $phpcsFile, $stackPtr ) {
 		$tokens = $phpcsFile->getTokens();
 
-		// Is this one of the tokens this function handles ?
 		if ( isset( $tokens[ $stackPtr ], Collections::listOpenTokensBC()[ $tokens[ $stackPtr ]['code'] ] ) === false ) {
 			return array();
 		}
@@ -68,7 +67,6 @@ final class ListHelper {
 		try {
 			$assignments = Lists::getAssignments( $phpcsFile, $stackPtr );
 		} catch ( UnexpectedTokenType $e ) {
-			// Parse error/live coding.
 			return array();
 		}
 

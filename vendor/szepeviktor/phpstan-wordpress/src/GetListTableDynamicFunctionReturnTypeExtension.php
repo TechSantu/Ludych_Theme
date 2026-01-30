@@ -52,14 +52,12 @@ class GetListTableDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dy
     {
         $args = $functionCall->getArgs();
 
-        // Called without $class argument
         if (count($args) < 1) {
             return null;
         }
 
         $argumentType = $scope->getType($args[0]->value);
 
-        // When called with a $class that isn't a constant string, return default return type
         if (count($argumentType->getConstantStrings()) === 0) {
             return null;
         }

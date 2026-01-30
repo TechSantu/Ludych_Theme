@@ -48,7 +48,6 @@ final class MixedArrayKeyTypesSniff extends AbstractArrayDeclarationSniff
      */
     public function processArray(File $phpcsFile)
     {
-        // Reset properties before processing this array.
         $this->seenStringKey  = false;
         $this->seenNumericKey = false;
 
@@ -76,17 +75,14 @@ final class MixedArrayKeyTypesSniff extends AbstractArrayDeclarationSniff
     {
         $key = $this->getActualArrayKey($phpcsFile, $startPtr, $endPtr);
         if (isset($key) === false) {
-            // Key could not be determined.
             return;
         }
 
         $integerKey = \is_int($key);
 
-        // Handle integer key.
         if ($integerKey === true) {
             if ($this->seenStringKey === false) {
                 if ($this->seenNumericKey !== false) {
-                    // Already seen a numeric key before.
                     return;
                 }
 
@@ -94,7 +90,6 @@ final class MixedArrayKeyTypesSniff extends AbstractArrayDeclarationSniff
                 return;
             }
 
-            // Ok, so we've seen a string key before and now see an explicit numeric key.
             $firstNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, $startPtr, null, true);
             $phpcsFile->addError(
                 'Arrays should have either numeric keys or string keys. Explicit numeric key detected,'
@@ -103,14 +98,11 @@ final class MixedArrayKeyTypesSniff extends AbstractArrayDeclarationSniff
                 'ExplicitNumericKey'
             );
 
-            // Stop the loop.
             return true;
         }
 
-        // Handle string key.
         if ($this->seenNumericKey === false) {
             if ($this->seenStringKey !== false) {
-                // Already seen a string key before.
                 return;
             }
 
@@ -118,7 +110,6 @@ final class MixedArrayKeyTypesSniff extends AbstractArrayDeclarationSniff
             return;
         }
 
-        // Ok, so we've seen a numeric key before and now see a string key.
         $firstNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, $startPtr, null, true);
         $phpcsFile->addError(
             'Arrays should have either numeric keys or string keys. String key detected,'
@@ -127,7 +118,6 @@ final class MixedArrayKeyTypesSniff extends AbstractArrayDeclarationSniff
             'StringKey'
         );
 
-        // Stop the loop.
         return true;
     }
 
@@ -151,7 +141,6 @@ final class MixedArrayKeyTypesSniff extends AbstractArrayDeclarationSniff
     {
         if ($this->seenStringKey === false) {
             if ($this->seenNumericKey !== false) {
-                // Already seen a numeric key before.
                 return;
             }
 
@@ -159,7 +148,6 @@ final class MixedArrayKeyTypesSniff extends AbstractArrayDeclarationSniff
             return;
         }
 
-        // Ok, so we've seen a string key before and now see an implicit numeric key.
         $firstNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, $startPtr, null, true);
         $phpcsFile->addError(
             'Arrays should have either numeric keys or string keys. Implicit numeric key detected,'
@@ -168,7 +156,6 @@ final class MixedArrayKeyTypesSniff extends AbstractArrayDeclarationSniff
             'ImplicitNumericKey'
         );
 
-        // Stop the loop.
         return true;
     }
 }

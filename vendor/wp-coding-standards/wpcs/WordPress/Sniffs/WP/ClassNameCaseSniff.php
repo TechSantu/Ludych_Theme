@@ -530,7 +530,6 @@ final class ClassNameCaseSniff extends AbstractClassRestrictionsSniff {
 	 *               The constructor will add the lowercased class name as a key to each entry.
 	 */
 	private $phpmailer_classes = array(
-		// Classes.
 		'PHPMailer\\PHPMailer\\DSNConfigurator',
 		'PHPMailer\\PHPMailer\\Exception',
 		'PHPMailer\\PHPMailer\\OAuth',
@@ -538,7 +537,6 @@ final class ClassNameCaseSniff extends AbstractClassRestrictionsSniff {
 		'PHPMailer\\PHPMailer\\POP3',
 		'PHPMailer\\PHPMailer\\SMTP',
 
-		// Interfaces.
 		'PHPMailer\\PHPMailer\\OAuthTokenProvider',
 	);
 
@@ -555,20 +553,17 @@ final class ClassNameCaseSniff extends AbstractClassRestrictionsSniff {
 	 *               The constructor will add the lowercased class name as a key to each entry.
 	 */
 	private $requests_classes = array(
-		// Interfaces, Requests v1.
 		'Requests_Auth',
 		'Requests_Hooker',
 		'Requests_Proxy',
 		'Requests_Transport',
 
-		// Interfaces, Requests v2.
 		'WpOrg\\Requests\\Auth',
 		'WpOrg\\Requests\\Capability',
 		'WpOrg\\Requests\\HookManager',
 		'WpOrg\\Requests\\Proxy',
 		'WpOrg\\Requests\\Transport',
 
-		// Classes, Requests v1.
 		'Requests',
 		'Requests_Auth_Basic',
 		'Requests_Cookie',
@@ -624,7 +619,6 @@ final class ClassNameCaseSniff extends AbstractClassRestrictionsSniff {
 		'Requests_Utility_CaseInsensitiveDictionary',
 		'Requests_Utility_FilteredIterator',
 
-		// Classes, Requests v2.
 		'WpOrg\Requests\Auth\Basic',
 		'WpOrg\Requests\Autoload',
 		'WpOrg\Requests\Cookie',
@@ -699,10 +693,8 @@ final class ClassNameCaseSniff extends AbstractClassRestrictionsSniff {
 	 *               The constructor will add the lowercased class name as a key to each entry.
 	 */
 	private $simplepie_classes = array(
-		// Interfaces, SimplePie v1.
 		'SimplePie_Cache_Base',
 
-		// Interfaces, SimplePie v2 (with BC layer in v1).
 		'SimplePie\Cache\Base',
 		'SimplePie\Cache\DataCache',
 		'SimplePie\Cache\NameFilter',
@@ -710,7 +702,6 @@ final class ClassNameCaseSniff extends AbstractClassRestrictionsSniff {
 		'SimplePie\HTTP\Response',
 		'SimplePie\RegistryAware',
 
-		// Classes, SimplePie v1.
 		'SimplePie',
 		'SimplePie_Autoloader',
 		'SimplePie_Author',
@@ -747,7 +738,6 @@ final class ClassNameCaseSniff extends AbstractClassRestrictionsSniff {
 		'SimplePie_XML_Declaration_Parser',
 		'SimplePie_gzdecode',
 
-		// Classes, SimplePie v2 (with BC layer in v1).
 		'SimplePie\Author',
 		'SimplePie\Cache',
 		'SimplePie\Cache\BaseDataCache',
@@ -892,7 +882,6 @@ final class ClassNameCaseSniff extends AbstractClassRestrictionsSniff {
 	 * @since 3.0.0
 	 */
 	public function __construct() {
-		// Adjust the class list properties to have the lowercased version of the value as a key.
 		foreach ( $this->class_groups as $name ) {
 			$name_lc        = $name . '_lc';
 			$this->$name_lc = array_map( 'strtolower', $this->$name );
@@ -939,7 +928,6 @@ final class ClassNameCaseSniff extends AbstractClassRestrictionsSniff {
 		$matched_proper_case = $this->get_proper_case( $matched_lowercase );
 
 		if ( $matched_unqualified === $matched_proper_case ) {
-			// Already using proper case, nothing to do.
 			return;
 		}
 
@@ -969,7 +957,6 @@ final class ClassNameCaseSniff extends AbstractClassRestrictionsSniff {
 			}
 		}
 
-		// Shouldn't be possible.
 		return ''; // @codeCoverageIgnore
 	}
 }

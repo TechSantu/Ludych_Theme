@@ -143,7 +143,6 @@ class Fixer
     {
         $fixable = $this->currentFile->getFixableCount();
         if ($fixable === 0) {
-            // Nothing to fix.
             return false;
         }
 
@@ -153,7 +152,6 @@ class Fixer
         while ($this->loops < 50) {
             ob_start();
 
-            // Only needed once file content has changed.
             $contents = $this->getContents();
 
             if (PHP_CODESNIFFER_VERBOSITY > 2) {
@@ -192,7 +190,6 @@ class Fixer
             }
 
             if ($this->numFixes === 0 && $this->inConflict === false) {
-                // Nothing left to do.
                 break;
             } else if (PHP_CODESNIFFER_VERBOSITY > 1) {
                 echo "\t* fixed $this->numFixes violations, starting loop ".($this->loops + 1).' *'.PHP_EOL;
@@ -250,15 +247,9 @@ class Fixer
         $fixedFile = fopen($tempName, 'w');
         fwrite($fixedFile, $contents);
 
-        // We must use something like shell_exec() or proc_open() because whitespace at the end
-        // of lines is critical to diff files.
-        // Using proc_open() instead of shell_exec improves performance on Windows significantly,
-        // while the results are the same (though more code is needed to get the results).
-        // This is specifically due to proc_open allowing to set the "bypass_shell" option.
         $filename = escapeshellarg($filename);
         $cmd      = "diff -u -L$filename -LPHP_CodeSniffer $filename \"$tempName\"";
 
-        // Stream 0 = STDIN, 1 = STDOUT, 2 = STDERR.
         $descriptorspec = [
             0 => [
                 'pipe',
@@ -284,11 +275,9 @@ class Fixer
             throw new RuntimeException('Could not obtain a resource to execute the diff command.');
         }
 
-        // We don't need these.
         fclose($pipes[0]);
         fclose($pipes[2]);
 
-        // Stdout will contain the actual diff.
         $diff = stream_get_contents($pipes[1]);
         fclose($pipes[1]);
 
@@ -309,7 +298,6 @@ class Fixer
 
         $diffLines = explode(PHP_EOL, $diff);
         if (count($diffLines) === 1) {
-            // Seems to be required for cygwin.
             $diffLines = explode("\n", $diff);
         }
 
@@ -444,7 +432,6 @@ class Fixer
         }
 
         if ($success === false) {
-            // Rolling back all changes.
             foreach ($applied as $stackPtr) {
                 $this->revertToken($stackPtr);
             }
@@ -553,7 +540,6 @@ class Fixer
             $oldContent = Common::prepareForOutput($this->tokens[$stackPtr]);
             $newContent = Common::prepareForOutput($content);
             if (trim($this->tokens[$stackPtr]) === '' && isset($this->tokens[($stackPtr + 1)]) === true) {
-                // Add some context for whitespace only changes.
                 $append      = Common::prepareForOutput($this->tokens[($stackPtr + 1)]);
                 $oldContent .= $append;
                 $newContent .= $append;
@@ -668,7 +654,6 @@ class Fixer
             $oldContent = Common::prepareForOutput($this->tokens[$stackPtr]);
             $newContent = Common::prepareForOutput($this->fixedTokens[$stackPtr]);
             if (trim($this->tokens[$stackPtr]) === '' && isset($tokens[($stackPtr + 1)]) === true) {
-                // Add some context for whitespace only changes.
                 $append      = Common::prepareForOutput($this->tokens[($stackPtr + 1)]);
                 $oldContent .= $append;
                 $newContent .= $append;
@@ -857,7 +842,6 @@ class Fixer
             $sniffCode = Common::getSniffCode($className);
             return $sniffCode;
         } catch (InvalidArgumentException $e) {
-            // Sniff code could not be determined. This may be an abstract sniff class or a helper class.
             return $className;
         }
 

@@ -89,7 +89,6 @@ final class BCTokens
             return Tokens::${$name};
         }
 
-        // Unknown token array requested.
         throw InvalidTokenArray::create($name);
     }
 

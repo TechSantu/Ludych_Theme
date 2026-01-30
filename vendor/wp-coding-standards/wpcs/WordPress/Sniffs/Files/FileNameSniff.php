@@ -165,7 +165,6 @@ final class FileNameSniff extends Sniff {
 			return $this->phpcsFile->numTokens;
 		}
 
-		// Respect phpcs:disable comments as long as they are not accompanied by an enable.
 		$i = -1;
 		while ( $i = $this->phpcsFile->findNext( \T_PHPCS_DISABLE, ( $i + 1 ) ) ) {
 			if ( empty( $this->tokens[ $i ]['sniffCodes'] )
@@ -182,7 +181,6 @@ final class FileNameSniff extends Sniff {
 					&& ! isset( $this->tokens[ $i ]['sniffCodes']['WordPress.Files.FileName'] ) );
 
 				if ( false === $i ) {
-					// The entire (rest of the) file is disabled.
 					return $this->phpcsFile->numTokens;
 				}
 			}
@@ -202,7 +200,6 @@ final class FileNameSniff extends Sniff {
 			$this->check_filename_for_template_suffix( $stackPtr, $file_name );
 		}
 
-		// Only run this sniff once per file, no need to run it again.
 		return $this->phpcsFile->numTokens;
 	}
 

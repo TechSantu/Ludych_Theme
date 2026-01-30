@@ -49,8 +49,6 @@ class ScopeClosingBraceSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // If this is an inline condition (ie. there is no scope opener), then
-        // return, as this is not a new scope.
         if (isset($tokens[$stackPtr]['scope_closer']) === false) {
             return;
         }
@@ -58,19 +56,12 @@ class ScopeClosingBraceSniff implements Sniff
         $scopeStart = $tokens[$stackPtr]['scope_opener'];
         $scopeEnd   = $tokens[$stackPtr]['scope_closer'];
 
-        // If the scope closer doesn't think it belongs to this scope opener
-        // then the opener is sharing its closer with other tokens. We only
-        // want to process the closer once, so skip this one.
         if (isset($tokens[$scopeEnd]['scope_condition']) === false
             || $tokens[$scopeEnd]['scope_condition'] !== $stackPtr
         ) {
             return;
         }
 
-        // We need to actually find the first piece of content on this line,
-        // because if this is a method with tokens before it (public, static etc)
-        // or an if with an else before it, then we need to start the scope
-        // checking from there, rather than the current token.
         $lineStart = ($stackPtr - 1);
         for ($lineStart; $lineStart > 0; $lineStart--) {
             if (strpos($tokens[$lineStart]['content'], $phpcsFile->eolChar) !== false) {
@@ -92,7 +83,6 @@ class ScopeClosingBraceSniff implements Sniff
             }
         }
 
-        // Check that the closing brace is on it's own line.
         for ($lastContent = ($scopeEnd - 1); $lastContent > $scopeStart; $lastContent--) {
             if ($tokens[$lastContent]['code'] === T_WHITESPACE || $tokens[$lastContent]['code'] === T_OPEN_TAG) {
                 continue;
@@ -117,7 +107,6 @@ class ScopeClosingBraceSniff implements Sniff
             return;
         }
 
-        // Check now that the closing brace is lined up correctly.
         $lineStart = ($scopeEnd - 1);
         for ($lineStart; $lineStart > 0; $lineStart--) {
             if (strpos($tokens[$lineStart]['content'], $phpcsFile->eolChar) !== false) {
@@ -143,8 +132,6 @@ class ScopeClosingBraceSniff implements Sniff
         if ($tokens[$stackPtr]['code'] === T_CASE
             || $tokens[$stackPtr]['code'] === T_DEFAULT
         ) {
-            // BREAK statements should be indented n spaces from the
-            // CASE or DEFAULT statement.
             $expectedIndent = ($startColumn + $this->indent - 1);
             if ($braceIndent !== $expectedIndent) {
                 $error = 'Case breaking statement indented incorrectly; expected %s spaces, found %s';

@@ -59,7 +59,6 @@ class SemicolonSpacingSniff implements Sniff
 
         $nonSpace = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($stackPtr - 2), null, true);
 
-        // Detect whether this is a semicolon for a condition in a `for()` control structure.
         $forCondition = false;
         if (isset($tokens[$stackPtr]['nested_parenthesis']) === true) {
             $nestedParens     = $tokens[$stackPtr]['nested_parenthesis'];
@@ -80,7 +79,6 @@ class SemicolonSpacingSniff implements Sniff
             || (isset($tokens[$nonSpace]['scope_opener']) === true
             && $tokens[$nonSpace]['scope_opener'] === $nonSpace)
         ) {
-            // Empty statement.
             return;
         }
 

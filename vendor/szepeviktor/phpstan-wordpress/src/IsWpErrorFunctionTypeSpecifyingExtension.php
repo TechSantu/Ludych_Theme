@@ -28,7 +28,6 @@ class IsWpErrorFunctionTypeSpecifyingExtension implements \PHPStan\Type\Function
             && ! $context->null();
     }
 
-    // phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter
     public function specifyTypes(FunctionReflection $functionReflection, FuncCall $node, Scope $scope, TypeSpecifierContext $context): SpecifiedTypes
     {
         if ($context->null()) {

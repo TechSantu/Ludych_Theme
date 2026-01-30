@@ -445,8 +445,6 @@ class NewClassesSniff extends AbstractNewFeatureSniff
             '5.0' => true,
         ),
         'Exception' => array(
-            // According to the docs introduced in PHP 5.1, but this appears to be.
-            // an error.  Class was introduced with try/catch keywords in PHP 5.0.
             '4.4' => false,
             '5.0' => true,
         ),
@@ -628,11 +626,9 @@ class NewClassesSniff extends AbstractNewFeatureSniff
      */
     public function register()
     {
-        // Handle case-insensitivity of class names.
         $this->newClasses    = $this->arrayKeysToLowercase($this->newClasses);
         $this->newExceptions = $this->arrayKeysToLowercase($this->newExceptions);
 
-        // Add the Exception classes to the Classes list.
         $this->newClasses = array_merge($this->newClasses, $this->newExceptions);
 
         $targets = array(
@@ -676,8 +672,6 @@ class NewClassesSniff extends AbstractNewFeatureSniff
             case 'T_CLOSURE':
                 $this->processFunctionToken($phpcsFile, $stackPtr);
 
-                // Deal with older PHPCS version which don't recognize return type hints
-                // as well as newer PHPCS versions (3.3.0+) where the tokenization has changed.
                 $returnTypeHint = $this->getReturnTypeHintToken($phpcsFile, $stackPtr);
                 if ($returnTypeHint !== false) {
                     $this->processReturnTypeToken($phpcsFile, $returnTypeHint);
@@ -759,7 +753,6 @@ class NewClassesSniff extends AbstractNewFeatureSniff
      */
     private function processFunctionToken(File $phpcsFile, $stackPtr)
     {
-        // Retrieve typehints stripped of global NS indicator and/or nullable indicator.
         $typeHints = $this->getTypeHintsFromFunctionDeclaration($phpcsFile, $stackPtr);
         if (empty($typeHints) || \is_array($typeHints) === false) {
             return;
@@ -797,7 +790,6 @@ class NewClassesSniff extends AbstractNewFeatureSniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Bow out during live coding.
         if (isset($tokens[$stackPtr]['parenthesis_opener'], $tokens[$stackPtr]['parenthesis_closer']) === false) {
             return;
         }
@@ -806,10 +798,8 @@ class NewClassesSniff extends AbstractNewFeatureSniff
         $closer = ($tokens[$stackPtr]['parenthesis_closer'] + 1);
         $name   = '';
         $listen = array(
-            // Parts of a (namespaced) class name.
             \T_STRING              => true,
             \T_NS_SEPARATOR        => true,
-            // End/split tokens.
             \T_VARIABLE            => false,
             \T_BITWISE_OR          => false,
             \T_CLOSE_CURLY_BRACKET => false, // Shouldn't be needed as we expect a var before this.
@@ -825,8 +815,6 @@ class NewClassesSniff extends AbstractNewFeatureSniff
                 continue;
             } else {
                 if (empty($name) === true) {
-                    // Weird, we should have a name by the time we encounter a variable or |.
-                    // So this may be the closer.
                     continue;
                 }
 
@@ -841,7 +829,6 @@ class NewClassesSniff extends AbstractNewFeatureSniff
                     $this->handleFeature($phpcsFile, $i, $itemInfo);
                 }
 
-                // Reset for a potential multi-catch.
                 $name = '';
             }
         }
@@ -875,7 +862,6 @@ class NewClassesSniff extends AbstractNewFeatureSniff
             return;
         }
 
-        // Still here ? Then this is a return type declaration using a new class.
         $itemInfo = array(
             'name'   => $returnTypeHint,
             'nameLc' => $returnTypeHintLc,

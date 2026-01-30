@@ -106,14 +106,12 @@ final class AlphabeticExtendsImplementsSniff implements Sniff
          * Validate the setting.
          */
         if ($this->orderby !== 'full') {
-            // Use the default.
             $this->orderby = 'name';
         }
         $metricNameAlpha = \sprintf(self::METRIC_NAME_ALPHA, $this->orderby);
 
         $tokens = $phpcsFile->getTokens();
         if (isset($tokens[$stackPtr]['scope_opener']) === false) {
-            // Parse error or live coding. Ignore.
             return;
         }
 
@@ -129,7 +127,6 @@ final class AlphabeticExtendsImplementsSniff implements Sniff
         }
 
         if (\is_array($names) === false) {
-            // Class/interface/enum doesn't extend or implement.
             $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME_COUNT, 0);
             $phpcsFile->recordMetric($stackPtr, $metricNameAlpha, 'n/a');
             return;
@@ -139,7 +136,6 @@ final class AlphabeticExtendsImplementsSniff implements Sniff
         $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME_COUNT, $count);
 
         if ($count < 2) {
-            // Nothing to sort.
             $phpcsFile->recordMetric($stackPtr, $metricNameAlpha, 'n/a');
             return;
         }
@@ -154,7 +150,6 @@ final class AlphabeticExtendsImplementsSniff implements Sniff
         }
 
         if ($sorted === $names) {
-            // Order is already correct.
             $phpcsFile->recordMetric($stackPtr, $metricNameAlpha, 'yes');
             return;
         }
@@ -192,7 +187,6 @@ final class AlphabeticExtendsImplementsSniff implements Sniff
             return;
         }
 
-        // OK, so we appear to have a fixable error.
         $fix = $phpcsFile->addFixableError($error, $keywordPtr, $code, $data);
         if ($fix === false) {
             return;
@@ -200,7 +194,6 @@ final class AlphabeticExtendsImplementsSniff implements Sniff
 
         $phpcsFile->fixer->beginChangeset();
 
-        // Remove the complete previous extends/implements part.
         for ($i = ($keywordPtr + 1); $i < $scopeOpener; $i++) {
             $phpcsFile->fixer->replaceToken($i, '');
         }

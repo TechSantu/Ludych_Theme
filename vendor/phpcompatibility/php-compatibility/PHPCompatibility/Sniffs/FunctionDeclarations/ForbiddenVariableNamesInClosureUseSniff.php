@@ -62,7 +62,6 @@ class ForbiddenVariableNamesInClosureUseSniff extends Sniff
 
         $tokens = $phpcsFile->getTokens();
 
-        // Verify this use statement is used with a closure - if so, it has to have parenthesis before it.
         $previousNonEmpty = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($stackPtr - 1), null, true, null, true);
         if ($previousNonEmpty === false || $tokens[$previousNonEmpty]['code'] !== \T_CLOSE_PARENTHESIS
             || isset($tokens[$previousNonEmpty]['parenthesis_opener']) === false
@@ -70,14 +69,12 @@ class ForbiddenVariableNamesInClosureUseSniff extends Sniff
             return;
         }
 
-        // ... and (a variable within) parenthesis after it.
         $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true, null, true);
         if ($nextNonEmpty === false || $tokens[$nextNonEmpty]['code'] !== \T_OPEN_PARENTHESIS) {
             return;
         }
 
         if (isset($tokens[$nextNonEmpty]['parenthesis_closer']) === false) {
-            // Live coding.
             return;
         }
 
@@ -86,7 +83,6 @@ class ForbiddenVariableNamesInClosureUseSniff extends Sniff
             return;
         }
 
-        // Get the parameters declared by the closure.
         $closureParams = PHPCSHelper::getMethodParameters($phpcsFile, $closurePtr);
 
         $errorMsg = 'Variables bound to a closure via the use construct cannot use the same name as superglobals, $this, or a declared parameter since PHP 7.1. Found: %s';
@@ -108,7 +104,6 @@ class ForbiddenVariableNamesInClosureUseSniff extends Sniff
                 continue;
             }
 
-            // Check whether it is one of the parameters declared by the closure.
             if (empty($closureParams) === false) {
                 foreach ($closureParams as $param) {
                     if ($param['name'] === $variableName) {

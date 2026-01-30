@@ -106,7 +106,6 @@ class Reporter
 
             $reportClassName = '';
             if (strpos($type, '.') !== false) {
-                // This is a path to a custom report class.
                 $filename = realpath($type);
                 if ($filename === false) {
                     $error = "ERROR: Custom report \"$type\" not found".PHP_EOL;
@@ -115,13 +114,10 @@ class Reporter
 
                 $reportClassName = Autoload::loadFile($filename);
             } else if (class_exists('PHP_CodeSniffer\Reports\\'.ucfirst($type)) === true) {
-                // PHPCS native report.
                 $reportClassName = 'PHP_CodeSniffer\Reports\\'.ucfirst($type);
             } else if (class_exists($type) === true) {
-                // FQN of a custom report.
                 $reportClassName = $type;
             } else {
-                // OK, so not a FQN, try and find the report using the registered namespaces.
                 $registeredNamespaces = Autoload::getSearchPaths();
                 $trimmedType          = ltrim($type, '\\');
 
@@ -153,9 +149,6 @@ class Reporter
             ];
 
             if ($output === null) {
-                // Using a temp file.
-                // This needs to be set in the constructor so that all
-                // child procs use the same report file when running in parallel.
                 $this->tmpFiles[$type] = tempnam(sys_get_temp_dir(), 'phpcs');
                 file_put_contents($this->tmpFiles[$type], '');
             } else {
@@ -270,8 +263,6 @@ class Reporter
     public function cacheFileReport(File $phpcsFile)
     {
         if (isset($this->config->reports) === false) {
-            // This happens during unit testing, or any time someone just wants
-            // the error data and not the printed report.
             return;
         }
 
@@ -291,11 +282,7 @@ class Reporter
             ob_end_clean();
 
             if ($report['output'] === null) {
-                // Using a temp file.
                 if (isset($this->tmpFiles[$type]) === false) {
-                    // When running in interactive mode, the reporter prints the full
-                    // report many times, which will unlink the temp file. So we need
-                    // to create a new one if it doesn't exist.
                     $this->tmpFiles[$type] = tempnam(sys_get_temp_dir(), 'phpcs');
                     file_put_contents($this->tmpFiles[$type], '');
                 }
@@ -311,8 +298,6 @@ class Reporter
             $this->totalErrors   += $reportData['errors'];
             $this->totalWarnings += $reportData['warnings'];
 
-            // When PHPCBF is running, we need to use the fixable error values
-            // after the report has run and fixed what it can.
             if (PHP_CODESNIFFER_CBF === true) {
                 $this->totalFixable += $phpcsFile->getFixableCount();
                 $this->totalFixed   += $phpcsFile->getFixedCount();
@@ -364,7 +349,6 @@ class Reporter
         ];
 
         if ($report['errors'] === 0 && $report['warnings'] === 0) {
-            // Perfect score!
             return $report;
         }
 
@@ -385,7 +369,6 @@ class Reporter
 
         $errors = [];
 
-        // Merge errors and warnings.
         foreach ($phpcsFile->getErrors() as $line => $lineErrors) {
             foreach ($lineErrors as $column => $colErrors) {
                 $newErrors = [];

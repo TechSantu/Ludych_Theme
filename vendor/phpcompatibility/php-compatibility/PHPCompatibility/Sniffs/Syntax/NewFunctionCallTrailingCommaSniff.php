@@ -80,7 +80,6 @@ class NewFunctionCallTrailingCommaSniff extends Sniff
 
             $prevNonEmpty = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($stackPtr - 1), null, true);
             if (isset($ignore[$tokens[$prevNonEmpty]['code']]) === true) {
-                // Not a function call.
                 return;
             }
         }

@@ -167,7 +167,6 @@ class RequiredToOptionalFunctionParametersSniff extends AbstractComplexVersionSn
      */
     public function register()
     {
-        // Handle case-insensitivity of function names.
         $this->functionParameters = $this->arrayKeysToLowercase($this->functionParameters);
 
         return array(\T_STRING);
@@ -198,7 +197,6 @@ class RequiredToOptionalFunctionParametersSniff extends AbstractComplexVersionSn
 
         $prevToken = $phpcsFile->findPrevious(\T_WHITESPACE, ($stackPtr - 1), null, true);
         if (isset($ignore[$tokens[$prevToken]['code']]) === true) {
-            // Not a call to a PHP function.
             return;
         }
 
@@ -212,7 +210,6 @@ class RequiredToOptionalFunctionParametersSniff extends AbstractComplexVersionSn
         $parameterCount  = $this->getFunctionCallParameterCount($phpcsFile, $stackPtr);
         $openParenthesis = $phpcsFile->findNext(Tokens::$emptyTokens, $stackPtr + 1, null, true, null, true);
 
-        // If the parameter count returned > 0, we know there will be valid open parenthesis.
         if ($parameterCount === 0 && $tokens[$openParenthesis]['code'] !== \T_OPEN_PARENTHESIS) {
             return;
         }

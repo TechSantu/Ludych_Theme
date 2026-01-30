@@ -52,7 +52,6 @@ class BlockCommentSniff implements Sniff
     {
         if ($this->tabWidth === null) {
             if (isset($phpcsFile->config->tabWidth) === false || $phpcsFile->config->tabWidth === 0) {
-                // We have no idea how wide tabs are, so assume 4 spaces for fixing.
                 $this->tabWidth = 4;
             } else {
                 $this->tabWidth = $phpcsFile->config->tabWidth;
@@ -61,13 +60,10 @@ class BlockCommentSniff implements Sniff
 
         $tokens = $phpcsFile->getTokens();
 
-        // If it's an inline comment, return.
         if (substr($tokens[$stackPtr]['content'], 0, 2) !== '/*') {
             return;
         }
 
-        // If this is a function/class/interface/enum/property/const doc block comment, skip it.
-        // We are only interested in inline doc block comments.
         if ($tokens[$stackPtr]['code'] === T_DOC_COMMENT_OPEN_TAG) {
             $nextToken = $stackPtr;
             do {
@@ -126,17 +122,14 @@ class BlockCommentSniff implements Sniff
         $lastLine      = $tokens[$stackPtr]['line'];
         $commentString = $tokens[$stackPtr]['content'];
 
-        // Construct the comment into an array.
         while (($nextComment = $phpcsFile->findNext(T_WHITESPACE, ($nextComment + 1), null, true)) !== false) {
             if ($tokens[$nextComment]['code'] !== $tokens[$stackPtr]['code']
                 && isset(Tokens::$phpcsCommentTokens[$tokens[$nextComment]['code']]) === false
             ) {
-                // Found the next bit of code.
                 break;
             }
 
             if (($tokens[$nextComment]['line'] - 1) !== $lastLine) {
-                // Not part of the block.
                 break;
             }
 
@@ -172,7 +165,6 @@ class BlockCommentSniff implements Sniff
         if (count($commentLines) === 1) {
             $error = 'Single line block comment not allowed; use inline ("// text") comment instead';
 
-            // Only fix comments when they are the last token on a line.
             $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
             if ($tokens[$stackPtr]['line'] !== $tokens[$nextNonEmpty]['line']) {
                 $fix = $phpcsFile->addFixableError($error, $stackPtr, 'SingleLine');
@@ -216,7 +208,6 @@ class BlockCommentSniff implements Sniff
         $starColumn = $tokens[$stackPtr]['column'];
         $hasStars   = false;
 
-        // Make sure first line isn't blank.
         if (trim($tokens[$commentLines[1]]['content']) === '') {
             $error = 'Empty line not allowed at start of comment';
             $fix   = $phpcsFile->addFixableError($error, $commentLines[1], 'HasEmptyLine');
@@ -224,7 +215,6 @@ class BlockCommentSniff implements Sniff
                 $phpcsFile->fixer->replaceToken($commentLines[1], '');
             }
         } else {
-            // Check indentation of first line.
             $content      = $tokens[$commentLines[1]]['content'];
             $commentText  = ltrim($content);
             $leadingSpace = (strlen($content) - strlen($commentText));
@@ -252,7 +242,6 @@ class BlockCommentSniff implements Sniff
                     if (isset($tokens[$commentLines[1]]['orig_content']) === true
                         && $tokens[$commentLines[1]]['orig_content'][0] === "\t"
                     ) {
-                        // Line is indented using tabs.
                         $padding  = str_repeat("\t", floor($expected / $this->tabWidth));
                         $padding .= str_repeat(' ', ($expected % $this->tabWidth));
                     } else {
@@ -269,19 +258,15 @@ class BlockCommentSniff implements Sniff
             }
         }//end if
 
-        // Check that each line of the comment is indented past the star.
         foreach ($commentLines as $line) {
-            // First and last lines (comment opener and closer) are handled separately.
             if ($line === $commentLines[(count($commentLines) - 1)] || $line === $commentLines[0]) {
                 continue;
             }
 
-            // First comment line was handled above.
             if ($line === $commentLines[1]) {
                 continue;
             }
 
-            // If it's empty, continue.
             if (trim($tokens[$line]['content']) === '') {
                 continue;
             }
@@ -312,7 +297,6 @@ class BlockCommentSniff implements Sniff
                     if (isset($tokens[$line]['orig_content']) === true
                         && $tokens[$line]['orig_content'][0] === "\t"
                     ) {
-                        // Line is indented using tabs.
                         $padding  = str_repeat("\t", floor($expected / $this->tabWidth));
                         $padding .= str_repeat(' ', ($expected % $this->tabWidth));
                     } else {
@@ -324,7 +308,6 @@ class BlockCommentSniff implements Sniff
             }//end if
         }//end foreach
 
-        // Finally, test the last line is correct.
         $lastIndex   = (count($commentLines) - 1);
         $content     = $tokens[$commentLines[$lastIndex]]['content'];
         $commentText = ltrim($content);
@@ -356,7 +339,6 @@ class BlockCommentSniff implements Sniff
                     if (isset($tokens[$line]['orig_content']) === true
                         && $tokens[$line]['orig_content'][0] === "\t"
                     ) {
-                        // Line is indented using tabs.
                         $padding  = str_repeat("\t", floor($expected / $this->tabWidth));
                         $padding .= str_repeat(' ', ($expected % $this->tabWidth));
                     } else {
@@ -368,7 +350,6 @@ class BlockCommentSniff implements Sniff
             }//end if
         }//end if
 
-        // Check that the lines before and after this comment are blank.
         $contentBefore = $phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), null, true);
         if ((isset($tokens[$contentBefore]['scope_closer']) === true
             && $tokens[$contentBefore]['scope_opener'] === $contentBefore)

@@ -52,7 +52,6 @@ class DocCommentAlignmentSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // We are only interested in function/class/interface/enum/property/const doc block comments.
         $ignore = Tokens::$emptyTokens;
         if ($phpcsFile->tokenizerType === 'JS') {
             $ignore[] = T_EQUAL;
@@ -80,15 +79,12 @@ class DocCommentAlignmentSniff implements Sniff
         ];
 
         if ($nextToken === false || isset($ignore[$tokens[$nextToken]['code']]) === false) {
-            // Could be a file comment.
             $prevToken = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($stackPtr - 1), null, true);
             if ($tokens[$prevToken]['code'] !== T_OPEN_TAG) {
                 return;
             }
         }
 
-        // There must be one space after each star (unless it is an empty comment line)
-        // and all the stars must be aligned correctly.
         $requiredColumn = ($tokens[$stackPtr]['column'] + 1);
         $endComment     = $tokens[$stackPtr]['comment_closer'];
         for ($i = ($stackPtr + 1); $i <= $endComment; $i++) {
@@ -100,11 +96,9 @@ class DocCommentAlignmentSniff implements Sniff
 
             if ($tokens[$i]['code'] === T_DOC_COMMENT_CLOSE_TAG) {
                 if (trim($tokens[$i]['content']) === '') {
-                    // Don't process an unfinished docblock close tag during live coding.
                     continue;
                 }
 
-                // Can't process the close tag if it is not the first thing on the line.
                 $prev = $phpcsFile->findPrevious(T_DOC_COMMENT_WHITESPACE, ($i - 1), $stackPtr, true);
                 if ($tokens[$prev]['line'] === $tokens[$i]['line']) {
                     continue;
@@ -139,7 +133,6 @@ class DocCommentAlignmentSniff implements Sniff
             }
 
             if ($tokens[($i + 2)]['line'] !== $tokens[$i]['line']) {
-                // Line is empty.
                 continue;
             }
 

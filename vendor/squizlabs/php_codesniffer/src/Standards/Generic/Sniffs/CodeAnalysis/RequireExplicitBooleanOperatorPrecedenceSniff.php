@@ -87,21 +87,17 @@ class RequireExplicitBooleanOperatorPrecedenceSniff implements Sniff
         );
 
         if ($previous === false) {
-            // No token found.
             return;
         }
 
         if ($tokens[$previous]['code'] === $tokens[$stackPtr]['code']) {
-            // Identical operator found.
             return;
         }
 
         if (in_array($tokens[$previous]['code'], [T_INLINE_THEN, T_INLINE_ELSE], true) === true) {
-            // Beginning of the expression found for the ternary conditional operator.
             return;
         }
 
-        // We found a mismatching operator, thus we must report the error.
         $error  = 'Mixing different binary boolean operators within an expression';
         $error .= ' without using parentheses to clarify precedence is not allowed.';
         $phpcsFile->addError($error, $stackPtr, 'MissingParentheses');

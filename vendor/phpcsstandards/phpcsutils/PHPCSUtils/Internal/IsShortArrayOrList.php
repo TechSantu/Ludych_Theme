@@ -236,16 +236,13 @@ final class IsShortArrayOrList
         }
 
         if ($this->afterCloser === false) {
-            // Live coding. Short array until told differently.
             return self::SHORT_ARRAY;
         }
 
-        // If the bracket closer is followed by an equals sign, it's always a short list.
         if ($this->tokens[$this->afterCloser]['code'] === \T_EQUAL) {
             return self::SHORT_LIST;
         }
 
-        // Attributes can only contain constant expressions, i.e. lists not allowed.
         if (Context::inAttribute($this->phpcsFile, $this->opener) === true) {
             return self::SHORT_ARRAY;
         }
@@ -291,7 +288,6 @@ final class IsShortArrayOrList
 
         $nextEffectiveAfterCloser = $this->afterCloser;
         if ($this->tokens[$this->afterCloser]['code'] === \T_COMMA) {
-            // Skip over potential trailing commas.
             $nextEffectiveAfterCloser = $this->phpcsFile->findNext(
                 Tokens::$emptyTokens,
                 ($this->afterCloser + 1),
@@ -321,13 +317,11 @@ final class IsShortArrayOrList
             return $type;
         }
 
-        // Last resort: walk up in the file to see if we can find a set of parent brackets...
         $type = $this->walkOutside();
         if ($type !== false) {
             return $type;
         }
 
-        // If everything failed, this will be a short array (shouldn't be possible).
         return self::SHORT_ARRAY; // @codeCoverageIgnore
     }
 
@@ -341,11 +335,9 @@ final class IsShortArrayOrList
     private function isSquareBracket()
     {
         if ($this->opener === $this->closer) {
-            // Parse error (unclosed bracket) or live coding. Bow out.
             return true;
         }
 
-        // Check if this is a bracket we need to examine or a mistokenization.
         return ($this->isShortArrayBracket() === false);
     }
 
@@ -368,7 +360,6 @@ final class IsShortArrayOrList
     private function isShortArrayBracket()
     {
         if ($this->tokens[$this->opener]['code'] === \T_OPEN_SQUARE_BRACKET) {
-            // Currently there are no known issues with the tokenization in PHPCS.
             return false;
         }
 
@@ -435,7 +426,6 @@ final class IsShortArrayOrList
      */
     private function walkInside($opener, $recursions = 0)
     {
-        // Get the first 5 "parameters" and ignore the "is short array" check.
         $items = PassedParameters::getParameters($this->phpcsFile, $opener, self::ITEM_LIMIT, true);
 
         if ($items === []) {
@@ -447,7 +437,6 @@ final class IsShortArrayOrList
             return false;
         }
 
-        // Make sure vars assigned by reference are handled correctly.
         $skip   = Tokens::$emptyTokens;
         $skip[] = \T_BITWISE_AND;
 
@@ -536,7 +525,6 @@ final class IsShortArrayOrList
             }
         }
 
-        // Undetermined.
         return false;
     }
 
@@ -556,7 +544,6 @@ final class IsShortArrayOrList
         $stopPoints[\T_SEMICOLON] = \T_SEMICOLON;
 
         for ($i = ($this->opener - 1); $i >= 0; $i--) {
-            // Skip over block comments (just in case).
             if ($this->tokens[$i]['code'] === \T_DOC_COMMENT_CLOSE_TAG) {
                 $i = $this->tokens[$i]['comment_opener'];
                 continue;
@@ -566,9 +553,7 @@ final class IsShortArrayOrList
                 continue;
             }
 
-            // Stop on an end of statement.
             if (isset($stopPoints[$this->tokens[$i]['code']]) === true) {
-                // End of previous statement or start of document.
                 return self::SHORT_ARRAY;
             }
 
@@ -576,8 +561,6 @@ final class IsShortArrayOrList
                 if ($i === $this->tokens[$i]['scope_opener']
                     && $this->tokens[$i]['scope_closer'] > $this->closer
                 ) {
-                    // Found a scope wrapping this set of brackets before finding a outer set of brackets.
-                    // This will be a short array.
                     return self::SHORT_ARRAY;
                 }
 
@@ -588,11 +571,8 @@ final class IsShortArrayOrList
                     continue;
                 }
 
-                // Scope opener without scope condition shouldn't be possible, but just in case.
-                // @codeCoverageIgnoreStart
                 $i = $this->tokens[$i]['scope_opener'];
                 continue;
-                // @codeCoverageIgnoreEnd
             }
 
             if (isset($this->tokens[$i]['parenthesis_opener'], $this->tokens[$i]['parenthesis_closer']) === true) {
@@ -601,12 +581,9 @@ final class IsShortArrayOrList
                 ) {
                     $beforeParensOpen = $this->phpcsFile->findPrevious(Tokens::$emptyTokens, ($i - 1), null, true);
                     if ($this->tokens[$beforeParensOpen]['code'] === \T_LIST) {
-                        // Parse error, mixing long and short list, but that's not our concern.
                         return self::SHORT_LIST;
                     }
 
-                    // Found parentheses wrapping this set of brackets before finding a outer set of brackets.
-                    // This will be a short array.
                     return self::SHORT_ARRAY;
                 }
 
@@ -617,7 +594,6 @@ final class IsShortArrayOrList
                     }
                 }
 
-                // Parenthesis closer without owner (function call and such).
                 $i = $this->tokens[$i]['parenthesis_opener'];
                 continue;
             }
@@ -659,12 +635,10 @@ final class IsShortArrayOrList
                     return Cache::get($this->phpcsFile, IsShortArrayOrListWithCache::CACHE_KEY, $adjOpener);
                 }
 
-                // If not, skip over it.
                 $i = $this->tokens[$i]['bracket_opener'];
                 continue;
             }
 
-            // Open bracket.
             if (isset($this->openBrackets[$this->tokens[$i]['code']]) === true) {
                 if (isset($this->tokens[$i]['bracket_closer']) === false
                     || $this->tokens[$i]['code'] === \T_OPEN_SQUARE_BRACKET
@@ -678,16 +652,11 @@ final class IsShortArrayOrList
                 }
 
                 if ($this->tokens[$i]['bracket_closer'] > $this->closer) {
-                    // This is one we have to examine further as an outer set of brackets.
-                    // As all the other checks have already failed to get a result, we know that
-                    // whatever the outer set is, the inner set will be the same.
                     return IsShortArrayOrListWithCache::getType($this->phpcsFile, $i);
                 }
             }
         }
 
-        // Reached the start of the file without finding an outer set of brackets.
-        // Shouldn't be possible, but just in case.
         return false; // @codeCoverageIgnore
     }
 }

@@ -49,7 +49,6 @@ final class RulesetDouble extends Ruleset
              * so we should be able to safely ignore it.
              */
             if (\rtrim($e->getMessage()) !== 'ERROR: No sniffs were registered.') {
-                // Rethrow the exception to fail the test, as this is not the exception we expected.
                 throw $e;
             }
         }

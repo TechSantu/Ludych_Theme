@@ -141,7 +141,6 @@ final class SuggestTypeTest extends TestCase
     public static function dataSuggestTypeOther()
     {
         return [
-            // Short forms.
             'Short form type: bool, lowercase'                                => [
                 'varType'  => 'bool',
                 'expected' => 'boolean',
@@ -171,7 +170,6 @@ final class SuggestTypeTest extends TestCase
                 'expected' => 'integer',
             ],
 
-            // Array types.
             'Array type: mixed case keyword, empty parentheses'               => [
                 'varType'  => 'Array()',
                 'expected' => 'array',
@@ -197,13 +195,11 @@ final class SuggestTypeTest extends TestCase
                 'expected' => 'array(string => resource)',
             ],
 
-            // Incomplete array type.
             'Array type: incomplete specification'                            => [
                 'varType'  => 'array(int =>',
                 'expected' => 'array',
             ],
 
-            // Custom types are returned unchanged.
             'Unknown type: "<string> => <int>"'                               => [
                 'varType'  => '<string> => <int>',
                 'expected' => '<string> => <int>',

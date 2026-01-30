@@ -70,7 +70,6 @@ final class TrailingCommaSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
 
         if (isset($tokens[$stackPtr]['attribute_closer']) === false) {
-            // Live coding/parse error. Ignore.
             return;
         }
 
@@ -79,12 +78,10 @@ final class TrailingCommaSniff implements Sniff
 
         $beforeCloser = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($closer - 1), null, true);
         if ($opener === $beforeCloser) {
-            // Empty attribute block. Ignore.
             return;
         }
 
         if ($tokens[$opener]['line'] === $tokens[$closer]['line']) {
-            // Single-line attribute block.
             if ($tokens[$beforeCloser]['code'] === \T_COMMA) {
                 $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME_SINGLE_LINE, 'yes');
 
@@ -103,10 +100,8 @@ final class TrailingCommaSniff implements Sniff
             return;
         }
 
-        // Multi-line attribute block, check whether it contains a single attribute or multiple.
         $attributeCount = AttributeBlock::countAttributes($phpcsFile, $stackPtr);
         if ($attributeCount > 1) {
-            // Multiple attributes in a multi-line attribute block, require trailing comma.
             if ($tokens[$beforeCloser]['code'] !== \T_COMMA) {
                 $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME_MULTI_LINE, 'No, multi-attribute');
 
@@ -125,7 +120,6 @@ final class TrailingCommaSniff implements Sniff
             return;
         }
 
-        // Single attribute in a multi-line attribute block, forbid trailing comma.
         if ($tokens[$beforeCloser]['code'] === \T_COMMA) {
             $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME_MULTI_LINE, 'Yes, single attribute');
 

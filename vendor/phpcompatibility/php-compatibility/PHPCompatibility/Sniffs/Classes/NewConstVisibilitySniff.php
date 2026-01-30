@@ -58,15 +58,11 @@ class NewConstVisibilitySniff extends Sniff
         $tokens    = $phpcsFile->getTokens();
         $prevToken = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($stackPtr - 1), null, true, null, true);
 
-        // Is the previous token a visibility indicator ?
         if ($prevToken === false || isset(Tokens::$scopeModifiers[$tokens[$prevToken]['code']]) === false) {
             return;
         }
 
-        // Is this a class constant ?
         if ($this->isClassConstant($phpcsFile, $stackPtr) === false) {
-            // This may be a constant declaration in the global namespace with visibility,
-            // but that would throw a parse error, i.e. not our concern.
             return;
         }
 

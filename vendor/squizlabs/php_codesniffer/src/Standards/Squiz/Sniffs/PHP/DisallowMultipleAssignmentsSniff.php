@@ -42,11 +42,9 @@ class DisallowMultipleAssignmentsSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Ignore default value assignments in function definitions.
         $function = $phpcsFile->findPrevious([T_FUNCTION, T_CLOSURE, T_FN], ($stackPtr - 1), null, false, null, true);
         if ($function !== false) {
             if (isset($tokens[$function]['parenthesis_closer']) === false) {
-                // Live coding/parse error. Bow out.
                 return;
             }
 
@@ -57,7 +55,6 @@ class DisallowMultipleAssignmentsSniff implements Sniff
             }
         }
 
-        // Ignore assignments in WHILE loop conditions.
         if (isset($tokens[$stackPtr]['nested_parenthesis']) === true) {
             $nested = $tokens[$stackPtr]['nested_parenthesis'];
             foreach ($nested as $opener => $closer) {
@@ -69,7 +66,6 @@ class DisallowMultipleAssignmentsSniff implements Sniff
             }
         }
 
-        // Ignore member var definitions.
         if (empty($tokens[$stackPtr]['conditions']) === false) {
             $conditions = $tokens[$stackPtr]['conditions'];
             end($conditions);
@@ -89,11 +85,9 @@ class DisallowMultipleAssignmentsSniff implements Sniff
 
         for ($varToken = ($stackPtr - 1); $varToken >= 0; $varToken--) {
             if (in_array($tokens[$varToken]['code'], [T_SEMICOLON, T_OPEN_CURLY_BRACKET, T_CLOSE_TAG], true) === true) {
-                // We've reached the previous statement, so we didn't find a variable.
                 return;
             }
 
-            // Skip brackets.
             if (isset($tokens[$varToken]['parenthesis_opener']) === true && $tokens[$varToken]['parenthesis_opener'] < $varToken) {
                 $varToken = $tokens[$varToken]['parenthesis_opener'];
                 continue;
@@ -107,18 +101,15 @@ class DisallowMultipleAssignmentsSniff implements Sniff
             if ($tokens[$varToken]['code'] === T_VARIABLE) {
                 $prevNonEmpty = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($varToken - 1), null, true);
                 if ($tokens[$prevNonEmpty]['code'] === T_OBJECT_OPERATOR) {
-                    // Dynamic property access, the real "start" variable still needs to be found.
                     $varToken = $prevNonEmpty;
                     continue;
                 }
 
-                // We found our variable.
                 break;
             }
         }//end for
 
         if ($varToken <= 0) {
-            // Didn't find a variable.
             return;
         }
 
@@ -144,9 +135,6 @@ class DisallowMultipleAssignmentsSniff implements Sniff
             $varToken = $start;
         }
 
-        // Ignore the first part of FOR loops as we are allowed to
-        // assign variables there even though the variable is not the
-        // first thing on the line.
         if ($tokens[$varToken]['code'] === T_OPEN_PARENTHESIS && isset($tokens[$varToken]['parenthesis_owner']) === true) {
             $owner = $tokens[$varToken]['parenthesis_owner'];
             if ($tokens[$owner]['code'] === T_FOR) {

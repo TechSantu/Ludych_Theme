@@ -79,14 +79,12 @@ class NewProcOpenCmdArraySniff extends AbstractFunctionCallParameterSniff
         $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, $targetParam['start'], $targetParam['end'], true);
 
         if ($nextNonEmpty === false) {
-            // Shouldn't be possible.
             return;
         }
 
         if ($tokens[$nextNonEmpty]['code'] !== \T_ARRAY
             && $tokens[$nextNonEmpty]['code'] !== \T_OPEN_SHORT_ARRAY
         ) {
-            // Not passed as an array.
             return;
         }
 
@@ -100,7 +98,6 @@ class NewProcOpenCmdArraySniff extends AbstractFunctionCallParameterSniff
 
         if ($this->supportsAbove('7.4') === true) {
             if (strpos($targetParam['raw'], 'escapeshellarg(') === false) {
-                // Efficiency: prevent needlessly walking the array.
                 return;
             }
 
@@ -118,7 +115,6 @@ class NewProcOpenCmdArraySniff extends AbstractFunctionCallParameterSniff
                         continue;
                     }
 
-                    // @todo Potential future enhancement: check if it's a call to the PHP native function.
 
                     $phpcsFile->addWarning(
                         'When passing proc_open() the $cmd parameter as an array, PHP will take care of any necessary argument escaping. Found: %s',
@@ -127,7 +123,6 @@ class NewProcOpenCmdArraySniff extends AbstractFunctionCallParameterSniff
                         array($item['raw'])
                     );
 
-                    // Only throw one error per array item.
                     break;
                 }
             }

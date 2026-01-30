@@ -196,7 +196,6 @@ final class GetConditionTest extends AbstractMethodUnitTest
     {
         $stackPtr = self::$testTokens[$testMarker];
 
-        // Add expected results for all test markers not listed in the data provider.
         $expectedResults += $this->conditionDefaults;
 
         foreach ($expectedResults as $conditionType => $expected) {
@@ -301,7 +300,6 @@ final class GetConditionTest extends AbstractMethodUnitTest
     {
         $stackPtr = self::$testTokens[$testMarker];
 
-        // Add expected results for all test markers not listed in the data provider.
         $expectedResults += $this->conditionDefaults;
 
         foreach ($expectedResults as $conditionType => $expected) {
@@ -335,7 +333,6 @@ final class GetConditionTest extends AbstractMethodUnitTest
     {
         $data = self::dataGetCondition();
 
-        // Set up the data for the reversed results.
         $data['testSeriouslyNestedMethod']['expectedResults']['T_IF'] = '/* condition 4: if */';
 
         $data['testDeepestNested']['expectedResults']['T_FUNCTION'] = '/* condition 12: nested anonymous class method */';
@@ -367,7 +364,6 @@ final class GetConditionTest extends AbstractMethodUnitTest
     {
         $stackPtr = self::$testTokens[$testMarker];
 
-        // Add expected results for all test markers not listed in the data provider.
         $expectedResults += $this->conditionDefaults;
 
         foreach ($expectedResults as $conditionType => $expected) {

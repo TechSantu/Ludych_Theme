@@ -113,8 +113,6 @@ class Markdown extends Generator
      */
     protected function getFormattedFooter()
     {
-        // Turn off errors so we don't get timezone warnings if people
-        // don't have their timezone set.
         $errorLevel = error_reporting(0);
         $output     = PHP_EOL.'Documentation generated on '.date('r');
         $output    .= ' by [PHP_CodeSniffer '.Config::VERSION.'](https://github.com/PHPCSStandards/PHP_CodeSniffer)'.PHP_EOL;
@@ -205,19 +203,15 @@ class Markdown extends Generator
         for ($i = 0; $i < $lineCount; $i++) {
             $currentLine = trim($nodeLines[$i]);
             if ($currentLine === '') {
-                // The text contained a blank line. Respect this.
                 $lines[] = '';
                 continue;
             }
 
-            // Check if the _next_ line is blank.
             if (isset($nodeLines[($i + 1)]) === false
                 || trim($nodeLines[($i + 1)]) === ''
             ) {
-                // Next line is blank, just add the line.
                 $lines[] = $currentLine;
             } else {
-                // Ensure that line breaks are respected in markdown.
                 $lines[] = $currentLine.'  ';
             }
         }
@@ -266,7 +260,6 @@ class Markdown extends Generator
         $secondCodeElm = $codeBlocks->item(1);
 
         if (isset($firstCodeElm, $secondCodeElm) === false) {
-            // Missing at least one code block.
             return '';
         }
 

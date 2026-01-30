@@ -47,10 +47,8 @@ class ReturnFunctionValueSniff implements Sniff, DeprecatedSniff
         $functionName = $phpcsFile->findNext(T_STRING, ($stackPtr + 1), null, false, null, true);
 
         while ($functionName !== false) {
-            // Check if this is really a function.
             $bracket = $phpcsFile->findNext(T_WHITESPACE, ($functionName + 1), null, true);
             if ($tokens[$bracket]['code'] !== T_OPEN_PARENTHESIS) {
-                // Not a function call.
                 $functionName = $phpcsFile->findNext(T_STRING, ($functionName + 1), null, false, null, true);
                 continue;
             }

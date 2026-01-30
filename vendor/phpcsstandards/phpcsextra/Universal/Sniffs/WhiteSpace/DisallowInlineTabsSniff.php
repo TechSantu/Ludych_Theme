@@ -105,7 +105,6 @@ final class DisallowInlineTabsSniff implements Sniff
         $dummy  = new DummyTokenizer('', $phpcsFile->config);
 
         for ($i = 0; $i < $phpcsFile->numTokens; $i++) {
-            // Skip all non-target tokens and skip whitespace at the start of a new line.
             if (isset($this->find[$tokens[$i]['code']]) === false
                 || (($tokens[$i]['code'] === \T_WHITESPACE
                     || $tokens[$i]['code'] === \T_DOC_COMMENT_WHITESPACE)
@@ -114,11 +113,9 @@ final class DisallowInlineTabsSniff implements Sniff
                 continue;
             }
 
-            // If tabs haven't been converted to spaces by the tokenizer, do so now.
             $token = $tokens[$i];
             if (isset($token['orig_content']) === false) {
                 if ($token['content'] === '' || \strpos($token['content'], "\t") === false) {
-                    // If there are no tabs, we can continue, no matter what.
                     continue;
                 }
 
@@ -143,7 +140,6 @@ final class DisallowInlineTabsSniff implements Sniff
             }
 
             if ($multiLineComment === true) {
-                // This is the subsequent line of a multi-line comment. Account for indentation.
                 $commentOnly = \ltrim($origContent);
                 if ($commentOnly === '' || \strpos($commentOnly, "\t") === false) {
                     continue;
@@ -162,7 +158,6 @@ final class DisallowInlineTabsSniff implements Sniff
 
             $indent = '';
             if ($multiLineComment === true) {
-                // Take the original indent (tabs/spaces) and combine with the tab-replaced comment content.
                 $indent           = \str_replace($commentOnly, '', $origContent);
                 $token['content'] = \ltrim($token['content']);
             }
@@ -170,7 +165,6 @@ final class DisallowInlineTabsSniff implements Sniff
             $phpcsFile->fixer->replaceToken($i, $indent . $token['content']);
         }
 
-        // Scanned the whole file in one go. Don't scan this file again.
         return $phpcsFile->numTokens;
     }
 }

@@ -178,7 +178,6 @@ final class DirectDatabaseQuerySniff extends Sniff {
 	 */
 	public function process_token( $stackPtr ) {
 
-		// Check for $wpdb variable.
 		if ( '$wpdb' !== $this->tokens[ $stackPtr ]['content'] ) {
 			return;
 		}
@@ -188,7 +187,6 @@ final class DirectDatabaseQuerySniff extends Sniff {
 			|| ( \T_OBJECT_OPERATOR !== $this->tokens[ $is_object_call ]['code']
 				&& \T_NULLSAFE_OBJECT_OPERATOR !== $this->tokens[ $is_object_call ]['code'] )
 		) {
-			// This is not a call to the wpdb object.
 			return;
 		}
 
@@ -206,7 +204,6 @@ final class DirectDatabaseQuerySniff extends Sniff {
 			return;
 		}
 
-		// Check for Database Schema Changes/ table truncation.
 		for ( $_pos = ( $stackPtr + 1 ); $_pos < $endOfStatement; $_pos++ ) {
 			$_pos = $this->phpcsFile->findNext( Tokens::$textStringTokens, $_pos, $endOfStatement );
 			if ( false === $_pos ) {
@@ -214,7 +211,6 @@ final class DirectDatabaseQuerySniff extends Sniff {
 			}
 
 			if ( strpos( strtoupper( TextStrings::stripQuotes( $this->tokens[ $_pos ]['content'] ) ), 'TRUNCATE ' ) === 0 ) {
-				// Ignore queries to truncate the database as caching those is irrelevant and they need a direct db query.
 				return;
 			}
 

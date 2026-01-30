@@ -41,7 +41,6 @@ class Xml implements Report
         $out->startDocument('1.0', 'UTF-8');
 
         if ($report['errors'] === 0 && $report['warnings'] === 0) {
-            // Nothing to print.
             return false;
         }
 
@@ -73,9 +72,6 @@ class Xml implements Report
 
         $out->endElement();
 
-        // Remove the start of the document because we will
-        // add that manually later. We only have it in here to
-        // properly set the encoding.
         $content = $out->flush();
         if (strpos($content, PHP_EOL) !== false) {
             $content = substr($content, (strpos($content, PHP_EOL) + strlen(PHP_EOL)));

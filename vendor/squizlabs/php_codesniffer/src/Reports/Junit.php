@@ -111,7 +111,6 @@ class Junit implements Report
         $interactive=false,
         $toScreen=true
     ) {
-        // Figure out the total number of tests.
         $tests   = 0;
         $matches = [];
         preg_match_all('/tests="([0-9]+)"/', $cachedData, $matches);

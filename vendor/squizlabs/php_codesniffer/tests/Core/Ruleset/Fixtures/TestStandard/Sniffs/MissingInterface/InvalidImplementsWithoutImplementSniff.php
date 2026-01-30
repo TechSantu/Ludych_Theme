@@ -19,6 +19,5 @@ final class InvalidImplementsWithoutImplementSniff
 
     public function process(File $phpcsFile, $stackPtr)
     {
-        // Do something.
     }
 }

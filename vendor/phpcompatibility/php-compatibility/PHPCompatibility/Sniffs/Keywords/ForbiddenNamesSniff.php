@@ -284,7 +284,6 @@ class ForbiddenNamesSniff extends Sniff
         ) {
             $maybeUseNext = $phpcsFile->findNext(Tokens::$emptyTokens, ($nextNonEmpty + 1), null, true, null, true);
             if ($maybeUseNext === false) {
-                // Live coding.
                 return;
             }
 
@@ -296,7 +295,6 @@ class ForbiddenNamesSniff extends Sniff
          */
         elseif ($tokens[$stackPtr]['type'] === 'T_NAMESPACE') {
             if ($tokens[$stackPtr + 1]['code'] === \T_NS_SEPARATOR) {
-                // Not a namespace declaration, but use of, i.e. `namespace\someFunction();`.
                 return;
             }
 
@@ -313,7 +311,6 @@ class ForbiddenNamesSniff extends Sniff
                     continue;
                 }
 
-                // Find the token position of the part which matched.
                 for ($i = ($stackPtr + 1); $i < $endToken; $i++) {
                     if ($tokens[$i]['content'] === $namespacePart) {
                         $nextNonEmpty = $i;
@@ -380,12 +377,10 @@ class ForbiddenNamesSniff extends Sniff
             return;
         }
 
-        // Look for any define/defined tokens (both T_STRING ones, blame Tokenizer).
         if ($tokenContentLc !== 'define' && $tokenContentLc !== 'defined') {
             return;
         }
 
-        // Retrieve the define(d) constant name.
         $firstParam = $this->getFunctionCallParameter($phpcsFile, $stackPtr, 1);
         if ($firstParam === false) {
             return;

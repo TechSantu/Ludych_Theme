@@ -84,11 +84,9 @@ class ValidatedSanitizedInputSniff extends Sniff {
 	 */
 	public function process_token( $stackPtr ) {
 
-		// Handling string interpolation.
 		if ( \T_DOUBLE_QUOTED_STRING === $this->tokens[ $stackPtr ]['code']
 			|| \T_HEREDOC === $this->tokens[ $stackPtr ]['code']
 		) {
-			// Retrieve all embeds, but use only the initial variable name part.
 			$interpolated_variables = array_map(
 				static function ( $embed ) {
 					return preg_replace( '`^(\{?\$\{?\(?)([a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*)(.*)$`', '$2', $embed );
@@ -96,7 +94,6 @@ class ValidatedSanitizedInputSniff extends Sniff {
 				TextStrings::getEmbeds( $this->tokens[ $stackPtr ]['content'] )
 			);
 
-			// Filter the embeds down to superglobals only.
 			$interpolated_superglobals = array_filter(
 				$interpolated_variables,
 				static function ( $var_name ) {
@@ -113,24 +110,20 @@ class ValidatedSanitizedInputSniff extends Sniff {
 
 		/* Handle variables */
 
-		// Check if this is a superglobal we want to examine.
 		if ( '$GLOBALS' === $this->tokens[ $stackPtr ]['content']
 			|| Variables::isSuperglobalName( $this->tokens[ $stackPtr ]['content'] ) === false
 		) {
 			return;
 		}
 
-		// If the variable is being unset, we don't care about it.
 		if ( Context::inUnset( $this->phpcsFile, $stackPtr ) ) {
 			return;
 		}
 
-		// If we're overriding a superglobal with an assignment, no need to test.
 		if ( VariableHelper::is_assignment( $this->phpcsFile, $stackPtr ) ) {
 			return;
 		}
 
-		// This superglobal is being validated.
 		if ( ContextHelper::is_in_isset_or_empty( $this->phpcsFile, $stackPtr ) ) {
 			return;
 		}
@@ -156,7 +149,6 @@ class ValidatedSanitizedInputSniff extends Sniff {
 			if ( \T_OPEN_SQUARE_BRACKET === $this->tokens[ $i ]['code']
 				&& isset( $this->tokens[ $i ]['bracket_closer'] )
 			) {
-				// Skip over array keys.
 				$i = $this->tokens[ $i ]['bracket_closer'];
 				continue;
 			}
@@ -165,7 +157,6 @@ class ValidatedSanitizedInputSniff extends Sniff {
 				$validated = true;
 			}
 
-			// Anything else means this is not a validation coalesce.
 			break;
 		}
 
@@ -182,22 +173,18 @@ class ValidatedSanitizedInputSniff extends Sniff {
 			);
 		}
 
-		// If this variable is being tested with one of the `is_..()` functions, sanitization isn't needed.
 		if ( ContextHelper::is_in_type_test( $this->phpcsFile, $stackPtr ) ) {
 			return;
 		}
 
-		// If this is a comparison ('a' == $_POST['foo']), sanitization isn't needed.
 		if ( VariableHelper::is_comparison( $this->phpcsFile, $stackPtr, false ) ) {
 			return;
 		}
 
-		// If this is a comparison using the array comparison functions, sanitization isn't needed.
 		if ( ContextHelper::is_in_array_comparison( $this->phpcsFile, $stackPtr ) ) {
 			return;
 		}
 
-		// Now look for sanitizing functions.
 		if ( ! $this->is_sanitized( $this->phpcsFile, $stackPtr, array( $this, 'add_unslash_error' ) ) ) {
 			$this->phpcsFile->addError(
 				'Detected usage of a non-sanitized input variable: %s',
@@ -226,11 +213,9 @@ class ValidatedSanitizedInputSniff extends Sniff {
 		$var_name = $tokens[ $stackPtr ]['content'];
 
 		if ( isset( $this->slashed_superglobals[ $var_name ] ) === false ) {
-			// WP doesn't slash these, so they don't need unslashing.
 			return;
 		}
 
-		// We know there will be array keys as that's checked in the process_token() method.
 		$array_keys = VariableHelper::get_array_access_keys( $phpcsFile, $stackPtr );
 		$error_data = array( $var_name . '[' . implode( '][', $array_keys ) . ']' );
 

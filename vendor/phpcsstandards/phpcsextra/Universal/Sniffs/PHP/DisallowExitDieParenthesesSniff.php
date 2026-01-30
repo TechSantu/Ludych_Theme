@@ -59,18 +59,15 @@ final class DisallowExitDieParenthesesSniff implements Sniff
         $tokens       = $phpcsFile->getTokens();
         $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
         if ($nextNonEmpty === false) {
-            // Live coding. Do not flag (yet).
             return;
         }
 
         if ($tokens[$nextNonEmpty]['code'] !== \T_OPEN_PARENTHESIS) {
-            // No parentheses found.
             $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'no');
             return;
         }
 
         if (isset($tokens[$nextNonEmpty]['parenthesis_closer']) === false) {
-            // Incomplete set of parentheses. Ignore.
             $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'yes');
             return;
         }
@@ -79,7 +76,6 @@ final class DisallowExitDieParenthesesSniff implements Sniff
         $closer    = $tokens[$opener]['parenthesis_closer'];
         $hasParams = $phpcsFile->findNext(Tokens::$emptyTokens, ($opener + 1), $closer, true);
         if ($hasParams !== false) {
-            // There is something between the parentheses. Ignore.
             $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'yes, with parameter(s)');
             return;
         }

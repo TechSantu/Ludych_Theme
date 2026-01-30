@@ -36,6 +36,5 @@ class WithLongReplacementSniff implements Sniff, DeprecatedSniff
 
     public function process(File $phpcsFile, $stackPtr)
     {
-        // Do something.
     }
 }

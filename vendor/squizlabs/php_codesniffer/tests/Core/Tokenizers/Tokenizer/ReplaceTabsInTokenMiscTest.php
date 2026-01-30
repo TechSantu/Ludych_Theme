@@ -43,7 +43,6 @@ EOD;
         $tokens = $phpcsFile->getTokens();
         $target = $phpcsFile->findNext(T_WHITESPACE, 0);
 
-        // Verify initial state.
         $this->assertTrue(is_int($target), 'Target token was not found');
         $this->assertSame('		', $tokens[$target]['content'], 'Content after initial parsing does not contain tabs');
         $this->assertSame(2, $tokens[$target]['length'], 'Length after initial parsing is not as expected');
@@ -51,7 +50,6 @@ EOD;
 
         $phpcsFile->tokenizer->replaceTabsInToken($tokens[$target]);
 
-        // Verify tab replacement.
         $this->assertSame('  ', $tokens[$target]['content'], 'Content after tab replacement is not as expected');
         $this->assertSame(2, $tokens[$target]['length'], 'Length after tab replacement is not as expected');
         $this->assertArrayHasKey('orig_content', $tokens[$target], "Key 'orig_content' not found in the token array.");

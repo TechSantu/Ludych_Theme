@@ -42,7 +42,6 @@ class GetSitesDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
     {
         $args = $functionCall->getArgs();
 
-        // Called without arguments
         if (count($args) === 0) {
             return self::getDefaultType();
         }
@@ -52,7 +51,6 @@ class GetSitesDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
         $this->fields = [];
         $this->count = [];
 
-        // Called with a non constant argument
         if (
             count($argumentType->getConstantArrays()) === 0 &&
             count($argumentType->getConstantStrings()) === 0
@@ -60,14 +58,12 @@ class GetSitesDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
             return self::getIndeterminedType();
         }
 
-        // Called with a constant array argument
         if (count($argumentType->getConstantArrays()) !== 0) {
             foreach ($argumentType->getConstantArrays() as $constantArray) {
                 $this->getValuesFromArray($constantArray);
             }
         }
 
-        // Called with a constant string argument
         if (count($argumentType->getConstantStrings()) !== 0) {
             foreach ($argumentType->getConstantStrings() as $constantString) {
                 $this->getValuesFromString($constantString);
@@ -137,7 +133,6 @@ class GetSitesDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
             }
         }
 
-        // If fields and count are not set, add their default value.
         if ($this->fields === []) {
             $this->fields[] = '';
         }

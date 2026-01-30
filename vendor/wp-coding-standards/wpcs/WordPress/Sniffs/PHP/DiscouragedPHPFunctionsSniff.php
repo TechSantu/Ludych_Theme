@@ -62,11 +62,8 @@ final class DiscouragedPHPFunctionsSniff extends AbstractFunctionRestrictionsSni
 					'putenv',
 					'set_include_path',
 					'restore_include_path',
-					// This alias was DEPRECATED in PHP 5.3.0, and REMOVED as of PHP 7.0.0.
 					'magic_quotes_runtime',
-					// Warning This function was DEPRECATED in PHP 5.3.0, and REMOVED as of PHP 7.0.0.
 					'set_magic_quotes_runtime',
-					// Warning This function was removed from most SAPIs in PHP 5.3.0, and was removed from PHP-FPM in PHP 7.0.0.
 					'dl',
 				),
 			),

@@ -86,14 +86,12 @@ final class TypeSeparatorSpacingSniff implements Sniff
                 || $tokens[$prevNonEmpty]['code'] === \T_CONST
                 || isset(Collections::propertyModifierKeywords()[$tokens[$prevNonEmpty]['code']]) === true
             ) {
-                // Start of return type or property/const type. Always demand 1 space.
                 $expectedSpaces = 1;
             }
 
             if ($tokens[$prevNonEmpty]['code'] === \T_OPEN_PARENTHESIS
                 || $tokens[$prevNonEmpty]['code'] === \T_COMMA
             ) {
-                // Start of parameter type. Allow new line/indent before.
                 if ($tokens[$prevNonEmpty]['line'] === $tokens[$stackPtr]['line']) {
                     $expectedSpaces = 1;
                 } else {
@@ -103,7 +101,6 @@ final class TypeSeparatorSpacingSniff implements Sniff
         }
 
         if (isset($this->targetTokens[$tokens[$prevNonEmpty]['code']]) === true) {
-            // Prevent duplicate errors when there are two adjacent operators.
             $expectedSpaces = 'skip';
         }
 
@@ -128,7 +125,6 @@ final class TypeSeparatorSpacingSniff implements Sniff
                 || $tokens[$nextNonEmpty]['code'] === \T_VARIABLE
                 || $tokens[$nextNonEmpty]['code'] === \T_STRING
             ) {
-                // End of return type, parameter or property/const type. Always demand 1 space.
                 $expectedSpaces = 1;
             }
         }

@@ -102,7 +102,6 @@ final class PassedParameters
             throw UnexpectedTokenType::create(2, '$stackPtr', $acceptedTokens, $tokens[$stackPtr]['type']);
         }
 
-        // Only accept self/static/parent if preceded by `new` or followed by an open parenthesis.
         $next = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
         if (isset(Collections::ooHierarchyKeywords()[$tokens[$stackPtr]['code']]) === true) {
             $prev = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($stackPtr - 1), null, true);
@@ -124,18 +123,14 @@ final class PassedParameters
             return false;
         }
 
-        // Deal with short array syntax.
         if (isset(Collections::shortArrayListOpenTokensBC()[$tokens[$stackPtr]['code']]) === true) {
             if ($next === $tokens[$stackPtr]['bracket_closer']) {
-                // No parameters.
                 return false;
             }
 
             return true;
         }
 
-        // Deal with function calls, long arrays, isset, unset and exit/die.
-        // Next non-empty token should be the open parenthesis.
         if ($tokens[$next]['code'] !== \T_OPEN_PARENTHESIS) {
             return false;
         }
@@ -151,7 +146,6 @@ final class PassedParameters
         $nextNextNonEmpty = $phpcsFile->findNext($ignore, ($next + 1), ($closeParenthesis + 1), true);
 
         if ($nextNextNonEmpty === $closeParenthesis) {
-            // No parameters.
             return false;
         }
 
@@ -222,10 +216,8 @@ final class PassedParameters
             return \array_slice(Cache::get($phpcsFile, __METHOD__, "$stackPtr-0"), 0, $effectiveLimit, true);
         }
 
-        // Ok, we know we have a valid token with parameters and valid open & close brackets/parenthesis.
         $tokens = $phpcsFile->getTokens();
 
-        // Mark the beginning and end tokens.
         if (isset(Collections::shortArrayListOpenTokensBC()[$tokens[$stackPtr]['code']]) === true) {
             $opener = $stackPtr;
             $closer = $tokens[$stackPtr]['bracket_closer'];
@@ -244,7 +236,6 @@ final class PassedParameters
         $stopPoints[] = $tokens[$closer]['code'];
 
         while (($nextComma = $phpcsFile->findNext($stopPoints, ($nextComma + 1), ($closer + 1))) !== false) {
-            // Ignore anything within square brackets.
             if (isset($tokens[$nextComma]['bracket_opener'], $tokens[$nextComma]['bracket_closer'])
                 && $nextComma === $tokens[$nextComma]['bracket_opener']
             ) {
@@ -252,7 +243,6 @@ final class PassedParameters
                 continue;
             }
 
-            // Skip past nested arrays, function calls and arbitrary groupings.
             if ($tokens[$nextComma]['code'] === \T_OPEN_PARENTHESIS
                 && isset($tokens[$nextComma]['parenthesis_closer'])
             ) {
@@ -260,7 +250,6 @@ final class PassedParameters
                 continue;
             }
 
-            // Skip past closures, anonymous classes and anything else scope related.
             if (isset($tokens[$nextComma]['scope_condition'], $tokens[$nextComma]['scope_closer'])
                 && $tokens[$nextComma]['scope_condition'] === $nextComma
             ) {
@@ -268,7 +257,6 @@ final class PassedParameters
                 continue;
             }
 
-            // Skip over potentially large docblocks.
             if ($tokens[$nextComma]['code'] === \T_DOC_COMMENT_OPEN_TAG
                 && isset($tokens[$nextComma]['comment_closer'])
             ) {
@@ -276,7 +264,6 @@ final class PassedParameters
                 continue;
             }
 
-            // Skip over attributes.
             if ($tokens[$nextComma]['code'] === \T_ATTRIBUTE
                 && isset($tokens[$nextComma]['attribute_closer'])
             ) {
@@ -287,11 +274,9 @@ final class PassedParameters
             if ($tokens[$nextComma]['code'] !== \T_COMMA
                 && $tokens[$nextComma]['code'] !== $tokens[$closer]['code']
             ) {
-                // Just in case.
                 continue; // @codeCoverageIgnore
             }
 
-            // Ok, we've reached the end of the parameter.
             $paramEnd = ($nextComma - 1);
             $key      = $cnt;
 
@@ -309,7 +294,6 @@ final class PassedParameters
                         && $tokens[$firstNonEmpty]['code'] === \T_PARAM_NAME
                     ) {
                         if (isset($parameters[$tokens[$firstNonEmpty]['content']]) === false) {
-                            // Set the key to be the name, but only if we've not seen this name before.
                             $key = $tokens[$firstNonEmpty]['content'];
                         }
 
@@ -325,9 +309,6 @@ final class PassedParameters
             $parameters[$key]['raw']   = \trim(GetTokensAsString::normal($phpcsFile, $paramStart, $paramEnd));
             $parameters[$key]['clean'] = \trim(GetTokensAsString::noComments($phpcsFile, $paramStart, $paramEnd));
 
-            // Check if there are more tokens before the closing parenthesis.
-            // Prevents function calls with trailing comma's from setting an extra parameter:
-            // `functionCall( $param1, $param2, );`.
             $hasNextParam = $phpcsFile->findNext(
                 Tokens::$emptyTokens,
                 ($nextComma + 1),
@@ -335,17 +316,14 @@ final class PassedParameters
                 true
             );
             if ($hasNextParam === false) {
-                // Reached the end, so for the purpose of caching, this should be saved as if no limit was set.
                 $effectiveLimit = 0;
                 break;
             }
 
-            // Stop if there is a valid limit and the limit has been reached.
             if ($effectiveLimit !== 0 && $cnt === $effectiveLimit) {
                 break;
             }
 
-            // Prepare for the next parameter.
             $paramStart = ($nextComma + 1);
             ++$cnt;
         }
@@ -353,7 +331,6 @@ final class PassedParameters
         if ($effectiveLimit !== 0 && $cnt === $effectiveLimit) {
             Cache::set($phpcsFile, __METHOD__, "$stackPtr-$effectiveLimit", $parameters);
         } else {
-            // Limit is 0 or total items is less than effective limit.
             Cache::set($phpcsFile, __METHOD__, "$stackPtr-0", $parameters);
         }
 
@@ -488,18 +465,15 @@ final class PassedParameters
             return false;
         }
 
-        // First check for a named parameter.
         if (empty($paramNames) === false) {
             $paramNames = (array) $paramNames;
             foreach ($paramNames as $name) {
-                // Note: parameter names are case-sensitive!.
                 if (isset($parameters[$name]) === true) {
                     return $parameters[$name];
                 }
             }
         }
 
-        // Next check for positional parameters.
         if (isset($parameters[$paramOffset]) === true
             && isset($parameters[$paramOffset]['name']) === false
         ) {

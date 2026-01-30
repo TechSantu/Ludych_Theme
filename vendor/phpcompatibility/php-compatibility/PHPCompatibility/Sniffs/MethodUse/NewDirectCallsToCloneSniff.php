@@ -92,19 +92,16 @@ class NewDirectCallsToCloneSniff extends Sniff
         }
 
         if (strtolower($tokens[$nextNonEmpty]['content']) !== '__clone') {
-            // Not a call to the __clone() method.
             return;
         }
 
         $nextNextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($nextNonEmpty + 1), null, true);
         if ($nextNextNonEmpty === false || $tokens[$nextNextNonEmpty]['code'] !== \T_OPEN_PARENTHESIS) {
-            // Not a method call.
             return;
         }
 
         $prevNonEmpty = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($stackPtr - 1), null, true);
         if ($prevNonEmpty === false || isset($this->classInternal[$tokens[$prevNonEmpty]['code']])) {
-            // Class internal call to __clone().
             return;
         }
 

@@ -46,7 +46,6 @@ final class NamedFunctionCallArgumentsTest extends AbstractTokenizerTestCase
                 'Token tokenized as '.$tokens[$label]['type'].', not T_PARAM_NAME (type)'
             );
 
-            // Get the next non-empty token.
             $colon = $this->phpcsFile->findNext(Tokens::$emptyTokens, ($label + 1), null, true);
 
             $this->assertSame(
@@ -239,7 +238,6 @@ final class NamedFunctionCallArgumentsTest extends AbstractTokenizerTestCase
                 ],
             ],
 
-            // Coding errors which should still be handled.
             'invalid: named arg before positional (compile error)'                => [
                 'testMarker' => '/* testCompileErrorNamedBeforePositional */',
                 'parameters' => [
@@ -376,7 +374,6 @@ final class NamedFunctionCallArgumentsTest extends AbstractTokenizerTestCase
 
         $true = $this->getTargetToken('/* testMixedPositionalAndNamedArgsWithTernary */', T_TRUE);
 
-        // Get the next non-empty token.
         $colon = $this->phpcsFile->findNext(Tokens::$emptyTokens, ($true + 1), null, true);
 
         $this->assertSame(
@@ -392,7 +389,6 @@ final class NamedFunctionCallArgumentsTest extends AbstractTokenizerTestCase
 
         $label = $this->getTargetToken('/* testMixedPositionalAndNamedArgsWithTernary */', T_PARAM_NAME, 'name');
 
-        // Get the next non-empty token.
         $colon = $this->phpcsFile->findNext(Tokens::$emptyTokens, ($label + 1), null, true);
 
         $this->assertSame(
@@ -432,7 +428,6 @@ final class NamedFunctionCallArgumentsTest extends AbstractTokenizerTestCase
 
         $label = $this->getTargetToken('/* testNamedArgWithTernary */', T_PARAM_NAME, 'label');
 
-        // Get the next non-empty token.
         $colon = $this->phpcsFile->findNext(Tokens::$emptyTokens, ($label + 1), null, true);
 
         $this->assertSame(
@@ -453,7 +448,6 @@ final class NamedFunctionCallArgumentsTest extends AbstractTokenizerTestCase
 
         $true = $this->getTargetToken('/* testNamedArgWithTernary */', T_TRUE);
 
-        // Get the next non-empty token.
         $colon = $this->phpcsFile->findNext(Tokens::$emptyTokens, ($true + 1), null, true);
 
         $this->assertSame(
@@ -473,7 +467,6 @@ final class NamedFunctionCallArgumentsTest extends AbstractTokenizerTestCase
 
         $label = $this->getTargetToken('/* testNamedArgWithTernary */', T_PARAM_NAME, 'more');
 
-        // Get the next non-empty token.
         $colon = $this->phpcsFile->findNext(Tokens::$emptyTokens, ($label + 1), null, true);
 
         $this->assertSame(
@@ -494,7 +487,6 @@ final class NamedFunctionCallArgumentsTest extends AbstractTokenizerTestCase
 
         $true = $this->getTargetToken('/* testNamedArgWithTernary */', T_STRING, 'CONSTANT_A');
 
-        // Get the next non-empty token.
         $colon = $this->phpcsFile->findNext(Tokens::$emptyTokens, ($true + 1), null, true);
 
         $this->assertSame(
@@ -529,7 +521,6 @@ final class NamedFunctionCallArgumentsTest extends AbstractTokenizerTestCase
 
         $label = $this->getTargetToken('/* testTernaryWithFunctionCallsInThenElse */', T_PARAM_NAME, 'label');
 
-        // Get the next non-empty token.
         $colon = $this->phpcsFile->findNext(Tokens::$emptyTokens, ($label + 1), null, true);
 
         $this->assertSame(
@@ -550,7 +541,6 @@ final class NamedFunctionCallArgumentsTest extends AbstractTokenizerTestCase
 
         $closeParens = $this->getTargetToken('/* testTernaryWithFunctionCallsInThenElse */', T_CLOSE_PARENTHESIS);
 
-        // Get the next non-empty token.
         $colon = $this->phpcsFile->findNext(Tokens::$emptyTokens, ($closeParens + 1), null, true);
 
         $this->assertSame(
@@ -570,7 +560,6 @@ final class NamedFunctionCallArgumentsTest extends AbstractTokenizerTestCase
 
         $label = $this->getTargetToken('/* testTernaryWithFunctionCallsInThenElse */', T_PARAM_NAME, 'more');
 
-        // Get the next non-empty token.
         $colon = $this->phpcsFile->findNext(Tokens::$emptyTokens, ($label + 1), null, true);
 
         $this->assertSame(
@@ -605,7 +594,6 @@ final class NamedFunctionCallArgumentsTest extends AbstractTokenizerTestCase
 
         $constant = $this->getTargetToken('/* testTernaryWithConstantsInThenElse */', T_STRING, 'CONSTANT_NAME');
 
-        // Get the next non-empty token.
         $colon = $this->phpcsFile->findNext(Tokens::$emptyTokens, ($constant + 1), null, true);
 
         $this->assertSame(
@@ -635,7 +623,6 @@ final class NamedFunctionCallArgumentsTest extends AbstractTokenizerTestCase
 
         $label = $this->getTargetToken('/* testSwitchCaseWithConstant */', T_STRING, 'MY_CONSTANT');
 
-        // Get the next non-empty token.
         $colon = $this->phpcsFile->findNext(Tokens::$emptyTokens, ($label + 1), null, true);
 
         $this->assertSame(
@@ -651,7 +638,6 @@ final class NamedFunctionCallArgumentsTest extends AbstractTokenizerTestCase
 
         $label = $this->getTargetToken('/* testSwitchCaseWithClassProperty */', T_STRING, 'property');
 
-        // Get the next non-empty token.
         $colon = $this->phpcsFile->findNext(Tokens::$emptyTokens, ($label + 1), null, true);
 
         $this->assertSame(
@@ -667,7 +653,6 @@ final class NamedFunctionCallArgumentsTest extends AbstractTokenizerTestCase
 
         $default = $this->getTargetToken('/* testSwitchDefault */', T_DEFAULT);
 
-        // Get the next non-empty token.
         $colon = $this->phpcsFile->findNext(Tokens::$emptyTokens, ($default + 1), null, true);
 
         $this->assertSame(
@@ -708,7 +693,6 @@ final class NamedFunctionCallArgumentsTest extends AbstractTokenizerTestCase
             'Token tokenized as '.$tokens[$label]['type'].', not T_VARIABLE (type)'
         );
 
-        // Get the next non-empty token.
         $colon = $this->phpcsFile->findNext(Tokens::$emptyTokens, ($label + 1), null, true);
 
         $this->assertSame(
@@ -747,11 +731,6 @@ final class NamedFunctionCallArgumentsTest extends AbstractTokenizerTestCase
 
         $startOfStatement = $this->getTargetToken($testMarker, T_VARIABLE);
 
-        // Walk the statement and check the tokenization.
-        // There should be no T_PARAM_NAME tokens.
-        // First colon should be T_COLON for the return type.
-        // Second colon should be T_INLINE_ELSE for the ternary.
-        // Third colon should be T_COLON for the return type.
         $colonCount = 0;
         for ($i = ($startOfStatement + 1); $tokens[$i]['line'] === $tokens[$startOfStatement]['line']; $i++) {
             $this->assertNotSame(T_PARAM_NAME, $tokens[$i]['code'], "Token $i is tokenized as parameter label");
@@ -824,7 +803,6 @@ final class NamedFunctionCallArgumentsTest extends AbstractTokenizerTestCase
             'Token tokenized as '.$tokens[$label]['type'].', not T_PARAM_NAME (type)'
         );
 
-        // Get the next non-empty token.
         $colon = $this->phpcsFile->findNext(Tokens::$emptyTokens, ($label + 1), null, true);
 
         $this->assertSame(
@@ -856,7 +834,6 @@ final class NamedFunctionCallArgumentsTest extends AbstractTokenizerTestCase
     public static function dataReservedKeywordsAsName()
     {
         $reservedKeywords = [
-            // '__halt_compiler', NOT TESTABLE
             'abstract',
             'and',
             'array',
@@ -942,7 +919,6 @@ final class NamedFunctionCallArgumentsTest extends AbstractTokenizerTestCase
             'numeric',
             'never',
 
-            // Not reserved keyword, but do have their own token in PHPCS.
             'parent',
             'self',
         ];

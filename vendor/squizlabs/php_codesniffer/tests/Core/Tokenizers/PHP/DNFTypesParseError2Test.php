@@ -30,23 +30,18 @@ final class DNFTypesParseError2Test extends AbstractTokenizerTestCase
     {
         $tokens = $this->phpcsFile->getTokens();
 
-        // Verify that the type union is still tokenized as T_BITWISE_OR as the type declaration
-        // is not recognized as a valid type declaration.
         $unionPtr = $this->getTargetToken($testMarker, [T_BITWISE_OR, T_TYPE_UNION], '|');
         $token    = $tokens[$unionPtr];
 
         $this->assertSame(T_BITWISE_OR, $token['code'], 'Token tokenized as '.$token['type'].', not T_BITWISE_OR (code)');
         $this->assertSame('T_BITWISE_OR', $token['type'], 'Token tokenized as '.$token['type'].', not T_BITWISE_OR (type)');
 
-        // Verify that the unmatched open parenthesis is tokenized as a normal parenthesis.
         $openPtr = $this->getTargetToken($testMarker, [T_OPEN_PARENTHESIS, T_TYPE_OPEN_PARENTHESIS], '(');
         $token   = $tokens[$openPtr];
 
         $this->assertSame(T_OPEN_PARENTHESIS, $token['code'], 'Token tokenized as '.$token['type'].', not T_OPEN_PARENTHESIS (code)');
         $this->assertSame('T_OPEN_PARENTHESIS', $token['type'], 'Token tokenized as '.$token['type'].', not T_OPEN_PARENTHESIS (type)');
 
-        // Verify that the type intersection is still tokenized as T_BITWISE_AND as the type declaration
-        // is not recognized as a valid type declaration.
         $intersectPtr = $this->getTargetToken($testMarker, [T_BITWISE_AND, T_TYPE_INTERSECTION], '&');
         $token        = $tokens[$intersectPtr];
 
@@ -89,23 +84,18 @@ final class DNFTypesParseError2Test extends AbstractTokenizerTestCase
     {
         $tokens = $this->phpcsFile->getTokens();
 
-        // Verify that the type union is still tokenized as T_BITWISE_OR as the type declaration
-        // is not recognized as a valid type declaration.
         $unionPtr = $this->getTargetToken($testMarker, [T_BITWISE_OR, T_TYPE_UNION], '|');
         $token    = $tokens[$unionPtr];
 
         $this->assertSame(T_BITWISE_OR, $token['code'], 'Token tokenized as '.$token['type'].', not T_BITWISE_OR (code)');
         $this->assertSame('T_BITWISE_OR', $token['type'], 'Token tokenized as '.$token['type'].', not T_BITWISE_OR (type)');
 
-        // Verify that the unmatched open parenthesis is tokenized as a normal parenthesis.
         $closePtr = $this->getTargetToken($testMarker, [T_CLOSE_PARENTHESIS, T_TYPE_CLOSE_PARENTHESIS], ')');
         $token    = $tokens[$closePtr];
 
         $this->assertSame(T_CLOSE_PARENTHESIS, $token['code'], 'Token tokenized as '.$token['type'].', not T_CLOSE_PARENTHESIS (code)');
         $this->assertSame('T_CLOSE_PARENTHESIS', $token['type'], 'Token tokenized as '.$token['type'].', not T_CLOSE_PARENTHESIS (type)');
 
-        // Verify that the type intersection is still tokenized as T_BITWISE_AND as the type declaration
-        // is not recognized as a valid type declaration.
         $intersectPtr = $this->getTargetToken($testMarker, [T_BITWISE_AND, T_TYPE_INTERSECTION], '&');
         $token        = $tokens[$intersectPtr];
 
@@ -159,13 +149,11 @@ final class DNFTypesParseError2Test extends AbstractTokenizerTestCase
                 || $tokens[$i]['code'] === T_VARIABLE
                 || $tokens[$i]['code'] === T_OPEN_CURLY_BRACKET
             ) {
-                // Reached the end of the type.
                 break;
             }
 
             $errorPrefix = 'Token tokenized as '.$tokens[$i]['type'];
 
-            // Verify that type tokens have not been retokenized to `T_TYPE_*` tokens for broken type declarations.
             switch ($tokens[$i]['content']) {
             case '|':
                 $this->assertSame(T_BITWISE_OR, $tokens[$i]['code'], $errorPrefix.', not T_BITWISE_OR (code)');
@@ -178,7 +166,6 @@ final class DNFTypesParseError2Test extends AbstractTokenizerTestCase
                 break;
 
             case '(':
-                // Verify that the open parenthesis is tokenized as a normal parenthesis.
                 $this->assertSame(T_OPEN_PARENTHESIS, $tokens[$i]['code'], $errorPrefix.', not T_OPEN_PARENTHESIS (code)');
                 $this->assertSame('T_OPEN_PARENTHESIS', $tokens[$i]['type'], $errorPrefix.', not T_OPEN_PARENTHESIS (type)');
                 break;

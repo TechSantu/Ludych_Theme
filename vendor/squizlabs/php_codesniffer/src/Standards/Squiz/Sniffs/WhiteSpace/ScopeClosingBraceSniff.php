@@ -42,16 +42,10 @@ class ScopeClosingBraceSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // If this is an inline condition (ie. there is no scope opener), then
-        // return, as this is not a new scope.
         if (isset($tokens[$stackPtr]['scope_closer']) === false) {
             return;
         }
 
-        // We need to actually find the first piece of content on this line,
-        // as if this is a method with tokens before it (public, static etc)
-        // or an if with an else before it, then we need to start the scope
-        // checking from there, rather than the current token.
         $lineStart = $phpcsFile->findFirstOnLine([T_WHITESPACE, T_INLINE_HTML], $stackPtr, true);
         while ($tokens[$lineStart]['code'] === T_CONSTANT_ENCAPSED_STRING
             && $tokens[($lineStart - 1)]['code'] === T_CONSTANT_ENCAPSED_STRING
@@ -63,7 +57,6 @@ class ScopeClosingBraceSniff implements Sniff
         $scopeStart  = $tokens[$stackPtr]['scope_opener'];
         $scopeEnd    = $tokens[$stackPtr]['scope_closer'];
 
-        // Check that the closing brace is on it's own line.
         $lastContent = $phpcsFile->findPrevious([T_INLINE_HTML, T_WHITESPACE, T_OPEN_TAG], ($scopeEnd - 1), $scopeStart, true);
         for ($lineStart = $scopeEnd; $tokens[$lineStart]['column'] > 1; $lineStart--);
 
@@ -84,7 +77,6 @@ class ScopeClosingBraceSniff implements Sniff
             return;
         }
 
-        // Check now that the closing brace is lined up correctly.
         $lineStart   = $phpcsFile->findFirstOnLine([T_WHITESPACE, T_INLINE_HTML], $scopeEnd, true);
         $braceIndent = $tokens[$lineStart]['column'];
         if ($tokens[$stackPtr]['code'] !== T_DEFAULT

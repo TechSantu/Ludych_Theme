@@ -66,7 +66,6 @@ class IndentationSniff implements Sniff, DeprecatedSniff
             if ($tokens[$i]['code'] === T_COMMENT
                 || isset(Tokens::$phpcsCommentTokens[$tokens[$i]['code']]) === true
             ) {
-                // Don't check the indent of comments.
                 continue;
             }
 
@@ -74,12 +73,9 @@ class IndentationSniff implements Sniff, DeprecatedSniff
                 $indentLevel++;
 
                 if (isset($tokens[$i]['bracket_closer']) === false) {
-                    // Syntax error or live coding.
-                    // Anything after this would receive incorrect fixes, so bow out.
                     return;
                 }
 
-                // Check for nested class definitions.
                 $found = $phpcsFile->findNext(
                     T_OPEN_CURLY_BRACKET,
                     ($i + 1),
@@ -109,7 +105,6 @@ class IndentationSniff implements Sniff, DeprecatedSniff
                 continue;
             }
 
-            // We started a new line, so check indent.
             if ($tokens[$i]['code'] === T_WHITESPACE) {
                 $content     = str_replace($phpcsFile->eolChar, '', $tokens[$i]['content']);
                 $foundIndent = strlen($content);

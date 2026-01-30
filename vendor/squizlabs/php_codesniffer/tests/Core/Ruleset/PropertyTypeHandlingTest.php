@@ -59,7 +59,6 @@ final class PropertyTypeHandlingTest extends TestCase
 
         $this->expectOutputRegex($regex);
 
-        // Set up the ruleset.
         $standard = __DIR__.'/PropertyTypeHandlingTest.xml';
         $config   = new ConfigDouble(["--standard=$standard"]);
         new Ruleset($config);
@@ -277,12 +276,10 @@ final class PropertyTypeHandlingTest extends TestCase
         static $sniffObject;
 
         if (isset($sniffObject) === false) {
-            // Set up the ruleset.
             $standard = __DIR__.'/PropertyTypeHandlingTest.xml';
             $config   = new ConfigDouble(["--standard=$standard", '-q']);
             $ruleset  = new Ruleset($config);
 
-            // Verify that our target sniff has been registered.
             $this->assertArrayHasKey(self::SNIFF_CODE, $ruleset->sniffCodes, 'Target sniff not registered');
             $this->assertSame(self::SNIFF_CLASS, $ruleset->sniffCodes[self::SNIFF_CODE], 'Target sniff not registered with the correct class');
             $this->assertArrayHasKey(self::SNIFF_CLASS, $ruleset->sniffs, 'Sniff class not listed in registered sniffs');
@@ -307,19 +304,16 @@ final class PropertyTypeHandlingTest extends TestCase
         static $sniffObject;
 
         if (isset($sniffObject) === false) {
-            // Set up the ruleset.
             $standard = __DIR__.'/PropertyTypeHandlingInlineTest.xml';
             $config   = new ConfigDouble(["--standard=$standard"]);
             $ruleset  = new Ruleset($config);
 
-            // Verify that our target sniff has been registered.
             $this->assertArrayHasKey(self::SNIFF_CODE, $ruleset->sniffCodes, 'Target sniff not registered');
             $this->assertSame(self::SNIFF_CLASS, $ruleset->sniffCodes[self::SNIFF_CODE], 'Target sniff not registered with the correct class');
             $this->assertArrayHasKey(self::SNIFF_CLASS, $ruleset->sniffs, 'Sniff class not listed in registered sniffs');
 
             $sniffObject = $ruleset->sniffs[self::SNIFF_CLASS];
 
-            // Process the file with inline phpcs:set annotations.
             $testFile = realpath(__DIR__.'/Fixtures/PropertyTypeHandlingInline.inc');
             $this->assertNotFalse($testFile);
 

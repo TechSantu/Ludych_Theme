@@ -77,8 +77,6 @@ class NewNullableTypesSniff extends Sniff
         if ($tokenCode === \T_FUNCTION || $tokenCode === \T_CLOSURE) {
             $this->processFunctionDeclaration($phpcsFile, $stackPtr);
 
-            // Deal with older PHPCS version which don't recognize return type hints
-            // as well as newer PHPCS versions (3.3.0+) where the tokenization has changed.
             $returnTypeHint = $this->getReturnTypeHintToken($phpcsFile, $stackPtr);
             if ($returnTypeHint !== false) {
                 $this->processReturnType($phpcsFile, $returnTypeHint);
@@ -140,7 +138,6 @@ class NewNullableTypesSniff extends Sniff
 
         $previous = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($stackPtr - 1), null, true);
 
-        // Deal with namespaced class names.
         if ($tokens[$previous]['code'] === \T_NS_SEPARATOR) {
             $validTokens                  = Tokens::$emptyTokens;
             $validTokens[\T_STRING]       = true;
@@ -155,7 +152,6 @@ class NewNullableTypesSniff extends Sniff
             $previous = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($stackPtr - 1), null, true);
         }
 
-        // T_NULLABLE token was introduced in PHPCS 2.7.2. Before that it identified as T_INLINE_THEN.
         if ((\defined('T_NULLABLE') === true && $tokens[$previous]['type'] === 'T_NULLABLE')
             || (\defined('T_NULLABLE') === false && $tokens[$previous]['code'] === \T_INLINE_THEN)
         ) {

@@ -41,8 +41,6 @@ class OptionalToRequiredFunctionParametersSniff extends RequiredToOptionalFuncti
      * @var array
      */
     protected $functionParameters = array(
-        // Special case, the optional nature is not deprecated, but usage is recommended
-        // and leaving the parameter out will throw an E_NOTICE.
         'crypt' => array(
             1 => array(
                 'name' => 'salt',
@@ -164,7 +162,6 @@ class OptionalToRequiredFunctionParametersSniff extends RequiredToOptionalFuncti
                 $data[]     = $errorInfo['optionalRemoved'];
             }
 
-            // Remove the last 'and' from the message.
             $error = substr($error, 0, (\strlen($error) - 5));
         }
 

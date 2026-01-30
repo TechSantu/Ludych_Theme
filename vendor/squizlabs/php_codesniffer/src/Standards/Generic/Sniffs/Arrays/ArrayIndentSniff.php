@@ -59,7 +59,6 @@ class ArrayIndentSniff extends AbstractArraySniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Determine how far indented the entire array declaration should be.
         $ignore     = Tokens::$emptyTokens;
         $ignore[]   = T_DOUBLE_ARROW;
         $prev       = $phpcsFile->findPrevious($ignore, ($stackPtr - 1), null, true);
@@ -70,10 +69,6 @@ class ArrayIndentSniff extends AbstractArraySniff
         $first       = $phpcsFile->findFirstOnLine(T_WHITESPACE, $stackPtr, true);
         $startIndent = ($tokens[$first]['column'] - 1);
 
-        // If the open brace is not indented to at least to the level of the start
-        // of the statement, the sniff will conflict with other sniffs trying to
-        // check indent levels because it's not valid. But we don't enforce exactly
-        // how far indented it should be.
         if ($startIndent < $baseIndent) {
             $pluralizeSpace = 's';
             if ($baseIndent === 1) {
@@ -110,8 +105,6 @@ class ArrayIndentSniff extends AbstractArraySniff
 
             $prev = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($start - 1), null, true);
             if ($tokens[$prev]['line'] === $tokens[$start]['line']) {
-                // This index isn't the only content on the line
-                // so we can't check indent rules.
                 continue;
             }
 
@@ -158,7 +151,6 @@ class ArrayIndentSniff extends AbstractArraySniff
             return;
         }
 
-        // The close brace must be indented one stop less.
         $foundIndent = ($tokens[$arrayEnd]['column'] - 1);
         if ($foundIndent === $startIndent) {
             return;

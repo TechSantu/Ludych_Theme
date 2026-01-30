@@ -42,7 +42,6 @@ class ClosingTagSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Make sure this file only contains PHP code.
         for ($i = 0; $i < $phpcsFile->numTokens; $i++) {
             if ($tokens[$i]['code'] === T_INLINE_HTML
                 && trim($tokens[$i]['content']) !== ''
@@ -51,7 +50,6 @@ class ClosingTagSniff implements Sniff
             }
         }
 
-        // Find the last non-empty token.
         for ($last = ($phpcsFile->numTokens - 1); $last > 0; $last--) {
             if (trim($tokens[$last]['content']) !== '') {
                 break;
@@ -80,7 +78,6 @@ class ClosingTagSniff implements Sniff
             $phpcsFile->recordMetric($stackPtr, 'PHP closing tag at end of PHP-only file', 'no');
         }//end if
 
-        // Ignore the rest of the file.
         return $phpcsFile->numTokens;
 
     }//end process()

@@ -43,7 +43,6 @@ class EchoedStringsSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
 
         $firstContent = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
-        // If the first non-whitespace token is not an opening parenthesis, then we are not concerned.
         if ($tokens[$firstContent]['code'] !== T_OPEN_PARENTHESIS) {
             $phpcsFile->recordMetric($stackPtr, 'Brackets around echoed strings', 'no');
             return;
@@ -51,14 +50,12 @@ class EchoedStringsSniff implements Sniff
 
         $end = $phpcsFile->findNext([T_SEMICOLON, T_CLOSE_TAG], $stackPtr, null, false);
 
-        // If the token before the semicolon is not a closing parenthesis, then we are not concerned.
         $prev = $phpcsFile->findPrevious(T_WHITESPACE, ($end - 1), null, true);
         if ($tokens[$prev]['code'] !== T_CLOSE_PARENTHESIS) {
             $phpcsFile->recordMetric($stackPtr, 'Brackets around echoed strings', 'no');
             return;
         }
 
-        // If the parenthesis don't match, then we are not concerned.
         if ($tokens[$firstContent]['parenthesis_closer'] !== $prev) {
             $phpcsFile->recordMetric($stackPtr, 'Brackets around echoed strings', 'no');
             return;
@@ -67,7 +64,6 @@ class EchoedStringsSniff implements Sniff
         $phpcsFile->recordMetric($stackPtr, 'Brackets around echoed strings', 'yes');
 
         if (($phpcsFile->findNext(Tokens::$operators, $stackPtr, $end, false)) === false) {
-            // There are no arithmetic operators in this.
             $error = 'Echoed strings should not be bracketed';
             $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'HasBracket');
             if ($fix === true) {

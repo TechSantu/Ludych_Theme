@@ -55,9 +55,6 @@ class ValidClassNameSniff implements Sniff
             return;
         }
 
-        // Determine the name of the class or interface. Note that we cannot
-        // simply look for the first T_STRING because a class name
-        // starting with the number will be multiple tokens.
         $opener    = $tokens[$stackPtr]['scope_opener'];
         $nameStart = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), $opener, true);
         $nameEnd   = $phpcsFile->findNext((Tokens::$emptyTokens + [T_COLON => T_COLON]), $nameStart, $opener);
@@ -67,7 +64,6 @@ class ValidClassNameSniff implements Sniff
             $name = trim($phpcsFile->getTokensAsString($nameStart, ($nameEnd - $nameStart)));
         }
 
-        // Check for PascalCase format.
         $valid = Common::isCamelCaps($name, true, true, false);
         if ($valid === false) {
             $type  = ucfirst($tokens[$stackPtr]['content']);

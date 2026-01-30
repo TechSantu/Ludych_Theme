@@ -79,12 +79,10 @@ trait IsUnitTestTrait {
 	 * @var array<string, true> Key is class name, value irrelevant.
 	 */
 	private $known_test_classes = array(
-		// Base test cases.
 		'WP_UnitTestCase'                            => true,
 		'WP_UnitTestCase_Base'                       => true,
 		'PHPUnit_Adapter_TestCase'                   => true,
 
-		// Domain specific base test cases.
 		'WP_Ajax_UnitTestCase'                       => true,
 		'WP_Canonical_UnitTestCase'                  => true,
 		'WP_Font_Face_UnitTestCase'                  => true,
@@ -94,10 +92,8 @@ trait IsUnitTestTrait {
 		'WP_Test_XML_TestCase'                       => true,
 		'WP_XMLRPC_UnitTestCase'                     => true,
 
-		// PHPUnit native test cases.
 		'PHPUnit_Framework_TestCase'                 => true,
 		'PHPUnit\\Framework\\TestCase'               => true,
-		// PHPUnit native TestCase class when imported via use statement.
 		'TestCase'                                   => true,
 	);
 
@@ -154,7 +150,6 @@ trait IsUnitTestTrait {
 				$known_test_classes
 			);
 
-			// Store the original value so the comparison can succeed.
 			$this->added_custom_test_classes = $this->custom_test_classes;
 		}
 
@@ -188,12 +183,10 @@ trait IsUnitTestTrait {
 			return false;
 		}
 
-		// Add any potentially extra custom test classes to the known test classes list.
 		$known_test_classes = $this->get_all_test_classes();
 
 		$namespace = strtolower( Namespaces::determineNamespace( $phpcsFile, $stackPtr ) );
 
-		// Is the class/trait one of the known test classes ?
 		$className = ObjectDeclarations::getName( $phpcsFile, $stackPtr );
 		if ( empty( $className ) === false ) {
 			$className = strtolower( $className );
@@ -206,7 +199,6 @@ trait IsUnitTestTrait {
 			}
 		}
 
-		// Does the class/trait extend one of the known test classes ?
 		$extendedClassName = ObjectDeclarations::findExtendedClassName( $phpcsFile, $stackPtr );
 		if ( false === $extendedClassName ) {
 			return false;

@@ -61,8 +61,6 @@ class RemovedMbstringModifiersSniff extends AbstractFunctionCallParameterSniff
      */
     protected function bowOutEarly()
     {
-        // Version used here should be the highest version from the `$newModifiers` array,
-        // i.e. the last PHP version in which a new modifier was introduced.
         return ($this->supportsAbove('7.1') === false);
     }
 
@@ -87,7 +85,6 @@ class RemovedMbstringModifiersSniff extends AbstractFunctionCallParameterSniff
         $tokens         = $phpcsFile->getTokens();
         $functionNameLc = strtolower($functionName);
 
-        // Check whether the options parameter in the function call is passed.
         if (isset($parameters[$this->targetFunctions[$functionNameLc]]) === false) {
             return;
         }
@@ -96,7 +93,6 @@ class RemovedMbstringModifiersSniff extends AbstractFunctionCallParameterSniff
 
         $stringToken = $phpcsFile->findNext(Tokens::$stringTokens, $optionsParam['start'], $optionsParam['end'] + 1);
         if ($stringToken === false) {
-            // No string token found in the options parameter, so skip it (e.g. variable passed in).
             return;
         }
 
@@ -124,7 +120,6 @@ class RemovedMbstringModifiersSniff extends AbstractFunctionCallParameterSniff
         if (strpos($options, 'e') !== false) {
             $error = 'The Mbstring regex "e" modifier is deprecated since PHP 7.1.';
 
-            // The alternative mb_ereg_replace_callback() function is only available since 5.4.1.
             if ($this->supportsBelow('5.4.1') === false) {
                 $error .= ' Use mb_ereg_replace_callback() instead (PHP 5.4.1+).';
             }

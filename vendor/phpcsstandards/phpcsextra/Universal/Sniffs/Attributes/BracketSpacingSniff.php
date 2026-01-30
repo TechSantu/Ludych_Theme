@@ -79,12 +79,10 @@ final class BracketSpacingSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
 
         if (isset($tokens[$stackPtr]['attribute_closer']) === false) {
-            // Live coding/parse error. Ignore.
             return;
         }
 
         if ($tokens[$stackPtr]['attribute_closer'] === ($stackPtr + 1)) {
-            // Empty attribute block. Ignore.
             return;
         }
 
@@ -114,7 +112,6 @@ final class BracketSpacingSniff implements Sniff
             && $tokens[$stackPtr]['line'] !== $tokens[$nextNonWhitespace]['line']
         ) {
             if (($tokens[$stackPtr]['line'] + 1) === $tokens[$nextNonWhitespace]['line']) {
-                // Single new line.
                 $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'a new line');
                 return;
             }
@@ -128,7 +125,6 @@ final class BracketSpacingSniff implements Sniff
                 $phpcsFile->fixer->beginChangeset();
                 $phpcsFile->fixer->addNewline($stackPtr);
 
-                // Remove all blank lines, but don't remove the indentation of the line containing the next bit of code.
                 for ($i = ($stackPtr + 1); $i < $nextNonWhitespace; $i++) {
                     if ($tokens[$i]['line'] === $tokens[$nextNonWhitespace]['line']) {
                         break;
@@ -174,7 +170,6 @@ final class BracketSpacingSniff implements Sniff
             && $tokens[$stackPtr]['line'] !== $tokens[$previousNonWhitespace]['line']
         ) {
             if (($tokens[$stackPtr]['line'] - 1) === $tokens[$previousNonWhitespace]['line']) {
-                // Single new line.
                 $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'a new line');
                 return;
             }
@@ -188,7 +183,6 @@ final class BracketSpacingSniff implements Sniff
                 $phpcsFile->fixer->beginChangeset();
                 $phpcsFile->fixer->addNewline($previousNonWhitespace);
 
-                // Remove all blank lines, but don't remove the indentation of the line containing the next bit of code.
                 for ($i = ($previousNonWhitespace + 1); $i < $stackPtr; $i++) {
                     if ($tokens[$i]['line'] === $tokens[$stackPtr]['line']) {
                         break;

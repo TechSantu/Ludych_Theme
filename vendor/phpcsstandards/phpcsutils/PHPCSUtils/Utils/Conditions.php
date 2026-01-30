@@ -53,12 +53,10 @@ final class Conditions
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Check for the existence of the token.
         if (isset($tokens[$stackPtr]) === false) {
             return false;
         }
 
-        // Make sure the token has conditions.
         if (empty($tokens[$stackPtr]['conditions'])) {
             return false;
         }
@@ -67,7 +65,6 @@ final class Conditions
         $conditions = $tokens[$stackPtr]['conditions'];
 
         if (empty($types) === true) {
-            // No types specified, just return the first/last condition pointer.
             if ($first === false) {
                 \end($conditions);
             } else {
@@ -85,7 +82,6 @@ final class Conditions
             if (isset($tokens[$ptr]) === true
                 && \in_array($type, $types, true) === true
             ) {
-                // We found a token with the required type.
                 return $ptr;
             }
         }

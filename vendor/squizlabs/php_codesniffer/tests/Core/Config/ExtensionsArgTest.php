@@ -49,8 +49,6 @@ final class ExtensionsArgTest extends TestCase
     public static function dataValidExtensions()
     {
         return [
-            // Passing an empty extensions list is not useful, as it will result in no files being scanned,
-            // but that's the responsibility of the user.
             'Empty extensions list'                                                          => [
                 'passedValue' => '',
                 'expected'    => [],
@@ -61,16 +59,12 @@ final class ExtensionsArgTest extends TestCase
                     'php' => 'PHP',
                 ],
             ],
-            // This would cause PHPCS to scan python files as PHP, which will probably cause very weird scan results,
-            // but that's the responsibility of the user.
             'Single extension passed: py'                                                    => [
                 'passedValue' => 'py',
                 'expected'    => [
                     'py' => 'PHP',
                 ],
             ],
-            // This would likely result in a problem when PHPCS can't find a "PY" tokenizer class,
-            // but that's not our concern at this moment. Support for non-PHP tokenizers is being dropped soon anyway.
             'Single extension passed with language: py/py'                                   => [
                 'passedValue' => 'py/py',
                 'expected'    => [

@@ -67,8 +67,6 @@ class IncludeSystemSniff extends AbstractScopeSniff implements DeprecatedSniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Determine the name of the class that the static function
-        // is being called on.
         $classNameToken = $phpcsFile->findPrevious(
             T_WHITESPACE,
             ($stackPtr - 1),
@@ -76,8 +74,6 @@ class IncludeSystemSniff extends AbstractScopeSniff implements DeprecatedSniff
             true
         );
 
-        // Don't process class names represented by variables as this can be
-        // an inexact science.
         if ($tokens[$classNameToken]['code'] === T_VARIABLE) {
             return;
         }
@@ -92,11 +88,8 @@ class IncludeSystemSniff extends AbstractScopeSniff implements DeprecatedSniff
         $fileName = strtolower($phpcsFile->getFilename());
         $matches  = [];
         if (preg_match('|/systems/(.*)/([^/]+)?actions.inc$|', $fileName, $matches) !== 0) {
-            // This is an actions file, which means we don't
-            // have to include the system in which it exists.
             $includedClasses[$matches[2]] = true;
 
-            // Or a system it implements.
             $class      = $phpcsFile->getCondition($stackPtr, T_CLASS);
             $implements = $phpcsFile->findNext(T_IMPLEMENTS, $class, ($class + 10));
             if ($implements !== false) {
@@ -108,14 +101,10 @@ class IncludeSystemSniff extends AbstractScopeSniff implements DeprecatedSniff
             }
         }
 
-        // Go searching for includeSystem and includeAsset calls within this
-        // function, or the inclusion of .inc files, which
-        // would be library files.
         for ($i = ($currScope + 1); $i < $stackPtr; $i++) {
             $name = $this->getIncludedClassFromToken($phpcsFile, $tokens, $i);
             if ($name !== false) {
                 $includedClasses[$name] = true;
-                // Special case for Widgets cause they are, well, special.
             } else if (strtolower($tokens[$i]['content']) === 'includewidget') {
                 $typeName = $phpcsFile->findNext(T_CONSTANT_ENCAPSED_STRING, ($i + 1));
                 $typeName = trim($tokens[$typeName]['content'], " '");
@@ -123,9 +112,6 @@ class IncludeSystemSniff extends AbstractScopeSniff implements DeprecatedSniff
             }
         }
 
-        // Now go searching for includeSystem, includeAsset or require/include
-        // calls outside our scope. If we are in a class, look outside the
-        // class. If we are not, look outside the function.
         $condPtr = $currScope;
         if ($phpcsFile->hasCondition($stackPtr, T_CLASS) === true) {
             foreach ($tokens[$stackPtr]['conditions'] as $condPtr => $condType) {
@@ -136,7 +122,6 @@ class IncludeSystemSniff extends AbstractScopeSniff implements DeprecatedSniff
         }
 
         for ($i = 0; $i < $condPtr; $i++) {
-            // Skip other scopes.
             if (isset($tokens[$i]['scope_closer']) === true) {
                 $i = $tokens[$i]['scope_closer'];
                 continue;
@@ -148,17 +133,13 @@ class IncludeSystemSniff extends AbstractScopeSniff implements DeprecatedSniff
             }
         }
 
-        // If we are in a testing class, we might have also included
-        // some systems and classes in our setUp() method.
         $setupFunction = null;
         if ($phpcsFile->hasCondition($stackPtr, T_CLASS) === true) {
             foreach ($tokens[$stackPtr]['conditions'] as $condPtr => $condType) {
                 if ($condType === T_CLASS) {
-                    // Is this is a testing class?
                     $name = $phpcsFile->findNext(T_STRING, $condPtr);
                     $name = $tokens[$name]['content'];
                     if (substr($name, -8) === 'UnitTest') {
-                        // Look for a method called setUp().
                         $end      = $tokens[$condPtr]['scope_closer'];
                         $function = $phpcsFile->findNext(T_FUNCTION, ($condPtr + 1), $end);
                         while ($function !== false) {
@@ -209,13 +190,9 @@ class IncludeSystemSniff extends AbstractScopeSniff implements DeprecatedSniff
         $tokens = $phpcsFile->getTokens();
 
         if ($tokens[$stackPtr]['code'] === T_EXTENDS) {
-            // Find the class name.
             $classNameToken = $phpcsFile->findNext(T_STRING, ($stackPtr + 1));
             $className      = $tokens[$classNameToken]['content'];
         } else {
-            // Determine the name of the class that the static function
-            // is being called on. But don't process class names represented by
-            // variables as this can be an inexact science.
             $classNameToken = $phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), null, true);
             if ($tokens[$classNameToken]['code'] === T_VARIABLE) {
                 return;
@@ -224,7 +201,6 @@ class IncludeSystemSniff extends AbstractScopeSniff implements DeprecatedSniff
             $className = $tokens[$classNameToken]['content'];
         }
 
-        // Some systems are always available.
         if (isset($this->ignore[strtolower($className)]) === true) {
             return;
         }
@@ -234,18 +210,10 @@ class IncludeSystemSniff extends AbstractScopeSniff implements DeprecatedSniff
         $fileName = strtolower($phpcsFile->getFilename());
         $matches  = [];
         if (preg_match('|/systems/([^/]+)/([^/]+)?actions.inc$|', $fileName, $matches) !== 0) {
-            // This is an actions file, which means we don't
-            // have to include the system in which it exists
-            // We know the system from the path.
             $includedClasses[$matches[1]] = true;
         }
 
-        // Go searching for includeSystem, includeAsset or require/include
-        // calls outside our scope.
         for ($i = 0; $i < $stackPtr; $i++) {
-            // Skip classes and functions as will we never get
-            // into their scopes when including this file, although
-            // we have a chance of getting into IF, WHILE etc.
             if (($tokens[$i]['code'] === T_CLASS
                 || $tokens[$i]['code'] === T_INTERFACE
                 || $tokens[$i]['code'] === T_FUNCTION)
@@ -258,7 +226,6 @@ class IncludeSystemSniff extends AbstractScopeSniff implements DeprecatedSniff
             $name = $this->getIncludedClassFromToken($phpcsFile, $tokens, $i);
             if ($name !== false) {
                 $includedClasses[$name] = true;
-                // Special case for Widgets cause they are, well, special.
             } else if (strtolower($tokens[$i]['content']) === 'includewidget') {
                 $typeName = $phpcsFile->findNext(T_CONSTANT_ENCAPSED_STRING, ($i + 1));
                 $typeName = trim($tokens[$typeName]['content'], " '");

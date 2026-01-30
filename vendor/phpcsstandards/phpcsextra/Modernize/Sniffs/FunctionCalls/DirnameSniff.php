@@ -64,7 +64,6 @@ final class DirnameSniff implements Sniff
     public function process(File $phpcsFile, $stackPtr)
     {
         if (isset($this->phpVersion) === false || \defined('PHP_CODESNIFFER_IN_TESTS')) {
-            // Set default value to prevent this code from running every time the sniff is triggered.
             $this->phpVersion = 0;
 
             $phpVersion = Helper::getConfigData('php_version');
@@ -74,7 +73,6 @@ final class DirnameSniff implements Sniff
         }
 
         if ($this->phpVersion !== 0 && $this->phpVersion < 50300) {
-            // PHP version too low, nothing to do.
             return;
         }
 
@@ -85,7 +83,6 @@ final class DirnameSniff implements Sniff
         }
 
         if (\strtolower($contents) !== 'dirname') {
-            // Not our target.
             return;
         }
 
@@ -94,27 +91,22 @@ final class DirnameSniff implements Sniff
             || $tokens[$nextNonEmpty]['code'] !== \T_OPEN_PARENTHESIS
             || isset($tokens[$nextNonEmpty]['parenthesis_owner']) === true
         ) {
-            // Not our target.
             return;
         }
 
         if (isset($tokens[$nextNonEmpty]['parenthesis_closer']) === false) {
-            // Live coding or parse error, ignore.
             return;
         }
 
         if (Context::inAttribute($phpcsFile, $stackPtr) === true) {
-            // Class instantiation in attribute, not function call.
             return;
         }
 
-        // Check if it is really a function call to the global function.
         $prevNonEmpty = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($stackPtr - 1), null, true);
 
         if (isset(Collections::objectOperators()[$tokens[$prevNonEmpty]['code']]) === true
             || $tokens[$prevNonEmpty]['code'] === \T_NEW
         ) {
-            // Method call, class instantiation or other "not our target".
             return;
         }
 
@@ -123,7 +115,6 @@ final class DirnameSniff implements Sniff
             if ($tokens[$prevPrevToken]['code'] === \T_STRING
                 || $tokens[$prevPrevToken]['code'] === \T_NAMESPACE
             ) {
-                // Namespaced function.
                 return;
             }
         }
@@ -137,19 +128,16 @@ final class DirnameSniff implements Sniff
         $parameters = PassedParameters::getParameters($phpcsFile, $stackPtr);
         $paramCount = \count($parameters);
         if (empty($parameters) || $paramCount > 2) {
-            // No parameters or too many parameter.
             return;
         }
 
         $pathParam = PassedParameters::getParameterFromStack($parameters, 1, 'path');
         if ($pathParam === false) {
-            // If the path parameter doesn't exist, there's nothing to do.
             return;
         }
 
         $levelsParam = PassedParameters::getParameterFromStack($parameters, 2, 'levels');
         if ($levelsParam === false && $paramCount === 2) {
-            // There must be a typo in the param name or an otherwise stray parameter. Ignore.
             return;
         }
 
@@ -159,14 +147,12 @@ final class DirnameSniff implements Sniff
         if (\strtoupper($pathParam['clean']) === '__FILE__') {
             $levelsValue = false;
 
-            // Determine if the issue is auto-fixable.
             $hasComment = $phpcsFile->findNext(Tokens::$commentTokens, ($opener + 1), $closer);
             $fixable    = ($hasComment === false);
 
             if ($fixable === true) {
                 $levelsValue = $this->getLevelsValue($phpcsFile, $levelsParam);
                 if ($levelsParam !== false && $levelsValue === false) {
-                    // Can't autofix if we don't know the value of the $levels parameter.
                     $fixable = false;
                 }
             }
@@ -174,7 +160,6 @@ final class DirnameSniff implements Sniff
             $error = 'Use the __DIR__ constant instead of calling dirname(__FILE__) (PHP >= 5.3)';
             $code  = 'FileConstant';
 
-            // Throw the error.
             if ($fixable === false) {
                 $phpcsFile->addError($error, $stackPtr, $code);
                 return;
@@ -183,7 +168,6 @@ final class DirnameSniff implements Sniff
             $fix = $phpcsFile->addFixableError($error, $stackPtr, $code);
             if ($fix === true) {
                 if ($levelsParam === false || $levelsValue === 1) {
-                    // No $levels or $levels set to 1: we can replace the complete function call.
                     $phpcsFile->fixer->beginChangeset();
 
                     $phpcsFile->fixer->replaceToken($stackPtr, '__DIR__');
@@ -192,14 +176,12 @@ final class DirnameSniff implements Sniff
                         $phpcsFile->fixer->replaceToken($i, '');
                     }
 
-                    // Remove potential leading \.
                     if ($tokens[$prevNonEmpty]['code'] === \T_NS_SEPARATOR) {
                         $phpcsFile->fixer->replaceToken($prevNonEmpty, '');
                     }
 
                     $phpcsFile->fixer->endChangeset();
                 } else {
-                    // We can replace the $path parameter and will need to adjust the $levels parameter.
                     $filePtr   = $phpcsFile->findNext(\T_FILE, $pathParam['start'], ($pathParam['end'] + 1));
                     $levelsPtr = $phpcsFile->findNext(\T_LNUMBER, $levelsParam['start'], ($levelsParam['end'] + 1));
 
@@ -217,7 +199,6 @@ final class DirnameSniff implements Sniff
          * PHP 7.0+: Detect use of nested calls to dirname().
          */
         if ($this->phpVersion !== 0 && $this->phpVersion < 70000) {
-            // No need to check for this issue if the PHP version would not allow for it anyway.
             return;
         }
 
@@ -234,7 +215,6 @@ final class DirnameSniff implements Sniff
         $innerDirnamePtr = $phpcsFile->findNext($this->register(), $pathParam['start'], ($pathParam['end'] + 1));
         $innerOpener     = $phpcsFile->findNext(\T_OPEN_PARENTHESIS, ($innerDirnamePtr + 1), ($pathParam['end'] + 1));
         if (isset($tokens[$innerOpener]['parenthesis_closer']) === false) {
-            // Shouldn't be possible.
             return; // @codeCoverageIgnore
         }
 
@@ -247,7 +227,6 @@ final class DirnameSniff implements Sniff
                 true
             );
             if ($hasContentAfter !== false) {
-                // Matched code like: `dirname(dirname($file) . 'something')`. Ignore.
                 return;
             }
         }
@@ -256,7 +235,6 @@ final class DirnameSniff implements Sniff
          * Determine if this is an auto-fixable error.
          */
 
-        // Step 1: Are there comments ? If so, not auto-fixable as we don't want to remove comments.
         $fixable          = true;
         $outerLevelsValue = false;
         $innerParameters  = [];
@@ -272,27 +250,22 @@ final class DirnameSniff implements Sniff
             if ($tokens[$i]['code'] === \T_OPEN_PARENTHESIS
                 && isset($tokens[$i]['parenthesis_closer'])
             ) {
-                // Skip over everything within the nested dirname() function call.
                 $i = $tokens[$i]['parenthesis_closer'];
             }
         }
 
-        // Step 2: Does the `$levels` parameter exist for the outer dirname() call and if so, is it usable ?
         if ($fixable === true) {
             $outerLevelsValue = $this->getLevelsValue($phpcsFile, $levelsParam);
             if ($levelsParam !== false && $outerLevelsValue === false) {
-                // Can't autofix if we don't know the value of the $levels parameter.
                 $fixable = false;
             }
         }
 
-        // Step 3: Does the `$levels` parameter exist for the inner dirname() call and if so, is it usable ?
         if ($fixable === true) {
             $innerParameters  = PassedParameters::getParameters($phpcsFile, $innerDirnamePtr);
             $innerLevelsParam = PassedParameters::getParameterFromStack($innerParameters, 2, 'levels');
             $innerLevelsValue = $this->getLevelsValue($phpcsFile, $innerLevelsParam);
             if ($innerLevelsParam !== false && $innerLevelsValue === false) {
-                // Can't autofix if we don't know the value of the $levels parameter.
                 $fixable = false;
             }
         }
@@ -319,7 +292,6 @@ final class DirnameSniff implements Sniff
          */
         $phpcsFile->fixer->beginChangeset();
 
-        // Remove the info in the _outer_ param call.
         for ($i = $opener; $i < $innerOpener; $i++) {
             $phpcsFile->fixer->replaceToken($i, '');
         }
@@ -329,7 +301,6 @@ final class DirnameSniff implements Sniff
         }
 
         if ($innerLevelsParam !== false) {
-            // Inner $levels parameter already exists, just adjust the value.
             $innerLevelsPtr = $phpcsFile->findNext(
                 \T_LNUMBER,
                 $innerLevelsParam['start'],
@@ -337,18 +308,15 @@ final class DirnameSniff implements Sniff
             );
             $phpcsFile->fixer->replaceToken($innerLevelsPtr, ($innerLevelsValue + $outerLevelsValue));
         } else {
-            // Inner $levels parameter does not exist yet. We need to add it.
             $content = ', ';
 
             $prevBeforeCloser = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($innerCloser - 1), null, true);
             if ($tokens[$prevBeforeCloser]['code'] === \T_COMMA) {
-                // Trailing comma found, no need to add the comma.
                 $content = ' ';
             }
 
             $innerPathParam = PassedParameters::getParameterFromStack($innerParameters, 1, 'path');
             if (isset($innerPathParam['name_token']) === true) {
-                // Non-named param cannot follow named param, so add param name.
                 $content .= 'levels: ';
             }
 

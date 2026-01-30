@@ -184,11 +184,9 @@ class EchoKeyDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynamic
             $this->reflection->getVariants()
         )->getReturnType();
 
-        // Fix omitted void type in WP doc block.
         $defaultType = TypeCombinator::union($defaultType, new VoidType());
 
         if ($this->name === 'wp_list_users') {
-            // null instead of void in WP doc block.
             $defaultType = TypeCombinator::remove($defaultType, new NullType());
         }
 

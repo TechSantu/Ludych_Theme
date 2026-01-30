@@ -19,6 +19,5 @@ final class MissingCategoryDirSniff implements Sniff
 
     public function process(File $phpcsFile, $stackPtr)
     {
-        // Do something.
     }
 }

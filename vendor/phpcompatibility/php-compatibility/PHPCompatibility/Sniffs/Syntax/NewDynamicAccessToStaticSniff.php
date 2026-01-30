@@ -64,7 +64,6 @@ class NewDynamicAccessToStaticSniff extends Sniff
         $tokens       = $phpcsFile->getTokens();
         $prevNonEmpty = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($stackPtr - 1), null, true);
 
-        // Disregard `static::` as well. Late static binding is reported by another sniff.
         if ($tokens[$prevNonEmpty]['code'] === \T_SELF
             || $tokens[$prevNonEmpty]['code'] === \T_PARENT
             || $tokens[$prevNonEmpty]['code'] === \T_STATIC

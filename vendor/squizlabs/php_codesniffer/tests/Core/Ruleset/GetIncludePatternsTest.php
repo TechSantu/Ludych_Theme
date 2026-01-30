@@ -38,7 +38,6 @@ final class GetIncludePatternsTest extends TestCase
      */
     public static function initializeConfigAndRuleset()
     {
-        // Set up the ruleset.
         $standard      = __DIR__."/GetIncludePatternsTest.xml";
         $config        = new ConfigDouble(["--standard=$standard"]);
         self::$ruleset = new Ruleset($config);

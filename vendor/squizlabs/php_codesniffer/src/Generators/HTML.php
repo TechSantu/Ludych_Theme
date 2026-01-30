@@ -139,8 +139,6 @@ class HTML extends Generator
         $content = ob_get_contents();
         ob_end_clean();
 
-        // Clear anchor cache after Documentation generation.
-        // The anchor generation for the TOC anchor links will use the same logic, so should end up with the same unique slugs.
         $this->seenAnchors = [];
 
         if (trim($content) !== '') {
@@ -196,7 +194,6 @@ class HTML extends Generator
             self::STYLESHEET
         );
 
-        // Use the correct line endings based on the OS.
         return str_replace("\n", PHP_EOL, $output).PHP_EOL;
 
     }//end getFormattedHeader()
@@ -234,7 +231,6 @@ class HTML extends Generator
      */
     protected function getFormattedToc()
     {
-        // Only show a TOC when there are two or more docs to display.
         if (count($this->docFiles) < 2) {
             return '';
         }
@@ -289,8 +285,6 @@ class HTML extends Generator
      */
     protected function getFormattedFooter()
     {
-        // Turn off errors so we don't get timezone warnings if people
-        // don't have their timezone set.
         $errorLevel = error_reporting(0);
         $output     = sprintf(
             '  <div class="tag-line">Documentation generated on %s by <a href="https://github.com/PHPCSStandards/PHP_CodeSniffer">PHP_CodeSniffer %s</a></div>
@@ -301,7 +295,6 @@ class HTML extends Generator
         );
         error_reporting($errorLevel);
 
-        // Use the correct line endings based on the OS.
         return str_replace("\n", PHP_EOL, $output).PHP_EOL;
 
     }//end getFormattedFooter()
@@ -351,17 +344,14 @@ class HTML extends Generator
      */
     private function titleToAnchor($title)
     {
-        // Slugify the text.
         $title = strtolower($title);
         $title = preg_replace('`[^a-z0-9\._-]`', '-', $title);
 
         if (isset($this->seenAnchors[$title]) === true) {
-            // Try to find a unique anchor for this title.
             for ($i = 2; (isset($this->seenAnchors[$title.'-'.$i]) === true); $i++);
             $title .= '-'.$i;
         }
 
-        // Add to "seen" list.
         $this->seenAnchors[$title] = true;
 
         return $title;
@@ -411,7 +401,6 @@ class HTML extends Generator
         $content = trim($content);
         $content = htmlspecialchars($content, (ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401));
 
-        // Allow only em tags.
         $content = str_replace('&lt;em&gt;', '<em>', $content);
         $content = str_replace('&lt;/em&gt;', '</em>', $content);
 
@@ -423,17 +412,13 @@ class HTML extends Generator
             $currentLine = trim($nodeLines[$i]);
 
             if (isset($nodeLines[($i + 1)]) === false) {
-                // We're at the end of the text, just add the line.
                 $lines[] = $currentLine;
             } else {
                 $nextLine = trim($nodeLines[($i + 1)]);
                 if ($nextLine === '') {
-                    // Next line is a blank line, end the paragraph and start a new one.
-                    // Also skip over the blank line.
                     $lines[] = $currentLine.'</p>'.PHP_EOL.'  <p class="text">';
                     ++$i;
                 } else {
-                    // Next line is not blank, so just add a line break.
                     $lines[] = $currentLine.'<br/>'.PHP_EOL;
                 }
             }
@@ -483,7 +468,6 @@ class HTML extends Generator
         $secondCodeElm = $codeBlocks->item(1);
 
         if (isset($firstCodeElm, $secondCodeElm) === false) {
-            // Missing at least one code block.
             return '';
         }
 

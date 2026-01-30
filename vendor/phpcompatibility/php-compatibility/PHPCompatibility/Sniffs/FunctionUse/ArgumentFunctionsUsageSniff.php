@@ -80,7 +80,6 @@ class ArgumentFunctionsUsageSniff extends Sniff
             return;
         }
 
-        // Next non-empty token should be the open parenthesis.
         $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true, null, true);
         if ($nextNonEmpty === false || $tokens[$nextNonEmpty]['code'] !== \T_OPEN_PARENTHESIS) {
             return;
@@ -95,10 +94,8 @@ class ArgumentFunctionsUsageSniff extends Sniff
 
         $prevNonEmpty = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($stackPtr - 1), null, true);
         if (isset($ignore[$tokens[$prevNonEmpty]['code']]) === true) {
-            // Not a call to a PHP function.
             return;
         } elseif ($tokens[$prevNonEmpty]['code'] === \T_NS_SEPARATOR && $tokens[$prevNonEmpty - 1]['code'] === \T_STRING) {
-            // Namespaced function.
             return;
         }
 

@@ -114,7 +114,6 @@ final class SyntaxUnitTest extends AbstractSniffUnitTest
      */
     public function dataStdIn()
     {
-        // The error message changed in PHP 8+.
         if (PHP_VERSION_ID >= 80000) {
             $errorMessage = 'PHP syntax error: syntax error, unexpected token ";", expecting "]"';
         } else {

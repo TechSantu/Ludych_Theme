@@ -75,7 +75,6 @@ final class IfElseDeclarationSniff implements Sniff
          */
         $scopePtr = $stackPtr;
         if (isset($tokens[$stackPtr]['scope_opener']) === false) {
-            // Deal with "else if".
             $next = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
             if ($tokens[$next]['code'] === \T_IF) {
                 $scopePtr = $next;
@@ -85,7 +84,6 @@ final class IfElseDeclarationSniff implements Sniff
         if (isset($tokens[$scopePtr]['scope_opener']) === false
             || $tokens[$tokens[$scopePtr]['scope_opener']]['code'] === \T_COLON
         ) {
-            // No scope opener found or alternative syntax (not our concern).
             return;
         }
 
@@ -94,7 +92,6 @@ final class IfElseDeclarationSniff implements Sniff
          */
         $prevNonEmpty = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($stackPtr - 1), null, true);
         if ($prevNonEmpty === false || $tokens[$prevNonEmpty]['code'] !== \T_CLOSE_CURLY_BRACKET) {
-            // Parse error or mixing braced and non-braced. Not our concern.
             return;
         }
 
@@ -111,7 +108,6 @@ final class IfElseDeclarationSniff implements Sniff
         $prevNonWhitespace = $phpcsFile->findPrevious(\T_WHITESPACE, ($stackPtr - 1), null, true);
 
         if ($prevNonWhitespace !== $prevNonEmpty) {
-            // Comment found between previous scope closer and the keyword.
             $fix = $phpcsFile->addError($error, $stackPtr, 'NoNewLine');
             return;
         }
@@ -125,14 +121,12 @@ final class IfElseDeclarationSniff implements Sniff
          * Fix it.
          */
 
-        // Figure out the indentation for the else(if).
         $indentBase = $prevNonEmpty;
         if (isset($tokens[$prevNonEmpty]['scope_condition']) === true
             && ($tokens[$tokens[$prevNonEmpty]['scope_condition']]['column'] === 1
             || ($tokens[($tokens[$prevNonEmpty]['scope_condition'] - 1)]['code'] === \T_WHITESPACE
                 && $tokens[($tokens[$prevNonEmpty]['scope_condition'] - 1)]['column'] === 1))
         ) {
-            // Base the indentation off the previous if/elseif if on a line by itself.
             $indentBase = $tokens[$prevNonEmpty]['scope_condition'];
         }
 
@@ -144,7 +138,6 @@ final class IfElseDeclarationSniff implements Sniff
             if ($tokens[$firstOnIndentLine]['code'] === \T_WHITESPACE) {
                 $indent = $tokens[$firstOnIndentLine]['content'];
 
-                // If tabs were replaced, use the original content.
                 if (isset($tokens[$firstOnIndentLine]['orig_content']) === true) {
                     $indent = $tokens[$firstOnIndentLine]['orig_content'];
                 }
@@ -153,7 +146,6 @@ final class IfElseDeclarationSniff implements Sniff
 
         $phpcsFile->fixer->beginChangeset();
 
-        // Remove any whitespace between the previous scope closer and the else(if).
         for ($i = ($prevNonEmpty + 1); $i < $stackPtr; $i++) {
             $phpcsFile->fixer->replaceToken($i, '');
         }

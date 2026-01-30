@@ -80,8 +80,6 @@ class NewMagicMethodsSniff extends AbstractNewFeatureSniff
             '5.6' => true,
         ),
 
-        // Special case - only became properly magical in 5.2.0,
-        // before that it was only called for echo and print.
         '__tostring' => array(
             '5.1'     => false,
             '5.2'     => true,

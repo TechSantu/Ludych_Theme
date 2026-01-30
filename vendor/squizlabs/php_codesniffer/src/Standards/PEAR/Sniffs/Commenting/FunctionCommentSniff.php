@@ -88,10 +88,6 @@ class FunctionCommentSniff implements Sniff
         }
 
         if ($tokens[$commentEnd]['code'] === T_COMMENT) {
-            // Inline comments might just be closing comments for
-            // control structures or functions instead of function comments
-            // using the wrong comment type. If there is other code on the line,
-            // assume they relate to that code.
             $prev = $phpcsFile->findPrevious($ignore, ($commentEnd - 1), null, true);
             if ($prev !== false && $tokens[$prev]['line'] === $tokens[$commentEnd]['line']) {
                 $commentEnd = $prev;
@@ -119,11 +115,8 @@ class FunctionCommentSniff implements Sniff
             return;
         }
 
-        // Check there are no blank lines in the preamble for the property,
-        // but ignore blank lines _within_ attributes as that's not the concern of this sniff.
         if ($tokens[$commentEnd]['line'] !== ($tokens[$stackPtr]['line'] - 1)) {
             for ($i = ($commentEnd + 1); $i < $stackPtr; $i++) {
-                // Skip over the contents of attributes.
                 if (isset($tokens[$i]['attribute_closer']) === true) {
                     $i = $tokens[$i]['attribute_closer'];
                     continue;
@@ -132,7 +125,6 @@ class FunctionCommentSniff implements Sniff
                 if ($tokens[$i]['column'] !== 1
                     || $tokens[$i]['code'] !== T_WHITESPACE
                     || $tokens[$i]['line'] === $tokens[($i + 1)]['line']
-                    // Do not report blank lines after a PHPCS annotation as removing the blank lines could change the meaning.
                     || isset(Tokens::$phpcsCommentTokens[$tokens[($i - 1)]['code']]) === true
                 ) {
                     continue;
@@ -163,7 +155,6 @@ class FunctionCommentSniff implements Sniff
         $commentStart = $tokens[$commentEnd]['comment_opener'];
         foreach ($tokens[$commentStart]['comment_tags'] as $tag) {
             if ($tokens[$tag]['content'] === '@see') {
-                // Make sure the tag isn't empty.
                 $string = $phpcsFile->findNext(T_DOC_COMMENT_STRING, $tag, $commentEnd);
                 if ($string === false || $tokens[$string]['line'] !== $tokens[$tag]['line']) {
                     $error = 'Content missing for @see tag in function comment';
@@ -193,7 +184,6 @@ class FunctionCommentSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Skip constructor and destructor.
         $methodName      = $phpcsFile->getDeclarationName($stackPtr);
         $isSpecialMethod = in_array($methodName, $this->specialMethods, true);
 
@@ -318,7 +308,6 @@ class FunctionCommentSniff implements Sniff
                         $varSpace = strlen($matches[3]);
                         $comment  = $matches[4];
 
-                        // Any strings until the next tag belong to this comment.
                         if (isset($tokens[$commentStart]['comment_tags'][($pos + 1)]) === true) {
                             $end = $tokens[$commentStart]['comment_tags'][($pos + 1)];
                         } else {
@@ -360,8 +349,6 @@ class FunctionCommentSniff implements Sniff
         $realParams  = $phpcsFile->getMethodParameters($stackPtr);
         $foundParams = [];
 
-        // We want to use ... for all variable length arguments, so add
-        // this prefix to the variable name so comparisons are easier.
         foreach ($realParams as $pos => $param) {
             if ($param['variable_length'] === true) {
                 $realParams[$pos]['name'] = '...'.$realParams[$pos]['name'];
@@ -376,7 +363,6 @@ class FunctionCommentSniff implements Sniff
             $foundParams[] = $param['var'];
 
             if (trim($param['type']) !== '') {
-                // Check number of spaces after the type.
                 $spaces = ($maxType - strlen($param['type']) + 1);
                 if ($param['type_space'] !== $spaces) {
                     $error = 'Expected %s spaces after parameter type; %s found';
@@ -417,7 +403,6 @@ class FunctionCommentSniff implements Sniff
                 }//end if
             }//end if
 
-            // Make sure the param name is correct.
             if (isset($realParams[$pos]) === true) {
                 $realName = $realParams[$pos]['name'];
                 if ($realName !== $param['var']) {
@@ -438,7 +423,6 @@ class FunctionCommentSniff implements Sniff
                     $phpcsFile->addError($error, $param['tag'], $code, $data);
                 }
             } else if (substr($param['var'], -4) !== ',...') {
-                // We must have an extra parameter comment.
                 $error = 'Superfluous parameter comment';
                 $phpcsFile->addError($error, $param['tag'], 'ExtraParamComment');
             }//end if
@@ -447,7 +431,6 @@ class FunctionCommentSniff implements Sniff
                 continue;
             }
 
-            // Check number of spaces after the param name.
             $spaces = ($maxVar - strlen($param['var']) + 1);
             if ($param['var_space'] !== $spaces) {
                 $error = 'Expected %s spaces after parameter name; %s found';
@@ -487,7 +470,6 @@ class FunctionCommentSniff implements Sniff
                 }//end if
             }//end if
 
-            // Check the alignment of multi-line param comments.
             if ($param['tag'] !== $param['comment_end']) {
                 $wrapLength = ($tokens[($param['tag'] + 2)]['length'] - $param['type_space'] - $param['var_space'] - strlen($param['type']) - strlen($param['var']));
 
@@ -536,7 +518,6 @@ class FunctionCommentSniff implements Sniff
             $realNames[] = $realParam['name'];
         }
 
-        // Report missing comments.
         $diff = array_diff($realNames, $foundParams);
         foreach ($diff as $neededParam) {
             $error = 'Doc comment for parameter "%s" missing';

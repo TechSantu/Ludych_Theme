@@ -109,17 +109,14 @@ final class ValidVariableNameSniff extends PHPCS_AbstractVariableSniff {
 	protected function processVariable( File $phpcsFile, $stackPtr ) {
 		$tokens = $phpcsFile->getTokens();
 
-		// If it's a php reserved var, then its ok.
 		if ( Variables::isPHPReservedVarName( $tokens[ $stackPtr ]['content'] ) ) {
 			return;
 		}
 
-		// Merge any custom variables with the defaults.
 		$this->merge_allow_lists();
 
 		$var_name = ltrim( $tokens[ $stackPtr ]['content'], '$' );
 
-		// Likewise if it is a mixed-case var used by WordPress core.
 		if ( isset( $this->wordpress_mixed_case_vars[ $var_name ] ) ) {
 			return;
 		}
@@ -128,7 +125,6 @@ final class ValidVariableNameSniff extends PHPCS_AbstractVariableSniff {
 		if ( \T_OBJECT_OPERATOR === $tokens[ $obj_operator ]['code']
 			|| \T_NULLSAFE_OBJECT_OPERATOR === $tokens[ $obj_operator ]['code']
 		) {
-			// Check to see if we are using a variable from an object.
 			$var = $phpcsFile->findNext( Tokens::$emptyTokens, ( $obj_operator + 1 ), null, true );
 			if ( \T_STRING === $tokens[ $var ]['code'] ) {
 				$bracket = $phpcsFile->findNext( Tokens::$emptyTokens, ( $var + 1 ), null, true );
@@ -154,8 +150,6 @@ final class ValidVariableNameSniff extends PHPCS_AbstractVariableSniff {
 
 		$in_class = false;
 		if ( ContextHelper::has_object_operator_before( $phpcsFile, $stackPtr ) === true ) {
-			// The variable lives within a class, and is referenced like
-			// this: MyClass::$_variable or $class->variable.
 			$in_class = true;
 		}
 
@@ -189,12 +183,10 @@ final class ValidVariableNameSniff extends PHPCS_AbstractVariableSniff {
 	 * @return void
 	 */
 	protected function processMemberVar( File $phpcsFile, $stackPtr ) {
-		// Make sure this is actually an OO property and not an OO method parameter or illegal property declaration.
 		if ( Scopes::isOOProperty( $phpcsFile, $stackPtr ) === false ) {
 			return;
 		}
 
-		// Merge any custom variables with the defaults.
 		$this->merge_allow_lists();
 
 		$tokens   = $phpcsFile->getTokens();
@@ -227,25 +219,20 @@ final class ValidVariableNameSniff extends PHPCS_AbstractVariableSniff {
 	protected function processVariableInString( File $phpcsFile, $stackPtr ) {
 		$tokens = $phpcsFile->getTokens();
 
-		// There will always be embeds if the processVariableInString() was called.
 		$embeds = TextStrings::getEmbeds( $tokens[ $stackPtr ]['content'] );
 
-		// Merge any custom variables with the defaults.
 		$this->merge_allow_lists();
 
 		foreach ( $embeds as $embed ) {
-			// Grab any variables contained in the embed.
 			if ( preg_match_all( '`\$(\{)?(?<name>[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*)(?(1)\})`', $embed, $matches ) === 0 ) {
 				continue;
 			}
 
 			foreach ( $matches['name'] as $var_name ) {
-				// If it's a php reserved var, then its ok.
 				if ( Variables::isPHPReservedVarName( $var_name ) ) {
 					continue;
 				}
 
-				// Likewise if it is a mixed-case var used by WordPress core.
 				if ( isset( $this->wordpress_mixed_case_vars[ $var_name ] ) ) {
 					continue;
 				}
@@ -275,7 +262,6 @@ final class ValidVariableNameSniff extends PHPCS_AbstractVariableSniff {
 	 */
 	protected function merge_allow_lists() {
 		if ( $this->allowed_custom_properties !== $this->addedCustomProperties['properties'] ) {
-			// Fix property potentially passed as comma-delimited string.
 			$customProperties = RulesetPropertyHelper::merge_custom_array( $this->allowed_custom_properties, array(), false );
 
 			$this->allowed_mixed_case_member_var_names = RulesetPropertyHelper::merge_custom_array(

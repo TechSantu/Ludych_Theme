@@ -56,14 +56,12 @@ class ConcatenationSpacingSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
         if (isset($tokens[($stackPtr + 2)]) === false) {
-            // Syntax error or live coding, bow out.
             return;
         }
 
         $ignoreBefore = false;
         $prev         = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($stackPtr - 1), null, true);
         if ($tokens[$prev]['code'] === T_END_HEREDOC || $tokens[$prev]['code'] === T_END_NOWDOC) {
-            // Spacing before must be preserved due to the here/nowdoc closing tag.
             $ignoreBefore = true;
         }
 

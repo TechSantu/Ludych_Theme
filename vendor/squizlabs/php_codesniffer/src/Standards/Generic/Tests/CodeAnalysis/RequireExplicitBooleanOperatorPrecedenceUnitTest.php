@@ -65,7 +65,6 @@ final class RequireExplicitBooleanOperatorPrecedenceUnitTest extends AbstractSni
             128 => 1,
             130 => 1,
 
-            // Debatable.
             103 => 1,
             116 => 1,
         ];

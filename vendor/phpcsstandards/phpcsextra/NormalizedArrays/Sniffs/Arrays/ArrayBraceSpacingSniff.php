@@ -148,13 +148,11 @@ final class ArrayBraceSpacingSniff implements Sniff
             && $this->spacesMultiLine === false
             && $this->spacesWhenEmpty === false
         ) {
-            // Nothing to do. Why was the sniff turned on at all ?
             return;
         }
 
         $openClose = Arrays::getOpenClose($phpcsFile, $stackPtr);
         if ($openClose === false) {
-            // Live coding, short list or real square brackets.
             return;
         }
 
@@ -188,7 +186,6 @@ final class ArrayBraceSpacingSniff implements Sniff
         $nextNonWhiteSpace = $phpcsFile->findNext(\T_WHITESPACE, ($opener + 1), null, true);
         if ($nextNonWhiteSpace === $closer) {
             if ($this->spacesWhenEmpty === false) {
-                // Check was turned off.
                 return;
             }
 
@@ -214,9 +211,7 @@ final class ArrayBraceSpacingSniff implements Sniff
          * Check non-empty arrays.
          */
         if ($tokens[$opener]['line'] === $tokens[$closer]['line']) {
-            // Single line array.
             if ($this->spacesSingleLine === false) {
-                // Check was turned off.
                 return;
             }
 
@@ -253,9 +248,7 @@ final class ArrayBraceSpacingSniff implements Sniff
             return;
         }
 
-        // Multi-line array.
         if ($this->spacesMultiLine === false) {
-            // Check was turned off.
             return;
         }
 
@@ -264,12 +257,10 @@ final class ArrayBraceSpacingSniff implements Sniff
 
         $nextNonWhitespace = $phpcsFile->findNext(\T_WHITESPACE, ($opener + 1), null, true);
         if ($this->spacesMultiLine === 'newline') {
-            // Check for a trailing comment after the array opener and allow for it.
             if (($tokens[$nextNonWhitespace]['code'] === \T_COMMENT
                 || isset(Tokens::$phpcsCommentTokens[$tokens[$nextNonWhitespace]['code']]) === true)
                 && $tokens[$nextNonWhitespace]['line'] === $tokens[$opener]['line']
             ) {
-                // We found a trailing comment after array opener. Treat that as the opener instead.
                 $opener            = $nextNonWhitespace;
                 $nextNonWhitespace = $phpcsFile->findNext(\T_WHITESPACE, ($opener + 1), null, true);
             }

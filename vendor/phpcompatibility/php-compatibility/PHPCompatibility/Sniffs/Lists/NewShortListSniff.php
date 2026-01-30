@@ -69,7 +69,6 @@ class NewShortListSniff extends Sniff
 
         $hasVariable = $phpcsFile->findNext(\T_VARIABLE, ($stackPtr + 1), $closer);
         if ($hasVariable === false) {
-            // List syntax is only valid if there are variables in it.
             return;
         }
 

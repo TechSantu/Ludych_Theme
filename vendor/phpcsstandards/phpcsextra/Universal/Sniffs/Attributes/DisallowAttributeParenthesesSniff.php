@@ -68,9 +68,7 @@ final class DisallowAttributeParenthesesSniff implements Sniff
         foreach ($instantiations as $attribute) {
             $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($attribute['name_token'] + 1), null, true);
 
-            // Note: no need to check for `false` as there will always be something after, if only the attribute closer.
             if ($tokens[$nextNonEmpty]['code'] !== \T_OPEN_PARENTHESIS) {
-                // No parentheses found.
                 $phpcsFile->recordMetric($attribute['name_token'], self::METRIC_NAME, 'no');
                 continue;
             }
@@ -80,17 +78,14 @@ final class DisallowAttributeParenthesesSniff implements Sniff
                  * Incomplete set of parentheses. Ignore.
                  * Shouldn't be possible as PHPCS won't have matched the attribute opener with the closer in that case.
                  */
-                // @codeCoverageIgnoreStart
                 $phpcsFile->recordMetric($attribute['name_token'], self::METRIC_NAME, 'yes');
                 continue;
-                // @codeCoverageIgnoreEnd
             }
 
             $opener    = $nextNonEmpty;
             $closer    = $tokens[$opener]['parenthesis_closer'];
             $hasParams = $phpcsFile->findNext(Tokens::$emptyTokens, ($opener + 1), $closer, true);
             if ($hasParams !== false) {
-                // There is something between the parentheses. Ignore.
                 $phpcsFile->recordMetric($attribute['name_token'], self::METRIC_NAME, 'yes, with parameter(s)');
                 continue;
             }

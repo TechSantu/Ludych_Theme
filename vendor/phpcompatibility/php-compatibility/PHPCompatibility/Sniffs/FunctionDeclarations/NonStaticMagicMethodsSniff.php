@@ -146,7 +146,6 @@ class NonStaticMagicMethodsSniff extends Sniff
      */
     public function process(File $phpcsFile, $stackPtr)
     {
-        // Should be removed, the requirement was previously also there, 5.3 just started throwing a warning about it.
         if ($this->supportsAbove('5.3') === false) {
             return;
         }
@@ -160,7 +159,6 @@ class NonStaticMagicMethodsSniff extends Sniff
         $classScopeCloser = $tokens[$stackPtr]['scope_closer'];
         $functionPtr      = $stackPtr;
 
-        // Find all the functions in this class or interface.
         while (($functionToken = $phpcsFile->findNext(\T_FUNCTION, $functionPtr, $classScopeCloser)) !== false) {
             /*
              * Get the scope closer for this function in order to know how
@@ -209,7 +207,6 @@ class NonStaticMagicMethodsSniff extends Sniff
                 $phpcsFile->addError($error, $functionToken, $errorCode, $data);
             }
 
-            // Advance to next function.
             $functionPtr = $scopeCloser;
         }
     }

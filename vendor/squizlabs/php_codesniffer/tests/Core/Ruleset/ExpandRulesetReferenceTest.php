@@ -29,7 +29,6 @@ final class ExpandRulesetReferenceTest extends AbstractRulesetTestCase
      */
     public function testRulesetRelativePathReferences()
     {
-        // Set up the ruleset.
         $standard = __DIR__.'/ExpandRulesetReferenceTest.xml';
         $config   = new ConfigDouble(["--standard=$standard"]);
         $ruleset  = new Ruleset($config);
@@ -57,7 +56,6 @@ final class ExpandRulesetReferenceTest extends AbstractRulesetTestCase
      */
     public function testUnresolvableReferenceThrowsException($standard, $replacement)
     {
-        // Set up the ruleset.
         $standard = __DIR__.'/'.$standard;
         $config   = new ConfigDouble(["--standard=$standard"]);
 
@@ -114,7 +112,6 @@ final class ExpandRulesetReferenceTest extends AbstractRulesetTestCase
             ],
         ];
 
-        // Add tests which are only relevant for case-sensitive OSes.
         if (stripos(PHP_OS, 'WIN') === false) {
             $data['Referencing an existing sniff, but there is a case mismatch (OS-dependent) [1]'] = [
                 'standard'    => 'ExpandRulesetReferenceCaseMismatch1Test.xml',

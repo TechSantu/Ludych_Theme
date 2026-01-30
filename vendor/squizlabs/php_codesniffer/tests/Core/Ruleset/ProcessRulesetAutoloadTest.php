@@ -43,7 +43,6 @@ final class ProcessRulesetAutoloadTest extends AbstractRulesetTestCase
 
         $originallyIncludes = get_included_files();
 
-        // Set up the ruleset.
         $standard = __DIR__.'/ProcessRulesetAutoloadTest.xml';
         $config   = new ConfigDouble(["--standard=$standard"]);
         new Ruleset($config);
@@ -101,7 +100,6 @@ final class ProcessRulesetAutoloadTest extends AbstractRulesetTestCase
 
         $originallyIncludes = get_included_files();
 
-        // Set up the ruleset.
         $standard = __DIR__.'/ProcessRulesetAutoloadTest.xml';
         $config   = new ConfigDouble(["--standard=$standard"]);
         new Ruleset($config);
@@ -153,7 +151,6 @@ final class ProcessRulesetAutoloadTest extends AbstractRulesetTestCase
         $exceptionMsg = 'ERROR: The specified autoload file "./tests/Core/Ruleset/Fixtures/ThisFileDoesNotExist.php" does not exist';
         $this->expectRuntimeExceptionMessage($exceptionMsg);
 
-        // Set up the ruleset.
         $standard = __DIR__.'/ProcessRulesetAutoloadFileNotFoundTest.xml';
         $config   = new ConfigDouble(["--standard=$standard"]);
         new Ruleset($config);

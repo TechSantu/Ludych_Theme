@@ -74,9 +74,7 @@ final class PrecisionAlignmentSniff implements Sniff
      * <rule ref="Universal.WhiteSpace.PrecisionAlignment">
      *    <properties>
      *        <property name="ignoreAlignmentBefore" type="array">
-     *            <!-- Ignore precision alignment in inline HTML -->
      *            <element value="T_INLINE_HTML"/>
-     *            <!-- Ignore precision alignment in multiline chained method calls. -->
      *            <element value="T_OBJECT_OPERATOR"/>
      *        </property>
      *    </properties>
@@ -139,7 +137,6 @@ final class PrecisionAlignmentSniff implements Sniff
      */
     public function register()
     {
-        // Add the ignore annotation tokens to the list of tokens to check.
         $this->tokensToCheck += Tokens::$phpcsCommentTokens;
 
         return Collections::phpOpenTags();
@@ -183,24 +180,20 @@ final class PrecisionAlignmentSniff implements Sniff
 
         for ($i = 0; $i < $phpcsFile->numTokens; $i++) {
             if ($tokens[$i]['column'] !== 1) {
-                // Only interested in the first token on each line.
                 continue;
             }
 
             if (isset($this->tokensToCheck[$tokens[$i]['code']]) === false) {
-                // Not one of the target tokens.
                 continue;
             }
 
             if ($tokens[$i]['content'] === $phpcsFile->eolChar) {
-                // Skip completely blank lines.
                 continue;
             }
 
             if (isset($ignoreTokens[$tokens[$i]['type']]) === true
                 || (isset($tokens[($i + 1)]) && isset($ignoreTokens[$tokens[($i + 1)]['type']]))
             ) {
-                // This is one of the tokens being ignored.
                 continue;
             }
 
@@ -220,7 +213,6 @@ final class PrecisionAlignmentSniff implements Sniff
                         && isset($tokens[($i + 1)])
                         && $tokens[$i]['line'] !== $tokens[($i + 1)]['line']
                     ) {
-                        // Skip blank lines which only contain trailing whitespace.
                         continue 2;
                     }
 
@@ -239,7 +231,6 @@ final class PrecisionAlignmentSniff implements Sniff
                         && isset($tokens[($i + 2)])
                         && $tokens[$i]['line'] !== $tokens[($i + 2)]['line']
                     ) {
-                        // Skip blank lines which only contain trailing whitespace.
                         continue 2;
                     }
 
@@ -250,7 +241,6 @@ final class PrecisionAlignmentSniff implements Sniff
                             || $tokens[($i + 1)]['code'] === \T_DOC_COMMENT_CLOSE_TAG)
                         && $spaces !== 0
                     ) {
-                        // One alignment space expected before the *.
                         --$spaces;
                     }
                     break;
@@ -262,11 +252,9 @@ final class PrecisionAlignmentSniff implements Sniff
                         && isset($tokens[($i + 1)])
                         && $tokens[$i]['line'] !== $tokens[($i + 1)]['line']
                     ) {
-                        // Skip blank lines which only contain trailing whitespace.
                         continue 2;
                     }
 
-                    // Deliberate fall-through.
 
                 case \T_PHPCS_ENABLE:
                 case \T_PHPCS_DISABLE:
@@ -328,10 +316,8 @@ final class PrecisionAlignmentSniff implements Sniff
 
             if ($fix === true) {
                 if ($tokens[$i]['code'] === \T_END_HEREDOC || $tokens[$i]['code'] === \T_END_NOWDOC) {
-                    // For heredoc/nowdoc, always round down to prevent introducing parse errors.
                     $tabstops = (int) \floor($spaces / $indent);
                 } else {
-                    // For everything else, use "best guess".
                     $tabstops = (int) \round($spaces / $indent, 0);
                 }
 
@@ -357,7 +343,6 @@ final class PrecisionAlignmentSniff implements Sniff
                                 || $tokens[($i + 1)]['code'] === \T_DOC_COMMENT_CLOSE_TAG)
                             && $tabstops === 0
                         ) {
-                            // Maintain the extra space before the star.
                             $replace .= ' ';
                         }
 
@@ -377,12 +362,10 @@ final class PrecisionAlignmentSniff implements Sniff
                         $replace       = $this->getReplacement($replaceLength, $origContent);
 
                         if (isset($content[0]) === true && $content[0] === '*' && $tabstops === 0) {
-                            // Maintain the extra space before the star.
                             $replace .= ' ';
                         }
 
                         if ($content === '') {
-                            // Preserve new lines in blank line comment tokens.
                             $newContent = \substr_replace($tokens[$i]['content'], $replace, 0, $length);
                         } else {
                             $newContent = $replace . $content;
@@ -402,7 +385,6 @@ final class PrecisionAlignmentSniff implements Sniff
             }
         }
 
-        // No need to look at this file again.
         return $phpcsFile->numTokens;
     }
 
@@ -417,7 +399,6 @@ final class PrecisionAlignmentSniff implements Sniff
     private function getReplacement($length, $origContent)
     {
         if ($origContent !== null) {
-            // Check whether tabs were part of the indent or inline alignment.
             $content    = \ltrim($origContent);
             $whitespace = $origContent;
             if ($content !== '') {
@@ -425,7 +406,6 @@ final class PrecisionAlignmentSniff implements Sniff
             }
 
             if (\strpos($whitespace, "\t") !== false) {
-                // Original indent used tabs. Use tabs in replacement too.
                 $tabs   = (int) ($length / $this->tabWidth);
                 $spaces = $length % $this->tabWidth;
                 return \str_repeat("\t", $tabs) . \str_repeat(' ', (int) $spaces);

@@ -115,7 +115,6 @@ class FunctionDeclarationArgumentSpacingSniff implements Sniff
         $params = $phpcsFile->getMethodParameters($stackPtr);
 
         if (empty($params) === true) {
-            // Check spacing around parenthesis.
             $next = $phpcsFile->findNext(T_WHITESPACE, ($openBracket + 1), $closeBracket, true);
             if ($next === false) {
                 if (($closeBracket - $openBracket) !== 1) {
@@ -138,7 +137,6 @@ class FunctionDeclarationArgumentSpacingSniff implements Sniff
                     }
                 }
 
-                // No params, so we don't check normal spacing rules.
                 return;
             }//end if
         }//end if
@@ -283,10 +281,8 @@ class FunctionDeclarationArgumentSpacingSniff implements Sniff
                         $param['name'],
                     ];
                     if (trim($gap, ' ') === '') {
-                        // Gap contains only space characters: report the number of spaces.
                         $data[] = strlen($gap);
                     } else {
-                        // Gap contains more than just spaces: render these for better clarity.
                         $data[] = '"'.Common::prepareForOutput($gap).'"';
                     }
 
@@ -457,7 +453,6 @@ class FunctionDeclarationArgumentSpacingSniff implements Sniff
                     }//end if
                 }//end if
 
-                // Don't check spacing after the comma if it is the last content on the line.
                 $checkComma = true;
                 if ($multiLine === true) {
                     $next = $phpcsFile->findNext(Tokens::$emptyTokens, ($commaToken + 1), $closeBracket, true);
@@ -517,7 +512,6 @@ class FunctionDeclarationArgumentSpacingSniff implements Sniff
             }//end if
         }//end foreach
 
-        // Only check spacing around parenthesis for single line definitions.
         if ($multiLine === true) {
             return;
         }

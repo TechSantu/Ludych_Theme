@@ -52,11 +52,6 @@ class FunctionCallArgumentSpacingSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Skip tokens that are the names of functions or classes
-        // within their definitions. For example:
-        // function myFunction...
-        // "myFunction" is T_STRING but we should skip because it is not a
-        // function or method *call*.
         $functionName    = $stackPtr;
         $ignoreTokens    = Tokens::$emptyTokens;
         $ignoreTokens[]  = T_BITWISE_AND;
@@ -68,12 +63,9 @@ class FunctionCallArgumentSpacingSniff implements Sniff
         if ($tokens[$stackPtr]['code'] === T_CLOSE_CURLY_BRACKET
             && isset($tokens[$stackPtr]['scope_condition']) === true
         ) {
-            // Not a function call.
             return;
         }
 
-        // If the next non-whitespace token after the function or method call
-        // is not an opening parenthesis then it can't really be a *call*.
         $openBracket = $phpcsFile->findNext(Tokens::$emptyTokens, ($functionName + 1), null, true);
         if ($tokens[$openBracket]['code'] !== T_OPEN_PARENTHESIS) {
             return;
@@ -120,22 +112,16 @@ class FunctionCallArgumentSpacingSniff implements Sniff
                 || $tokens[$nextSeparator]['code'] === T_ANON_CLASS
                 || $tokens[$nextSeparator]['code'] === T_MATCH
             ) {
-                // Skip closures, anon class declarations and match control structures.
                 $nextSeparator = $tokens[$nextSeparator]['scope_closer'];
                 continue;
             } else if ($tokens[$nextSeparator]['code'] === T_FN) {
-                // Skip arrow functions, but don't skip the arrow function closer as it is likely to
-                // be the comma separating it from the next function call argument (or the parenthesis closer).
                 $nextSeparator = ($tokens[$nextSeparator]['scope_closer'] - 1);
                 continue;
             } else if ($tokens[$nextSeparator]['code'] === T_OPEN_SHORT_ARRAY) {
-                // Skips arrays using short notation.
                 $nextSeparator = $tokens[$nextSeparator]['bracket_closer'];
                 continue;
             }
 
-            // Make sure the comma or variable belongs directly to this function call,
-            // and is not inside a nested function call or array.
             $brackets    = $tokens[$nextSeparator]['nested_parenthesis'];
             $lastBracket = array_pop($brackets);
             if ($lastBracket !== $closeBracket) {
@@ -164,7 +150,6 @@ class FunctionCallArgumentSpacingSniff implements Sniff
                 }//end if
 
                 if ($tokens[($nextSeparator + 1)]['code'] !== T_WHITESPACE) {
-                    // Ignore trailing comma's after last argument as that's outside the scope of this sniff.
                     if (($nextSeparator + 1) !== $closeBracket) {
                         $error = 'No space found after comma in argument list';
                         $fix   = $phpcsFile->addFixableError($error, $nextSeparator, 'NoSpaceAfterComma');
@@ -173,8 +158,6 @@ class FunctionCallArgumentSpacingSniff implements Sniff
                         }
                     }
                 } else {
-                    // If there is a newline in the space, then they must be formatting
-                    // each argument on a newline, which is valid, so ignore it.
                     $next = $phpcsFile->findNext(Tokens::$emptyTokens, ($nextSeparator + 1), null, true);
                     if ($tokens[$next]['line'] === $tokens[$nextSeparator]['line']) {
                         $space = $tokens[($nextSeparator + 1)]['length'];

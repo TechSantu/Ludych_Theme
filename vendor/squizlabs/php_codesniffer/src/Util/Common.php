@@ -90,7 +90,6 @@ class Common
      */
     public static function realpath($path)
     {
-        // Support the path replacement of ~ with the user's home directory.
         if (substr($path, 0, 2) === '~/') {
             $homeDir = getenv('HOME');
             if ($homeDir !== false) {
@@ -98,19 +97,14 @@ class Common
             }
         }
 
-        // Check for process substitution.
         if (strpos($path, '/dev/fd') === 0) {
             return str_replace('/dev/fd', 'php://fd', $path);
         }
 
-        // No extra work needed if this is not a phar file.
         if (self::isPharFile($path) === false) {
             return realpath($path);
         }
 
-        // Before trying to break down the file path,
-        // check if it exists first because it will mostly not
-        // change after running the below code.
         if (file_exists($path) === true) {
             return $path;
         }
@@ -172,7 +166,6 @@ class Common
     public static function detectLineEndings($contents)
     {
         if (preg_match("/\r\n?|\n/", $contents, $matches) !== 1) {
-            // Assume there are no newlines.
             $eolChar = "\n";
         } else {
             $eolChar = $matches[0];
@@ -190,8 +183,6 @@ class Common
      */
     public static function isStdinATTY()
     {
-        // The check is slow (especially calling `tty`) so we static
-        // cache the result.
         static $isTTY = null;
 
         if ($isTTY !== null) {
@@ -202,13 +193,11 @@ class Common
             return false;
         }
 
-        // If PHP has the POSIX extensions we will use them.
         if (function_exists('posix_isatty') === true) {
             $isTTY = (posix_isatty(STDIN) === true);
             return $isTTY;
         }
 
-        // Next try is detecting whether we have `tty` installed and use that.
         if (defined('PHP_WINDOWS_VERSION_PLATFORM') === true) {
             $devnull = 'NUL';
             $which   = 'where';
@@ -224,10 +213,6 @@ class Common
             return $isTTY;
         }
 
-        // Finally we will use fstat.  The solution borrowed from
-        // https://stackoverflow.com/questions/11327367/detect-if-a-php-script-is-being-run-interactively-or-not
-        // This doesn't work on Mingw/Cygwin/... using Mintty but they
-        // have `tty` installed.
         $type = [
             'S_IFMT'  => 0170000,
             'S_IFIFO' => 0010000,
@@ -254,8 +239,6 @@ class Common
         $cmd = escapeshellcmd($cmd);
 
         if (stripos(PHP_OS, 'WIN') === 0) {
-            // Spaces are not escaped by escapeshellcmd on Windows, but need to be
-            // for the command to be able to execute.
             $cmd = preg_replace('`(?<!^) `', '^ ', $cmd);
         }
 
@@ -353,7 +336,6 @@ class Common
         $public=true,
         $strict=true
     ) {
-        // Check the first character first.
         if ($classFormat === false) {
             $legalFirstChar = '';
             if ($public === false) {
@@ -361,8 +343,6 @@ class Common
             }
 
             if ($strict === false) {
-                // Can either start with a lowercase letter, or multiple uppercase
-                // in a row, representing an acronym.
                 $legalFirstChar .= '([A-Z]{2,}|[a-z])';
             } else {
                 $legalFirstChar .= '[a-z]';
@@ -375,21 +355,18 @@ class Common
             return false;
         }
 
-        // Check that the name only contains legal characters.
         $legalChars = 'a-zA-Z0-9';
         if (preg_match("|[^$legalChars]|", substr($string, 1)) > 0) {
             return false;
         }
 
         if ($strict === true) {
-            // Check that there are not two capital letters next to each other.
             $length          = strlen($string);
             $lastCharWasCaps = $classFormat;
 
             for ($i = 1; $i < $length; $i++) {
                 $ascii = ord($string[$i]);
                 if ($ascii >= 48 && $ascii <= 57) {
-                    // The character is a number, so it can't be a capital.
                     $isCaps = false;
                 } else {
                     if (strtoupper($string[$i]) === $string[$i]) {
@@ -421,7 +398,6 @@ class Common
      */
     public static function isUnderscoreName($string)
     {
-        // If there is whitespace in the name, it can't be valid.
         if (strpos($string, ' ') !== false) {
             return false;
         }
@@ -430,7 +406,6 @@ class Common
         $nameBits  = explode('_', $string);
 
         if (preg_match('|^[A-Z]|', $string) === 0) {
-            // Name does not begin with a capital letter.
             $validName = false;
         } else {
             foreach ($nameBits as $bit) {
@@ -487,8 +462,6 @@ class Common
             }//end switch
 
             if (strpos($lowerVarType, 'array(') !== false) {
-                // Valid array declaration:
-                // array, array(type), array(type1 => type2).
                 $matches = [];
                 $pattern = '/^array\(\s*([^\s^=^>]*)(\s*=>\s*(.*))?\s*\)/i';
                 if (preg_match($pattern, $varType, $matches) !== 0) {
@@ -513,10 +486,8 @@ class Common
                     return 'array';
                 }//end if
             } else if (in_array($lowerVarType, self::$allowedTypes, true) === true) {
-                // A valid type, but not lower cased.
                 return $lowerVarType;
             } else {
-                // Must be a custom type name.
                 return $varType;
             }//end if
         }//end if
@@ -545,10 +516,8 @@ class Common
         $sniff      = $parts[($partsCount - 1)];
 
         if (substr($sniff, -5) === 'Sniff') {
-            // Sniff class name.
             $sniff = substr($sniff, 0, -5);
         } else if (substr($sniff, -8) === 'UnitTest') {
-            // Unit test class name.
             $sniff = substr($sniff, 0, -8);
         } else {
             throw new InvalidArgumentException(
@@ -584,7 +553,6 @@ class Common
 
         $sniffPos = strrpos($newName, '\sniffs\\');
         if ($sniffPos === false) {
-            // Nothing we can do as it isn't in a known format.
             return $newName;
         }
 
@@ -592,7 +560,6 @@ class Common
         $start = strrpos($newName, '\\', ($end * -1));
 
         if ($start === false) {
-            // Nothing needs to be cleaned.
             return $newName;
         }
 

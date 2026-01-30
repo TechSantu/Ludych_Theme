@@ -4,23 +4,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 global $post_id;
 
-$about_text        = get_field( 'about_text', $post_id );
-$about_title       = get_field( 'about_title', $post_id );
-$about_description = get_field( 'about_description', $post_id );
-$about_image       = get_field( 'about_image', $post_id );
-$author_name       = get_field( 'author_name', $post_id );
-$author_about      = get_field( 'author_about', $post_id );
+$faq_subtitle = get_field( 'faq_subtitle', $post_id );
+$faq_title    = get_field( 'faq_title', $post_id );
+$faq_heading  = get_field( 'faq_heading', $post_id );
 ?>
 
-
-	<!-- faq section start -->
 	<section class="faq-outer">
 		<div class="custom-container">
 			<div class="row">
 				<div class="col-xl-5 col-md-5 col-sm-12">
 					<div class="header-left">
 						<div class="global-header left-align">
-							<h2>FAQs</h2>
+							<h2><?php echo esc_html( $faq_subtitle ); ?></h2>
 							<div class="min-title">
 								<div class="icon-box">
 									<svg xmlns="http://www.w3.org/2000/svg" width="39" height="39" viewBox="0 0 39 39"
@@ -37,70 +32,38 @@ $author_about      = get_field( 'author_about', $post_id );
 										</defs>
 									</svg>
 								</div>
-								<h6>FAQs</h6>
+								<h6><?php echo esc_html( $faq_title ); ?></h6>
 							</div>
-							<h5>Questions? <span> Look Here</span></h5>
+							<h5><?php echo ( $faq_heading ); ?></h5>
 						</div>
 					</div>
 				</div>
 				<div class="col-xl-7 col-md-7 col-sm-12">
+					<?php if ( have_rows( 'faqs_repeater', $post_id ) ) : ?>
 					<div class="faq_inner">
 						<ul class="accordion-list">
-							<li class="active">
-								<h4>What Makes Ludych Different From Other Digital Marketing Agencies in Arizona?</h4>
-								<div class="answer">
-									<p>Ludych stands out by combining strong Arizona market knowledge with a
-										performance-focused digital strategy. We don’t believe in one-size-fits-all
-										marketing. Every project is customized to match your business goals, audience,
-										and industry. Our team merges creative thinking with analytical insights,
-										constantly refining campaigns to maximize results. Most importantly, we treat
-										your brand with the same care and responsibility as if it were our own.</p>
+							<?php 
+							$count = 0;
+							while ( have_rows( 'faqs_repeater', $post_id ) ) : the_row(); 
+								$question = get_sub_field( 'question' );
+								$answer   = get_sub_field( 'answer' );
+								$active_class = ( 0 === $count ) ? 'active' : '';
+								$answer_style = ( 0 === $count ) ? '' : 'style="display: none;"';
+							?>
+							<li class="<?php echo esc_attr( $active_class ); ?>">
+								<h4><?php echo esc_html( $question ); ?></h4>
+								<div class="answer" <?php echo $answer_style; ?>>
+									<p><?php echo wp_kses_post( $answer ); ?></p>
 								</div>
 							</li>
-							<li>
-								<h4>Do You Provide Local SEO Services for Arizona Businesses?</h4>
-								<div class="answer" style="display: none;">
-									<p>Yes, local SEO is one of our core strengths. We optimize your website, Google
-										Business Profile, and local citations so your business shows up when potential
-										customers search for services in your area. Our goal is to increase your
-										visibility in Arizona-based searches and drive high-intent local traffic to your
-										business.</p>
-								</div>
-							</li>
-							<li>
-								<h4>What Services Does Ludych Offer?</h4>
-								<div class="answer" style="display: none;">
-									<p>Ludych delivers complete digital growth solutions including digital marketing,
-										website development, and lead generation strategies. We help Arizona businesses
-										strengthen their online presence, improve brand visibility, increase website
-										traffic, and convert visitors into qualified leads.</p>
-								</div>
-							</li>
-							<li>
-								<h4>Do You Focus on Any Specific Industries in Arizona?</h4>
-								<div class="answer" style="display: none;">
-									<p>We work with a diverse range of industries such as landscaping, plumbing and
-										HVAC, electricians, medical marijuana, cleaning services, fitness centers and
-										gyms, mental wellness providers, spas and salons, dental clinics, law firms,
-										septic tank cleaning, towing companies, auto repair shops, and auto detailing
-										services. Our experience across multiple sectors allows us to create strategies
-										that are both locally relevant and industry-focused.</p>
-								</div>
-							</li>
-							<li>
-								<h4>How Long Does It Take to See Results From Digital Marketing in Arizona?</h4>
-								<div class="answer" style="display: none;">
-									<p>The timeline depends on the marketing channels used. Paid campaigns like Google
-										Ads and PPC can start generating leads within a few weeks. Long-term strategies
-										such as SEO and content marketing take more time but deliver lasting growth. In
-										most cases, clients begin noticing measurable improvements within 60 to 90 days,
-										based on competition, budget, and business goals.</p>
-								</div>
-							</li>
+							<?php 
+							$count++;
+							endwhile; 
+							?>
 						</ul>
 					</div>
+					<?php endif; ?>
 				</div>
 			</div>
 		</div>
 	</section>
-	<!-- faq section end -->

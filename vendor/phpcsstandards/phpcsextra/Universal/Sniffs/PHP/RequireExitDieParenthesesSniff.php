@@ -59,12 +59,10 @@ final class RequireExitDieParenthesesSniff implements Sniff
         $tokens       = $phpcsFile->getTokens();
         $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
         if ($nextNonEmpty === false) {
-            // Live coding. Do not flag (yet).
             return;
         }
 
         if ($tokens[$nextNonEmpty]['code'] === \T_OPEN_PARENTHESIS) {
-            // Parentheses found.
             $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'yes');
             return;
         }

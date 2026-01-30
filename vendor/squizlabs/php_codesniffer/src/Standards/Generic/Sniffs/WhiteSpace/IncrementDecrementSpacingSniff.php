@@ -60,7 +60,6 @@ class IncrementDecrementSpacingSniff implements Sniff
             $tokenName = 'decrement';
         }
 
-        // Is this a pre-increment/decrement ?
         $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
         if ($nextNonEmpty !== false
             && (($phpcsFile->tokenizerType === 'PHP'
@@ -114,7 +113,6 @@ class IncrementDecrementSpacingSniff implements Sniff
             return;
         }//end if
 
-        // Is this a post-increment/decrement ?
         $prevNonEmpty = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($stackPtr - 1), null, true);
         if ($prevNonEmpty !== false
             && (($phpcsFile->tokenizerType === 'PHP'

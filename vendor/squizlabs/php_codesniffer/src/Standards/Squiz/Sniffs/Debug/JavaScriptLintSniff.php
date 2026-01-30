@@ -63,9 +63,6 @@ class JavaScriptLintSniff implements Sniff, DeprecatedSniff
         $cmd = '"'.Common::escapeshellcmd($jslPath).'" -nologo -nofilelisting -nocontext -nosummary -output-format __LINE__:__ERROR__ -process '.escapeshellarg($fileName);
         $msg = exec($cmd, $output, $retval);
 
-        // Variable $exitCode is the last line of $output if no error occurs, on
-        // error it is numeric. Try to handle various error conditions and
-        // provide useful error reporting.
         if ($retval === 2 || $retval === 4) {
             if (is_array($output) === true) {
                 $msg = implode('\n', $output);
@@ -83,7 +80,6 @@ class JavaScriptLintSniff implements Sniff, DeprecatedSniff
             }
         }
 
-        // Ignore the rest of the file.
         return $phpcsFile->numTokens;
 
     }//end process()

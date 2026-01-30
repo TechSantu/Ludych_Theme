@@ -72,7 +72,6 @@ class ValidHookNameSniff extends AbstractFunctionParameterSniff {
 	 * @return array<string, array<string, array<string>>>
 	 */
 	public function getGroups() {
-		// Only retrieve functions which are not used for deprecated hooks.
 		$this->target_functions = WPHookHelper::get_functions( false );
 
 		return parent::getGroups();
@@ -107,7 +106,6 @@ class ValidHookNameSniff extends AbstractFunctionParameterSniff {
 		$last_non_empty = null;
 
 		for ( $i = $hook_name_param['start']; $i <= $hook_name_param['end']; $i++ ) {
-			// Skip past comment tokens.
 			if ( isset( Tokens::$commentTokens[ $this->tokens[ $i ]['code'] ] ) ) {
 				continue;
 			}
@@ -115,7 +113,6 @@ class ValidHookNameSniff extends AbstractFunctionParameterSniff {
 			$content[ $i ]  = $this->tokens[ $i ]['content'];
 			$expected[ $i ] = $this->tokens[ $i ]['content'];
 
-			// Skip past potential variable array access: `$var['key']`.
 			if ( \T_VARIABLE === $this->tokens[ $i ]['code'] ) {
 				do {
 					$open_bracket = $this->phpcsFile->findNext( Tokens::$emptyTokens, ( $i + 1 ), null, true );
@@ -135,7 +132,6 @@ class ValidHookNameSniff extends AbstractFunctionParameterSniff {
 				continue;
 			}
 
-			// Skip over parameters passed to function calls.
 			if ( \T_OPEN_PARENTHESIS === $this->tokens[ $i ]['code']
 				&& ( \T_STRING === $this->tokens[ $last_non_empty ]['code']
 				|| \T_VARIABLE === $this->tokens[ $last_non_empty ]['code'] )
@@ -146,7 +142,6 @@ class ValidHookNameSniff extends AbstractFunctionParameterSniff {
 				continue;
 			}
 
-			// Skip past non text string tokens.
 			if ( isset( Tokens::$stringTokens[ $this->tokens[ $i ]['code'] ] ) === false ) {
 				$last_non_empty = $i;
 				continue;
@@ -267,7 +262,6 @@ class ValidHookNameSniff extends AbstractFunctionParameterSniff {
 
 		$transformed_text = $this->transform( $plain_text, $regex, $transform_type );
 
-		// Inject the embeds back into the text string.
 		foreach ( $embeds as $offset => $embed ) {
 			$transformed_text = substr_replace( $transformed_text, $embed, $offset, 0 );
 		}

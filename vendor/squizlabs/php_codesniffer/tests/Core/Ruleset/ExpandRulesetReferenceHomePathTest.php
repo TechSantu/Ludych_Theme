@@ -55,7 +55,6 @@ final class ExpandRulesetReferenceHomePathTest extends AbstractRulesetTestCase
         if (is_string(self::$homepath) === true) {
             putenv('HOME='.self::$homepath);
         } else {
-            // Remove the environment variable as it didn't exist before.
             putenv('HOME');
         }
 
@@ -85,7 +84,6 @@ final class ExpandRulesetReferenceHomePathTest extends AbstractRulesetTestCase
      */
     public function testHomePathRefGetsExpandedAndFindsSniff()
     {
-        // Set up the ruleset.
         $standard = __DIR__.'/ExpandRulesetReferenceHomePathTest.xml';
         $config   = new ConfigDouble(["--standard=$standard"]);
         $ruleset  = new Ruleset($config);
@@ -105,7 +103,6 @@ final class ExpandRulesetReferenceHomePathTest extends AbstractRulesetTestCase
      */
     public function testHomePathRefGetsExpandedAndThrowsExceptionWhenPathIsInvalid()
     {
-        // Set up the ruleset.
         $standard = __DIR__.'/ExpandRulesetReferenceHomePathFailTest.xml';
         $config   = new ConfigDouble(["--standard=$standard"]);
 

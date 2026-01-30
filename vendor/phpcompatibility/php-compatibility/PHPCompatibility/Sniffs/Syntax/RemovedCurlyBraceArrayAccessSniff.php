@@ -114,17 +114,14 @@ class RemovedCurlyBraceArrayAccessSniff extends Sniff
             ),
         );
 
-        // Registers T_ARRAY, T_OPEN_SHORT_ARRAY and T_CONSTANT_ENCAPSED_STRING.
         $additionalTargets                        = $this->newArrayStringDereferencing->register();
         $this->newArrayStringDereferencingTargets = array_flip($additionalTargets);
         $targets[] = $additionalTargets;
 
-        // Registers T_NEW and T_CLONE.
         $additionalTargets                 = $this->newClassMemberAccess->register();
         $this->newClassMemberAccessTargets = array_flip($additionalTargets);
         $targets[]                         = $additionalTargets;
 
-        // Registers T_STRING.
         $additionalTargets = $this->newFunctionArrayDereferencing->register();
         $this->newFunctionArrayDereferencingTargets = array_flip($additionalTargets);
         $targets[] = $additionalTargets;
@@ -153,7 +150,6 @@ class RemovedCurlyBraceArrayAccessSniff extends Sniff
         $tokens = $phpcsFile->getTokens();
         $braces = array();
 
-        // Note: Overwriting braces in each `if` is fine as only one will match anyway.
         if ($tokens[$stackPtr]['code'] === \T_VARIABLE) {
             $braces = $this->isVariableArrayAccess($phpcsFile, $stackPtr);
         }
@@ -182,19 +178,15 @@ class RemovedCurlyBraceArrayAccessSniff extends Sniff
         }
 
         foreach ($braces as $open => $close) {
-            // Some of the functions will sniff for both curlies as well as square braces.
             if ($tokens[$open]['code'] !== \T_OPEN_CURLY_BRACKET) {
                 continue;
             }
 
-            // Make sure there is something between the braces, otherwise it's still not curly brace array access.
             $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($open + 1), $close, true);
             if ($nextNonEmpty === false) {
-                // Nothing between the brackets. Parse error. Ignore.
                 continue;
             }
 
-            // OK, so we've found curly brace array access.
             $snippet = $phpcsFile->getTokensAsString($stackPtr, (($close - $stackPtr) + 1));
             $fix     = $phpcsFile->addFixableWarning(
                 'Curly brace syntax for accessing array elements and string offsets has been deprecated in PHP 7.4. Found: %s',
@@ -238,7 +230,6 @@ class RemovedCurlyBraceArrayAccessSniff extends Sniff
                 break;
             }
 
-            // Skip over square bracket array access. Bracket styles can be mixed.
             if ($tokens[$current]['code'] === \T_OPEN_SQUARE_BRACKET
                 && isset($tokens[$current]['bracket_closer']) === true
                 && $current === $tokens[$current]['bracket_opener']
@@ -247,11 +238,9 @@ class RemovedCurlyBraceArrayAccessSniff extends Sniff
                 continue;
             }
 
-            // Handle property access.
             if ($tokens[$current]['code'] === \T_OBJECT_OPERATOR) {
                 $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($current + 1), null, true);
                 if ($nextNonEmpty === false || $tokens[$nextNonEmpty]['code'] !== \T_STRING) {
-                    // Live coding or parse error.
                     break;
                 }
 
@@ -261,18 +250,15 @@ class RemovedCurlyBraceArrayAccessSniff extends Sniff
 
             if ($tokens[$current]['code'] === \T_OPEN_CURLY_BRACKET) {
                 if (isset($tokens[$current]['bracket_closer']) === false) {
-                    // Live coding or parse error.
                     break;
                 }
 
                 $braces[$current] = $tokens[$current]['bracket_closer'];
 
-                // Continue, just in case there is nested access using curly braces, i.e. `$a{$i}{$j};`.
                 $current = $tokens[$current]['bracket_closer'];
                 continue;
             }
 
-            // If we're still here, we've reached the end of the variable.
             break;
 
         } while (true);
@@ -317,7 +303,6 @@ class RemovedCurlyBraceArrayAccessSniff extends Sniff
         if ($tokens[$nextNonEmpty]['code'] !== \T_OPEN_SQUARE_BRACKET
             || isset($tokens[$nextNonEmpty]['bracket_closer']) === false
         ) {
-            // Array access for constants must start with square brackets.
             return array();
         }
 
@@ -330,7 +315,6 @@ class RemovedCurlyBraceArrayAccessSniff extends Sniff
                 break;
             }
 
-            // Skip over square bracket array access. Bracket styles can be mixed.
             if ($tokens[$current]['code'] === \T_OPEN_SQUARE_BRACKET
                 && isset($tokens[$current]['bracket_closer']) === true
                 && $current === $tokens[$current]['bracket_opener']
@@ -341,18 +325,15 @@ class RemovedCurlyBraceArrayAccessSniff extends Sniff
 
             if ($tokens[$current]['code'] === \T_OPEN_CURLY_BRACKET) {
                 if (isset($tokens[$current]['bracket_closer']) === false) {
-                    // Live coding or parse error.
                     break;
                 }
 
                 $braces[$current] = $tokens[$current]['bracket_closer'];
 
-                // Continue, just in case there is nested access using curly braces, i.e. `$a{$i}{$j};`.
                 $current = $tokens[$current]['bracket_closer'];
                 continue;
             }
 
-            // If we're still here, we've reached the end of the variable.
             break;
 
         } while (true);

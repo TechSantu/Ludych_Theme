@@ -100,7 +100,6 @@ class ClassDefinitionOpeningBraceSpaceSniff implements Sniff, DeprecatedSniff
                 $phpcsFile->fixer->beginChangeset();
                 $phpcsFile->fixer->addNewline($stackPtr);
 
-                // Remove potentially left over trailing whitespace.
                 if ($tokens[($stackPtr + 1)]['code'] === T_WHITESPACE) {
                     $phpcsFile->fixer->replaceToken(($stackPtr + 1), '');
                 }
@@ -109,11 +108,9 @@ class ClassDefinitionOpeningBraceSpaceSniff implements Sniff, DeprecatedSniff
             }
         } else {
             if (isset($tokens[$stackPtr]['bracket_closer']) === false) {
-                // Syntax error or live coding, bow out.
                 return;
             }
 
-            // Check for nested class definitions.
             $found = $phpcsFile->findNext(
                 T_OPEN_CURLY_BRACKET,
                 ($stackPtr + 1),
@@ -121,7 +118,6 @@ class ClassDefinitionOpeningBraceSpaceSniff implements Sniff, DeprecatedSniff
             );
 
             if ($found === false) {
-                // Not nested.
                 return;
             }
 
@@ -150,13 +146,10 @@ class ClassDefinitionOpeningBraceSpaceSniff implements Sniff, DeprecatedSniff
                     }
 
                     if ($found < 0) {
-                        // First statement on same line as the opening brace.
                         $phpcsFile->fixer->addContentBefore($nextNonWhiteSpace, $phpcsFile->eolChar.$phpcsFile->eolChar);
                     } else if ($found === 0) {
-                        // Next statement on next line, no blank line.
                         $phpcsFile->fixer->addNewlineBefore($firstOnNextLine);
                     } else {
-                        // Too many blank lines.
                         $phpcsFile->fixer->beginChangeset();
                         for ($i = ($firstOnNextLine - 1); $i > $stackPtr; $i--) {
                             if ($tokens[$i]['code'] !== T_WHITESPACE) {

@@ -38,9 +38,6 @@ class LocalFile extends File
             return;
         }
 
-        // Before we go and spend time tokenizing this file, just check
-        // to see if there is a tag up top to indicate that the whole
-        // file should be ignored. It must be on one of the first two lines.
         if ($config->annotations === true) {
             $handle = fopen($this->path, 'r');
             if ($handle !== false) {
@@ -51,7 +48,6 @@ class LocalFile extends File
                 if (strpos($firstContent, '@codingStandardsIgnoreFile') !== false
                     || stripos($firstContent, 'phpcs:ignorefile') !== false
                 ) {
-                    // We are ignoring the whole file.
                     $this->ignored = true;
                     return;
                 }
@@ -97,12 +93,9 @@ class LocalFile extends File
         $hash .= fileperms($this->path);
         $cache = Cache::get($this->path);
         if ($cache !== false && $cache['hash'] === $hash) {
-            // We can't filter metrics, so just load all of them.
             $this->metrics = $cache['metrics'];
 
             if ($this->configCache['recordErrors'] === true) {
-                // Replay the cached errors and warnings to filter out the ones
-                // we don't need for this specific run.
                 $this->configCache['cache'] = false;
                 $this->replayErrors($cache['errors'], $cache['warnings']);
                 $this->configCache['cache'] = true;
@@ -142,8 +135,6 @@ class LocalFile extends File
 
         Cache::set($this->path, $cache);
 
-        // During caching, we don't filter out errors in any way, so
-        // we need to do that manually now by replaying them.
         if ($this->configCache['recordErrors'] === true) {
             $this->configCache['cache'] = false;
             $this->replayErrors($this->errors, $this->warnings);

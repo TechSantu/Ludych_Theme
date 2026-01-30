@@ -94,32 +94,20 @@ class ComparisonOperatorUsageSniff implements Sniff
         if ($tokens[$stackPtr]['code'] === T_INLINE_THEN) {
             $end = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($stackPtr - 1), null, true);
             if ($tokens[$end]['code'] !== T_CLOSE_PARENTHESIS) {
-                // This inline IF statement does not have its condition
-                // bracketed, so we need to guess where it starts.
                 for ($i = ($end - 1); $i >= 0; $i--) {
                     if ($tokens[$i]['code'] === T_SEMICOLON) {
-                        // Stop here as we assume it is the end
-                        // of the previous statement.
                         break;
                     } else if ($tokens[$i]['code'] === T_OPEN_TAG) {
-                        // Stop here as this is the start of the file.
                         break;
                     } else if ($tokens[$i]['code'] === T_CLOSE_CURLY_BRACKET) {
-                        // Stop if this is the closing brace of
-                        // a code block.
                         if (isset($tokens[$i]['scope_opener']) === true) {
                             break;
                         }
                     } else if ($tokens[$i]['code'] === T_OPEN_CURLY_BRACKET) {
-                        // Stop if this is the opening brace of
-                        // a code block.
                         if (isset($tokens[$i]['scope_closer']) === true) {
                             break;
                         }
                     } else if ($tokens[$i]['code'] === T_OPEN_PARENTHESIS) {
-                        // Stop if this is the start of a pair of
-                        // parentheses that surrounds the inline
-                        // IF statement.
                         if (isset($tokens[$i]['parenthesis_closer']) === true
                             && $tokens[$i]['parenthesis_closer'] >= $stackPtr
                         ) {
@@ -197,16 +185,10 @@ class ComparisonOperatorUsageSniff implements Sniff
             ) {
                 $requiredOps++;
 
-                // When the instanceof operator is used with another operator
-                // like ===, you can get more ops than are required.
                 if ($foundOps > $requiredOps) {
                     $foundOps = $requiredOps;
                 }
 
-                // If we get to here and we have not found the right number of
-                // comparison operators, then we must have had an implicit
-                // true operation i.e., if ($a) instead of the required
-                // if ($a === true), so let's add an error.
                 if ($requiredOps !== $foundOps) {
                     $error = 'Implicit true comparisons prohibited; use === TRUE instead';
                     $phpcsFile->addError($error, $stackPtr, 'ImplicitTrue');

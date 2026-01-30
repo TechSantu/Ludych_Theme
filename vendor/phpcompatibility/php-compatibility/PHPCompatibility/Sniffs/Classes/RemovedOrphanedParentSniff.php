@@ -72,7 +72,6 @@ class RemovedOrphanedParentSniff extends Sniff
         $tokens = $phpcsFile->getTokens();
 
         if (empty($tokens[$stackPtr]['conditions']) === true) {
-            // Use within the global namespace. Not our concern.
             return;
         }
 
@@ -91,18 +90,15 @@ class RemovedOrphanedParentSniff extends Sniff
         }
 
         if ($classPtr === false) {
-            // Use outside of a class scope. Not our concern.
             return;
         }
 
         if (isset($tokens[$classPtr]['scope_opener']) === false) {
-            // No scope opener known. Probably a parse error.
             return;
         }
 
         $extends = $phpcsFile->findNext(\T_EXTENDS, ($classPtr + 1), $tokens[$classPtr]['scope_opener']);
         if ($extends !== false) {
-            // Class has a parent.
             return;
         }
 

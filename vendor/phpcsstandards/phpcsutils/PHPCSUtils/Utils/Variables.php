@@ -61,10 +61,8 @@ final class Variables
         'argc'                 => false,
         'argv'                 => false,
 
-        // Deprecated.
         'php_errormsg'         => false,
 
-        // Removed PHP 5.4.0.
         'HTTP_SERVER_VARS'     => false,
         'HTTP_GET_VARS'        => false,
         'HTTP_POST_VARS'       => false,
@@ -73,7 +71,6 @@ final class Variables
         'HTTP_COOKIE_VARS'     => false,
         'HTTP_POST_FILES'      => false,
 
-        // Removed PHP 5.6.0.
         'HTTP_RAW_POST_DATA'   => false,
     ];
 
@@ -227,10 +224,8 @@ final class Variables
         $propertyTypeTokens = Collections::propertyTypeTokens();
 
         if ($i < $stackPtr) {
-            // We've found a type.
             for ($i; $i < $stackPtr; $i++) {
                 if ($tokens[$i]['code'] === \T_VARIABLE) {
-                    // Hit another variable in a group definition.
                     break;
                 }
 
@@ -356,7 +351,6 @@ final class Variables
             if (($prev === false || $tokens[$prev]['code'] !== \T_OPEN_SQUARE_BRACKET)
                 || ($next === false || $tokens[$next]['code'] !== \T_CLOSE_SQUARE_BRACKET)
             ) {
-                // Not a single string array index key.
                 return false;
             }
 
@@ -365,11 +359,9 @@ final class Variables
                 || $tokens[$pprev]['code'] !== \T_VARIABLE
                 || $tokens[$pprev]['content'] !== '$GLOBALS'
             ) {
-                // Not accessing the `$GLOBALS` array.
                 return false;
             }
 
-            // Strip quotes.
             $content = TextStrings::stripQuotes($content);
         }
 

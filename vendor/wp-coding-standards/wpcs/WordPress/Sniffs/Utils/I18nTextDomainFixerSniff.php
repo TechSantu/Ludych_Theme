@@ -182,7 +182,6 @@ final class I18nTextDomainFixerSniff extends AbstractFunctionParameterSniff {
 			'name'     => 'domain',
 		),
 
-		// Deprecated functions.
 		'_c' => array(
 			'position' => 2,
 			'name'     => 'domain',
@@ -204,7 +203,6 @@ final class I18nTextDomainFixerSniff extends AbstractFunctionParameterSniff {
 			'name'     => 'domain',
 		),
 
-		// Shouldn't be used by plugins/themes.
 		'translate' => array(
 			'position' => 2,
 			'name'     => 'domain',
@@ -214,7 +212,6 @@ final class I18nTextDomainFixerSniff extends AbstractFunctionParameterSniff {
 			'name'     => 'domain',
 		),
 
-		// WP private functions. Shouldn't be used by plugins/themes.
 		'_load_textdomain_just_in_time' => array(
 			'position' => 1,
 			'name'     => 'domain',
@@ -391,7 +388,6 @@ final class I18nTextDomainFixerSniff extends AbstractFunctionParameterSniff {
 	 *                  normal file processing.
 	 */
 	public function process_token( $stackPtr ) {
-		// Check if the old/new properties are correctly set. If not, bow out.
 		if ( ! is_string( $this->new_text_domain )
 			|| '' === $this->new_text_domain
 		) {
@@ -408,7 +404,6 @@ final class I18nTextDomainFixerSniff extends AbstractFunctionParameterSniff {
 			}
 		}
 
-		// Only validate and throw warning about the text domain once.
 		if ( $this->new_text_domain !== $this->validated_textdomain ) {
 			$this->is_valid             = false;
 			$this->validated_textdomain = $this->new_text_domain;
@@ -436,7 +431,6 @@ final class I18nTextDomainFixerSniff extends AbstractFunctionParameterSniff {
 				return $this->phpcsFile->numTokens;
 			}
 
-			// If the text domain passed both validations, it should be considered valid.
 			$this->is_valid = true;
 
 		} elseif ( false === $this->is_valid ) {
@@ -450,11 +444,9 @@ final class I18nTextDomainFixerSniff extends AbstractFunctionParameterSniff {
 		if ( \T_DOC_COMMENT_OPEN_TAG === $this->tokens[ $stackPtr ]['code']
 			|| \T_COMMENT === $this->tokens[ $stackPtr ]['code']
 		) {
-			// Examine for plugin/theme file header.
 			return $this->process_comments( $stackPtr );
 
 		} elseif ( isset( $this->phpcsFile->tokenizerType ) === false || 'CSS' !== $this->phpcsFile->tokenizerType ) {
-			// Examine a T_STRING token in a PHP file as a function call.
 			return parent::process_token( $stackPtr );
 		}
 	}
@@ -498,7 +490,6 @@ final class I18nTextDomainFixerSniff extends AbstractFunctionParameterSniff {
 					if ( \T_WHITESPACE === $this->tokens[ $start_previous ]['code']
 						&& $this->tokens[ $start_previous ]['content'] === $this->phpcsFile->eolChar
 					) {
-						// Replicate the new line + indentation of the previous item.
 						$replacement = ',';
 						for ( $i = $start_previous; $i <= $end_previous; $i++ ) {
 							if ( \T_WHITESPACE !== $this->tokens[ $i ]['code'] ) {
@@ -537,14 +528,12 @@ final class I18nTextDomainFixerSniff extends AbstractFunctionParameterSniff {
 				$error_msg .= ' and preceding argument(s)';
 				$error_code = 'MissingArgs';
 
-				// Expected preceding param also missing, just throw the warning.
 				$this->phpcsFile->addWarning( $error_msg, $stackPtr, $error_code );
 			}
 
 			return;
 		}
 
-		// Target parameter found. Let's examine it.
 		$domain_param_start = $found_param['start'];
 		$domain_param_end   = $found_param['end'];
 		$domain_token       = null;
@@ -555,23 +544,19 @@ final class I18nTextDomainFixerSniff extends AbstractFunctionParameterSniff {
 			}
 
 			if ( \T_CONSTANT_ENCAPSED_STRING !== $this->tokens[ $i ]['code'] ) {
-				// Unexpected token found, not our concern. This is handled by the I18n sniff.
 				return;
 			}
 
 			if ( isset( $domain_token ) ) {
-				// More than one T_CONSTANT_ENCAPSED_STRING found, not our concern. This is handled by the I18n sniff.
 				return;
 			}
 
 			$domain_token = $i;
 		}
 
-		// If we're still here, this means only one T_CONSTANT_ENCAPSED_STRING was found.
 		$old_domain = TextStrings::stripQuotes( $this->tokens[ $domain_token ]['content'] );
 
 		if ( ! \in_array( $old_domain, $this->old_text_domain, true ) ) {
-			// Not a text domain targeted for replacement, ignore.
 			return;
 		}
 
@@ -604,7 +589,6 @@ final class I18nTextDomainFixerSniff extends AbstractFunctionParameterSniff {
 		$target_param = $this->target_functions[ $matched_content ];
 
 		if ( 1 !== $target_param['position'] ) {
-			// Only process the no param case as fixable if the text domain is expected to be the first parameter.
 			$this->phpcsFile->addWarning( 'Missing $domain arg and preceding argument(s)', $stackPtr, 'MissingArgs' );
 			return;
 		}
@@ -613,7 +597,6 @@ final class I18nTextDomainFixerSniff extends AbstractFunctionParameterSniff {
 		if ( \T_OPEN_PARENTHESIS !== $this->tokens[ $opener ]['code']
 			|| isset( $this->tokens[ $opener ]['parenthesis_closer'] ) === false
 		) {
-			// Parse error or live coding.
 			return;
 		}
 
@@ -640,7 +623,6 @@ final class I18nTextDomainFixerSniff extends AbstractFunctionParameterSniff {
 
 					--$addBefore;
 				} else {
-					// We don't know whether the code uses tabs or spaces, so presume WPCS, i.e. tabs.
 					$replacement = "\t" . $replacement;
 				}
 
@@ -684,7 +666,6 @@ final class I18nTextDomainFixerSniff extends AbstractFunctionParameterSniff {
 		$file_name = basename( $file );
 		if ( isset( $this->phpcsFile->tokenizerType ) && 'CSS' === $this->phpcsFile->tokenizerType ) {
 			if ( 'style.css' !== $file_name && ! defined( 'PHP_CODESNIFFER_IN_TESTS' ) ) {
-				// CSS files only need to be examined for the file header.
 				return $this->phpcsFile->numTokens;
 			}
 
@@ -742,7 +723,6 @@ final class I18nTextDomainFixerSniff extends AbstractFunctionParameterSniff {
 					&& true === $comment_details['required_header_found']
 					&& $comment_details['headers_found'] >= 3
 				) {
-					// No need to look at the rest of the docblock.
 					break;
 				}
 			}
@@ -750,7 +730,6 @@ final class I18nTextDomainFixerSniff extends AbstractFunctionParameterSniff {
 			$skip_to = $closer;
 		}
 
-		// So, was this the plugin/theme header ?
 		if ( true === $comment_details['required_header_found']
 			&& $comment_details['headers_found'] >= 3
 		) {

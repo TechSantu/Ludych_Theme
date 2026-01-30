@@ -37,7 +37,6 @@ class GetPostsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
     {
         $args = $functionCall->getArgs();
 
-        // Called without arguments
         if (count($args) === 0) {
             return self::getObjectType();
         }

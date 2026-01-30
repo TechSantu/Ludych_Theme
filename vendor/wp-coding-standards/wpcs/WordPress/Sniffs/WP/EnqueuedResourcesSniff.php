@@ -53,7 +53,6 @@ final class EnqueuedResourcesSniff extends Sniff {
 				$end_ptr = TextStrings::getEndOfCompleteTextString( $this->phpcsFile, $stackPtr );
 				$content = TextStrings::getCompleteTextString( $this->phpcsFile, $stackPtr );
 			} catch ( ValueError $e ) {
-				// Parse error/live coding.
 				return;
 			}
 		}
@@ -96,7 +95,6 @@ final class EnqueuedResourcesSniff extends Sniff {
 			$newline_count = substr_count( $content, "\n", 0, $match_offset );
 		}
 
-		// Account for heredoc/nowdoc text starting at the token *after* the opener.
 		if ( isset( Tokens::$heredocTokens[ $this->tokens[ $stackPtr ]['code'] ] ) === true ) {
 			++$newline_count;
 		}

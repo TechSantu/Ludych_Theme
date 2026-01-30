@@ -44,8 +44,6 @@ class ConflictSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Demand a blank line after the PHP open tag.
-        // This error is here to ensure something will be fixed in the file.
         $nextNonWhitespace = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
 
         if (($tokens[$nextNonWhitespace]['line'] - $tokens[$stackPtr]['line']) !== 2) {
@@ -54,19 +52,15 @@ class ConflictSniff implements Sniff
             if ($fix === true) {
                 $phpcsFile->fixer->addNewline($stackPtr);
 
-                // This return is here deliberately to force a new loop.
-                // This should ensure that loop 50 does *NOT* apply any fixes.
                 return;
             }
         }
 
-        // Skip to the end of the file.
         $stackPtr = ($phpcsFile->numTokens - 1);
 
         $eolCharLen = strlen($phpcsFile->eolChar);
         $lastChars  = substr($tokens[$stackPtr]['content'], ($eolCharLen * -1));
 
-        // Demand a newline at the end of a file.
         if ($lastChars !== $phpcsFile->eolChar) {
             $error = 'File must end with a newline character';
             $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'NoNewlineEOF');
@@ -75,7 +69,6 @@ class ConflictSniff implements Sniff
             }
         }
 
-        // Demand NO newline at the end of a file.
         if ($lastChars === $phpcsFile->eolChar) {
             $error = 'File must not end with a newline character';
             $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'NewlineEOF');
@@ -95,7 +88,6 @@ class ConflictSniff implements Sniff
             }
         }
 
-        // Ignore the rest of the file.
         return $phpcsFile->numTokens;
     }
 }

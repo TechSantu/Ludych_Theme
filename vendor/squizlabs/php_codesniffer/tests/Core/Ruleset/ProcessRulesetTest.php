@@ -30,7 +30,6 @@ final class ProcessRulesetTest extends TestCase
      */
     public function testSniffsFileNotDirectory()
     {
-        // Set up the ruleset.
         $standard = __DIR__.'/ProcessRulesetInvalidNoSniffsDirTest.xml';
         $config   = new ConfigDouble(["--standard=$standard"]);
         $ruleset  = new Ruleset($config);
@@ -49,7 +48,6 @@ final class ProcessRulesetTest extends TestCase
      */
     public function testAutoExpandSniffsDirectory()
     {
-        // Set up the ruleset.
         $standard = __DIR__.'/ProcessRulesetAutoExpandSniffsDirectoryTest.xml';
         $config   = new ConfigDouble(["--standard=$standard"]);
         $ruleset  = new Ruleset($config);
@@ -77,8 +75,6 @@ final class ProcessRulesetTest extends TestCase
             "$std.ValidSniffs.RegisterEmptyArray"                    => "$sniffDir\ValidSniffs\RegisterEmptyArraySniff",
         ];
 
-        // Sort the value to make the tests stable as different OSes will read directories
-        // in a different order and the order is not relevant for these tests. Just the values.
         $actual = $ruleset->sniffCodes;
         ksort($actual);
 
@@ -94,7 +90,6 @@ final class ProcessRulesetTest extends TestCase
      */
     public function testExcludeSniffGroup()
     {
-        // Set up the ruleset.
         $standard = __DIR__.'/ProcessRulesetExcludeSniffGroupTest.xml';
         $config   = new ConfigDouble(["--standard=$standard"]);
         $ruleset  = new Ruleset($config);
@@ -104,8 +99,6 @@ final class ProcessRulesetTest extends TestCase
             'PSR1.Methods.CamelCapsMethodName' => 'PHP_CodeSniffer\Standards\PSR1\Sniffs\Methods\CamelCapsMethodNameSniff',
         ];
 
-        // Sort the value to make the tests stable as different OSes will read directories
-        // in a different order and the order is not relevant for these tests. Just the values.
         $actual = $ruleset->sniffCodes;
         ksort($actual);
 
@@ -128,11 +121,9 @@ final class ProcessRulesetTest extends TestCase
     {
         $originalValue = ini_get('user_agent');
 
-        // Set up the ruleset.
         $this->getMiscRuleset();
 
         $actualValue = ini_get('user_agent');
-        // Reset the ini to its original value before the assertion to ensure it's never left in an incorrect state.
         if ($originalValue !== false) {
             ini_set('user_agent', $originalValue);
         }
@@ -151,7 +142,6 @@ final class ProcessRulesetTest extends TestCase
      */
     public function testIncludeSingleErrorCode()
     {
-        // Set up the ruleset.
         $ruleset = $this->getMiscRuleset();
 
         $key = 'severity';
@@ -179,7 +169,6 @@ final class ProcessRulesetTest extends TestCase
      */
     public function testErrorCodeIncludeAfterExclude()
     {
-        // Set up the ruleset.
         $ruleset = $this->getMiscRuleset();
 
         $key = 'severity';
@@ -212,7 +201,6 @@ final class ProcessRulesetTest extends TestCase
      */
     public function testRuleWithoutRefIsIgnored()
     {
-        // Set up the ruleset.
         $ruleset = $this->getMiscRuleset();
 
         $sniffCode = 'Generic.Metrics.CyclomaticComplexity';
@@ -229,7 +217,6 @@ final class ProcessRulesetTest extends TestCase
      */
     public function testRuleExcludeWithoutNameIsIgnored()
     {
-        // Set up the ruleset.
         $ruleset = $this->getMiscRuleset();
 
         $sniffCode = 'Generic.PHP.BacktickOperator';
@@ -252,7 +239,6 @@ final class ProcessRulesetTest extends TestCase
         static $ruleset;
 
         if (isset($ruleset) === false) {
-            // Set up the ruleset.
             $standard = __DIR__.'/ProcessRulesetMiscTest.xml';
             $config   = new ConfigDouble(["--standard=$standard"]);
             $ruleset  = new Ruleset($config);

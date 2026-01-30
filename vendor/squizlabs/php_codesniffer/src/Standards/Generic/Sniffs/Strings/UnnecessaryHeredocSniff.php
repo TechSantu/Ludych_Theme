@@ -21,7 +21,6 @@ class UnnecessaryHeredocSniff implements Sniff
      * @var array<string>
      */
     private $escapeChars = [
-        // Octal sequences.
         '\0',
         '\1',
         '\2',
@@ -31,7 +30,6 @@ class UnnecessaryHeredocSniff implements Sniff
         '\6',
         '\7',
 
-        // Various whitespace and the escape char.
         '\n',
         '\r',
         '\t',
@@ -39,7 +37,6 @@ class UnnecessaryHeredocSniff implements Sniff
         '\e',
         '\f',
 
-        // Hex and unicode sequences.
         '\x',
         '\u',
     ];
@@ -71,15 +68,12 @@ class UnnecessaryHeredocSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
 
         if (isset($tokens[$stackPtr]['scope_closer']) === false) {
-            // Just to be safe. Shouldn't be possible as in that case, the opener shouldn't be tokenized
-            // to T_START_HEREDOC by PHP.
             return; // @codeCoverageIgnore
         }
 
         $closer = $tokens[$stackPtr]['scope_closer'];
         $body   = '';
 
-        // Collect all the tokens within the heredoc body.
         for ($i = ($stackPtr + 1); $i < $closer; $i++) {
             $body .= $tokens[$i]['content'];
         }
@@ -93,7 +87,6 @@ class UnnecessaryHeredocSniff implements Sniff
             if ($bodyToken[0] === T_DOLLAR_OPEN_CURLY_BRACES
                 || $bodyToken[0] === T_VARIABLE
             ) {
-                // Contains interpolation or expression.
                 $phpcsFile->recordMetric($stackPtr, 'Heredoc contains interpolation or expression', 'yes');
                 return;
             }
@@ -102,7 +95,6 @@ class UnnecessaryHeredocSniff implements Sniff
                 && is_array($tokenizedBody[($ptr + 1)]) === false
                 && $tokenizedBody[($ptr + 1)] === '$'
             ) {
-                // Contains interpolation or expression.
                 $phpcsFile->recordMetric($stackPtr, 'Heredoc contains interpolation or expression', 'yes');
                 return;
             }
@@ -110,7 +102,6 @@ class UnnecessaryHeredocSniff implements Sniff
 
         $phpcsFile->recordMetric($stackPtr, 'Heredoc contains interpolation or expression', 'no');
 
-        // Check for escape sequences which aren't supported in nowdocs.
         foreach ($this->escapeChars as $testChar) {
             if (strpos($body, $testChar) !== false) {
                 return;

@@ -165,7 +165,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPassByReference()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 5,
@@ -195,7 +194,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testArrayHint()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 6,
@@ -225,7 +223,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testVariable()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 4,
@@ -255,7 +252,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testSingleDefaultValue()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 4,
@@ -288,7 +284,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testDefaultValues()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 4,
@@ -339,7 +334,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testTypeHint()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 6,
@@ -385,7 +379,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testSelfTypeHint()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 6,
@@ -415,7 +408,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testNullableTypeHint()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 7,
@@ -461,7 +453,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testBitwiseAndConstantExpressionDefaultValue()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 4,
@@ -494,7 +485,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testArrowFunction()
     {
-        // Offsets are relative to the T_FN token.
         $expected    = [];
         $expected[0] = [
             'token'               => 4,
@@ -540,7 +530,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testArrowFunctionReturnByRef()
     {
-        // Offsets are relative to the T_FN token.
         $expected    = [];
         $expected[0] = [
             'token'               => 6,
@@ -570,7 +559,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testArrayDefaultValues()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 4,
@@ -621,7 +609,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testConstantDefaultValueSecondParam()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 4,
@@ -669,7 +656,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testScalarTernaryExpressionInDefault()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 5,
@@ -717,7 +703,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testVariadicFunction()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 9,
@@ -747,7 +732,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testVariadicByRefFunction()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 7,
@@ -777,7 +761,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testVariadicFunctionClassType()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 4,
@@ -822,7 +805,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testNameSpacedTypeDeclaration()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 12,
@@ -867,7 +849,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testWithAllTypes()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected     = [];
         $expected[0]  = [
             'token'               => 9,
@@ -1056,7 +1037,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testArrowFunctionWithAllTypes()
     {
-        // Offsets are relative to the T_FN token.
         $expected     = [];
         $expected[0]  = [
             'token'               => 7,
@@ -1245,7 +1225,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testMessyDeclaration()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 25,
@@ -1314,7 +1293,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP8MixedTypeHint()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 8,
@@ -1344,7 +1322,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP8MixedTypeHintNullable()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 7,
@@ -1374,7 +1351,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testNamespaceOperatorTypeHint()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 9,
@@ -1404,7 +1380,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP8UnionTypesSimple()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 8,
@@ -1449,7 +1424,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP8UnionTypesWithSpreadOperatorAndReference()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 9,
@@ -1494,7 +1468,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP8UnionTypesSimpleWithBitwiseOrInDefault()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 6,
@@ -1527,7 +1500,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP8UnionTypesTwoClasses()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 11,
@@ -1557,7 +1529,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP8UnionTypesAllBaseTypes()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 20,
@@ -1589,7 +1560,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP8UnionTypesAllPseudoTypes()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 16,
@@ -1619,7 +1589,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP8UnionTypesNullable()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 8,
@@ -1649,7 +1618,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP8PseudoTypeNull()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 6,
@@ -1682,7 +1650,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP8PseudoTypeFalse()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 6,
@@ -1715,7 +1682,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP8PseudoTypeFalseAndBool()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 8,
@@ -1748,7 +1714,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP8ObjectAndClass()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 8,
@@ -1778,7 +1743,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP8PseudoTypeIterableAndArray()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 10,
@@ -1808,7 +1772,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP8DuplicateTypeInUnionWhitespaceAndComment()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 17,
@@ -1838,7 +1801,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP8ConstructorPropertyPromotionNoTypes()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 8,
@@ -1916,7 +1878,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP8ConstructorPropertyPromotionWithTypes()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 10,
@@ -1988,7 +1949,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP8ConstructorPropertyPromotionAndNormalParam()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 8,
@@ -2036,7 +1996,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP81ConstructorPropertyPromotionWithReadOnly()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 11,
@@ -2090,7 +2049,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP81ConstructorPropertyPromotionWithReadOnlyNoTypeDeclaration()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 8,
@@ -2144,7 +2102,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP81ConstructorPropertyPromotionWithOnlyReadOnly()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 10,
@@ -2197,7 +2154,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP84ConstructorPropertyPromotionWithAsymVisibility()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'                => 12,
@@ -2313,7 +2269,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP8ConstructorPropertyPromotionGlobalFunction()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 6,
@@ -2346,7 +2301,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP8ConstructorPropertyPromotionAbstractMethod()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 8,
@@ -2397,7 +2351,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testCommentsInParameter()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 19,
@@ -2431,7 +2384,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testParameterAttributesInFunctionDeclaration()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 17,
@@ -2527,7 +2479,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP8IntersectionTypes()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 8,
@@ -2573,7 +2524,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP81IntersectionTypesWithSpreadOperatorAndReference()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 9,
@@ -2618,7 +2568,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP81MoreIntersectionTypes()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 16,
@@ -2648,7 +2597,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP81IllegalIntersectionTypes()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 7,
@@ -2678,7 +2626,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP81NullableIntersectionTypes()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 8,
@@ -2708,7 +2655,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP82PseudoTypeTrue()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 7,
@@ -2741,7 +2687,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP82PseudoTypeFalseAndTrue()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 8,
@@ -2774,7 +2719,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP81NewInInitializers()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 8,
@@ -2825,7 +2769,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP82DNFTypes()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 21,
@@ -2875,7 +2818,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP82DNFTypesWithSpreadOperatorAndReference()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 13,
@@ -2920,7 +2862,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP82DNFTypesIllegalNullable()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 27,
@@ -2950,7 +2891,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP82DNFTypesInArrow()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 12,
@@ -2980,7 +2920,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testClosure()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 3,
@@ -3013,7 +2952,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testClosureUse()
     {
-        // Offsets are relative to the T_USE token.
         $expected    = [];
         $expected[0] = [
             'token'               => 3,
@@ -3058,7 +2996,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testClosureUseWithReference()
     {
-        // Offsets are relative to the T_USE token.
         $expected    = [];
         $expected[0] = [
             'token'               => 4,
@@ -3103,7 +3040,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testFunctionParamListWithTrailingComma()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 9,
@@ -3151,7 +3087,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testClosureParamListWithTrailingComma()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected    = [];
         $expected[0] = [
             'token'               => 4,
@@ -3196,7 +3131,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testArrowFunctionParamListWithTrailingComma()
     {
-        // Offsets are relative to the T_FN token.
         $expected    = [];
         $expected[0] = [
             'token'               => 6,
@@ -3241,7 +3175,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testClosureUseWithTrailingComma()
     {
-        // Offsets are relative to the T_USE token.
         $expected    = [];
         $expected[0] = [
             'token'               => 4,
@@ -3294,7 +3227,6 @@ final class GetMethodParametersTest extends AbstractMethodUnitTest
         $target = $this->getTargetToken($commentString, $targetType);
         $found  = self::$phpcsFile->getMethodParameters($target);
 
-        // Convert offsets to absolute positions in the token stream.
         foreach ($expected as $key => $param) {
             $expected[$key]['token'] += $target;
 

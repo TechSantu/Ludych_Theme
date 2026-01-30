@@ -57,7 +57,6 @@ final class DisallowAlternativeSyntaxSniff implements Sniff
     {
         $targets = Collections::alternativeControlStructureSyntaxes();
 
-        // Don't look for elseif/else as they need to be dealt with in one go with the if.
         unset($targets[\T_ELSEIF], $targets[\T_ELSE]);
 
         return $targets;
@@ -91,7 +90,6 @@ final class DisallowAlternativeSyntaxSniff implements Sniff
          * Check if the control structure uses alternative syntax.
          */
         if (isset($tokens[$stackPtr]['scope_opener'], $tokens[$stackPtr]['scope_closer']) === false) {
-            // No scope opener found: inline control structure or parse error.
             $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'inline');
             return;
         }
@@ -100,7 +98,6 @@ final class DisallowAlternativeSyntaxSniff implements Sniff
         $closer = $tokens[$stackPtr]['scope_closer'];
 
         if ($tokens[$opener]['code'] !== \T_COLON) {
-            // Curly brace syntax (not our concern).
             $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'curly braces');
             return;
         }
@@ -134,7 +131,6 @@ final class DisallowAlternativeSyntaxSniff implements Sniff
             $chainedIssues[$opener] = $closer;
 
             if ($hasInlineHTML === true) {
-                // No need to search the contents, we already know there is inline HTML.
                 $currentPtr = $closer;
                 continue;
             }

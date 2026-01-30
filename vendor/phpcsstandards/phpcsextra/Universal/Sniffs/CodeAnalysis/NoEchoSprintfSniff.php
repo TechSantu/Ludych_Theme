@@ -74,7 +74,6 @@ final class NoEchoSprintfSniff implements Sniff
             || ($tokens[$next]['code'] !== \T_STRING
             && $tokens[$next]['code'] !== \T_NAME_FULLY_QUALIFIED)
         ) {
-            // Definitely not our target.
             return;
         }
 
@@ -84,7 +83,6 @@ final class NoEchoSprintfSniff implements Sniff
         }
 
         if (isset($this->targetFunctions[$detectedFunction]) === false) {
-            // Not one of our target functions.
             return;
         }
 
@@ -93,7 +91,6 @@ final class NoEchoSprintfSniff implements Sniff
             || $tokens[$openParens]['code'] !== \T_OPEN_PARENTHESIS
             || isset($tokens[$openParens]['parenthesis_closer']) === false
         ) {
-            // Live coding/parse error.
             return;
         }
 
@@ -103,7 +100,6 @@ final class NoEchoSprintfSniff implements Sniff
             || ($tokens[$afterFunctionCall]['code'] !== \T_SEMICOLON
             && $tokens[$afterFunctionCall]['code'] !== \T_CLOSE_TAG)
         ) {
-            // Live coding/parse error or compound echo statement.
             return;
         }
 
@@ -120,7 +116,6 @@ final class NoEchoSprintfSniff implements Sniff
         if ($fix === true) {
             $phpcsFile->fixer->beginChangeset();
 
-            // Remove echo and whitespace.
             $phpcsFile->fixer->replaceToken($stackPtr, '');
 
             for ($i = ($stackPtr + 1); $i < $next; $i++) {

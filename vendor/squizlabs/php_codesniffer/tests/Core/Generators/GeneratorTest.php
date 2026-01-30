@@ -35,7 +35,6 @@ final class GeneratorTest extends TestCase
      */
     public function testConstructor($standard, array $expected)
     {
-        // Set up the ruleset.
         $config  = new ConfigDouble(["--standard=$standard"]);
         $ruleset = new Ruleset($config);
 
@@ -100,7 +99,6 @@ final class GeneratorTest extends TestCase
      */
     public function testGeneratingInvalidDocsResultsInException()
     {
-        // Set up the ruleset.
         $standard = __DIR__.'/NoValidDocsTest.xml';
         $config   = new ConfigDouble(["--standard=$standard"]);
         $ruleset  = new Ruleset($config);
@@ -117,11 +115,9 @@ final class GeneratorTest extends TestCase
         }
 
         if (method_exists($this, 'expectExceptionMessage') === true) {
-            // PHPUnit 5.2.0+.
             $this->expectException($exception);
             $this->expectExceptionMessage($message);
         } else {
-            // Ancient PHPUnit.
             $this->setExpectedException($exception, $message);
         }
 
@@ -143,7 +139,6 @@ final class GeneratorTest extends TestCase
      */
     public function testGeneratingDocs($standard, $expected)
     {
-        // Set up the ruleset.
         $config  = new ConfigDouble(["--standard=$standard"]);
         $ruleset = new Ruleset($config);
 
@@ -199,13 +194,11 @@ final class GeneratorTest extends TestCase
      */
     public function testGetTitleFallbackToFilename()
     {
-        // Set up the ruleset.
         $standard = __DIR__.'/AllValidDocsTest.xml';
         $sniffs   = 'StandardWithDocs.Content.DocumentationTitlePCREFallback';
         $config   = new ConfigDouble(["--standard=$standard", "--sniffs=$sniffs"]);
         $ruleset  = new Ruleset($config);
 
-        // In tests, the `--sniffs` setting doesn't work out of the box.
         $sniffParts = explode('.', $sniffs);
         $sniffFile  = __DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.$sniffParts[0].DIRECTORY_SEPARATOR;
         $sniffFile .= 'Sniffs'.DIRECTORY_SEPARATOR.$sniffParts[1].DIRECTORY_SEPARATOR.$sniffParts[2].'Sniff.php';
@@ -215,7 +208,6 @@ final class GeneratorTest extends TestCase
         $restrictions = [$sniffName => true];
         $ruleset->registerSniffs([$sniffFile], $restrictions, []);
 
-        // Make the test OS independent.
         $this->expectOutputString('Documentation Title PCRE Fallback'.PHP_EOL);
 
         $generator = new MockGenerator($ruleset);

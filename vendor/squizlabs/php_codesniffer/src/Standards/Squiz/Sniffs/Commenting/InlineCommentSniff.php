@@ -55,9 +55,6 @@ class InlineCommentSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // If this is a function/class/interface doc block comment, skip it.
-        // We are only interested in inline doc block comments, which are
-        // not allowed.
         if ($tokens[$stackPtr]['code'] === T_DOC_COMMENT_OPEN_TAG) {
             $nextToken = $stackPtr;
             do {
@@ -97,8 +94,6 @@ class InlineCommentSniff implements Sniff
             }
 
             if ($phpcsFile->tokenizerType === 'JS') {
-                // We allow block comments if a function or object
-                // is being assigned to a variable.
                 $ignore    = Tokens::$emptyTokens;
                 $ignore[]  = T_EQUAL;
                 $ignore[]  = T_STRING;
@@ -139,15 +134,12 @@ class InlineCommentSniff implements Sniff
             }
         }
 
-        // We don't want end of block comments. Check if the last token before the
-        // comment is a closing curly brace.
         $previousContent = $phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), null, true);
         if ($tokens[$previousContent]['line'] === $tokens[$stackPtr]['line']) {
             if ($tokens[$previousContent]['code'] === T_CLOSE_CURLY_BRACKET) {
                 return;
             }
 
-            // Special case for JS files.
             if ($tokens[$previousContent]['code'] === T_COMMA
                 || $tokens[$previousContent]['code'] === T_SEMICOLON
             ) {
@@ -158,7 +150,6 @@ class InlineCommentSniff implements Sniff
             }
         }
 
-        // Only want inline comments.
         if (substr($tokens[$stackPtr]['content'], 0, 2) !== '//') {
             return;
         }
@@ -172,14 +163,10 @@ class InlineCommentSniff implements Sniff
                 break;
             }
 
-            // Only want inline comments.
             if (substr($tokens[$nextComment]['content'], 0, 2) !== '//') {
                 break;
             }
 
-            // There is a comment on the very next line. If there is
-            // no code between the comments, they are part of the same
-            // comment block.
             $prevNonWhitespace = $phpcsFile->findPrevious(T_WHITESPACE, ($nextComment - 1), $lastComment, true);
             if ($prevNonWhitespace !== $lastComment) {
                 break;
@@ -262,8 +249,6 @@ class InlineCommentSniff implements Sniff
             $phpcsFile->addError($error, $stackPtr, 'NotCapital');
         }
 
-        // Only check the end of comment character if the start of the comment
-        // is a letter, indicating that the comment is just standard text.
         if (preg_match('/^\p{L}/u', $commentText) === 1) {
             $commentCloser   = $commentText[(strlen($commentText) - 1)];
             $acceptedClosers = [
@@ -285,19 +270,13 @@ class InlineCommentSniff implements Sniff
             }
         }
 
-        // Finally, the line below the last comment cannot be empty if this inline
-        // comment is on a line by itself.
         if ($tokens[$previousContent]['line'] < $tokens[$stackPtr]['line']) {
             $next = $phpcsFile->findNext(T_WHITESPACE, ($lastCommentToken + 1), null, true);
             if ($next === false) {
-                // Ignore if the comment is the last non-whitespace token in a file.
                 return ($lastCommentToken + 1);
             }
 
             if ($tokens[$next]['code'] === T_DOC_COMMENT_OPEN_TAG) {
-                // If this inline comment is followed by a docblock,
-                // ignore spacing as docblock/function etc spacing rules
-                // are likely to conflict with our rules.
                 return ($lastCommentToken + 1);
             }
 

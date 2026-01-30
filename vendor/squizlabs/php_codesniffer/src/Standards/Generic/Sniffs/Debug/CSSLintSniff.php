@@ -81,16 +81,11 @@ class CSSLintSniff implements Sniff, DeprecatedSniff
 
             $line    = (int) $matches[2];
             $message = 'csslint says: '.$output[($i + 1)];
-            // First line is message with error line and error code.
-            // Second is error message.
-            // Third is wrong line in file.
-            // Fourth is empty line.
             $i += 4;
 
             $phpcsFile->addWarningOnLine($message, $line, 'ExternalTool');
         }//end for
 
-        // Ignore the rest of the file.
         return $phpcsFile->numTokens;
 
     }//end process()

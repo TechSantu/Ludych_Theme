@@ -80,7 +80,6 @@ class AssignmentInConditionSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
         $token  = $tokens[$stackPtr];
 
-        // Find the condition opener/closer.
         if ($token['code'] === T_FOR) {
             if (isset($token['parenthesis_opener'], $token['parenthesis_closer']) === false) {
                 return;
@@ -124,7 +123,6 @@ class AssignmentInConditionSniff implements Sniff
                 return;
             }
 
-            // Examine whether the left side is a variable.
             $hasVariable       = false;
             $conditionStart    = $startPos;
             $altConditionStart = $phpcsFile->findPrevious($this->conditionStartTokens, ($hasAssignment - 1), $startPos);
@@ -137,13 +135,11 @@ class AssignmentInConditionSniff implements Sniff
                     continue;
                 }
 
-                // If this is a variable or array, we've seen all we need to see.
                 if ($tokens[$i]['code'] === T_VARIABLE || $tokens[$i]['code'] === T_CLOSE_SQUARE_BRACKET) {
                     $hasVariable = true;
                     break;
                 }
 
-                // If this is a function call or something, we are OK.
                 if ($tokens[$i]['code'] === T_CLOSE_PARENTHESIS) {
                     break;
                 }

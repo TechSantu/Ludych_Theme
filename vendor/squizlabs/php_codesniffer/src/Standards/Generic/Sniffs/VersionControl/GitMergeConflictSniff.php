@@ -62,13 +62,10 @@ class GitMergeConflictSniff implements Sniff
             T_IS_IDENTICAL            => true,
             T_COMMENT                 => true,
             T_DOC_COMMENT_STRING      => true,
-            // PHP + CSS specific.
             T_ENCAPSED_AND_WHITESPACE => true,
-            // PHP specific.
             T_INLINE_HTML             => true,
             T_HEREDOC                 => true,
             T_NOWDOC                  => true,
-            // JS specific.
             T_ZSR                     => true,
         ];
 
@@ -79,7 +76,6 @@ class GitMergeConflictSniff implements Sniff
 
             if ($phpcsFile->tokenizerType !== 'JS') {
                 switch ($tokens[$i]['code']) {
-                // Check for first non-comment, non-heredoc/nowdoc, non-inline HTML merge conflict opener.
                 case T_SL:
                     if (isset($tokens[($i + 1)], $tokens[($i + 2)]) !== false
                         && $tokens[($i + 1)]['code'] === T_SL
@@ -91,7 +87,6 @@ class GitMergeConflictSniff implements Sniff
                     }
                     break;
 
-                // Check for merge conflict closer which was opened in a heredoc/nowdoc.
                 case T_SR:
                     if (isset($tokens[($i + 1)], $tokens[($i + 2)], $tokens[($i + 3)], $tokens[($i + 4)]) !== false
                         && $tokens[($i + 1)]['code'] === T_SR
@@ -105,7 +100,6 @@ class GitMergeConflictSniff implements Sniff
                     }
                     break;
 
-                // Check for merge conflict delimiter which opened in a CSS comment and closed outside.
                 case T_IS_IDENTICAL:
                     if (isset($tokens[($i + 1)], $tokens[($i + 2)], $tokens[($i + 3)]) !== false
                         && $tokens[($i + 1)]['code'] === T_IS_IDENTICAL
@@ -118,9 +112,6 @@ class GitMergeConflictSniff implements Sniff
                     }
                     break;
 
-                // - Check for delimiters and closers.
-                // - Inspect heredoc/nowdoc content, comments and inline HTML.
-                // - Check for subsequent merge conflict openers after the first broke the tokenizer.
                 case T_ENCAPSED_AND_WHITESPACE:
                 case T_COMMENT:
                 case T_DOC_COMMENT_STRING:
@@ -150,9 +141,7 @@ class GitMergeConflictSniff implements Sniff
                     break;
                 }//end switch
             } else {
-                // Javascript file.
                 switch ($tokens[$i]['code']) {
-                // Merge conflict opener.
                 case T_SL:
                     if (isset($tokens[($i + 1)], $tokens[($i + 2)], $tokens[($i + 3)], $tokens[($i + 4)], $tokens[($i + 5)]) !== false
                         && $tokens[($i + 1)]['code'] === T_SL
@@ -166,7 +155,6 @@ class GitMergeConflictSniff implements Sniff
                     }
                     break;
 
-                // Check for merge conflict delimiter.
                 case T_IS_IDENTICAL:
                     if (isset($tokens[($i + 1)], $tokens[($i + 2)], $tokens[($i + 3)]) !== false
                         && $tokens[($i + 1)]['code'] === T_IS_IDENTICAL
@@ -179,7 +167,6 @@ class GitMergeConflictSniff implements Sniff
                     }
                     break;
 
-                // Merge conflict closer.
                 case T_ZSR:
                     if ($tokens[$i]['code'] === T_ZSR
                         && isset($tokens[($i + 1)], $tokens[($i + 2)]) === true
@@ -191,7 +178,6 @@ class GitMergeConflictSniff implements Sniff
                     }
                     break;
 
-                // Check for merge conflicts in all comments.
                 case T_COMMENT:
                 case T_DOC_COMMENT_STRING:
                     if (substr($tokens[$i]['content'], 0, 12) === '<<<<<<< HEAD') {
@@ -219,7 +205,6 @@ class GitMergeConflictSniff implements Sniff
             }//end if
         }//end for
 
-        // Ignore the rest of the file.
         return $phpcsFile->numTokens;
 
     }//end process()

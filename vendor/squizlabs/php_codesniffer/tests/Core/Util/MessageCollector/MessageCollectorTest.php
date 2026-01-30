@@ -34,11 +34,9 @@ final class MessageCollectorTest extends TestCase
         $exception    = 'InvalidArgumentException';
         $exceptionMsg = 'The $message should be of type string. Received: ';
         if (method_exists($this, 'expectException') === true) {
-            // PHPUnit 5+.
             $this->expectException($exception);
             $this->expectExceptionMessage($exceptionMsg);
         } else {
-            // PHPUnit 4.
             $this->setExpectedException($exception, $exceptionMsg);
         }
 
@@ -81,11 +79,9 @@ final class MessageCollectorTest extends TestCase
         $exception    = 'InvalidArgumentException';
         $exceptionMsg = 'The message $type should be one of the predefined MessageCollector constants. Received: ';
         if (method_exists($this, 'expectException') === true) {
-            // PHPUnit 5+.
             $this->expectException($exception);
             $this->expectExceptionMessage($exceptionMsg);
         } else {
-            // PHPUnit 4.
             $this->setExpectedException($exception, $exceptionMsg);
         }
 
@@ -222,7 +218,6 @@ final class MessageCollectorTest extends TestCase
      */
     public static function dataDisplayingNonBlockingMessages()
     {
-        // phpcs:disable Squiz.Strings.ConcatenationSpacing.PaddingFound -- Test readability is more important.
         return [
             'No messages'           => [
                 'messages' => [],
@@ -285,7 +280,6 @@ final class MessageCollectorTest extends TestCase
                     .'DEPRECATED: First deprecation'.PHP_EOL.PHP_EOL,
             ],
         ];
-        // phpcs:enable
 
     }//end dataDisplayingNonBlockingMessages()
 
@@ -310,11 +304,9 @@ final class MessageCollectorTest extends TestCase
     {
         $exception = 'PHP_CodeSniffer\Exceptions\RuntimeException';
         if (method_exists($this, 'expectException') === true) {
-            // PHPUnit 5+.
             $this->expectException($exception);
             $this->expectExceptionMessage($expected);
         } else {
-            // PHPUnit 4.
             $this->setExpectedException($exception, $expected);
         }
 
@@ -334,7 +326,6 @@ final class MessageCollectorTest extends TestCase
      */
     public static function dataDisplayingBlockingErrors()
     {
-        // phpcs:disable Squiz.Strings.ConcatenationSpacing.PaddingFound -- Test readability is more important.
         return [
             'Single error'                            => [
                 'messages' => [
@@ -369,7 +360,6 @@ final class MessageCollectorTest extends TestCase
                     .'DEPRECATED: Seventh deprecation'.PHP_EOL.PHP_EOL,
             ],
         ];
-        // phpcs:enable
 
     }//end dataDisplayingBlockingErrors()
 

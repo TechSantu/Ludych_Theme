@@ -38,8 +38,6 @@ final class ClassFileNameUnitTest extends AbstractSniffUnitTest
         $dir = substr($testFileBase, 0, strrpos($testFileBase, DIRECTORY_SEPARATOR));
         $di  = new DirectoryIterator($dir);
 
-        // Strip off the path and the "UnitTest." suffix from the $testFileBase to allow
-        // for some less conventionally named test case files.
         $fileBase = str_replace($dir, '', $testFileBase);
         $fileBase = substr($fileBase, 1, -9);
 
@@ -53,7 +51,6 @@ final class ClassFileNameUnitTest extends AbstractSniffUnitTest
             }
         }
 
-        // Put them in order.
         sort($testFiles, SORT_NATURAL);
 
         return $testFiles;

@@ -85,15 +85,12 @@ class ArbitraryParenthesesSpacingSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
 
         if (isset($tokens[$stackPtr]['parenthesis_owner']) === true) {
-            // This parenthesis is owned by a function/control structure etc.
             return;
         }
 
-        // More checking for the type of parenthesis we *don't* want to handle.
         $opener = $stackPtr;
         if ($tokens[$stackPtr]['code'] === T_CLOSE_PARENTHESIS) {
             if (isset($tokens[$stackPtr]['parenthesis_opener']) === false) {
-                // Parse error.
                 return;
             }
 
@@ -106,11 +103,9 @@ class ArbitraryParenthesesSpacingSniff implements Sniff
             && ($tokens[$preOpener]['code'] !== T_CLOSE_CURLY_BRACKET
             || isset($tokens[$preOpener]['scope_condition']) === false )
         ) {
-            // Function or language construct call.
             return;
         }
 
-        // Check for empty parentheses.
         if ($tokens[$stackPtr]['code'] === T_OPEN_PARENTHESIS
             && isset($tokens[$stackPtr]['parenthesis_closer']) === true
         ) {
@@ -122,7 +117,6 @@ class ArbitraryParenthesesSpacingSniff implements Sniff
             }
         }
 
-        // Check the spacing on the inside of the parentheses.
         $this->spacing = (int) $this->spacing;
 
         if ($tokens[$stackPtr]['code'] === T_OPEN_PARENTHESIS

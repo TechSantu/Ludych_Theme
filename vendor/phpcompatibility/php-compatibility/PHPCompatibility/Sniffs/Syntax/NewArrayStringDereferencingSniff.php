@@ -96,7 +96,6 @@ class NewArrayStringDereferencingSniff extends Sniff
                 continue;
             }
 
-            // PHP 7.0 Array/string dereferencing using curly braces.
             if ($tokens[$openBrace]['type'] === 'T_OPEN_CURLY_BRACKET') {
                 $phpcsFile->addError(
                     'Direct array dereferencing of %s using curly braces is not present in PHP version 5.6 or earlier',
@@ -134,7 +133,6 @@ class NewArrayStringDereferencingSniff extends Sniff
 
             case \T_ARRAY:
                 if (isset($tokens[$stackPtr]['parenthesis_closer']) === false) {
-                    // Live coding.
                     return array();
                 } else {
                     $type = 'arrays';
@@ -144,7 +142,6 @@ class NewArrayStringDereferencingSniff extends Sniff
 
             case \T_OPEN_SHORT_ARRAY:
                 if (isset($tokens[$stackPtr]['bracket_closer']) === false) {
-                    // Live coding.
                     return array();
                 } else {
                     $type = 'arrays';
@@ -154,7 +151,6 @@ class NewArrayStringDereferencingSniff extends Sniff
         }
 
         if (isset($type, $end) === false) {
-            // Shouldn't happen, but for some reason did.
             return array();
         }
 
@@ -171,18 +167,15 @@ class NewArrayStringDereferencingSniff extends Sniff
                 || $tokens[$nextNonEmpty]['type'] === 'T_OPEN_SHORT_ARRAY' // Work around bug #1381 in PHPCS 2.8.1 and lower.
             ) {
                 if (isset($tokens[$nextNonEmpty]['bracket_closer']) === false) {
-                    // Live coding or parse error.
                     break;
                 }
 
                 $braces[$nextNonEmpty] = $tokens[$nextNonEmpty]['bracket_closer'];
 
-                // Continue, just in case there is nested array access, i.e. `array(1, 2, 3)[$i][$j];`.
                 $end = $tokens[$nextNonEmpty]['bracket_closer'];
                 continue;
             }
 
-            // If we're still here, we've reached the end of the variable.
             break;
 
         } while (true);

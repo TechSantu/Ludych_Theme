@@ -30,7 +30,6 @@ foreach ( $parts as $part ) {
 }
 ?>
 
-	<!-- contact us start -->
 	<section class="contact-us">
 		<div class="custom-container">
 			<div class="row">
@@ -127,7 +126,6 @@ foreach ( $parts as $part ) {
 			</div>
 		</div>
 	</section>
-	<!-- contact us end -->
 
 <?php
 get_footer();

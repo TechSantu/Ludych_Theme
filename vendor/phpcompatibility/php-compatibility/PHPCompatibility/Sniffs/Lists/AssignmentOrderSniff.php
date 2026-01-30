@@ -71,7 +71,6 @@ class AssignmentOrderSniff extends Sniff
         if ($tokens[$stackPtr]['code'] === \T_OPEN_SHORT_ARRAY
             && $this->isShortList($phpcsFile, $stackPtr) === false
         ) {
-            // Short array, not short list.
             return;
         }
 
@@ -81,14 +80,12 @@ class AssignmentOrderSniff extends Sniff
                 || $tokens[$nextNonEmpty]['code'] !== \T_OPEN_PARENTHESIS
                 || isset($tokens[$nextNonEmpty]['parenthesis_closer']) === false
             ) {
-                // Parse error or live coding.
                 return;
             }
 
             $opener = $nextNonEmpty;
             $closer = $tokens[$nextNonEmpty]['parenthesis_closer'];
         } else {
-            // Short list syntax.
             $opener = $stackPtr;
 
             if (isset($tokens[$stackPtr]['bracket_closer'])) {
@@ -106,11 +103,9 @@ class AssignmentOrderSniff extends Sniff
          */
         $hasVars = $phpcsFile->findNext(array(\T_VARIABLE, \T_DOLLAR), ($opener + 1), $closer);
         if ($hasVars === false) {
-            // Empty list, not our concern.
             return ($closer + 1);
         }
 
-        // Set the variable delimiters based on the list type being examined.
         $stopPoints = array(\T_COMMA);
         if ($tokens[$stackPtr]['code'] === \T_OPEN_SHORT_ARRAY) {
             $stopPoints[] = \T_CLOSE_SHORT_ARRAY;
@@ -132,16 +127,13 @@ class AssignmentOrderSniff extends Sniff
                 $nextStopPoint = $closer;
             }
 
-            // Also detect this in PHP 7.1 keyed lists.
             $hasDoubleArrow = $phpcsFile->findNext(\T_DOUBLE_ARROW, ($lastStopPoint + 1), $nextStopPoint);
             if ($hasDoubleArrow !== false) {
                 $lastStopPoint = $hasDoubleArrow;
             }
 
-            // Find the start of the variable, allowing for variable variables.
             $nextStartPoint = $phpcsFile->findNext(array(\T_VARIABLE, \T_DOLLAR), ($lastStopPoint + 1), $nextStopPoint);
             if ($nextStartPoint === false) {
-                // Skip past empty bits in the list, i.e. `list( $a, , ,)`.
                 $lastStopPoint = $nextStopPoint;
                 continue;
             }
@@ -170,11 +162,9 @@ class AssignmentOrderSniff extends Sniff
         } while ($lastStopPoint < $closer);
 
         if (empty($listVars)) {
-            // Shouldn't be possible, but just in case.
             return ($closer + 1);
         }
 
-        // Verify that all variables used in the list() construct are unique.
         if (\count($listVars) !== \count(array_unique($listVars))) {
             $phpcsFile->addError(
                 'list() will assign variable from left-to-right since PHP 7.0. Ensure all variables in list() are unique to prevent unexpected results.',

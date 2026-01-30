@@ -85,7 +85,6 @@ class LongConditionClosingCommentSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
 
         if (isset($tokens[$stackPtr]['scope_condition']) === false) {
-            // No scope condition. It is a function closer.
             return;
         }
 
@@ -93,25 +92,19 @@ class LongConditionClosingCommentSniff implements Sniff
         $startBrace     = $tokens[$tokens[$stackPtr]['scope_opener']];
         $endBrace       = $tokens[$stackPtr];
 
-        // We are only interested in some code blocks.
         if (in_array($startCondition['code'], self::$openers, true) === false) {
             return;
         }
 
         if ($startCondition['code'] === T_IF) {
-            // If this is actually an ELSE IF, skip it as the brace
-            // will be checked by the original IF.
             $else = $phpcsFile->findPrevious(T_WHITESPACE, ($tokens[$stackPtr]['scope_condition'] - 1), null, true);
             if ($tokens[$else]['code'] === T_ELSE) {
                 return;
             }
 
-            // IF statements that have an ELSE block need to use
-            // "end if" rather than "end else" or "end elseif".
             do {
                 $nextToken = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
                 if ($tokens[$nextToken]['code'] === T_ELSE || $tokens[$nextToken]['code'] === T_ELSEIF) {
-                    // Check for ELSE IF (2 tokens) as opposed to ELSEIF (1 token).
                     if ($tokens[$nextToken]['code'] === T_ELSE
                         && isset($tokens[$nextToken]['scope_closer']) === false
                     ) {
@@ -119,18 +112,14 @@ class LongConditionClosingCommentSniff implements Sniff
                         if ($tokens[$nextToken]['code'] !== T_IF
                             || isset($tokens[$nextToken]['scope_closer']) === false
                         ) {
-                            // Not an ELSE IF or is an inline ELSE IF.
                             break;
                         }
                     }
 
                     if (isset($tokens[$nextToken]['scope_closer']) === false) {
-                        // There isn't going to be anywhere to print the "end if" comment
-                        // because there is no closer.
                         return;
                     }
 
-                    // The end brace becomes the ELSE's end brace.
                     $stackPtr = $tokens[$nextToken]['scope_closer'];
                     $endBrace = $tokens[$stackPtr];
                 } else {
@@ -140,13 +129,11 @@ class LongConditionClosingCommentSniff implements Sniff
         }//end if
 
         if ($startCondition['code'] === T_TRY) {
-            // TRY statements need to check until the end of all CATCH statements.
             do {
                 $nextToken = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
                 if ($tokens[$nextToken]['code'] === T_CATCH
                     || $tokens[$nextToken]['code'] === T_FINALLY
                 ) {
-                    // The end brace becomes the CATCH end brace.
                     $stackPtr = $tokens[$nextToken]['scope_closer'];
                     $endBrace = $tokens[$stackPtr];
                 } else {
@@ -156,7 +143,6 @@ class LongConditionClosingCommentSniff implements Sniff
         }
 
         if ($startCondition['code'] === T_MATCH) {
-            // Move the stackPtr to after the semicolon/comma if there is one.
             $nextToken = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
             if ($nextToken !== false
                 && ($tokens[$nextToken]['code'] === T_SEMICOLON

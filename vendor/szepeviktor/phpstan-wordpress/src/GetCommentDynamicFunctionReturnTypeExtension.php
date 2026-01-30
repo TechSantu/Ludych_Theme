@@ -51,7 +51,6 @@ class GetCommentDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dyna
         if (count($args) >= 2) {
             $outputType = $scope->getType($args[1]->value);
 
-            // When called with an $output that isn't a constant string, return default return type
             if (count($outputType->getConstantStrings()) === 0) {
                 if ($returnType === []) {
                     return TypeCombinator::removeNull(

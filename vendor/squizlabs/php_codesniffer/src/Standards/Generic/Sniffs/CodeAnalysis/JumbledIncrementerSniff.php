@@ -62,20 +62,16 @@ class JumbledIncrementerSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
         $token  = $tokens[$stackPtr];
 
-        // Skip for-loop without body.
         if (isset($token['scope_opener']) === false) {
             return;
         }
 
-        // Find incrementers for outer loop.
         $outer = $this->findIncrementers($tokens, $token);
 
-        // Skip if empty.
         if (count($outer) === 0) {
             return;
         }
 
-        // Find nested for loops.
         $start = ++$token['scope_opener'];
         $end   = --$token['scope_closer'];
 
@@ -107,7 +103,6 @@ class JumbledIncrementerSniff implements Sniff
      */
     protected function findIncrementers(array $tokens, array $token)
     {
-        // Skip invalid statement.
         if (isset($token['parenthesis_opener'], $token['parenthesis_closer']) === false) {
             return [];
         }

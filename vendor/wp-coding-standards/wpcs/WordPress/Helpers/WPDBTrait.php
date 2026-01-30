@@ -53,14 +53,12 @@ trait WPDBTrait {
 			return false;
 		}
 
-		// Check for wpdb.
 		if ( ( \T_VARIABLE === $tokens[ $stackPtr ]['code'] && '$wpdb' !== $tokens[ $stackPtr ]['content'] )
 			|| ( \T_STRING === $tokens[ $stackPtr ]['code'] && 'wpdb' !== strtolower( $tokens[ $stackPtr ]['content'] ) )
 		) {
 			return false;
 		}
 
-		// Check that this is a method call.
 		$is_object_call = $phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true );
 		if ( false === $is_object_call
 			|| isset( Collections::objectOperators()[ $tokens[ $is_object_call ]['code'] ] ) === false
@@ -77,7 +75,6 @@ trait WPDBTrait {
 			$this->methodPtr = $methodPtr;
 		}
 
-		// Find the opening parenthesis.
 		$opening_paren = $phpcsFile->findNext( Tokens::$emptyTokens, ( $methodPtr + 1 ), null, true, null, true );
 
 		if ( false === $opening_paren ) {
@@ -94,12 +91,10 @@ trait WPDBTrait {
 			return false;
 		}
 
-		// Check that this is one of the methods that we are interested in.
 		if ( ! isset( $target_methods[ strtolower( $tokens[ $methodPtr ]['content'] ) ] ) ) {
 			return false;
 		}
 
-		// Find the end of the first parameter.
 		$end = BCFile::findEndOfStatement( $phpcsFile, $opening_paren + 1 );
 
 		if ( \T_COMMA !== $tokens[ $end ]['code'] ) {

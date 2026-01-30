@@ -55,7 +55,6 @@ class FunctionOpeningBraceSpaceSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
 
         if (isset($tokens[$stackPtr]['scope_opener']) === false) {
-            // Probably an interface or abstract method.
             return;
         }
 
@@ -63,9 +62,6 @@ class FunctionOpeningBraceSpaceSniff implements Sniff
         $nextContent = $phpcsFile->findNext(T_WHITESPACE, ($openBrace + 1), null, true);
 
         if ($nextContent === $tokens[$stackPtr]['scope_closer']) {
-            // The next bit of content is the closing brace, so this
-            // is an empty function and should have a blank line
-            // between the opening and closing braces.
             return;
         }
 

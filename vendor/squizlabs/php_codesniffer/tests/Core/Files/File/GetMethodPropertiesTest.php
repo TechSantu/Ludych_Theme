@@ -105,7 +105,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testReturnFunction()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected = [
             'scope'                 => 'public',
             'scope_specified'       => false,
@@ -131,7 +130,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testNestedClosure()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected = [
             'scope'                 => 'public',
             'scope_specified'       => false,
@@ -232,7 +230,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testProtectedReturnMethod()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected = [
             'scope'                 => 'protected',
             'scope_specified'       => true,
@@ -258,7 +255,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPublicReturnMethod()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected = [
             'scope'                 => 'public',
             'scope_specified'       => true,
@@ -284,7 +280,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testNullableReturnMethod()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected = [
             'scope'                 => 'public',
             'scope_specified'       => true,
@@ -310,7 +305,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testMessyNullableReturnMethod()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected = [
             'scope'                 => 'public',
             'scope_specified'       => true,
@@ -336,7 +330,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testReturnNamespace()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected = [
             'scope'                 => 'public',
             'scope_specified'       => false,
@@ -362,7 +355,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testReturnMultilineNamespace()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected = [
             'scope'                 => 'public',
             'scope_specified'       => false,
@@ -388,7 +380,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testReturnUnqualifiedName()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected = [
             'scope'                 => 'private',
             'scope_specified'       => true,
@@ -414,7 +405,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testReturnPartiallyQualifiedName()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected = [
             'scope'                 => 'public',
             'scope_specified'       => false,
@@ -465,7 +455,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testAbstractReturnMethod()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected = [
             'scope'                 => 'protected',
             'scope_specified'       => true,
@@ -516,7 +505,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testArrowFunction()
     {
-        // Offsets are relative to the T_FN token.
         $expected = [
             'scope'                 => 'public',
             'scope_specified'       => false,
@@ -542,7 +530,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testReturnTypeStatic()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected = [
             'scope'                 => 'private',
             'scope_specified'       => true,
@@ -568,7 +555,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testReturnTypeNullableStatic()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected = [
             'scope'                 => 'public',
             'scope_specified'       => false,
@@ -594,7 +580,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPHP8MixedTypeHint()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected = [
             'scope'                 => 'public',
             'scope_specified'       => false,
@@ -620,7 +605,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPHP8MixedTypeHintNullable()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected = [
             'scope'                 => 'public',
             'scope_specified'       => false,
@@ -646,7 +630,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testNamespaceOperatorTypeHint()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected = [
             'scope'                 => 'public',
             'scope_specified'       => false,
@@ -672,7 +655,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPHP8UnionTypesSimple()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected = [
             'scope'                 => 'public',
             'scope_specified'       => false,
@@ -698,7 +680,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPHP8UnionTypesTwoClasses()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected = [
             'scope'                 => 'public',
             'scope_specified'       => false,
@@ -724,7 +705,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPHP8UnionTypesAllBaseTypes()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected = [
             'scope'                 => 'public',
             'scope_specified'       => false,
@@ -752,7 +732,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPHP8UnionTypesAllPseudoTypes()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected = [
             'scope'                 => 'public',
             'scope_specified'       => false,
@@ -778,7 +757,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPHP8UnionTypesNullable()
     {
-        // Offsets are relative to the T_CLOSURE token.
         $expected = [
             'scope'                 => 'public',
             'scope_specified'       => false,
@@ -804,7 +782,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPHP8PseudoTypeNull()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected = [
             'scope'                 => 'public',
             'scope_specified'       => false,
@@ -830,7 +807,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPHP8PseudoTypeFalse()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected = [
             'scope'                 => 'public',
             'scope_specified'       => false,
@@ -856,7 +832,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPHP8PseudoTypeFalseAndBool()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected = [
             'scope'                 => 'public',
             'scope_specified'       => false,
@@ -882,7 +857,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPHP8ObjectAndClass()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected = [
             'scope'                 => 'public',
             'scope_specified'       => false,
@@ -908,7 +882,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPHP8PseudoTypeIterableAndArray()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected = [
             'scope'                 => 'public',
             'scope_specified'       => true,
@@ -934,7 +907,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPHP8DuplicateTypeInUnionWhitespaceAndComment()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected = [
             'scope'                 => 'public',
             'scope_specified'       => false,
@@ -960,7 +932,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPHP81NeverType()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected = [
             'scope'                 => 'public',
             'scope_specified'       => false,
@@ -986,7 +957,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPHP81NullableNeverType()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected = [
             'scope'                 => 'public',
             'scope_specified'       => false,
@@ -1012,7 +982,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPHP8IntersectionTypes()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected = [
             'scope'                 => 'public',
             'scope_specified'       => false,
@@ -1038,7 +1007,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPHP81MoreIntersectionTypes()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected = [
             'scope'                 => 'public',
             'scope_specified'       => false,
@@ -1064,7 +1032,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPHP81IntersectionArrowFunction()
     {
-        // Offsets are relative to the T_FN token.
         $expected = [
             'scope'                 => 'public',
             'scope_specified'       => false,
@@ -1090,7 +1057,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPHP81IllegalIntersectionTypes()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected = [
             'scope'                 => 'public',
             'scope_specified'       => false,
@@ -1116,7 +1082,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPHP81NullableIntersectionTypes()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected = [
             'scope'                 => 'public',
             'scope_specified'       => false,
@@ -1142,7 +1107,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPHP82PseudoTypeTrue()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected = [
             'scope'                 => 'public',
             'scope_specified'       => false,
@@ -1168,7 +1132,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPHP82PseudoTypeFalseAndTrue()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected = [
             'scope'                 => 'public',
             'scope_specified'       => false,
@@ -1194,7 +1157,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPHP82DNFType()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected = [
             'scope'                 => 'public',
             'scope_specified'       => false,
@@ -1220,7 +1182,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPHP82DNFTypeAbstractMethod()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected = [
             'scope'                 => 'protected',
             'scope_specified'       => true,
@@ -1246,7 +1207,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPHP82DNFTypeIllegalNullable()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected = [
             'scope'                 => 'public',
             'scope_specified'       => false,
@@ -1272,7 +1232,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPHP82DNFTypeClosure()
     {
-        // Offsets are relative to the T_CLOSURE token.
         $expected = [
             'scope'                 => 'public',
             'scope_specified'       => false,
@@ -1298,7 +1257,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPHP82DNFTypeFn()
     {
-        // Offsets are relative to the T_FN token.
         $expected = [
             'scope'                 => 'public',
             'scope_specified'       => false,
@@ -1326,7 +1284,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPhpcsIssue1264()
     {
-        // Offsets are relative to the T_FUNCTION token.
         $expected = [
             'scope'                 => 'public',
             'scope_specified'       => false,
@@ -1355,7 +1312,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testArrowFunctionArrayReturnValue()
     {
-        // Offsets are relative to the T_FN token.
         $expected = [
             'scope'                 => 'public',
             'scope_specified'       => false,
@@ -1381,7 +1337,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testArrowFunctionReturnByRef()
     {
-        // Offsets are relative to the T_FN token.
         $expected = [
             'scope'                 => 'public',
             'scope_specified'       => false,
@@ -1408,7 +1363,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testFunctionDeclarationNestedInTernaryPHPCS2975()
     {
-        // Offsets are relative to the T_FN token.
         $expected = [
             'scope'                 => 'public',
             'scope_specified'       => true,
@@ -1434,7 +1388,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testClosureWithUseNoReturnType()
     {
-        // Offsets are relative to the T_CLOSURE token.
         $expected = [
             'scope'                 => 'public',
             'scope_specified'       => false,
@@ -1461,7 +1414,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testClosureWithUseNoReturnTypeIllegalUseProp()
     {
-        // Offsets are relative to the T_CLOSURE token.
         $expected = [
             'scope'                 => 'public',
             'scope_specified'       => false,
@@ -1487,7 +1439,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testClosureWithUseWithReturnType()
     {
-        // Offsets are relative to the T_CLOSURE token.
         $expected = [
             'scope'                 => 'public',
             'scope_specified'       => false,
@@ -1513,7 +1464,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testClosureWithUseMultiParamWithReturnType()
     {
-        // Offsets are relative to the T_CLOSURE token.
         $expected = [
             'scope'                 => 'public',
             'scope_specified'       => false,
@@ -1545,7 +1495,6 @@ final class GetMethodPropertiesTest extends AbstractMethodUnitTest
         $function = $this->getTargetToken($commentString, [T_FUNCTION, T_CLOSURE, T_FN]);
         $found    = self::$phpcsFile->getMethodProperties($function);
 
-        // Convert offsets to absolute positions in the token stream.
         if (is_int($expected['return_type_token']) === true) {
             $expected['return_type_token'] += $function;
         }

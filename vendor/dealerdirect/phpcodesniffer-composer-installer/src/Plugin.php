@@ -262,7 +262,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      */
     private function saveInstalledPaths()
     {
-        // Check if we found installed paths to set.
         if (count($this->installedPaths) !== 0) {
             sort($this->installedPaths);
             $paths         = implode(',', $this->installedPaths);
@@ -273,7 +272,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface
                 $paths
             );
         } else {
-            // Delete the installed paths if none were found.
             $arguments     = array('--config-delete', self::PHPCS_CONFIG_KEY);
             $configMessage = sprintf(
                 'PHP CodeSniffer Config <info>%s</info> <comment>delete</comment>',
@@ -281,13 +279,11 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             );
         }
 
-        // Prepare message in case of failure
         $failMessage = sprintf(
             'Failed to set PHP CodeSniffer <info>%s</info> Config',
             self::PHPCS_CONFIG_KEY
         );
 
-        // Okay, lets rock!
         $command = vsprintf(
             '%s %s',
             array(
@@ -324,7 +320,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $exitCode      = 1;
         $expectedPaths = $this->installedPaths;
 
-        // Request the currently set installed paths after the save.
         $this->loadInstalledPaths();
 
         $registeredPaths = array_intersect($this->installedPaths, $expectedPaths);
@@ -405,7 +400,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     {
         $changes = false;
         foreach ($this->installedPaths as $key => $path) {
-            // This might be a relative path as well
             $alternativePath = realpath($this->getPHPCodeSnifferInstallPath() . \DIRECTORY_SEPARATOR . $path);
 
             if (
@@ -437,7 +431,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $changes     = false;
         $searchPaths = array();
 
-        // Add root package only if it has the expected package type.
         if (
             $this->composer->getPackage() instanceof RootPackageInterface
             && $this->composer->getPackage()->getType() === self::PACKAGE_TYPE
@@ -456,7 +449,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             $searchPaths[] = $installPath;
         }
 
-        // Nothing to do.
         if ($searchPaths === array()) {
             return false;
         }
@@ -470,16 +462,13 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             ->in($searchPaths)
             ->name('ruleset.xml');
 
-        // Process each found possible ruleset.
         foreach ($finder as $ruleset) {
             $standardsPath = $ruleset->getPath();
 
-            // Pick the directory above the directory containing the standard, unless this is the project root.
             if ($standardsPath !== $this->cwd) {
                 $standardsPath = dirname($standardsPath);
             }
 
-            // Use relative paths for local project repositories.
             if ($this->isRunningGlobally() === false) {
                 $standardsPath = $this->filesystem->findShortestPath(
                     $this->getPHPCodeSnifferInstallPath(),
@@ -488,7 +477,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface
                 );
             }
 
-            // De-duplicate and add when directory is not configured.
             if (in_array($standardsPath, $this->installedPaths, true) === false) {
                 $this->installedPaths[] = $standardsPath;
                 $changes                = true;

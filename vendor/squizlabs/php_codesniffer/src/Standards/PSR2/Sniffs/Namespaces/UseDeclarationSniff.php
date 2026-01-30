@@ -46,7 +46,6 @@ class UseDeclarationSniff implements Sniff
 
         $tokens = $phpcsFile->getTokens();
 
-        // One space after the use keyword.
         if ($tokens[($stackPtr + 1)]['content'] !== ' ') {
             $error = 'There must be a single space after the USE keyword';
             $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'SpaceAfterUse');
@@ -55,7 +54,6 @@ class UseDeclarationSniff implements Sniff
             }
         }
 
-        // Only one USE declaration allowed per statement.
         $next = $phpcsFile->findNext([T_COMMA, T_SEMICOLON, T_OPEN_USE_GROUP, T_CLOSE_TAG], ($stackPtr + 1));
         if ($next !== false
             && $tokens[$next]['code'] !== T_SEMICOLON
@@ -86,7 +84,6 @@ class UseDeclarationSniff implements Sniff
             } else {
                 $closingCurly = $phpcsFile->findNext(T_CLOSE_USE_GROUP, ($next + 1));
                 if ($closingCurly === false) {
-                    // Parse error or live coding. Not auto-fixable.
                     $phpcsFile->addError($error, $stackPtr, 'MultipleDeclarations');
                 } else {
                     $fix = $phpcsFile->addFixableError($error, $stackPtr, 'MultipleDeclarations');
@@ -96,7 +93,6 @@ class UseDeclarationSniff implements Sniff
 
                         $phpcsFile->fixer->beginChangeset();
 
-                        // Remove base use statement.
                         for ($i = $stackPtr; $i <= $next; $i++) {
                             $phpcsFile->fixer->replaceToken($i, '');
                         }
@@ -105,18 +101,15 @@ class UseDeclarationSniff implements Sniff
                             $phpcsFile->fixer->replaceToken(($next + 1), '');
                         }
 
-                        // Convert grouped use statements into full use statements.
                         do {
                             $next = $phpcsFile->findNext(Tokens::$emptyTokens, ($next + 1), $closingCurly, true);
                             if ($next === false) {
-                                // Group use statement with trailing comma after last item.
                                 break;
                             }
 
                             $nonWhitespace = $phpcsFile->findPrevious(T_WHITESPACE, ($next - 1), null, true);
                             for ($i = ($nonWhitespace + 1); $i < $next; $i++) {
                                 if (preg_match('`^[\r\n]+$`', $tokens[$i]['content']) === 1) {
-                                    // Preserve new lines.
                                     continue;
                                 }
 
@@ -143,19 +136,15 @@ class UseDeclarationSniff implements Sniff
                                         $phpcsFile->fixer->addNewline($prevNonWhitespace);
                                     }
                                 } else {
-                                    // Last item with trailing comma or next item already on new line.
                                     $phpcsFile->fixer->replaceToken($next, ';');
                                 }
                             } else {
-                                // Last item without trailing comma.
                                 $phpcsFile->fixer->addContent($lastNonWhitespace, ';');
                             }
                         } while ($next !== false);
 
-                        // Remove closing curly, semicolon and any whitespace between last child and closing curly.
                         $next = $phpcsFile->findNext(Tokens::$emptyTokens, ($closingCurly + 1), null, true);
                         if ($next === false || $tokens[$next]['code'] !== T_SEMICOLON) {
-                            // Parse error, forgotten semicolon.
                             $next = $closingCurly;
                         }
 
@@ -169,7 +158,6 @@ class UseDeclarationSniff implements Sniff
             }//end if
         }//end if
 
-        // Make sure this USE comes after the first namespace declaration.
         $prev = $phpcsFile->findPrevious(T_NAMESPACE, ($stackPtr - 1));
         if ($prev === false) {
             $next = $phpcsFile->findNext(T_NAMESPACE, ($stackPtr + 1));
@@ -179,7 +167,6 @@ class UseDeclarationSniff implements Sniff
             }
         }
 
-        // Only interested in the last USE statement from here onwards.
         $nextUse = $phpcsFile->findNext(T_USE, ($stackPtr + 1));
         while ($this->shouldIgnoreUse($phpcsFile, $nextUse) === true) {
             $nextUse = $phpcsFile->findNext(T_USE, ($nextUse + 1));
@@ -204,15 +191,12 @@ class UseDeclarationSniff implements Sniff
             }
         }
 
-        // Find either the start of the next line or the beginning of the next statement,
-        // whichever comes first.
         for ($end = ++$end; $end < $phpcsFile->numTokens; $end++) {
             if (isset(Tokens::$emptyTokens[$tokens[$end]['code']]) === false) {
                 break;
             }
 
             if ($tokens[$end]['column'] === 1) {
-                // Reached the next line.
                 break;
             }
         }
@@ -224,7 +208,6 @@ class UseDeclarationSniff implements Sniff
             && substr($tokens[$end]['content'], 0, 2) === '/*'
             && substr($tokens[$end]['content'], -2) !== '*/'
         ) {
-            // Multi-line block comments are not allowed as trailing comment after a use statement.
             --$end;
         }
 
@@ -278,13 +261,11 @@ class UseDeclarationSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Ignore USE keywords inside closures and during live coding.
         $next = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
         if ($next === false || $tokens[$next]['code'] === T_OPEN_PARENTHESIS) {
             return true;
         }
 
-        // Ignore USE keywords for traits.
         if ($phpcsFile->hasCondition($stackPtr, [T_CLASS, T_TRAIT, T_ENUM]) === true) {
             return true;
         }

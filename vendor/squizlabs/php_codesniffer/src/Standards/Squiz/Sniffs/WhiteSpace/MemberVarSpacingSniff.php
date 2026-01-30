@@ -62,7 +62,6 @@ class MemberVarSpacingSniff extends AbstractVariableSniff
 
         $startOfStatement = $phpcsFile->findNext($validPrefixes, ($endOfPreviousStatement + 1), $stackPtr, false, null, true);
         if ($startOfStatement === false) {
-            // Parse error/live coding - property without modifier. Bow out.
             return;
         }
 
@@ -88,14 +87,12 @@ class MemberVarSpacingSniff extends AbstractVariableSniff
         if ($tokens[$prev]['code'] === T_DOC_COMMENT_CLOSE_TAG) {
             $start = $prev;
         } else if (isset(Tokens::$commentTokens[$tokens[$prev]['code']]) === true) {
-            // Assume the comment belongs to the member var if it is on a line by itself.
             $prevContent = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($prev - 1), null, true);
             if ($tokens[$prevContent]['line'] !== $tokens[$prev]['line']) {
                 $start = $prev;
             }
         }
 
-        // Check for blank lines between the docblock/comment and the property declaration.
         for ($i = ($start + 1); $i < $startOfStatement; $i++) {
             if (isset($tokens[$i]['attribute_closer']) === true) {
                 $i = $tokens[$i]['attribute_closer'];
@@ -105,13 +102,11 @@ class MemberVarSpacingSniff extends AbstractVariableSniff
             if ($tokens[$i]['column'] !== 1
                 || $tokens[$i]['code'] !== T_WHITESPACE
                 || $tokens[$i]['line'] === $tokens[($i + 1)]['line']
-                // Do not report blank lines after a PHPCS annotation as removing the blank lines could change the meaning.
                 || isset(Tokens::$phpcsCommentTokens[$tokens[($i - 1)]['code']]) === true
             ) {
                 continue;
             }
 
-            // We found a blank line which should be reported.
             $nextNonWhitespace = $phpcsFile->findNext(T_WHITESPACE, ($i + 1), null, true);
             $foundLines        = ($tokens[$nextNonWhitespace]['line'] - $tokens[$i]['line']);
 
@@ -136,9 +131,7 @@ class MemberVarSpacingSniff extends AbstractVariableSniff
             $i = $nextNonWhitespace;
         }//end for
 
-        // There needs to be n blank lines before the var, not counting comments.
         if ($start === $startOfStatement) {
-            // No comment found.
             $first = $phpcsFile->findFirstOnLine(Tokens::$emptyTokens, $start, true);
             if ($first === false) {
                 $first = $start;
@@ -150,7 +143,6 @@ class MemberVarSpacingSniff extends AbstractVariableSniff
             $first = $phpcsFile->findNext(array_merge(Tokens::$commentTokens, [T_ATTRIBUTE]), ($first + 1));
         }
 
-        // Determine if this is the first member var.
         $prev = $phpcsFile->findPrevious(T_WHITESPACE, ($first - 1), null, true);
         if ($tokens[$prev]['code'] === T_CLOSE_CURLY_BRACKET
             && isset($tokens[$prev]['scope_condition']) === true

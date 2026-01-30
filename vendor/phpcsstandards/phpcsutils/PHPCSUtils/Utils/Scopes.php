@@ -102,7 +102,6 @@ final class Scopes
 
         $scopePtr = self::validDirectScope($phpcsFile, $stackPtr, Collections::ooPropertyScopes());
         if ($scopePtr !== false) {
-            // Make sure it's not a method parameter.
             $deepestOpen = Parentheses::getLastOpener($phpcsFile, $stackPtr);
             if ($deepestOpen === false
                 || $deepestOpen < $scopePtr

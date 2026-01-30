@@ -59,7 +59,6 @@ class ConstructorNameSniff extends AbstractScopeSniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Determine if this is a function which needs to be examined.
         $conditions = $tokens[$stackPtr]['conditions'];
         end($conditions);
         $deepestScope = key($conditions);
@@ -69,7 +68,6 @@ class ConstructorNameSniff extends AbstractScopeSniff
 
         $className = $phpcsFile->getDeclarationName($currScope);
         if (empty($className) === false) {
-            // Not an anonymous class.
             $className = strtolower($className);
         }
 
@@ -80,7 +78,6 @@ class ConstructorNameSniff extends AbstractScopeSniff
 
         $methodName = $phpcsFile->getDeclarationName($stackPtr);
         if ($methodName === null) {
-            // Live coding or parse error. Bow out.
             return;
         }
 
@@ -91,11 +88,9 @@ class ConstructorNameSniff extends AbstractScopeSniff
                 $phpcsFile->addError($error, $stackPtr, 'OldStyle');
             }
         } else if ($methodName !== '__construct') {
-            // Not a constructor.
             return;
         }
 
-        // Stop if the constructor doesn't have a body, like when it is abstract.
         if (isset($tokens[$stackPtr]['scope_opener'], $tokens[$stackPtr]['scope_closer']) === false) {
             return;
         }
@@ -171,14 +166,12 @@ class ConstructorNameSniff extends AbstractScopeSniff
 
             $methodName = $phpcsFile->getDeclarationName($i);
             if ($methodName === null) {
-                // Live coding or parse error. Ignore.
                 continue;
             }
 
             $this->functionList[] = trim(strtolower($methodName));
 
             if (isset($tokens[$i]['scope_closer']) !== false) {
-                // Skip past nested functions and such.
                 $i = $tokens[$i]['scope_closer'];
             }
         }

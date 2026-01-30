@@ -606,7 +606,6 @@ final class Collections
             return self::${$name};
         }
 
-        // Unknown token array requested.
         throw InvalidTokenArray::create($name);
     }
 
@@ -688,7 +687,6 @@ final class Collections
     public static function constantTypeTokens()
     {
         $tokens = self::$constantTypeTokens;
-        // Self and static are only allowed in enums, but that's not the concern of this method.
         $tokens += self::$ooHierarchyKeywords;
         $tokens += self::namespacedNameTokens();
 
@@ -706,16 +704,12 @@ final class Collections
      */
     public static function functionCallTokens()
     {
-        // Function calls and class instantiation.
         $tokens              = self::$nameTokens;
         $tokens[\T_VARIABLE] = \T_VARIABLE;
 
-        // Class instantiation only.
         $tokens[\T_ANON_CLASS] = \T_ANON_CLASS;
         $tokens               += self::$ooHierarchyKeywords;
 
-        // As of PHP 8.4, exit()/die() should be treated as function call tokens.
-        // Sniffs using this collection should safeguard against use as a constant.
         $tokens[\T_EXIT] = \T_EXIT;
 
         return $tokens;
@@ -796,14 +790,11 @@ final class Collections
      */
     public static function parameterPassingTokens()
     {
-        // Function call and class instantiation tokens.
         $tokens = self::functionCallTokens();
 
-        // Function-look-a-like language constructs which can take multiple "parameters".
         $tokens[\T_ISSET] = \T_ISSET;
         $tokens[\T_UNSET] = \T_UNSET;
 
-        // Array tokens.
         $tokens += self::arrayOpenTokensBC();
 
         return $tokens;

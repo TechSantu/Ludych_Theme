@@ -38,7 +38,6 @@ final class PopulateTokenListenersSupportedTokenizersTest extends AbstractRulese
      */
     public static function initializeConfig()
     {
-        // Set up the ruleset.
         $standard     = __DIR__.'/PopulateTokenListenersSupportedTokenizersTest.xml';
         self::$config = new ConfigDouble(["--standard=$standard"]);
 

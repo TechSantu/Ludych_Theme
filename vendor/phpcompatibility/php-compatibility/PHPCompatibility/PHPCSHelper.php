@@ -45,10 +45,8 @@ class PHPCSHelper
     public static function getVersion()
     {
         if (\defined('\PHP_CodeSniffer\Config::VERSION')) {
-            // PHPCS 3.x.
             return \PHP_CodeSniffer\Config::VERSION;
         } else {
-            // PHPCS 2.x.
             return \PHP_CodeSniffer::VERSION;
         }
     }
@@ -72,10 +70,8 @@ class PHPCSHelper
     public static function setConfigData($key, $value, $temp = false)
     {
         if (method_exists('\PHP_CodeSniffer\Config', 'setConfigData')) {
-            // PHPCS 3.x.
             \PHP_CodeSniffer\Config::setConfigData($key, $value, $temp);
         } else {
-            // PHPCS 2.x.
             \PHP_CodeSniffer::setConfigData($key, $value, $temp);
         }
     }
@@ -93,10 +89,8 @@ class PHPCSHelper
     public static function getConfigData($key)
     {
         if (method_exists('\PHP_CodeSniffer\Config', 'getConfigData')) {
-            // PHPCS 3.x.
             return \PHP_CodeSniffer\Config::getConfigData($key);
         } else {
-            // PHPCS 2.x.
             return \PHP_CodeSniffer::getConfigData($key);
         }
     }
@@ -118,13 +112,11 @@ class PHPCSHelper
     public static function getCommandLineData(File $phpcsFile, $key)
     {
         if (class_exists('\PHP_CodeSniffer\Config')) {
-            // PHPCS 3.x.
             $config = $phpcsFile->config;
             if (isset($config->{$key})) {
                 return $config->{$key};
             }
         } else {
-            // PHPCS 2.x.
             $config = $phpcsFile->phpcs->cli->getCommandLineValues();
             if (isset($config[$key])) {
                 return $config[$key];
@@ -185,18 +177,15 @@ class PHPCSHelper
 
         for ($i = $start; $i >= 0; $i--) {
             if (isset($endTokens[$tokens[$i]['code']]) === true) {
-                // Found the end of the previous statement.
                 return $lastNotEmpty;
             }
 
             if (isset($tokens[$i]['scope_opener']) === true
                 && $i === $tokens[$i]['scope_closer']
             ) {
-                // Found the end of the previous scope block.
                 return $lastNotEmpty;
             }
 
-            // Skip nested statements.
             if (isset($tokens[$i]['bracket_opener']) === true
                 && $i === $tokens[$i]['bracket_closer']
             ) {
@@ -269,7 +258,6 @@ class PHPCSHelper
 
         for ($i = $start; $i < $phpcsFile->numTokens; $i++) {
             if ($i !== $start && isset($endTokens[$tokens[$i]['code']]) === true) {
-                // Found the end of the statement.
                 if ($tokens[$i]['code'] === \T_CLOSE_PARENTHESIS
                     || $tokens[$i]['code'] === \T_CLOSE_SQUARE_BRACKET
                     || $tokens[$i]['code'] === \T_CLOSE_CURLY_BRACKET
@@ -283,7 +271,6 @@ class PHPCSHelper
                 return $i;
             }
 
-            // Skip nested statements.
             if (isset($tokens[$i]['scope_closer']) === true
                 && ($i === $tokens[$i]['scope_opener']
                 || $i === $tokens[$i]['scope_condition'])
@@ -345,7 +332,6 @@ class PHPCSHelper
 
         $tokens = $phpcsFile->getTokens();
 
-        // Check for the existence of the token.
         if (isset($tokens[$stackPtr]) === false) {
             return false;
         }
@@ -413,7 +399,6 @@ class PHPCSHelper
 
         $tokens = $phpcsFile->getTokens();
 
-        // Check for the existence of the token.
         if (isset($tokens[$stackPtr]) === false) {
             return false;
         }
@@ -502,7 +487,6 @@ class PHPCSHelper
 
         $tokens = $phpcsFile->getTokens();
 
-        // Check for the existence of the token.
         if (isset($tokens[$stackPtr]) === false) {
             return false;
         }
@@ -528,19 +512,13 @@ class PHPCSHelper
         $nullableType    = false;
 
         for ($i = $paramStart; $i <= $closer; $i++) {
-            // Check to see if this token has a parenthesis or bracket opener. If it does
-            // it's likely to be an array which might have arguments in it. This
-            // could cause problems in our parsing below, so lets just skip to the
-            // end of it.
             if (isset($tokens[$i]['parenthesis_opener']) === true) {
-                // Don't do this if it's the close parenthesis for the method.
                 if ($i !== $tokens[$i]['parenthesis_closer']) {
                     $i = ($tokens[$i]['parenthesis_closer'] + 1);
                 }
             }
 
             if (isset($tokens[$i]['bracket_opener']) === true) {
-                // Don't do this if it's the close parenthesis for the method.
                 if ($i !== $tokens[$i]['bracket_closer']) {
                     $i = ($tokens[$i]['bracket_closer'] + 1);
                 }
@@ -569,7 +547,6 @@ class PHPCSHelper
                 case 'T_SELF':
                 case 'T_PARENT':
                 case 'T_STATIC':
-                    // Self and parent are valid, static invalid, but was probably intended as type hint.
                     if (isset($defaultStart) === false) {
                         if ($typeHintToken === false) {
                             $typeHintToken = $i;
@@ -579,8 +556,6 @@ class PHPCSHelper
                     }
                     break;
                 case 'T_STRING':
-                    // This is a string, so it may be a type hint, but it could
-                    // also be a constant used as a default value.
                     $prevComma = false;
                     for ($t = $i; $t >= $opener; $t--) {
                         if ($tokens[$t]['code'] === \T_COMMA) {
@@ -612,7 +587,6 @@ class PHPCSHelper
                     }
                     break;
                 case 'T_NS_SEPARATOR':
-                    // Part of a type hint or default value.
                     if ($defaultStart === null) {
                         if ($typeHintToken === false) {
                             $typeHintToken = $i;
@@ -630,8 +604,6 @@ class PHPCSHelper
                     break;
                 case 'T_CLOSE_PARENTHESIS':
                 case 'T_COMMA':
-                    // If it's null, then there must be no parameters for this
-                    // method.
                     if ($currVar === null) {
                         break;
                     }
@@ -656,7 +628,6 @@ class PHPCSHelper
                     $vars[$paramCount]['type_hint_token']   = $typeHintToken;
                     $vars[$paramCount]['nullable_type']     = $nullableType;
 
-                    // Reset the vars, as we are about to process the next parameter.
                     $defaultStart    = null;
                     $paramStart      = ($i + 1);
                     $passByReference = false;

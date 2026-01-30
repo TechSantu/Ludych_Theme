@@ -72,13 +72,10 @@ final class PostsPerPageSniff extends AbstractArrayAssignmentRestrictionsSniff {
 		}
 
 		if ( $val !== $stripped_val ) {
-			// The value was a text string. For text strings, we only accept purely numeric values.
 			if ( preg_match( '`^[0-9]+$`', $stripped_val ) !== 1 ) {
-				// Not a purely numeric value, so any comparison would be a false comparison.
 				return false;
 			}
 
-			// Purely numeric string, treat it as an integer from here on out.
 			$val = $stripped_val;
 		}
 
@@ -91,7 +88,6 @@ final class PostsPerPageSniff extends AbstractArrayAssignmentRestrictionsSniff {
 
 		$real_value = Numbers::getDecimalValue( $val );
 		if ( false === $real_value ) {
-			// This wasn't a purely numeric value, so any comparison would be a false comparison.
 			return false;
 		}
 

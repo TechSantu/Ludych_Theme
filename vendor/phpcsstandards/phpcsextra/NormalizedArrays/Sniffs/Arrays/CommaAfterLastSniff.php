@@ -107,7 +107,6 @@ final class CommaAfterLastSniff implements Sniff
      */
     public function process(File $phpcsFile, $stackPtr)
     {
-        // Validate the property input. Invalid values will result in the check being skipped.
         if (isset($this->validValues[$this->singleLine]) === false) {
             $this->singleLine = 'skip';
         }
@@ -117,7 +116,6 @@ final class CommaAfterLastSniff implements Sniff
 
         $openClose = Arrays::getOpenClose($phpcsFile, $stackPtr);
         if ($openClose === false) {
-            // Short list, real square bracket, live coding or parse error.
             return;
         }
 
@@ -135,17 +133,14 @@ final class CommaAfterLastSniff implements Sniff
         }
 
         if ($action === 'skip') {
-            // Nothing to do.
             return;
         }
 
         $lastNonEmpty = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($closer - 1), $opener, true);
         if ($lastNonEmpty === false || $lastNonEmpty === $opener) {
-            // Bow out: empty array.
             return;
         }
 
-        // If the closer is on the same line as the last element, change the error code for multi-line arrays.
         if ($errorCode === 'MultiLine'
             && $tokens[$lastNonEmpty]['line'] === $tokens[$closer]['line']
         ) {
@@ -175,10 +170,8 @@ final class CommaAfterLastSniff implements Sniff
 
                     if (($tokens[$lastNonEmpty]['code'] === \T_END_HEREDOC
                         || $tokens[$lastNonEmpty]['code'] === \T_END_NOWDOC)
-                        // Check for indentation, if indented, it's a PHP 7.3+ heredoc/nowdoc.
                         && $tokens[$lastNonEmpty]['content'] === \ltrim($tokens[$lastNonEmpty]['content'])
                     ) {
-                        // Prevent parse errors in PHP < 7.3 which doesn't support flexible heredoc/nowdoc.
                         $extraContent = $phpcsFile->eolChar . $extraContent;
                     }
 
@@ -200,7 +193,6 @@ final class CommaAfterLastSniff implements Sniff
                     $start = $lastNonEmpty;
                     $end   = $lastNonEmpty;
 
-                    // Make sure we're not leaving a superfluous blank line behind.
                     $prevNonWhitespace = $phpcsFile->findPrevious(\T_WHITESPACE, ($lastNonEmpty - 1), $opener, true);
                     $nextNonWhitespace = $phpcsFile->findNext(\T_WHITESPACE, ($lastNonEmpty + 1), ($closer + 1), true);
                     if ($prevNonWhitespace !== false

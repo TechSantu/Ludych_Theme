@@ -58,12 +58,10 @@ class DisallowMultipleStatementsSniff implements Sniff
             }
         } while ($tokens[$prev]['code'] === T_PHPCS_IGNORE);
 
-        // Ignore multiple statements in a FOR condition.
         foreach ([$stackPtr, $prev] as $checkToken) {
             if (isset($tokens[$checkToken]['nested_parenthesis']) === true) {
                 foreach ($tokens[$checkToken]['nested_parenthesis'] as $bracket) {
                     if (isset($tokens[$bracket]['parenthesis_owner']) === false) {
-                        // Probably a closure sitting inside a function call.
                         continue;
                     }
 

@@ -87,7 +87,6 @@ class PostStatementCommentSniff implements Sniff
             return;
         }
 
-        // Special case for JS files and PHP closures.
         if ($tokens[$lastContent]['code'] === T_COMMA
             || $tokens[$lastContent]['code'] === T_SEMICOLON
         ) {
@@ -97,7 +96,6 @@ class PostStatementCommentSniff implements Sniff
             }
         }
 
-        // Special case for (trailing) comments within multi-line control structures.
         if (isset($tokens[$stackPtr]['nested_parenthesis']) === true) {
             $nestedParens = $tokens[$stackPtr]['nested_parenthesis'];
             foreach ($nestedParens as $open => $close) {

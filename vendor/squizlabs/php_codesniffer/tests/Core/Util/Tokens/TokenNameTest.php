@@ -64,8 +64,6 @@ final class TokenNameTest extends TestCase
                 'expected'  => 'T_STRING_CONCAT',
             ],
 
-            // Document the current behaviour for invalid input.
-            // This behaviour is subject to change.
             'Non-token integer passed'            => [
                 'tokenCode' => 100000,
                 'expected'  => 'UNKNOWN',

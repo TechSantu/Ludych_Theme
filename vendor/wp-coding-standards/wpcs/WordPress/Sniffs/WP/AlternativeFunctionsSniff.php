@@ -265,20 +265,17 @@ final class AlternativeFunctionsSniff extends AbstractFunctionRestrictionsSniff 
 
 				$use_include_path_param = PassedParameters::getParameterFromStack( $params, 2, 'use_include_path' );
 				if ( false !== $use_include_path_param && 'true' === $use_include_path_param['clean'] ) {
-					// Setting `$use_include_path` to `true` is only relevant for local files.
 					return;
 				}
 
 				$filename_param = PassedParameters::getParameterFromStack( $params, 1, 'filename' );
 				if ( false === $filename_param ) {
-					// If the file to get is not set, this is a non-issue anyway.
 					return;
 				}
 
 				if ( strpos( $filename_param['clean'], 'http:' ) !== false
 					|| strpos( $filename_param['clean'], 'https:' ) !== false
 				) {
-					// Definitely a URL, throw notice.
 					break;
 				}
 
@@ -287,7 +284,6 @@ final class AlternativeFunctionsSniff extends AbstractFunctionRestrictionsSniff 
 					$filename_param['clean']
 				);
 				if ( 1 === $contains_wp_path_constant ) {
-					// Using any of the constants matched in this regex is an indicator of a local file.
 					return;
 				}
 
@@ -296,12 +292,10 @@ final class AlternativeFunctionsSniff extends AbstractFunctionRestrictionsSniff 
 					$filename_param['clean']
 				);
 				if ( 1 === $contains_wp_path_function_call ) {
-					// Using any of the functions matched in the regex is an indicator of a local file.
 					return;
 				}
 
 				if ( $this->is_local_data_stream( $filename_param['clean'] ) === true ) {
-					// Local data stream.
 					return;
 				}
 
@@ -320,12 +314,10 @@ final class AlternativeFunctionsSniff extends AbstractFunctionRestrictionsSniff 
 				 */
 				$filename_param = PassedParameters::getParameter( $this->phpcsFile, $stackPtr, 1, 'filename' );
 				if ( false === $filename_param ) {
-					// If the file to work with is not set, local data streams don't come into play.
 					break;
 				}
 
 				if ( $this->is_local_data_stream( $filename_param['clean'] ) === true ) {
-					// Local data stream.
 					return;
 				}
 
@@ -337,7 +329,6 @@ final class AlternativeFunctionsSniff extends AbstractFunctionRestrictionsSniff 
 			return parent::process_matched_token( $stackPtr, $group_name, $matched_content );
 		}
 
-		// Verify if the alternative is available in the minimum supported WP version.
 		if ( $this->wp_version_compare( $this->groups[ $group_name ]['since'], $this->minimum_wp_version, '<=' ) ) {
 			return parent::process_matched_token( $stackPtr, $group_name, $matched_content );
 		}

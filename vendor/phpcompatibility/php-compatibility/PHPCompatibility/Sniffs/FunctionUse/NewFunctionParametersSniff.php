@@ -950,7 +950,6 @@ class NewFunctionParametersSniff extends AbstractNewFeatureSniff
      */
     public function register()
     {
-        // Handle case-insensitivity of function names.
         $this->newFunctionParameters = $this->arrayKeysToLowercase($this->newFunctionParameters);
 
         return array(\T_STRING);
@@ -980,7 +979,6 @@ class NewFunctionParametersSniff extends AbstractNewFeatureSniff
 
         $prevToken = $phpcsFile->findPrevious(\T_WHITESPACE, ($stackPtr - 1), null, true);
         if (isset($ignore[$tokens[$prevToken]['code']]) === true) {
-            // Not a call to a PHP function.
             return;
         }
 
@@ -996,7 +994,6 @@ class NewFunctionParametersSniff extends AbstractNewFeatureSniff
             return;
         }
 
-        // If the parameter count returned > 0, we know there will be valid open parenthesis.
         $openParenthesis      = $phpcsFile->findNext(Tokens::$emptyTokens, $stackPtr + 1, null, true, null, true);
         $parameterOffsetFound = $parameterCount - 1;
 

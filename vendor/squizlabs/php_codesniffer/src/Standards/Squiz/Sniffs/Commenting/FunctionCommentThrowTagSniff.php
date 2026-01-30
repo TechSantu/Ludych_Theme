@@ -43,7 +43,6 @@ class FunctionCommentThrowTagSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
 
         if (isset($tokens[$stackPtr]['scope_closer']) === false) {
-            // Abstract or incomplete.
             return;
         }
 
@@ -66,13 +65,11 @@ class FunctionCommentThrowTagSniff implements Sniff
         }
 
         if ($tokens[$commentEnd]['code'] !== T_DOC_COMMENT_CLOSE_TAG) {
-            // Function doesn't have a doc comment or is using the wrong type of comment.
             return;
         }
 
         $stackPtrEnd = $tokens[$stackPtr]['scope_closer'];
 
-        // Find all the exception type tokens within the current scope.
         $thrownExceptions = [];
         $currPos          = $stackPtr;
         $foundThrows      = false;
@@ -145,9 +142,6 @@ class FunctionCommentThrowTagSniff implements Sniff
                     }
                 }//end if
             } else if ($tokens[$nextToken]['code'] === T_VARIABLE) {
-                // Find the nearest catch block in this scope and, if the caught var
-                // matches our re-thrown var, use the exception types being caught as
-                // exception types that are being thrown as well.
                 $catch = $phpcsFile->findPrevious(
                     T_CATCH,
                     $currPos,
@@ -180,7 +174,6 @@ class FunctionCommentThrowTagSniff implements Sniff
             return;
         }
 
-        // Only need one @throws tag for each type of exception thrown.
         $thrownExceptions = array_unique($thrownExceptions);
 
         $throwTags    = [];
@@ -206,13 +199,9 @@ class FunctionCommentThrowTagSniff implements Sniff
             $phpcsFile->addError($error, $commentEnd, 'Missing');
             return;
         } else if (empty($thrownExceptions) === true) {
-            // If token count is zero, it means that only variables are being
-            // thrown, so we need at least one @throws tag (checked above).
-            // Nothing more to do.
             return;
         }
 
-        // Make sure @throws tag count matches thrown count.
         $thrownCount = (count($thrownExceptions) + $unknownCount);
         $tagCount    = count($throwTags);
         if ($thrownCount !== $tagCount) {

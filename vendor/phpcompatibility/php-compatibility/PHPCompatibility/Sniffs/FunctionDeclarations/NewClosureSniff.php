@@ -93,7 +93,6 @@ class NewClosureSniff extends Sniff
         $tokens = $phpcsFile->getTokens();
 
         if (isset($tokens[$stackPtr]['scope_opener'], $tokens[$stackPtr]['scope_closer']) === false) {
-            // Live coding or parse error.
             return;
         }
 
@@ -174,7 +173,6 @@ class NewClosureSniff extends Sniff
             } while ($thisFound !== false);
         }
 
-        // Prevent double reporting for nested closures.
         return $scopeEnd;
     }
 
@@ -213,7 +211,6 @@ class NewClosureSniff extends Sniff
      */
     protected function findThisUsageInClosure(File $phpcsFile, $startToken, $endToken)
     {
-        // Make sure the $startToken is valid.
         if ($startToken >= $endToken) {
             return false;
         }
@@ -241,7 +238,6 @@ class NewClosureSniff extends Sniff
      */
     protected function findClassRefUsageInClosure(File $phpcsFile, $startToken, $endToken)
     {
-        // Make sure the $startToken is valid.
         if ($startToken >= $endToken) {
             return false;
         }
@@ -253,7 +249,6 @@ class NewClosureSniff extends Sniff
             return $classRef;
         }
 
-        // T_STATIC, make sure it is used as a class reference.
         $next = $phpcsFile->findNext(Tokens::$emptyTokens, ($classRef + 1), $endToken, true);
         if ($next === false || $tokens[$next]['code'] !== \T_DOUBLE_COLON) {
             return false;

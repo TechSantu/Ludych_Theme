@@ -53,7 +53,6 @@ class InternalInterfacesSniff extends Sniff
      */
     public function register()
     {
-        // Handle case-insensitivity of interface names.
         $this->internalInterfaces = $this->arrayKeysToLowercase($this->internalInterfaces);
 
         $targets = array(\T_CLASS);

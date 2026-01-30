@@ -58,7 +58,6 @@ class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
             );
         }
 
-        // Called without arguments
         if (! isset($functionCall->getArgs()[$argsParameterPosition])) {
             return self::termsType();
         }

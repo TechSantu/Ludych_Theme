@@ -214,12 +214,10 @@ final class TypeString
             return false;
         }
 
-        // Check for plain nullable type with something which is being made nullable.
         if (\preg_match('`^\?\s*[^|&()?\s]+`', $typeString) === 1) {
             return true;
         }
 
-        // Check for nullable union type.
         $matched = \preg_match(
             '`(?<before>^|[^|&(?\s]+\s*\|)\s*[\\\\]?null\s*(?<after>\|\s*[^|&)?\s]+|$)`i',
             $typeString,
@@ -248,7 +246,6 @@ final class TypeString
             && \strpos($typeString, '&') === false
             && \strpos($typeString, '(') === false
             && \strpos($typeString, ')') === false
-            // Make sure there is always something before and after each |.
             && \preg_match('`^[^|&()?\s]+(\s*\|\s*[^|&()?\s]+)+$`', $typeString) === 1;
     }
 
@@ -271,7 +268,6 @@ final class TypeString
             && \strpos($typeString, '&') !== false
             && \strpos($typeString, '(') === false
             && \strpos($typeString, ')') === false
-            // Make sure there is always something before and after each &.
             && \preg_match('`^[^|&()?\s]+(\s*&\s*[^|&()?\s]+)+$`', $typeString) === 1;
     }
 
@@ -294,7 +290,6 @@ final class TypeString
             && \strpos($typeString, '&') !== false
             && \strpos($typeString, '(') !== false
             && \strpos($typeString, ')') !== false
-            // Now make sure that it is not a definitely invalid format.
             && \preg_match(self::INVALID_DNF_REGEX, $typeString) !== 1;
     }
 
@@ -330,7 +325,6 @@ final class TypeString
         $typeString = \preg_replace('`\s+`', '', $typeString);
         $types      = \preg_split('`[|&()]+`', $typeString, -1, \PREG_SPLIT_NO_EMPTY);
 
-        // Normalize the types.
         if ($normalize === true) {
             $types = \array_map([__CLASS__, 'normalizeCase'], $types);
         }

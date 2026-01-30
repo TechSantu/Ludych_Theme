@@ -51,10 +51,8 @@ class ReservedFunctionNamesSniff extends PHPCS_CamelCapsFunctionNameSniff
             $scopeTokens[] = \T_ANON_CLASS;
         }
 
-        // Call the grand-parent constructor directly.
         PHPCS_AbstractScopeSniff::__construct($scopeTokens, array(\T_FUNCTION), true);
 
-        // Make sure debuginfo is included in the array. Upstream only includes it since 2.5.1.
         $this->magicMethods['debuginfo'] = true;
     }
 
@@ -99,11 +97,9 @@ class ReservedFunctionNamesSniff extends PHPCS_CamelCapsFunctionNameSniff
 
         $methodName = $phpcsFile->getDeclarationName($stackPtr);
         if ($methodName === null) {
-            // Ignore closures.
             return;
         }
 
-        // Is this a magic method. i.e., is prefixed with "__" ?
         if (preg_match('|^__[^_]|', $methodName) > 0) {
             $magicPart = strtolower(substr($methodName, 2));
             if (isset($this->magicMethods[$magicPart]) === false
@@ -150,11 +146,9 @@ class ReservedFunctionNamesSniff extends PHPCS_CamelCapsFunctionNameSniff
 
         $functionName = $phpcsFile->getDeclarationName($stackPtr);
         if ($functionName === null) {
-            // Ignore closures.
             return;
         }
 
-        // Is this a magic function. i.e., it is prefixed with "__".
         if (preg_match('|^__[^_]|', $functionName) > 0) {
             $magicPart = strtolower(substr($functionName, 2));
             if (isset($this->magicFunctions[$magicPart]) === false) {
@@ -189,7 +183,6 @@ class ReservedFunctionNamesSniff extends PHPCS_CamelCapsFunctionNameSniff
 
         $commentEnd = $phpcsFile->findPrevious($find, ($stackPtr - 1), null, true);
         if ($tokens[$commentEnd]['code'] !== \T_DOC_COMMENT_CLOSE_TAG) {
-            // Function doesn't have a doc comment or is using the wrong type of comment.
             return false;
         }
 

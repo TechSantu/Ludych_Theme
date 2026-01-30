@@ -49,7 +49,6 @@ final class DisallowLongListSyntaxSniff implements Sniff
     {
         $openClose = Lists::getOpenClose($phpcsFile, $stackPtr);
         if ($openClose === false) {
-            // Live coding or parse error.
             return;
         }
 

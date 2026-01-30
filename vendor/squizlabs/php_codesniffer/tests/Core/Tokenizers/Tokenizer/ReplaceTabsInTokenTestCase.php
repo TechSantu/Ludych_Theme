@@ -250,7 +250,6 @@ abstract class ReplaceTabsInTokenTestCase extends AbstractTokenizerTestCase
             $data[$key]['expected'] = $expectations[$key];
         }
 
-        // Set offset for test cases targetting whitespace.
         $data['Tab indentation']['offset'] = 1;
         $data['Mixed tab/space indentation']['offset'] = 1;
 

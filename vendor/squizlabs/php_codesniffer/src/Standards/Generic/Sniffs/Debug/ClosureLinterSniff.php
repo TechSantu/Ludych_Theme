@@ -90,7 +90,6 @@ class ClosureLinterSniff implements Sniff, DeprecatedSniff
                 continue;
             }
 
-            // Skip error codes we are ignoring.
             $code = $matches[3];
             if (in_array($code, $this->ignoreCodes) === true) {
                 continue;
@@ -111,7 +110,6 @@ class ClosureLinterSniff implements Sniff, DeprecatedSniff
             }
         }//end foreach
 
-        // Ignore the rest of the file.
         return $phpcsFile->numTokens;
 
     }//end process()

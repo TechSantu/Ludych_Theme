@@ -90,7 +90,6 @@ class AnonClassDeclarationSniff extends ClassDeclarationSniff
             && $tokens[$opener]['line'] !== $tokens[$implements]['line']
             && $tokens[$opener]['line'] === $tokens[$prev]['line']
         ) {
-            // Opening brace must be on a new line as implements list wraps.
             $error = 'Opening brace must be on the line after the last implemented interface';
             $fix   = $phpcsFile->addFixableError($error, $opener, 'OpenBraceSameLine');
             if ($fix === true) {
@@ -109,19 +108,16 @@ class AnonClassDeclarationSniff extends ClassDeclarationSniff
         }
 
         if ($tokens[$opener]['line'] > ($tokens[$prev]['line'] + 1)) {
-            // Opening brace is on a new line, so there must be no blank line before it.
             $error = 'Opening brace must not be preceded by a blank line';
             $fix   = $phpcsFile->addFixableError($error, $opener, 'OpenBraceLine');
             if ($fix === true) {
                 $phpcsFile->fixer->beginChangeset();
                 for ($x = ($prev + 1); $x < $opener; $x++) {
                     if ($tokens[$x]['line'] === $tokens[$prev]['line']) {
-                        // Maintain existing newline.
                         continue;
                     }
 
                     if ($tokens[$x]['line'] === $tokens[$opener]['line']) {
-                        // Maintain existing indent.
                         break;
                     }
 
@@ -165,7 +161,6 @@ class AnonClassDeclarationSniff extends ClassDeclarationSniff
         $spaceBeforeClose = 0;
         $prev = $phpcsFile->findPrevious(T_WHITESPACE, ($closeBracket - 1), $openBracket, true);
         if ($tokens[$prev]['code'] === T_END_HEREDOC || $tokens[$prev]['code'] === T_END_NOWDOC) {
-            // Need a newline after these tokens, so ignore this rule.
             return;
         }
 
@@ -192,8 +187,6 @@ class AnonClassDeclarationSniff extends ClassDeclarationSniff
                         }
                     }
 
-                    // We want to jump over any whitespace or inline comment and
-                    // move the closing parenthesis after any other token.
                     $prev = ($closeBracket - 1);
                     while (isset(Tokens::$emptyTokens[$tokens[$prev]['code']]) === true) {
                         if (($tokens[$prev]['code'] === T_COMMENT)

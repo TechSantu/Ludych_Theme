@@ -60,7 +60,6 @@ class ForbiddenParameterShadowSuperGlobalsSniff extends Sniff
             return;
         }
 
-        // Get all parameters from function signature.
         $parameters = PHPCSHelper::getMethodParameters($phpcsFile, $stackPtr);
         if (empty($parameters) || \is_array($parameters) === false) {
             return;

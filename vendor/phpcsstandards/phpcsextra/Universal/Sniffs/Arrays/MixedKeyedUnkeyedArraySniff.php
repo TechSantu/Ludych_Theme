@@ -52,7 +52,6 @@ final class MixedKeyedUnkeyedArraySniff extends AbstractArrayDeclarationSniff
      */
     public function processArray(File $phpcsFile)
     {
-        // Reset properties before processing this array.
         $this->hasKeys         = false;
         $this->itemsWithoutKey = [];
 
@@ -78,7 +77,6 @@ final class MixedKeyedUnkeyedArraySniff extends AbstractArrayDeclarationSniff
     {
         $this->hasKeys = true;
 
-        // Process any previously encountered items without keys.
         if (empty($this->itemsWithoutKey) === false) {
             foreach ($this->itemsWithoutKey as $itemNr => $stackPtr) {
                 $phpcsFile->addError(
@@ -90,7 +88,6 @@ final class MixedKeyedUnkeyedArraySniff extends AbstractArrayDeclarationSniff
                 );
             }
 
-            // No need to do this again.
             $this->itemsWithoutKey = [];
         }
     }
@@ -113,11 +110,9 @@ final class MixedKeyedUnkeyedArraySniff extends AbstractArrayDeclarationSniff
     {
         $firstNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, $startPtr, null, true);
         if ($firstNonEmpty === false || $this->tokens[$firstNonEmpty]['code'] === \T_COMMA) {
-            // Shouldn't really be possible, but this must be a parse error (empty array item).
             return;
         }
 
-        // If we already know there are keys in the array, throw an error message straight away.
         if ($this->hasKeys === true) {
             $phpcsFile->addError(
                 'Inconsistent array detected. A mix of keyed and unkeyed array items is not allowed.'
@@ -127,7 +122,6 @@ final class MixedKeyedUnkeyedArraySniff extends AbstractArrayDeclarationSniff
                 [$itemNr]
             );
         } else {
-            // Save the array item info for later in case we do encounter an array key later on in the array.
             $this->itemsWithoutKey[$itemNr] = $firstNonEmpty;
         }
     }

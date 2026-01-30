@@ -121,17 +121,14 @@ final class AddFileTest extends AbstractFileListTestCase
             $file2,
         ];
 
-        // Add $file1 once.
         $this->fileList->addFile($file1);
         $this->assertCount(1, $this->fileList);
         $this->assertSame([$file1], array_keys(iterator_to_array($this->fileList)));
 
-        // Try to add $file1 again. Should be ignored.
         $this->fileList->addFile($file1);
         $this->assertCount(1, $this->fileList);
         $this->assertSame([$file1], array_keys(iterator_to_array($this->fileList)));
 
-        // Add $file2. Should be added.
         $this->fileList->addFile($file2);
         $this->assertCount(2, $this->fileList);
         $this->assertSame($expectedFiles, array_keys(iterator_to_array($this->fileList)));

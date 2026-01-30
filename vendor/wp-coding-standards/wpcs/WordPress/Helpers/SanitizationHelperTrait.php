@@ -271,25 +271,18 @@ trait SanitizationHelperTrait {
 	final public function is_only_sanitized( File $phpcsFile, $stackPtr ) {
 		$tokens = $phpcsFile->getTokens();
 
-		// If it isn't being sanitized at all.
 		if ( ! $this->is_sanitized( $phpcsFile, $stackPtr ) ) {
 			return false;
 		}
 
-		// If the token isn't in parentheses, we know the value must have only been casted, because
-		// is_sanitized() would have returned `false` otherwise.
 		if ( ! isset( $tokens[ $stackPtr ]['nested_parenthesis'] ) ) {
 			return true;
 		}
 
-		// At this point we're expecting the value to have not been casted. If it
-		// was, it wasn't *only* casted, because it's also in a function.
 		if ( ContextHelper::is_safe_casted( $phpcsFile, $stackPtr ) ) {
 			return false;
 		}
 
-		// The only parentheses should belong to the sanitizing function. If there's
-		// more than one set, this isn't *only* sanitization.
 		return ( \count( $tokens[ $stackPtr ]['nested_parenthesis'] ) === 1 );
 	}
 
@@ -327,17 +320,14 @@ trait SanitizationHelperTrait {
 			return false;
 		}
 
-		// If the variable is just being unset, the value isn't used at all, so it's safe.
 		if ( Context::inUnset( $phpcsFile, $stackPtr ) ) {
 			return true;
 		}
 
-		// First we check if it is being casted to a safe value.
 		if ( ContextHelper::is_safe_casted( $phpcsFile, $stackPtr ) ) {
 			return true;
 		}
 
-		// If this isn't within a function call, we know already that it's not safe.
 		if ( ! isset( $tokens[ $stackPtr ]['nested_parenthesis'] ) ) {
 			if ( $require_unslash ) {
 				call_user_func( $unslash_callback, $phpcsFile, $stackPtr );
@@ -351,10 +341,8 @@ trait SanitizationHelperTrait {
 		$sanitizing_functions += ArrayWalkingFunctionsHelper::get_functions();
 		$valid_functions       = $sanitizing_functions + UnslashingFunctionsHelper::get_functions();
 
-		// Get the function that it's in.
 		$functionPtr = ContextHelper::is_in_function_call( $phpcsFile, $stackPtr, $valid_functions );
 
-		// If this isn't a call to one of the valid functions, it sure isn't a sanitizing function.
 		if ( false === $functionPtr ) {
 			if ( true === $require_unslash ) {
 				call_user_func( $unslash_callback, $phpcsFile, $stackPtr );
@@ -365,15 +353,12 @@ trait SanitizationHelperTrait {
 
 		$functionName = $tokens[ $functionPtr ]['content'];
 
-		// Check if an unslashing function is being used.
 		$is_unslashed = false;
 		if ( UnslashingFunctionsHelper::is_unslashing_function( $functionName ) ) {
 			$is_unslashed = true;
 
-			// Check whether this function call is wrapped within a sanitizing function.
 			$higherFunctionPtr = ContextHelper::is_in_function_call( $phpcsFile, $functionPtr, $sanitizing_functions );
 
-			// If there is no other valid function being used, this value is unsanitized.
 			if ( false === $higherFunctionPtr ) {
 				return false;
 			}
@@ -382,9 +367,7 @@ trait SanitizationHelperTrait {
 			$functionName = $tokens[ $functionPtr ]['content'];
 		}
 
-		// Arrays might be sanitized via an array walking function using a callback.
 		if ( ArrayWalkingFunctionsHelper::is_array_walking_function( $functionName ) ) {
-			// Get the callback parameter.
 			$callback = ArrayWalkingFunctionsHelper::get_callback_parameter( $phpcsFile, $functionPtr );
 
 			if ( ! empty( $callback ) ) {
@@ -405,7 +388,6 @@ trait SanitizationHelperTrait {
 			}
 		}
 
-		// If slashing is required, give an error.
 		if ( false === $is_unslashed
 			&& true === $require_unslash
 			&& ! $this->is_sanitizing_and_unslashing_function( $functionName )
@@ -413,7 +395,6 @@ trait SanitizationHelperTrait {
 			call_user_func( $unslash_callback, $phpcsFile, $stackPtr );
 		}
 
-		// Check if this is a sanitizing function.
 		return ( $this->is_sanitizing_function( $functionName ) || $this->is_sanitizing_and_unslashing_function( $functionName ) );
 	}
 }

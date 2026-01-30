@@ -67,7 +67,6 @@ final class ConstructorDestructorReturnSniff implements Sniff
     public function process(File $phpcsFile, $stackPtr)
     {
         if (isset($this->phpVersion) === false || \defined('PHP_CODESNIFFER_IN_TESTS')) {
-            // Set default value to prevent this code from running every time the sniff is triggered.
             $this->phpVersion = 0;
 
             $phpVersion = Helper::getConfigData('php_version');
@@ -78,7 +77,6 @@ final class ConstructorDestructorReturnSniff implements Sniff
 
         $scopePtr = Scopes::validDirectScope($phpcsFile, $stackPtr, Tokens::$ooScopeTokens);
         if ($scopePtr === false) {
-            // Not an OO method.
             return;
         }
 
@@ -88,21 +86,17 @@ final class ConstructorDestructorReturnSniff implements Sniff
         if ($functionNameLC === '__construct' || $functionNameLC === '__destruct') {
             $functionType = \sprintf('A "%s()" magic method', $functionNameLC);
         } else {
-            // If the PHP version is explicitly set to PHP 8.0 or higher, ignore PHP 4-style constructors.
             if ($this->phpVersion >= 80000) {
                 return;
             }
 
-            // This may be a PHP 4-style constructor which should be handled.
             $OOName = ObjectDeclarations::getName($phpcsFile, $scopePtr);
 
             if (empty($OOName) === true) {
-                // Anonymous class or parse error. The function can't be a PHP 4-style constructor.
                 return;
             }
 
             if (NamingConventions::isEqual($functionName, $OOName) === false) {
-                // Class and function name not the same, so not a PHP 4-style constructor.
                 return;
             }
 
@@ -124,7 +118,6 @@ final class ConstructorDestructorReturnSniff implements Sniff
          * OK, so now we know for sure that this is a constructor/destructor method.
          */
 
-        // Check for a return type.
         $tokens     = $phpcsFile->getTokens();
         $properties = FunctionDeclarations::getProperties($phpcsFile, $stackPtr);
         if ($properties['return_type'] !== '' && $properties['return_type_token'] !== false) {
@@ -146,7 +139,6 @@ final class ConstructorDestructorReturnSniff implements Sniff
                 $parensCloser = $tokens[$stackPtr]['parenthesis_closer'];
                 for ($i = ($parensCloser + 1); $i <= $properties['return_type_end_token']; $i++) {
                     if (isset(Tokens::$commentTokens[$tokens[$i]['code']])) {
-                        // Ignore comments and leave them be.
                         continue;
                     }
 
@@ -158,15 +150,12 @@ final class ConstructorDestructorReturnSniff implements Sniff
         }
 
         if (isset($tokens[$stackPtr]['scope_opener'], $tokens[$stackPtr]['scope_closer']) === false) {
-            // Abstract/interface method, live coding or parse error.
             return;
         }
 
-        // Check for a value being returned.
         $current = $tokens[$stackPtr]['scope_opener'];
         $end     = $tokens[$stackPtr]['scope_closer'];
 
-        // Not searching for arrow functions as those have an implicit return, so won't use the `return` keyword.
         $search            = Collections::functionDeclarationTokens();
         $search[\T_RETURN] = \T_RETURN;
 
@@ -179,7 +168,6 @@ final class ConstructorDestructorReturnSniff implements Sniff
             if (isset(Collections::functionDeclarationTokens()[$tokens[$current]['code']])
                 && isset($tokens[$current]['scope_closer'])
             ) {
-                // Skip over nested function/closure declarations.
                 $current = $tokens[$current]['scope_closer'];
                 continue;
             }
@@ -189,7 +177,6 @@ final class ConstructorDestructorReturnSniff implements Sniff
                 || $tokens[$next]['code'] === \T_SEMICOLON
                 || $tokens[$next]['code'] === \T_CLOSE_TAG
             ) {
-                // Return statement without value.
                 continue;
             }
 

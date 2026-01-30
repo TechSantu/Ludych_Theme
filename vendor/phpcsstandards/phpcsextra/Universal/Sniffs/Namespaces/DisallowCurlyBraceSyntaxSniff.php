@@ -57,7 +57,6 @@ final class DisallowCurlyBraceSyntaxSniff implements Sniff
     public function process(File $phpcsFile, $stackPtr)
     {
         if (Namespaces::isDeclaration($phpcsFile, $stackPtr) === false) {
-            // Namespace operator, not a declaration; or live coding/parse error.
             return;
         }
 

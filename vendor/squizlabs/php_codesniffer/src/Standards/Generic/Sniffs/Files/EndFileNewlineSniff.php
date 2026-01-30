@@ -53,7 +53,6 @@ class EndFileNewlineSniff implements Sniff
      */
     public function process(File $phpcsFile, $stackPtr)
     {
-        // Skip to the end of the file.
         $tokens   = $phpcsFile->getTokens();
         $stackPtr = ($phpcsFile->numTokens - 1);
 
@@ -75,7 +74,6 @@ class EndFileNewlineSniff implements Sniff
             $phpcsFile->recordMetric($stackPtr, 'Newline at EOF', 'yes');
         }
 
-        // Ignore the rest of the file.
         return $phpcsFile->numTokens;
 
     }//end process()

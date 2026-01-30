@@ -34,9 +34,6 @@ class DummyFile extends File
     {
         $this->setContent($content);
 
-        // See if a filename was defined in the content.
-        // This is done by including: phpcs_input_file: [file path]
-        // as the first line of content.
         $path = 'STDIN';
         if ($content !== '') {
             if (substr($content, 0, 17) === 'phpcs_input_file:') {
@@ -49,7 +46,6 @@ class DummyFile extends File
             }
         }
 
-        // The CLI arg overrides anything passed in the content.
         if ($config->stdinPath !== null) {
             $path = $config->stdinPath;
         }

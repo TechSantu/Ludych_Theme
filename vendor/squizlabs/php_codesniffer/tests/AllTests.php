@@ -12,9 +12,6 @@ namespace PHP_CodeSniffer\Tests;
 require_once 'Core/AllTests.php';
 require_once 'Standards/AllSniffs.php';
 
-// PHPUnit 7 made the TestSuite run() method incompatible with
-// older PHPUnit versions due to return type hints, so maintain
-// two different suite objects.
 $phpunit7 = false;
 if (class_exists('\PHPUnit\Runner\Version') === true) {
     $version = \PHPUnit\Runner\Version::id();
@@ -43,8 +40,6 @@ class PHP_CodeSniffer_AllTests
         $GLOBALS['PHP_CODESNIFFER_STANDARD_DIRS'] = [];
         $GLOBALS['PHP_CODESNIFFER_TEST_DIRS']     = [];
 
-        // Use a special PHP_CodeSniffer test suite so that we can
-        // unset our autoload function after the run.
         $suite = new TestSuite('PHP CodeSniffer');
 
         $suite->addTest(Core\AllTests::suite());

@@ -61,7 +61,6 @@ final class UnnecessaryHeredocUnitTest extends AbstractSniffUnitTest
                 return $warnings;
             }
 
-            // PHP 7.2 or lower: PHP version which doesn't support flexible heredocs/nowdocs yet.
             return [];
 
         default:

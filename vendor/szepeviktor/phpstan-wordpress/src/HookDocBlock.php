@@ -31,10 +31,8 @@ class HookDocBlock
             return null;
         }
 
-        // Fetch the docblock contents.
         $code = $comment->getText();
 
-        // Resolve the docblock in scope.
         $classReflection = $scope->getClassReflection();
         $traitReflection = $scope->getTraitReflection();
 

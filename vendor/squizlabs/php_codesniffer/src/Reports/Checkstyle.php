@@ -39,7 +39,6 @@ class Checkstyle implements Report
         $out->setIndent(true);
 
         if ($report['errors'] === 0 && $report['warnings'] === 0) {
-            // Nothing to print.
             return false;
         }
 

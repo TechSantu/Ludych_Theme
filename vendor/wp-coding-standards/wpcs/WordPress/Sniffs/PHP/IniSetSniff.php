@@ -143,7 +143,6 @@ final class IniSetSniff extends AbstractFunctionParameterSniff {
 		$value_param  = PassedParameters::getParameterFromStack( $parameters, 2, 'value' );
 
 		if ( false === $option_param || false === $value_param ) {
-			// Missing required param. Not the concern of this sniff. Bow out.
 			return;
 		}
 

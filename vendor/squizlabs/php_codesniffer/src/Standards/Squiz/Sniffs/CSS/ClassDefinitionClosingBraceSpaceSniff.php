@@ -61,7 +61,6 @@ class ClassDefinitionClosingBraceSpaceSniff implements Sniff, DeprecatedSniff
             if (isset(Tokens::$emptyTokens[$tokens[$next]['code']]) === true
                 && $tokens[$next]['line'] === $tokens[$stackPtr]['line']
             ) {
-                // Trailing comment.
                 continue;
             }
 
@@ -82,13 +81,10 @@ class ClassDefinitionClosingBraceSpaceSniff implements Sniff, DeprecatedSniff
                     }
 
                     if ($found < 0) {
-                        // Next statement on same line as the closing brace.
                         $phpcsFile->fixer->addContentBefore($next, $phpcsFile->eolChar.$phpcsFile->eolChar);
                     } else if ($found === 0) {
-                        // Next statement on next line, no blank line.
                         $phpcsFile->fixer->addContentBefore($firstOnLine, $phpcsFile->eolChar);
                     } else {
-                        // Too many blank lines.
                         $phpcsFile->fixer->beginChangeset();
                         for ($i = ($firstOnLine - 1); $i > $stackPtr; $i--) {
                             if ($tokens[$i]['code'] !== T_WHITESPACE) {
@@ -105,9 +101,6 @@ class ClassDefinitionClosingBraceSpaceSniff implements Sniff, DeprecatedSniff
             }//end if
         }//end if
 
-        // Ignore nested style definitions from here on. The spacing before the closing brace
-        // (a single blank line) will be enforced by the above check, which ensures there is a
-        // blank line after the last nested class.
         $found = $phpcsFile->findPrevious(
             T_CLOSE_CURLY_BRACKET,
             ($stackPtr - 1),

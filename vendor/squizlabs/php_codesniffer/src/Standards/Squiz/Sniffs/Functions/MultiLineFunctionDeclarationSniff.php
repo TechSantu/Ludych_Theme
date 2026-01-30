@@ -43,7 +43,6 @@ class MultiLineFunctionDeclarationSniff extends PEARFunctionDeclarationSniff
     {
         $bracketsToCheck = [$stackPtr => $openBracket];
 
-        // Closures may use the USE keyword and so be multi-line in this way.
         if ($tokens[$stackPtr]['code'] === T_CLOSURE) {
             $use = $phpcsFile->findNext(T_USE, ($tokens[$openBracket]['parenthesis_closer'] + 1), $tokens[$stackPtr]['scope_opener']);
             if ($use !== false) {
@@ -55,8 +54,6 @@ class MultiLineFunctionDeclarationSniff extends PEARFunctionDeclarationSniff
         }
 
         foreach ($bracketsToCheck as $stackPtr => $openBracket) {
-            // If the first argument is on a new line, this is a multi-line
-            // function declaration, even if there is only one argument.
             $next = $phpcsFile->findNext(Tokens::$emptyTokens, ($openBracket + 1), null, true);
             if ($tokens[$next]['line'] !== $tokens[$stackPtr]['line']) {
                 return true;
@@ -66,8 +63,6 @@ class MultiLineFunctionDeclarationSniff extends PEARFunctionDeclarationSniff
 
             $end = $phpcsFile->findEndOfStatement($openBracket + 1);
             while ($tokens[$end]['code'] === T_COMMA) {
-                // If the next bit of code is not on the same line, this is a
-                // multi-line function declaration.
                 $next = $phpcsFile->findNext(Tokens::$emptyTokens, ($end + 1), $closeBracket, true);
                 if ($next === false) {
                     continue(2);
@@ -80,8 +75,6 @@ class MultiLineFunctionDeclarationSniff extends PEARFunctionDeclarationSniff
                 $end = $phpcsFile->findEndOfStatement($next);
             }
 
-            // We've reached the last argument, so see if the next content
-            // (should be the close bracket) is also on the same line.
             $next = $phpcsFile->findNext(Tokens::$emptyTokens, ($end + 1), $closeBracket, true);
             if ($next !== false && $tokens[$next]['line'] !== $tokens[$end]['line']) {
                 return true;
@@ -108,8 +101,6 @@ class MultiLineFunctionDeclarationSniff extends PEARFunctionDeclarationSniff
      */
     public function processSingleLineDeclaration($phpcsFile, $stackPtr, $tokens)
     {
-        // We do everything the parent sniff does, and a bit more because we
-        // define multi-line declarations a bit differently.
         parent::processSingleLineDeclaration($phpcsFile, $stackPtr, $tokens);
 
         $openingBracket = $tokens[$stackPtr]['parenthesis_opener'];
@@ -154,7 +145,6 @@ class MultiLineFunctionDeclarationSniff extends PEARFunctionDeclarationSniff
      */
     public function processMultiLineDeclaration($phpcsFile, $stackPtr, $tokens)
     {
-        // We do everything the parent sniff does, and a bit more.
         parent::processMultiLineDeclaration($phpcsFile, $stackPtr, $tokens);
 
         $openBracket = $tokens[$stackPtr]['parenthesis_opener'];
@@ -197,7 +187,6 @@ class MultiLineFunctionDeclarationSniff extends PEARFunctionDeclarationSniff
 
         $closeBracket = $tokens[$openBracket]['parenthesis_closer'];
 
-        // The open bracket should be the last thing on the line.
         if ($tokens[$openBracket]['line'] !== $tokens[$closeBracket]['line']) {
             $next = $phpcsFile->findNext(Tokens::$emptyTokens, ($openBracket + 1), null, true);
             if ($tokens[$next]['line'] === $tokens[$openBracket]['line']) {
@@ -224,9 +213,7 @@ class MultiLineFunctionDeclarationSniff extends PEARFunctionDeclarationSniff
             }//end if
         }//end if
 
-        // Each line between the brackets should contain a single parameter.
         for ($i = ($openBracket + 1); $i < $closeBracket; $i++) {
-            // Skip brackets, like arrays, as they can contain commas.
             if (isset($tokens[$i]['bracket_closer']) === true) {
                 $i = $tokens[$i]['bracket_closer'];
                 continue;

@@ -71,7 +71,6 @@ final class AcceptTest extends AbstractFilterTestCase
     public static function dataExcludePatterns()
     {
         $testCases = [
-            // Test top-level exclude patterns.
             'Non-sniff specific path based excludes from ruleset and command line are respected and don\'t filter out too much' => [
                 'inputPaths'     => [
                     '/path/to/src/Main.php',
@@ -86,7 +85,6 @@ final class AcceptTest extends AbstractFilterTestCase
                 ],
             ],
 
-            // Test ignoring standard/sniff specific exclude patterns.
             'Filter should not act on standard/sniff specific exclude patterns'                                                 => [
                 'inputPaths'     => [
                     '/path/to/src/generic-project/Main.php',
@@ -101,7 +99,6 @@ final class AcceptTest extends AbstractFilterTestCase
             ],
         ];
 
-        // Allow these tests to work on Windows as well.
         return self::mapPathsToRuntimeOs($testCases);
 
     }//end dataExcludePatterns()

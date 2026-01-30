@@ -64,10 +64,8 @@ class NewUnicodeEscapeSequenceSniff extends Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Check whether this is a single quoted or double quoted string.
         if ($tokens[$stackPtr]['code'] === \T_CONSTANT_ENCAPSED_STRING) {
 
-            // Find the start of the - potentially multi-line - text string.
             $start = $stackPtr;
             for ($i = ($stackPtr - 1); $i >= 0; $i--) {
                 if ($tokens[$i]['code'] === \T_WHITESPACE) {
@@ -85,7 +83,6 @@ class NewUnicodeEscapeSequenceSniff extends Sniff
             try {
                 $textString = $this->getCompleteTextString($phpcsFile, $start, false);
             } catch (PHPCS_Exception $e) {
-                // Something went wrong determining the start of the text string.
                 return;
             }
 
@@ -94,7 +91,6 @@ class NewUnicodeEscapeSequenceSniff extends Sniff
             if (($startQuote === "'" && $endQuote === "'")
                 || $startQuote !== $endQuote
             ) {
-                // Single quoted string, not our concern.
                 return;
             }
         }
@@ -147,13 +143,11 @@ class NewUnicodeEscapeSequenceSniff extends Sniff
             return false;
         }
 
-        // Check if it's a valid hex codepoint.
         if (preg_match('`^[0-9A-F]+$`iD', $codepoint, $match) !== 1) {
             return false;
         }
 
         if (hexdec($codepoint) > 1114111) {
-            // Outside of the maximum permissable range.
             return false;
         }
 

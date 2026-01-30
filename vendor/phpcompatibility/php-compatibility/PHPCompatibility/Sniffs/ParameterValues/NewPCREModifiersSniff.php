@@ -74,8 +74,6 @@ class NewPCREModifiersSniff extends RemovedPCREModifiersSniff
      */
     protected function bowOutEarly()
     {
-        // Version used here should be the highest version from the `$newModifiers` array,
-        // i.e. the last PHP version in which a new modifier was introduced.
         return ($this->supportsBelow('7.2') === false);
     }
 

@@ -53,21 +53,14 @@ class OperatorBracketSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
 
         if ($phpcsFile->tokenizerType === 'JS' && $tokens[$stackPtr]['code'] === T_PLUS) {
-            // JavaScript uses the plus operator for string concatenation as well
-            // so we cannot accurately determine if it is a string concat or addition.
-            // So just ignore it.
             return;
         }
 
-        // If the & is a reference, then we don't want to check for brackets.
         if ($tokens[$stackPtr]['code'] === T_BITWISE_AND && $phpcsFile->isReference($stackPtr) === true) {
             return;
         }
 
-        // There is one instance where brackets aren't needed, which involves
-        // the minus sign being used to assign a negative number to a variable.
         if ($tokens[$stackPtr]['code'] === T_MINUS) {
-            // Check to see if we are trying to return -n.
             $prev = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($stackPtr - 1), null, true);
             if ($tokens[$prev]['code'] === T_RETURN) {
                 return;
@@ -82,9 +75,6 @@ class OperatorBracketSniff implements Sniff
                     $isComparison = isset(Tokens::$comparisonTokens[$tokens[$previous]['code']]);
                     $isUnary      = isset(Tokens::$operators[$tokens[$previous]['code']]);
                     if ($isAssignment === true || $isEquality === true || $isComparison === true || $isUnary === true) {
-                        // This is a negative assignment or comparison.
-                        // We need to check that the minus and the number are
-                        // adjacent.
                         if (($number - $stackPtr) !== 1) {
                             $error = 'No space allowed between minus sign and number';
                             $phpcsFile->addError($error, $stackPtr, 'SpacingAfterMinus');
@@ -98,8 +88,6 @@ class OperatorBracketSniff implements Sniff
 
         $previousToken = $phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), null, true, null, true);
         if ($previousToken !== false) {
-            // A list of tokens that indicate that the token is not
-            // part of an arithmetic operation.
             $invalidTokens = [
                 T_COMMA               => true,
                 T_COLON               => true,
@@ -125,13 +113,10 @@ class OperatorBracketSniff implements Sniff
             if (isset($tokens[$lastBracket]['parenthesis_owner']) === true
                 && $tokens[$tokens[$lastBracket]['parenthesis_owner']]['code'] === T_CATCH
             ) {
-                // This is a pipe character inside a catch statement, so it is acting
-                // as an exception type separator and not an arithmetic operation.
                 return;
             }
         }
 
-        // Tokens that are allowed inside a bracketed operation.
         $allowed = [
             T_VARIABLE                 => T_VARIABLE,
             T_LNUMBER                  => T_LNUMBER,
@@ -162,14 +147,10 @@ class OperatorBracketSniff implements Sniff
                 $prevCode  = $tokens[$prevToken]['code'];
 
                 if ($prevCode === T_ISSET) {
-                    // This operation is inside an isset() call, but has
-                    // no bracket of it's own.
                     break;
                 }
 
                 if ($prevCode === T_STRING || $prevCode === T_SWITCH || $prevCode === T_MATCH) {
-                    // We allow simple operations to not be bracketed.
-                    // For example, ceil($one / $two).
                     for ($prev = ($stackPtr - 1); $prev > $bracket; $prev--) {
                         if (isset($allowed[$tokens[$prev]['code']]) === true) {
                             continue;
@@ -204,17 +185,12 @@ class OperatorBracketSniff implements Sniff
                 }//end if
 
                 if (in_array($prevCode, Tokens::$scopeOpeners, true) === true) {
-                    // This operation is inside a control structure like FOREACH
-                    // or IF, but has no bracket of it's own.
-                    // The only control structures allowed to do this are SWITCH and MATCH.
                     if ($prevCode !== T_SWITCH && $prevCode !== T_MATCH) {
                         break;
                     }
                 }
 
                 if ($prevCode === T_OPEN_PARENTHESIS) {
-                    // These are two open parenthesis in a row. If the current
-                    // one doesn't enclose the operator, go to the previous one.
                     if ($endBracket < $stackPtr) {
                         continue;
                     }
@@ -226,17 +202,12 @@ class OperatorBracketSniff implements Sniff
         }//end if
 
         if ($lastBracket === false) {
-            // It is not in a bracketed statement at all.
             $this->addMissingBracketsError($phpcsFile, $stackPtr);
             return;
         } else if ($tokens[$lastBracket]['parenthesis_closer'] < $stackPtr) {
-            // There are a set of brackets in front of it that don't include it.
             $this->addMissingBracketsError($phpcsFile, $stackPtr);
             return;
         } else {
-            // We are enclosed in a set of bracket, so the last thing to
-            // check is that we are not also enclosed in square brackets
-            // like this: ($array[$index + 1]), which is invalid.
             $brackets = [
                 T_OPEN_SQUARE_BRACKET,
                 T_CLOSE_SQUARE_BRACKET,
@@ -295,10 +266,7 @@ class OperatorBracketSniff implements Sniff
             T_BITWISE_NOT              => true,
         ];
 
-        // Find the first token in the expression.
         for ($before = ($stackPtr - 1); $before > 0; $before--) {
-            // Special case for plus operators because we can't tell if they are used
-            // for addition or string contact. So assume string concat to be safe.
             if ($phpcsFile->tokenizerType === 'JS' && $tokens[$before]['code'] === T_PLUS) {
                 break;
             }
@@ -331,14 +299,10 @@ class OperatorBracketSniff implements Sniff
 
         $before = $phpcsFile->findNext(Tokens::$emptyTokens, ($before + 1), null, true);
 
-        // A few extra tokens are allowed to be on the right side of the expression.
         $allowed[T_EQUAL] = true;
         $allowed[T_NEW]   = true;
 
-        // Find the last token in the expression.
         for ($after = ($stackPtr + 1); $after < $phpcsFile->numTokens; $after++) {
-            // Special case for plus operators because we can't tell if they are used
-            // for addition or string concat. So assume string concat to be safe.
             if ($phpcsFile->tokenizerType === 'JS' && $tokens[$after]['code'] === T_PLUS) {
                 break;
             }
@@ -353,7 +317,6 @@ class OperatorBracketSniff implements Sniff
 
             if ($tokens[$after]['code'] === T_OPEN_PARENTHESIS) {
                 if (isset($tokens[$after]['parenthesis_closer']) === false) {
-                    // Live coding/parse error. Ignore.
                     return;
                 }
 
@@ -365,7 +328,6 @@ class OperatorBracketSniff implements Sniff
                 || $tokens[$after]['code'] === T_OPEN_SHORT_ARRAY)
             ) {
                 if (isset($tokens[$after]['bracket_closer']) === false) {
-                    // Live coding/parse error. Ignore.
                     return;
                 }
 
@@ -386,8 +348,6 @@ class OperatorBracketSniff implements Sniff
 
         $fix = $phpcsFile->addFixableError($error, $stackPtr, 'MissingBrackets');
         if ($fix === true) {
-            // Can only fix this error if both tokens are available for fixing.
-            // Adding one bracket without the other will create parse errors.
             $phpcsFile->fixer->beginChangeset();
             $phpcsFile->fixer->replaceToken($before, '('.$tokens[$before]['content']);
             $phpcsFile->fixer->replaceToken($after, $tokens[$after]['content'].')');

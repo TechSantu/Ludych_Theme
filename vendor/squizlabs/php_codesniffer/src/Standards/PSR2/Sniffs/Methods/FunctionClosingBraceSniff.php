@@ -45,7 +45,6 @@ class FunctionClosingBraceSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
 
         if (isset($tokens[$stackPtr]['scope_closer']) === false) {
-            // Probably an interface method.
             return;
         }
 
@@ -54,12 +53,10 @@ class FunctionClosingBraceSniff implements Sniff
         $found       = ($tokens[$closeBrace]['line'] - $tokens[$prevContent]['line'] - 1);
 
         if ($found < 0) {
-            // Brace isn't on a new line, so not handled by us.
             return;
         }
 
         if ($found === 0) {
-            // All is good.
             return;
         }
 
@@ -74,7 +71,6 @@ class FunctionClosingBraceSniff implements Sniff
                     continue;
                 }
 
-                // Don't remove any indentation before the brace.
                 if ($tokens[$i]['line'] === $tokens[$closeBrace]['line']) {
                     break;
                 }

@@ -42,7 +42,6 @@ class ForbiddenCallTimePassByReferenceSniff extends Sniff
      * @var array
      */
     private $assignOrCompare = array(
-        // Equality tokens.
         'T_IS_EQUAL'            => true,
         'T_IS_NOT_EQUAL'        => true,
         'T_IS_IDENTICAL'        => true,
@@ -50,7 +49,6 @@ class ForbiddenCallTimePassByReferenceSniff extends Sniff
         'T_IS_SMALLER_OR_EQUAL' => true,
         'T_IS_GREATER_OR_EQUAL' => true,
 
-        // Assignment tokens.
         'T_EQUAL'          => true,
         'T_AND_EQUAL'      => true,
         'T_OR_EQUAL'       => true,
@@ -103,10 +101,6 @@ class ForbiddenCallTimePassByReferenceSniff extends Sniff
 
         $tokens = $phpcsFile->getTokens();
 
-        // Skip tokens that are the names of functions or classes
-        // within their definitions. For example: function myFunction...
-        // "myFunction" is T_STRING but we should skip because it is not a
-        // function or method *call*.
         $findTokens   = Tokens::$emptyTokens;
         $findTokens[] = \T_BITWISE_AND;
 
@@ -121,8 +115,6 @@ class ForbiddenCallTimePassByReferenceSniff extends Sniff
             return;
         }
 
-        // If the next non-whitespace token after the function or method call
-        // is not an opening parenthesis then it can't really be a *call*.
         $openBracket = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
 
         if ($openBracket === false || $tokens[$openBracket]['code'] !== \T_OPEN_PARENTHESIS
@@ -131,13 +123,11 @@ class ForbiddenCallTimePassByReferenceSniff extends Sniff
             return;
         }
 
-        // Get the function call parameters.
         $parameters = $this->getFunctionCallParameters($phpcsFile, $stackPtr);
         if (\count($parameters) === 0) {
             return;
         }
 
-        // Which nesting level is the one we are interested in ?
         $nestedParenthesisCount = 1;
         if (isset($tokens[$openBracket]['nested_parenthesis'])) {
             $nestedParenthesisCount = \count($tokens[$openBracket]['nested_parenthesis']) + 1;
@@ -145,7 +135,6 @@ class ForbiddenCallTimePassByReferenceSniff extends Sniff
 
         foreach ($parameters as $parameter) {
             if ($this->isCallTimePassByReferenceParam($phpcsFile, $parameter, $nestedParenthesisCount) === true) {
-                // T_BITWISE_AND represents a pass-by-reference.
                 $error     = 'Using a call-time pass-by-reference is deprecated since PHP 5.3';
                 $isError   = false;
                 $errorCode = 'Deprecated';
@@ -187,37 +176,30 @@ class ForbiddenCallTimePassByReferenceSniff extends Sniff
                 return false;
             }
 
-            // Ignore anything within short array definition brackets.
             if ($tokens[$nextVariable]['type'] === 'T_OPEN_SHORT_ARRAY'
                 && (isset($tokens[$nextVariable]['bracket_opener'])
                     && $tokens[$nextVariable]['bracket_opener'] === $nextVariable)
                 && isset($tokens[$nextVariable]['bracket_closer'])
             ) {
-                // Skip forward to the end of the short array definition.
                 $nextVariable = $tokens[$nextVariable]['bracket_closer'];
                 continue;
             }
 
-            // Skip past closures passed as function parameters.
             if ($tokens[$nextVariable]['type'] === 'T_CLOSURE'
                 && (isset($tokens[$nextVariable]['scope_condition'])
                     && $tokens[$nextVariable]['scope_condition'] === $nextVariable)
                 && isset($tokens[$nextVariable]['scope_closer'])
             ) {
-                // Skip forward to the end of the closure declaration.
                 $nextVariable = $tokens[$nextVariable]['scope_closer'];
                 continue;
             }
 
-            // Make sure the variable belongs directly to this function call
-            // and is not inside a nested function call or array.
             if (isset($tokens[$nextVariable]['nested_parenthesis']) === false
                 || (\count($tokens[$nextVariable]['nested_parenthesis']) !== $nestingLevel)
             ) {
                 continue;
             }
 
-            // Checking this: $value = my_function(...[*]$arg...).
             $tokenBefore = $phpcsFile->findPrevious(
                 Tokens::$emptyTokens,
                 ($nextVariable - 1),
@@ -226,7 +208,6 @@ class ForbiddenCallTimePassByReferenceSniff extends Sniff
             );
 
             if ($tokenBefore === false || $tokens[$tokenBefore]['code'] !== \T_BITWISE_AND) {
-                // Nothing before the token or no &.
                 continue;
             }
 
@@ -234,7 +215,6 @@ class ForbiddenCallTimePassByReferenceSniff extends Sniff
                 continue;
             }
 
-            // Checking this: $value = my_function(...[*]&$arg...).
             $tokenBefore = $phpcsFile->findPrevious(
                 Tokens::$emptyTokens,
                 ($tokenBefore - 1),
@@ -242,18 +222,14 @@ class ForbiddenCallTimePassByReferenceSniff extends Sniff
                 true
             );
 
-            // Prevent false positive on assign by reference and compare with reference
-            // within function call parameters.
             if (isset($this->assignOrCompare[$tokens[$tokenBefore]['type']])) {
                 continue;
             }
 
-            // The found T_BITWISE_AND represents a pass-by-reference.
             return true;
 
         } while ($nextVariable < $searchEndToken);
 
-        // This code should never be reached, but here in case of weird bugs.
         return false;
     }
 }

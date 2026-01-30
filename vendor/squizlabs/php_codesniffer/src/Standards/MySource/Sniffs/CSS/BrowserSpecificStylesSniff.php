@@ -66,7 +66,6 @@ class BrowserSpecificStylesSniff implements Sniff, DeprecatedSniff
      */
     public function process(File $phpcsFile, $stackPtr)
     {
-        // Ignore files with browser-specific suffixes.
         $filename  = $phpcsFile->getFilename();
         $breakChar = strrpos($filename, '_');
         if ($breakChar !== false && substr($filename, -4) === '.css') {

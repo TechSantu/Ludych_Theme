@@ -75,18 +75,15 @@ class ForbiddenToStringParametersSniff extends Sniff
 
         $functionName = $phpcsFile->getDeclarationName($stackPtr);
         if (strtolower($functionName) !== '__tostring') {
-            // Not the right function.
             return;
         }
 
         if ($this->validDirectScope($phpcsFile, $stackPtr, $this->ooScopeTokens) === false) {
-            // Function, not method.
             return;
         }
 
         $params = PHPCSHelper::getMethodParameters($phpcsFile, $stackPtr);
         if (empty($params)) {
-            // Function declared without parameters.
             return;
         }
 

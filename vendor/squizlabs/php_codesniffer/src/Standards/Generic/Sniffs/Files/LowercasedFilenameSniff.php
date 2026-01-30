@@ -61,7 +61,6 @@ class LowercasedFilenameSniff implements Sniff
             $phpcsFile->recordMetric($stackPtr, 'Lowercase filename', 'yes');
         }
 
-        // Ignore the rest of the file.
         return $phpcsFile->numTokens;
 
     }//end process()

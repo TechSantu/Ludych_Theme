@@ -113,17 +113,13 @@ final class BCFile
         if ($tokenCode === T_FUNCTION
             && strtolower($tokens[$stackPtr]['content']) !== 'function'
         ) {
-            // This is a function declared without the "function" keyword.
-            // So this token is the function name.
             return $tokens[$stackPtr]['content'];
         }
 
         $stopPoint = $phpcsFile->numTokens;
         if (isset($tokens[$stackPtr]['parenthesis_opener']) === true) {
-            // For functions, stop searching at the parenthesis opener.
             $stopPoint = $tokens[$stackPtr]['parenthesis_opener'];
         } elseif (isset($tokens[$stackPtr]['scope_opener']) === true) {
-            // For OO tokens, stop searching at the open curly.
             $stopPoint = $tokens[$stackPtr]['scope_opener'];
         }
 
@@ -228,14 +224,12 @@ final class BCFile
             $opener = $phpcsFile->findNext(T_OPEN_PARENTHESIS, ($stackPtr + 1));
             if ($opener === false
                 || (isset($tokens[$opener]['parenthesis_owner']) === true
-                // BC: as of PHPCS 4.x, closure use tokens are parentheses owners.
                 && $tokens[$opener]['parenthesis_owner'] !== $stackPtr)
             ) {
                 throw new RuntimeException('$stackPtr was not a valid T_USE');
             }
         } else {
             if (isset($tokens[$stackPtr]['parenthesis_opener']) === false) {
-                // Live coding or syntax error, so no params to find.
                 return [];
             }
 
@@ -243,7 +237,6 @@ final class BCFile
         }
 
         if (isset($tokens[$opener]['parenthesis_closer']) === false) {
-            // Live coding or syntax error, so no params to find.
             return [];
         }
 
@@ -269,21 +262,15 @@ final class BCFile
         $readonlyToken      = null;
 
         for ($i = $paramStart; $i <= $closer; $i++) {
-            // Check to see if this token has a parenthesis or bracket opener. If it does
-            // it's likely to be an array which might have arguments in it. This
-            // could cause problems in our parsing below, so lets just skip to the
-            // end of it.
             if ($tokens[$i]['code'] !== T_TYPE_OPEN_PARENTHESIS
                 && isset($tokens[$i]['parenthesis_opener']) === true
             ) {
-                // Don't do this if it's the close parenthesis for the method.
                 if ($i !== $tokens[$i]['parenthesis_closer']) {
                     $i = ($tokens[$i]['parenthesis_closer'] + 1);
                 }
             }
 
             if (isset($tokens[$i]['bracket_opener']) === true) {
-                // Don't do this if it's the close parenthesis for the method.
                 if ($i !== $tokens[$i]['bracket_closer']) {
                     $i = ($tokens[$i]['bracket_closer'] + 1);
                 }
@@ -293,7 +280,6 @@ final class BCFile
                 case T_ATTRIBUTE:
                     $hasAttributes = true;
 
-                    // Skip to the end of the attribute.
                     $i = $tokens[$i]['attribute_closer'];
                     break;
                 case T_BITWISE_AND:
@@ -320,7 +306,6 @@ final class BCFile
                 case T_SELF:
                 case T_PARENT:
                 case T_STATIC:
-                    // Self and parent are valid, static invalid, but was probably intended as type hint.
                     if (isset($defaultStart) === false) {
                         if ($typeHintToken === false) {
                             $typeHintToken = $i;
@@ -334,8 +319,6 @@ final class BCFile
                 case T_NAME_QUALIFIED:
                 case T_NAME_FULLY_QUALIFIED:
                 case T_NAME_RELATIVE:
-                    // This is an identifier name, so it may be a type declaration, but it could
-                    // also be a constant used as a default value.
                     $prevComma = false;
                     for ($t = $i; $t >= $opener; $t--) {
                         if ($tokens[$t]['code'] === T_COMMA) {
@@ -376,7 +359,6 @@ final class BCFile
                 case T_FALSE:
                 case T_TRUE:
                 case T_NULL:
-                    // Part of a type hint or default value.
                     if ($defaultStart === null) {
                         if ($typeHintToken === false) {
                             $typeHintToken = $i;
@@ -414,8 +396,6 @@ final class BCFile
                     break;
                 case T_CLOSE_PARENTHESIS:
                 case T_COMMA:
-                    // If it's null, then there must be no parameters for this
-                    // method.
                     if ($currVar === null) {
                         continue 2;
                     }
@@ -468,7 +448,6 @@ final class BCFile
                         $vars[$paramCount]['comma_token'] = false;
                     }
 
-                    // Reset the vars, as we are about to process the next parameter.
                     $currVar            = null;
                     $paramStart         = ($i + 1);
                     $defaultStart       = null;
@@ -617,7 +596,6 @@ final class BCFile
             throw new RuntimeException('$stackPtr is not a class member var');
         }
 
-        // Make sure it's not a method parameter.
         if (empty($tokens[$stackPtr]['nested_parenthesis']) === false) {
             $parenthesis = array_keys($tokens[$stackPtr]['nested_parenthesis']);
             $deepestOpen = array_pop($parenthesis);
@@ -706,12 +684,10 @@ final class BCFile
         $nullableType = false;
 
         if ($i < $stackPtr) {
-            // We've found a type.
             $valid = Collections::propertyTypeTokens();
 
             for ($i; $i < $stackPtr; $i++) {
                 if ($tokens[$i]['code'] === T_VARIABLE) {
-                    // Hit another variable in a group definition.
                     break;
                 }
 
@@ -969,7 +945,6 @@ final class BCFile
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Check for the existence of the token.
         if (isset($tokens[$stackPtr]) === false) {
             return false;
         }
@@ -1029,7 +1004,6 @@ final class BCFile
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Check for the existence of the token.
         if (isset($tokens[$stackPtr]) === false) {
             return false;
         }

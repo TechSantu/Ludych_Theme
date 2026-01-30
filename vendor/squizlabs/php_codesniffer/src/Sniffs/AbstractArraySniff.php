@@ -49,7 +49,6 @@ abstract class AbstractArraySniff implements Sniff
 
             $arrayStart = $tokens[$stackPtr]['parenthesis_opener'];
             if (isset($tokens[$arrayStart]['parenthesis_closer']) === false) {
-                // Incomplete array.
                 return;
             }
 
@@ -62,7 +61,6 @@ abstract class AbstractArraySniff implements Sniff
 
         $lastContent = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($arrayEnd - 1), null, true);
         if ($tokens[$lastContent]['code'] === T_COMMA) {
-            // Last array item ends with a comma.
             $phpcsFile->recordMetric($stackPtr, 'Array end comma', 'yes');
         } else {
             $phpcsFile->recordMetric($stackPtr, 'Array end comma', 'no');

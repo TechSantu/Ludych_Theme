@@ -37,14 +37,12 @@ class GetTaxonomiesDynamicFunctionReturnTypeExtension implements \PHPStan\Type\D
 
         $args = $functionCall->getArgs();
 
-        // Called without second $output arguments
         if (count($args) <= 1) {
             return $namesReturnType;
         }
 
         $argumentType = $scope->getType($args[1]->value);
 
-        // When called with a non-string $output, return default return type
         if (count($argumentType->getConstantStrings()) === 0) {
             return TypeCombinator::union(
                 $objectsReturnType,
@@ -52,7 +50,6 @@ class GetTaxonomiesDynamicFunctionReturnTypeExtension implements \PHPStan\Type\D
             );
         }
 
-        // Called with a string $output
         $returnType = [];
         foreach ($argumentType->getConstantStrings() as $constantString) {
             switch ($constantString->getValue()) {

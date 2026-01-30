@@ -67,12 +67,9 @@ class LineEndingsSniff implements Sniff
         $phpcsFile->recordMetric($stackPtr, 'EOL char', $found);
 
         if ($found === $this->eolChar) {
-            // Ignore the rest of the file.
             return $phpcsFile->numTokens;
         }
 
-        // Check for single line files without an EOL. This is a very special
-        // case and the EOL char is set to \n when this happens.
         if ($found === '\n') {
             $tokens    = $phpcsFile->getTokens();
             $lastToken = ($phpcsFile->numTokens - 1);
@@ -92,7 +89,6 @@ class LineEndingsSniff implements Sniff
             $found,
         ];
 
-        // Errors are always reported on line 1, no matter where the first PHP tag is.
         $fix = $phpcsFile->addFixableError($error, 0, 'InvalidEOLChar', $data);
 
         if ($fix === true) {
@@ -119,7 +115,6 @@ class LineEndingsSniff implements Sniff
                     continue;
                 }
 
-                // Token is the last on a line.
                 if (isset($tokens[$i]['orig_content']) === true) {
                     $tokenContent = $tokens[$i]['orig_content'];
                 } else {
@@ -127,7 +122,6 @@ class LineEndingsSniff implements Sniff
                 }
 
                 if ($tokenContent === '') {
-                    // Special case for JS/CSS close tag.
                     continue;
                 }
 
@@ -139,7 +133,6 @@ class LineEndingsSniff implements Sniff
             }//end for
         }//end if
 
-        // Ignore the rest of the file.
         return $phpcsFile->numTokens;
 
     }//end process()

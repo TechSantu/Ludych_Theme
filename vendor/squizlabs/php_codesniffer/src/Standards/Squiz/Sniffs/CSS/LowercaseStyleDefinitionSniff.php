@@ -55,7 +55,6 @@ class LowercaseStyleDefinitionSniff implements Sniff, DeprecatedSniff
         $inStyle = null;
 
         for ($i = $start; $i <= $end; $i++) {
-            // Skip nested definitions as they are checked individually.
             if ($tokens[$i]['code'] === T_OPEN_CURLY_BRACKET) {
                 $i = $tokens[$i]['bracket_closer'];
                 continue;
@@ -70,7 +69,6 @@ class LowercaseStyleDefinitionSniff implements Sniff, DeprecatedSniff
             }
 
             if ($inStyle === 'progid') {
-                // Special case for IE filters.
                 continue;
             }
 

@@ -55,13 +55,11 @@ class UnnecessaryFinalModifierSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
         $token  = $tokens[$stackPtr];
 
-        // Skip for statements without body.
         if (isset($token['scope_opener']) === false) {
             return;
         }
 
         if ($phpcsFile->getClassProperties($stackPtr)['is_final'] === false) {
-            // This class is not final so we don't need to check it.
             return;
         }
 
@@ -74,7 +72,6 @@ class UnnecessaryFinalModifierSniff implements Sniff
                 $phpcsFile->addWarning($error, $next, 'Found');
             }
 
-            // Skip over the contents of functions as those can't contain the `final` keyword anyway.
             if ($tokens[$next]['code'] === T_FUNCTION
                 && isset($tokens[$next]['scope_closer']) === true
             ) {

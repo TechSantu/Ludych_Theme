@@ -34,22 +34,17 @@ class Full implements Report
     public function generateFileReport($report, File $phpcsFile, $showSources=false, $width=80)
     {
         if ($report['errors'] === 0 && $report['warnings'] === 0) {
-            // Nothing to print.
             return false;
         }
 
-        // The length of the word ERROR or WARNING; used for padding.
         if ($report['warnings'] > 0) {
             $typeLength = 7;
         } else {
             $typeLength = 5;
         }
 
-        // Work out the max line number length for formatting.
         $maxLineNumLength = max(array_map('strlen', array_keys($report['messages'])));
 
-        // The padding that all lines will require that are
-        // printing an error message overflow.
         $paddingLine2  = str_repeat(' ', ($maxLineNumLength + 1));
         $paddingLine2 .= ' | ';
         $paddingLine2 .= str_repeat(' ', $typeLength);
@@ -60,19 +55,16 @@ class Full implements Report
 
         $paddingLength = strlen($paddingLine2);
 
-        // Make sure the report width isn't too big.
         $maxErrorLength = 0;
         foreach ($report['messages'] as $lineErrors) {
             foreach ($lineErrors as $colErrors) {
                 foreach ($colErrors as $error) {
-                    // Start with the presumption of a single line error message.
                     $length    = strlen($error['message']);
                     $srcLength = (strlen($error['source']) + 3);
                     if ($showSources === true) {
                         $length += $srcLength;
                     }
 
-                    // ... but also handle multi-line messages correctly.
                     if (strpos($error['message'], "\n") !== false) {
                         $errorLines = explode("\n", $error['message']);
                         $length     = max(array_map('strlen', $errorLines));
@@ -126,7 +118,6 @@ class Full implements Report
         echo "\033[0m".PHP_EOL;
         echo str_repeat('-', $width).PHP_EOL;
 
-        // The maximum amount of space an error message can use.
         $maxErrorSpace = ($width - $paddingLength - 1);
 
         $beforeMsg = '';
@@ -146,8 +137,6 @@ class Full implements Report
                         $maxErrorSpace
                     );
 
-                    // Add the padding _after_ the wordwrap as the message itself may contain line breaks
-                    // and those lines will also need to receive padding.
                     $errorMsg = str_replace("\n", $afterMsg.PHP_EOL.$paddingLine2.$beforeMsg, $errorMsg);
                     $errorMsg = $beforeMsg.$errorMsg.$afterMsg;
 
@@ -155,17 +144,13 @@ class Full implements Report
                         $lastMsg          = $errorMsg;
                         $startPosLastLine = strrpos($errorMsg, PHP_EOL.$paddingLine2.$beforeMsg);
                         if ($startPosLastLine !== false) {
-                            // Message is multiline. Grab the text of last line of the message, including the color codes.
                             $lastMsg = substr($errorMsg, ($startPosLastLine + strlen(PHP_EOL.$paddingLine2)));
                         }
 
-                        // When show sources is used, the message itself will be bolded, so we need to correct the length.
                         $sourceSuffix = '('.$error['source'].')';
 
                         $lastMsgPlusSourceLength = strlen($lastMsg);
-                        // Add space + source suffix length.
                         $lastMsgPlusSourceLength += (1 + strlen($sourceSuffix));
-                        // Correct for the color codes.
                         $lastMsgPlusSourceLength -= $beforeAfterLength;
 
                         if ($lastMsgPlusSourceLength > $maxErrorSpace) {
@@ -175,7 +160,6 @@ class Full implements Report
                         }
                     }//end if
 
-                    // The padding that goes on the front of the line.
                     $padding = ($maxLineNumLength - strlen($line));
 
                     echo ' '.str_repeat(' ', $padding).$line.' | ';

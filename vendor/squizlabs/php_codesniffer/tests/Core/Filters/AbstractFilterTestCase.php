@@ -63,10 +63,6 @@ abstract class AbstractFilterTestCase extends TestCase
      */
     public static function reset()
     {
-        // Explicitly trigger __destruct() on the ConfigDouble to reset the Config statics.
-        // The explicit method call prevents potential stray test-local references to the $config object
-        // preventing the destructor from running the clean up (which without stray references would be
-        // automagically triggered when `self::$phpcsFile` is reset, but we can't definitively rely on that).
         if (isset(self::$config) === true) {
             self::$config->__destruct();
         }
@@ -97,7 +93,6 @@ abstract class AbstractFilterTestCase extends TestCase
         $mockedObj = $this->getMockBuilder($className);
 
         if (method_exists($mockedObj, 'onlyMethods') === true) {
-            // PHPUnit 8+.
             if (is_array($methodsToMock) === true) {
                 return $mockedObj
                     ->setConstructorArgs($constructorArgs)
@@ -109,7 +104,6 @@ abstract class AbstractFilterTestCase extends TestCase
                 ->setConstructorArgs($constructorArgs);
         }
 
-        // PHPUnit < 8.
         return $mockedObj
             ->setConstructorArgs($constructorArgs)
             ->setMethods($methodsToMock)
@@ -194,7 +188,6 @@ abstract class AbstractFilterTestCase extends TestCase
             $basedir.'/src/Standards/Generic/Tests',
             $basedir.'/src/Standards/Generic/Tests/Classes',
             $basedir.'/src/Standards/Generic/Tests/Classes/DuplicateClassNameUnitTest.1.inc',
-            // Will rarely exist when running the tests.
             $basedir.'/src/Standards/Generic/Tests/Classes/DuplicateClassNameUnitTest.1.inc.bak',
             $basedir.'/src/Standards/Generic/Tests/Classes/DuplicateClassNameUnitTest.2.inc',
             $basedir.'/src/Standards/Generic/Tests/Classes/DuplicateClassNameUnitTest.php',

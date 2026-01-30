@@ -59,7 +59,6 @@ final class FirstClassCallableSpacingSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Verify this is an ellipsis for a first class callable.
         $previousNonEmpty = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($stackPtr - 1), null, true);
         if ($tokens[$previousNonEmpty]['code'] !== \T_OPEN_PARENTHESIS) {
             return;
@@ -72,7 +71,6 @@ final class FirstClassCallableSpacingSniff implements Sniff
 
         $spacing = (int) $this->spacing;
 
-        // Check spacing before the ellipsis.
         SpacesFixer::checkAndFix(
             $phpcsFile,
             $previousNonEmpty,
@@ -85,7 +83,6 @@ final class FirstClassCallableSpacingSniff implements Sniff
             'First class callables: space before ellipsis'
         );
 
-        // Check spacing after the ellipsis.
         SpacesFixer::checkAndFix(
             $phpcsFile,
             $stackPtr,

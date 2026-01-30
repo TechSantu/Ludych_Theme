@@ -40,7 +40,6 @@ final class FindStartOfStatementTest extends AbstractMethodUnitTest
 
             $start = self::$phpcsFile->findStartOfStatement($i);
 
-            // Collect all the errors.
             if ($start > $i) {
                 $errors[] = sprintf(
                     'Start of statement for token %1$d (%2$s: %3$s) on line %4$d is %5$d (%6$s), which is more than %1$d',
@@ -141,19 +140,16 @@ final class FindStartOfStatementTest extends AbstractMethodUnitTest
      */
     public function testHeredocFunctionArg()
     {
-        // Find the start of the function.
         $start = $this->getTargetToken('/* testHeredocFunctionArg */', T_SEMICOLON);
         $found = self::$phpcsFile->findStartOfStatement($start);
 
         $this->assertSame(($start - 10), $found);
 
-        // Find the start of the heredoc.
         $start -= 4;
         $found  = self::$phpcsFile->findStartOfStatement($start);
 
         $this->assertSame(($start - 4), $found);
 
-        // Find the start of the last arg.
         $start += 2;
         $found  = self::$phpcsFile->findStartOfStatement($start);
 
@@ -169,31 +165,26 @@ final class FindStartOfStatementTest extends AbstractMethodUnitTest
      */
     public function testSwitch()
     {
-        // Find the start of the switch.
         $start = $this->getTargetToken('/* testSwitch */', T_CLOSE_CURLY_BRACKET);
         $found = self::$phpcsFile->findStartOfStatement($start);
 
         $this->assertSame(($start - 47), $found);
 
-        // Find the start of default case.
         $start -= 5;
         $found  = self::$phpcsFile->findStartOfStatement($start);
 
         $this->assertSame(($start - 6), $found);
 
-        // Find the start of the second case.
         $start -= 12;
         $found  = self::$phpcsFile->findStartOfStatement($start);
 
         $this->assertSame(($start - 5), $found);
 
-        // Find the start of the first case.
         $start -= 13;
         $found  = self::$phpcsFile->findStartOfStatement($start);
 
         $this->assertSame(($start - 8), $found);
 
-        // Test inside the first case.
         $start--;
         $found = self::$phpcsFile->findStartOfStatement($start);
 
@@ -209,25 +200,21 @@ final class FindStartOfStatementTest extends AbstractMethodUnitTest
      */
     public function testStatementAsArrayValue()
     {
-        // Test short array syntax.
         $start = $this->getTargetToken('/* testStatementAsArrayValue */', T_STRING, 'Datetime');
         $found = self::$phpcsFile->findStartOfStatement($start);
 
         $this->assertSame(($start - 2), $found);
 
-        // Test long array syntax.
         $start += 12;
         $found  = self::$phpcsFile->findStartOfStatement($start);
 
         $this->assertSame(($start - 2), $found);
 
-        // Test same statement outside of array.
         $start++;
         $found = self::$phpcsFile->findStartOfStatement($start);
 
         $this->assertSame(($start - 9), $found);
 
-        // Test with an array index.
         $start += 17;
         $found  = self::$phpcsFile->findStartOfStatement($start);
 
@@ -420,13 +407,11 @@ final class FindStartOfStatementTest extends AbstractMethodUnitTest
      */
     public function testMatchFunctionCallArm()
     {
-        // Check the first case.
         $start = $this->getTargetToken('/* testMatchFunctionCallArm */', T_MATCH_ARROW);
         $found = self::$phpcsFile->findStartOfStatement($start);
 
         $this->assertSame(($start - 18), $found);
 
-        // Check the second case.
         $start += 24;
         $found  = self::$phpcsFile->findStartOfStatement($start);
 
@@ -463,22 +448,18 @@ final class FindStartOfStatementTest extends AbstractMethodUnitTest
      */
     public function testMatchArray()
     {
-        // Start of first case statement.
         $start = $this->getTargetToken('/* testMatchArray */', T_LNUMBER);
         $found = self::$phpcsFile->findStartOfStatement($start);
         $this->assertSame($start, $found);
 
-        // Comma after first statement.
         $start += 11;
         $found  = self::$phpcsFile->findStartOfStatement($start);
         $this->assertSame(($start - 7), $found);
 
-        // Start of second case statement.
         $start += 3;
         $found  = self::$phpcsFile->findStartOfStatement($start);
         $this->assertSame($start, $found);
 
-        // Comma after first statement.
         $start += 30;
         $found  = self::$phpcsFile->findStartOfStatement($start);
         $this->assertSame(($start - 26), $found);
@@ -639,7 +620,6 @@ final class FindStartOfStatementTest extends AbstractMethodUnitTest
                 'expectedTarget' => T_RETURN,
             ],
             'Exit should be start for contents of the exit statement - close parenthesis'             => [
-                // Note: not sure if this is actually correct - should this be the open parenthesis ?
                 'testMarker'     => '/* testInsideCaseExitStatement */',
                 'targets'        => T_CLOSE_PARENTHESIS,
                 'expectedTarget' => T_EXIT,
@@ -670,7 +650,6 @@ final class FindStartOfStatementTest extends AbstractMethodUnitTest
                 'expectedTarget' => T_GOTO,
             ],
             'Namespace separator for "die" should be start for contents - close parenthesis'          => [
-                // Note: not sure if this is actually correct - should this be the open parenthesis ?
                 'testMarker'     => '/* testInsideCaseFullyQualifiedDieStatement */',
                 'targets'        => T_CLOSE_PARENTHESIS,
                 'expectedTarget' => T_NS_SEPARATOR,
@@ -723,7 +702,6 @@ final class FindStartOfStatementTest extends AbstractMethodUnitTest
     public static function dataFindStartInsideClosedScopeNestedWithinMatch()
     {
         return [
-            // These were already working correctly.
             'Closure function keyword should be start of closure - closure keyword'                   => [
                 'testMarker'     => '/* test437ClosureDeclaration */',
                 'target'         => T_CLOSURE,
@@ -751,7 +729,6 @@ final class FindStartOfStatementTest extends AbstractMethodUnitTest
                 'expectedTarget' => T_ECHO,
             ],
 
-            // These were not working correctly and would previously return the close curly of the match expression.
             'First token after comma in echo expression should be start for expression - text string' => [
                 'testMarker'     => '/* test437EchoNestedWithinClosureWithinMatch */',
                 'target'         => T_CONSTANT_ENCAPSED_STRING,

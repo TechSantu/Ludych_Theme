@@ -52,7 +52,6 @@ class InlineHTMLSniff implements Sniff
      */
     public function process(File $phpcsFile, $stackPtr)
     {
-        // Allow a byte-order mark.
         $tokens = $phpcsFile->getTokens();
         foreach ($this->bomDefinitions as $expectedBomHex) {
             $bomByteLength = (strlen($expectedBomHex) / 2);
@@ -62,7 +61,6 @@ class InlineHTMLSniff implements Sniff
             }
         }
 
-        // Ignore shebang lines.
         $tokens = $phpcsFile->getTokens();
         if (substr($tokens[$stackPtr]['content'], 0, 2) === '#!') {
             return;

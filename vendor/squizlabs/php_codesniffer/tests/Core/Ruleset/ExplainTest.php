@@ -29,7 +29,6 @@ final class ExplainTest extends TestCase
      */
     public function testExplain()
     {
-        // Set up the ruleset.
         $config  = new ConfigDouble(['--standard=PSR1', '-e']);
         $ruleset = new Ruleset($config);
 
@@ -64,7 +63,6 @@ final class ExplainTest extends TestCase
      */
     public function testExplainAlwaysDisplaysCompleteSniffName()
     {
-        // Set up the ruleset.
         $config  = new ConfigDouble(['--standard=PSR1', '-e', '--report-width=30']);
         $ruleset = new Ruleset($config);
 
@@ -101,7 +99,6 @@ final class ExplainTest extends TestCase
      */
     public function testExplainSingleSniff()
     {
-        // Set up the ruleset.
         $standard = __DIR__.'/ExplainSingleSniffTest.xml';
         $config   = new ConfigDouble(["--standard=$standard", '-e']);
         $ruleset  = new Ruleset($config);
@@ -132,7 +129,6 @@ final class ExplainTest extends TestCase
      */
     public function testExplainCustomRuleset()
     {
-        // Set up the ruleset.
         $standard = __DIR__.'/ExplainCustomRulesetTest.xml';
         $config   = new ConfigDouble(["--standard=$standard", '-e']);
         $ruleset  = new Ruleset($config);
@@ -178,7 +174,6 @@ final class ExplainTest extends TestCase
      */
     public function testExplainWithDeprecatedSniffs()
     {
-        // Set up the ruleset.
         $standard = __DIR__."/ShowSniffDeprecationsTest.xml";
         $config   = new ConfigDouble(["--standard=$standard", '-e']);
         $ruleset  = new Ruleset($config);

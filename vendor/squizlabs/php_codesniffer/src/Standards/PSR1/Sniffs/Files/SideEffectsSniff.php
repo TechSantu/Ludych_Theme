@@ -55,7 +55,6 @@ class SideEffectsSniff implements Sniff
             $phpcsFile->recordMetric($stackPtr, 'Declarations and side effects mixed', 'no');
         }
 
-        // Ignore the rest of the file.
         return $phpcsFile->numTokens;
 
     }//end process()
@@ -97,7 +96,6 @@ class SideEffectsSniff implements Sniff
         $firstSymbol = null;
         $firstEffect = null;
         for ($i = $start; $i <= $end; $i++) {
-            // Respect phpcs:disable comments.
             if ($checkAnnotations === true
                 && $tokens[$i]['code'] === T_PHPCS_DISABLE
                 && (empty($tokens[$i]['sniffCodes']) === true
@@ -116,37 +114,30 @@ class SideEffectsSniff implements Sniff
                     && isset($tokens[$i]['sniffCodes']['PSR1.Files.SideEffects.FoundWithSymbols']) === false);
 
                 if ($i === false) {
-                    // The entire rest of the file is disabled,
-                    // so return what we have so far.
                     break;
                 }
 
                 continue;
             }
 
-            // Ignore whitespace and comments.
             if (isset(Tokens::$emptyTokens[$tokens[$i]['code']]) === true) {
                 continue;
             }
 
-            // Ignore PHP tags.
             if ($tokens[$i]['code'] === T_OPEN_TAG
                 || $tokens[$i]['code'] === T_CLOSE_TAG
             ) {
                 continue;
             }
 
-            // Ignore shebang.
             if (substr($tokens[$i]['content'], 0, 2) === '#!') {
                 continue;
             }
 
-            // Ignore logical operators.
             if (isset(Tokens::$booleanOperators[$tokens[$i]['code']]) === true) {
                 continue;
             }
 
-            // Ignore entire namespace, declare, const and use statements.
             if ($tokens[$i]['code'] === T_NAMESPACE
                 || $tokens[$i]['code'] === T_USE
                 || $tokens[$i]['code'] === T_DECLARE
@@ -170,20 +161,17 @@ class SideEffectsSniff implements Sniff
                 continue;
             }
 
-            // Ignore function/class prefixes.
             if (isset(Tokens::$methodPrefixes[$tokens[$i]['code']]) === true
                 || $tokens[$i]['code'] === T_READONLY
             ) {
                 continue;
             }
 
-            // Ignore anon classes.
             if ($tokens[$i]['code'] === T_ANON_CLASS) {
                 $i = $tokens[$i]['scope_closer'];
                 continue;
             }
 
-            // Ignore attributes.
             if ($tokens[$i]['code'] === T_ATTRIBUTE
                 && isset($tokens[$i]['attribute_closer']) === true
             ) {
@@ -191,7 +179,6 @@ class SideEffectsSniff implements Sniff
                 continue;
             }
 
-            // Detect and skip over symbols.
             if (isset($symbols[$tokens[$i]['code']]) === true
                 && isset($tokens[$i]['scope_closer']) === true
             ) {
@@ -223,9 +210,6 @@ class SideEffectsSniff implements Sniff
                 }
             }//end if
 
-            // Special case for defined() as it can be used to see
-            // if a constant (a symbol) should be defined or not and
-            // doesn't need to use a full conditional block.
             if ($tokens[$i]['code'] === T_STRING
                 && strtolower($tokens[$i]['content']) === 'defined'
             ) {
@@ -246,12 +230,8 @@ class SideEffectsSniff implements Sniff
                 }
             }//end if
 
-            // Conditional statements are allowed in symbol files as long as the
-            // contents is only a symbol definition. So don't count these as effects
-            // in this case.
             if (isset($conditions[$tokens[$i]['code']]) === true) {
                 if (isset($tokens[$i]['scope_opener']) === false) {
-                    // Probably an "else if", so just ignore.
                     continue;
                 }
 
@@ -268,7 +248,6 @@ class SideEffectsSniff implements Sniff
                     }
 
                     if ($result['effect'] !== null) {
-                        // Found a conflict.
                         $firstEffect = $result['effect'];
                         break;
                     }
@@ -287,7 +266,6 @@ class SideEffectsSniff implements Sniff
             }
 
             if ($firstSymbol !== null) {
-                // We have a conflict we have to report, so no point continuing.
                 break;
             }
         }//end for

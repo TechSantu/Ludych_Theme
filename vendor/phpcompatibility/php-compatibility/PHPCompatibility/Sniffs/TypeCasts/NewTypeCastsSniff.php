@@ -100,7 +100,6 @@ class NewTypeCastsSniff extends AbstractNewFeatureSniff
         $tokens    = $phpcsFile->getTokens();
         $tokenType = $tokens[$stackPtr]['type'];
 
-        // Detect incorrectly tokenized binary casts.
         if (isset($this->newTypeCasts[$tokenType]) === false) {
             $tokenContent = $tokens[$stackPtr]['content'];
             switch ($tokenType) {
@@ -125,7 +124,6 @@ class NewTypeCastsSniff extends AbstractNewFeatureSniff
             }
         }
 
-        // If the translation did not yield one of the tokens we are looking for, bow out.
         if (isset($this->newTypeCasts[$tokenType]) === false) {
             return;
         }

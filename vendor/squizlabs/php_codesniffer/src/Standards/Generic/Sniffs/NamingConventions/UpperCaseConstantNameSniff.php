@@ -46,12 +46,8 @@ class UpperCaseConstantNameSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
 
         if ($tokens[$stackPtr]['code'] === T_CONST) {
-            // This is a constant declared with the "const" keyword.
-            // This may be an OO constant, in which case it could be typed, so we need to
-            // jump over a potential type to get to the name.
             $assignmentOperator = $phpcsFile->findNext([T_EQUAL, T_SEMICOLON], ($stackPtr + 1));
             if ($assignmentOperator === false || $tokens[$assignmentOperator]['code'] !== T_EQUAL) {
-                // Parse error/live coding. Nothing to do. Rest of loop is moot.
                 return;
             }
 
@@ -82,12 +78,10 @@ class UpperCaseConstantNameSniff implements Sniff
             return;
         }//end if
 
-        // Only interested in define statements now.
         if (strtolower($tokens[$stackPtr]['content']) !== 'define') {
             return;
         }
 
-        // Make sure this is not a method call or class instantiation.
         $prev = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($stackPtr - 1), null, true);
         if ($tokens[$prev]['code'] === T_OBJECT_OPERATOR
             || $tokens[$prev]['code'] === T_DOUBLE_COLON
@@ -97,22 +91,15 @@ class UpperCaseConstantNameSniff implements Sniff
             return;
         }
 
-        // Make sure this is not an attribute.
         if (empty($tokens[$stackPtr]['nested_attributes']) === false) {
             return;
         }
 
-        // If the next non-whitespace token after this token
-        // is not an opening parenthesis then it is not a function call.
         $openBracket = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
         if ($openBracket === false || $tokens[$openBracket]['code'] !== T_OPEN_PARENTHESIS) {
             return;
         }
 
-        // Bow out if next non-empty token after the opening parenthesis is not a string (the
-        // constant name). This could happen when live coding, if the constant is a variable or an
-        // expression, or if handling a first-class callable or a function definition outside the
-        // global scope.
         $constPtr = $phpcsFile->findNext(Tokens::$emptyTokens, ($openBracket + 1), null, true);
         if ($constPtr === false || $tokens[$constPtr]['code'] !== T_CONSTANT_ENCAPSED_STRING) {
             return;
@@ -121,7 +108,6 @@ class UpperCaseConstantNameSniff implements Sniff
         $constName = $tokens[$constPtr]['content'];
         $prefix    = '';
 
-        // Strip namespace from constant like \foo\bar\CONSTANT.
         $splitPos = strrpos($constName, '\\');
         if ($splitPos !== false) {
             $prefix    = substr($constName, 0, ($splitPos + 1));

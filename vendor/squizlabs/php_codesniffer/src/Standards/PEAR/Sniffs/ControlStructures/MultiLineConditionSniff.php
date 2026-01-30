@@ -89,8 +89,6 @@ class MultiLineConditionSniff implements Sniff
             }
         }
 
-        // We need to work out how far indented the if statement
-        // itself is, so we can work out how far to indent conditions.
         $statementIndent = 0;
         for ($i = ($stackPtr - 1); $i >= 0; $i--) {
             if ($tokens[$i]['line'] !== $tokens[$stackPtr]['line']) {
@@ -103,19 +101,14 @@ class MultiLineConditionSniff implements Sniff
             $statementIndent = $tokens[$i]['length'];
         }
 
-        // Each line between the parenthesis should be indented 4 spaces
-        // and start with an operator, unless the line is inside a
-        // function call, in which case it is ignored.
         $prevLine = $tokens[$openBracket]['line'];
         for ($i = ($openBracket + 1); $i <= $closeBracket; $i++) {
             if ($i === $closeBracket && $tokens[$openBracket]['line'] !== $tokens[$i]['line']) {
                 $prev = $phpcsFile->findPrevious(T_WHITESPACE, ($i - 1), null, true);
                 if ($tokens[$prev]['line'] === $tokens[$i]['line']) {
-                    // Closing bracket is on the same line as a condition.
                     $error = 'Closing parenthesis of a multi-line IF statement must be on a new line';
                     $fix   = $phpcsFile->addFixableError($error, $closeBracket, 'CloseBracketNewLine');
                     if ($fix === true) {
-                        // Account for a comment at the end of the line.
                         $next = $phpcsFile->findNext(T_WHITESPACE, ($closeBracket + 1), null, true);
                         if ($tokens[$next]['code'] !== T_COMMENT
                             && isset(Tokens::$phpcsCommentTokens[$tokens[$next]['code']]) === false
@@ -138,8 +131,6 @@ class MultiLineConditionSniff implements Sniff
                     if ($next !== $closeBracket) {
                         $expectedIndent = ($statementIndent + $this->indent);
                     } else {
-                        // Closing brace needs to be indented to the same level
-                        // as the statement.
                         $expectedIndent = $statementIndent;
                     }//end if
                 } else {
@@ -153,7 +144,6 @@ class MultiLineConditionSniff implements Sniff
                     continue;
                 }
 
-                // We changed lines, so this should be a whitespace indent token.
                 if ($tokens[$i]['code'] !== T_WHITESPACE) {
                     $foundIndent = 0;
                 } else {
@@ -186,7 +176,6 @@ class MultiLineConditionSniff implements Sniff
                         if (isset(Tokens::$booleanOperators[$tokens[$prev]['code']]) === false
                             && $phpcsFile->findNext(T_WHITESPACE, ($prev + 1), $next, true) !== false
                         ) {
-                            // Condition spread over multi-lines interspersed with comments.
                             $fixable = false;
                         }
 
@@ -217,8 +206,6 @@ class MultiLineConditionSniff implements Sniff
             if ($tokens[$i]['code'] === T_STRING) {
                 $next = $phpcsFile->findNext(T_WHITESPACE, ($i + 1), null, true);
                 if ($tokens[$next]['code'] === T_OPEN_PARENTHESIS) {
-                    // This is a function call, so skip to the end as they
-                    // have their own indentation rules.
                     $i        = $tokens[$next]['parenthesis_closer'];
                     $prevLine = $tokens[$i]['line'];
                     continue;
@@ -226,17 +213,13 @@ class MultiLineConditionSniff implements Sniff
             }
         }//end for
 
-        // From here on, we are checking the spacing of the opening and closing
-        // braces. If this IF statement does not use braces, we end here.
         if (isset($tokens[$stackPtr]['scope_opener']) === false) {
             return;
         }
 
-        // The opening brace needs to be one space away from the closing parenthesis.
         $openBrace = $tokens[$stackPtr]['scope_opener'];
         $next      = $phpcsFile->findNext(T_WHITESPACE, ($closeBracket + 1), $openBrace, true);
         if ($next !== false) {
-            // Probably comments in between tokens, so don't check.
             return;
         }
 
@@ -249,7 +232,6 @@ class MultiLineConditionSniff implements Sniff
         ) {
             $length = $tokens[($closeBracket + 1)]['length'];
         } else {
-            // Confused, so don't check.
             $length = 1;
         }
 

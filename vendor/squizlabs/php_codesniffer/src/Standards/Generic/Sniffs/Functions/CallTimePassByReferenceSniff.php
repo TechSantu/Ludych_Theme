@@ -57,17 +57,11 @@ class CallTimePassByReferenceSniff implements Sniff, DeprecatedSniff
 
         $prev = $phpcsFile->findPrevious($findTokens, ($stackPtr - 1), null, true);
 
-        // Skip tokens that are the names of functions
-        // within their definitions. For example: function myFunction...
-        // "myFunction" is T_STRING but we should skip because it is not a
-        // function or method *call*.
         $prevCode = $tokens[$prev]['code'];
         if ($prevCode === T_FUNCTION) {
             return;
         }
 
-        // If the next non-whitespace token after the function or method call
-        // is not an opening parenthesis then it cant really be a *call*.
         $functionName = $stackPtr;
         $openBracket  = $phpcsFile->findNext(
             Tokens::$emptyTokens,
@@ -98,8 +92,6 @@ class CallTimePassByReferenceSniff implements Sniff, DeprecatedSniff
                 continue;
             }
 
-            // Make sure the variable belongs directly to this function call
-            // and is not inside a nested function call or array.
             $brackets    = $tokens[$nextSeparator]['nested_parenthesis'];
             $lastBracket = array_pop($brackets);
             if ($lastBracket !== $closeBracket) {
@@ -118,9 +110,6 @@ class CallTimePassByReferenceSniff implements Sniff, DeprecatedSniff
                     continue;
                 }
 
-                // We also want to ignore references used in assignment
-                // operations passed as function arguments, but isReference()
-                // sees them as valid references (which they are).
                 $tokenBefore = $phpcsFile->findPrevious(
                     Tokens::$emptyTokens,
                     ($tokenBefore - 1),
@@ -132,7 +121,6 @@ class CallTimePassByReferenceSniff implements Sniff, DeprecatedSniff
                     continue;
                 }
 
-                // T_BITWISE_AND represents a pass-by-reference.
                 $error = 'Call-time pass-by-reference calls are prohibited';
                 $phpcsFile->addError($error, $tokenBefore, 'NotAllowed');
             }//end if

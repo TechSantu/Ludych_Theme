@@ -121,7 +121,6 @@ class RemovedImplodeFlexibleParamOrderSniff extends AbstractFunctionCallParamete
     public function processParameters(File $phpcsFile, $stackPtr, $functionName, $parameters)
     {
         if (isset($parameters[2]) === false) {
-            // Only one parameter, this must be $pieces. Bow out.
             return;
         }
 
@@ -139,7 +138,6 @@ class RemovedImplodeFlexibleParamOrderSniff extends AbstractFunctionCallParamete
 
         $firstNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, $start, $end, true);
         if ($firstNonEmpty === false) {
-            // Parse error. Shouldn't be possible.
             return;
         }
 
@@ -197,31 +195,25 @@ class RemovedImplodeFlexibleParamOrderSniff extends AbstractFunctionCallParamete
                     continue;
                 }
 
-                // Now make sure it's the PHP native function being called.
                 $prevNonEmpty = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($i - 1), $start, true);
                 if ($tokens[$prevNonEmpty]['code'] === \T_DOUBLE_COLON
                     || $tokens[$prevNonEmpty]['code'] === \T_OBJECT_OPERATOR
                 ) {
-                    // Method call, not a call to the PHP native function.
                     continue;
                 }
 
                 if ($tokens[$prevNonEmpty]['code'] === \T_NS_SEPARATOR
                     && $tokens[$prevNonEmpty - 1]['code'] === \T_STRING
                 ) {
-                    // Namespaced function.
                     continue;
                 }
 
-                // Ok, so we know that there is an array function in the first param.
-                // 99.9% chance that this is $pieces, not $glue.
                 $this->throwNotice($phpcsFile, $stackPtr, $functionName);
                 return;
             }
         }
 
         if ($isOnlyText === true) {
-            // First parameter only contained text string tokens, i.e. glue.
             return;
         }
 
@@ -235,7 +227,6 @@ class RemovedImplodeFlexibleParamOrderSniff extends AbstractFunctionCallParamete
 
         $firstNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, $start, $end, true);
         if ($firstNonEmpty === false) {
-            // Parse error. Shouldn't be possible.
             return;
         }
 
@@ -260,19 +251,15 @@ class RemovedImplodeFlexibleParamOrderSniff extends AbstractFunctionCallParamete
             }
 
             if ($tokenCode === \T_ARRAY || $tokenCode === \T_OPEN_SHORT_ARRAY || $tokenCode === \T_ARRAY_CAST) {
-                // Found an array, $pieces is second.
                 return;
             }
 
             if ($tokenCode === \T_STRING && isset($this->constantStrings[$tokens[$i]['content']])) {
-                // One of the special cased, PHP native string constants found.
                 $this->throwNotice($phpcsFile, $stackPtr, $functionName);
                 return;
             }
 
             if ($tokenCode === \T_STRING || $tokenCode === \T_VARIABLE) {
-                // Function call, constant or variable encountered.
-                // No matter what this is combined with, we won't be able to reliably determine the value.
                 return;
             }
 

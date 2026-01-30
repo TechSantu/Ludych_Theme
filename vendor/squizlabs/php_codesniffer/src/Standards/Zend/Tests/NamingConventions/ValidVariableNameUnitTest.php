@@ -96,7 +96,6 @@ final class ValidVariableNameUnitTest extends AbstractSniffUnitTest
             79  => 1,
             82  => 1,
             94  => 1,
-            // Warning from getMemberProperties() about parse error.
             107 => 1,
         ];
 

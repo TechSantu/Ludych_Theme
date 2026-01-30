@@ -43,10 +43,8 @@ final class StandardRulesetsQATest extends AbstractRulesetTestCase
         $seenOutput = ob_get_contents();
         ob_end_clean();
 
-        // Make sure no messages were thrown.
         $this->assertSame('', $seenOutput);
 
-        // Make sure sniffs were registered.
         $this->assertGreaterThanOrEqual(1, count($ruleset->sniffCodes));
 
     }//end testBuildInStandardsDoNotContainErrors()
@@ -61,7 +59,6 @@ final class StandardRulesetsQATest extends AbstractRulesetTestCase
      */
     public static function dataBuildInStandards()
     {
-        // Get a list of all build-in, PHPCS native standards.
         $sep          = DIRECTORY_SEPARATOR;
         $targetDir    = dirname(dirname(dirname(__DIR__))).$sep.'src'.$sep.'Standards'.$sep;
         $rulesetFiles = glob($targetDir.'*'.$sep.'ruleset.xml');

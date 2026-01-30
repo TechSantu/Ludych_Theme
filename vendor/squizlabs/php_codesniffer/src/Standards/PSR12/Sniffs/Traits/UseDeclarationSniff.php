@@ -42,7 +42,6 @@ class UseDeclarationSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Needs to be a use statement directly inside a class.
         $conditions = $tokens[$stackPtr]['conditions'];
         end($conditions);
         if (isset(Tokens::$ooScopeTokens[current($conditions)]) === false) {
@@ -52,7 +51,6 @@ class UseDeclarationSniff implements Sniff
         $ooToken = key($conditions);
         $opener  = $tokens[$ooToken]['scope_opener'];
 
-        // Figure out where all the use statements are.
         $useTokens = [$stackPtr];
         for ($i = ($stackPtr + 1); $i < $tokens[$ooToken]['scope_closer']; $i++) {
             if ($tokens[$i]['code'] === T_USE) {
@@ -71,7 +69,6 @@ class UseDeclarationSniff implements Sniff
                     This is the first use statement.
                 */
 
-                // The first non-comment line must be the use line.
                 $lastValidContent = $useToken;
                 for ($i = ($useToken - 1); $i > $opener; $i--) {
                     if ($tokens[$i]['code'] === T_WHITESPACE
@@ -83,7 +80,6 @@ class UseDeclarationSniff implements Sniff
 
                     if (isset(Tokens::$commentTokens[$tokens[$i]['code']]) === true) {
                         if ($tokens[$i]['code'] === T_DOC_COMMENT_CLOSE_TAG) {
-                            // Skip past the comment.
                             $i = $tokens[$i]['comment_opener'];
                         }
 
@@ -99,13 +95,10 @@ class UseDeclarationSniff implements Sniff
                     $error = 'The first trait import statement must be declared on the first non-comment line after the %s opening brace';
                     $data  = [strtolower($tokens[$ooToken]['content'])];
 
-                    // Figure out if we can fix this error.
                     $prev = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($useToken - 1), ($opener - 1), true);
                     if ($tokens[$prev]['line'] === $tokens[$opener]['line']) {
                         $fix = $phpcsFile->addFixableError($error, $useToken, 'UseAfterBrace', $data);
                         if ($fix === true) {
-                            // We know that the USE statements is the first non-comment content
-                            // in the class, so we just need to remove blank lines.
                             $phpcsFile->fixer->beginChangeset();
                             for ($i = ($useToken - 1); $i > $opener; $i--) {
                                 if ($tokens[$i]['line'] === $tokens[$opener]['line']) {
@@ -125,7 +118,6 @@ class UseDeclarationSniff implements Sniff
 
                                 if (isset(Tokens::$commentTokens[$tokens[$i]['code']]) === true) {
                                     if ($tokens[$i]['code'] === T_DOC_COMMENT_CLOSE_TAG) {
-                                        // Skip past the comment.
                                         $i = $tokens[$i]['comment_opener'];
                                     }
 
@@ -140,7 +132,6 @@ class UseDeclarationSniff implements Sniff
                     }//end if
                 }//end if
             } else {
-                // Make sure this use statement is not on the same line as the previous one.
                 $prev = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($useToken - 1), null, true);
                 if ($prev !== false && $tokens[$prev]['line'] === $tokens[$useToken]['line']) {
                     $error     = 'Each imported trait must be on its own line';
@@ -154,7 +145,6 @@ class UseDeclarationSniff implements Sniff
                             for ($x = ($useToken - 1); $x > $prev; $x--) {
                                 if ($tokens[$x]['line'] === $tokens[$useToken]['line']
                                 ) {
-                                    // Preserve indent.
                                     continue;
                                 }
 
@@ -209,7 +199,6 @@ class UseDeclarationSniff implements Sniff
                 }
             }//end if
 
-            // Check the formatting of the statement.
             if (isset($tokens[$useToken]['scope_opener']) === true) {
                 $this->processUseGroup($phpcsFile, $useToken);
                 $end = $tokens[$useToken]['scope_closer'];
@@ -217,7 +206,6 @@ class UseDeclarationSniff implements Sniff
                 $this->processUseStatement($phpcsFile, $useToken);
                 $end = $phpcsFile->findNext(T_SEMICOLON, ($useToken + 1));
                 if ($end === false) {
-                    // Syntax error.
                     return;
                 }
             }
@@ -229,7 +217,6 @@ class UseDeclarationSniff implements Sniff
 
                 $next = $phpcsFile->findNext(T_WHITESPACE, ($end + 1), null, true);
                 if ($next === $tokens[$ooToken]['scope_closer']) {
-                    // Last content in the class.
                     $closer = $tokens[$ooToken]['scope_closer'];
                     if ($tokens[$closer]['line'] > ($tokens[$end]['line'] + 1)) {
                         $error = 'There must be no blank line after the last trait import statement at the bottom of a %s';
@@ -243,7 +230,6 @@ class UseDeclarationSniff implements Sniff
                                 }
 
                                 if ($tokens[$i]['line'] === $tokens[$closer]['line']) {
-                                    // Don't remove indents.
                                     break;
                                 }
 
@@ -254,8 +240,6 @@ class UseDeclarationSniff implements Sniff
                         }
                     }//end if
                 } else if ($tokens[$next]['code'] !== T_USE) {
-                    // Comments are allowed on the same line as the use statement, so make sure
-                    // we don't error for those.
                     for ($next = ($end + 1); $next < $tokens[$ooToken]['scope_closer']; $next++) {
                         if ($tokens[$next]['code'] === T_WHITESPACE) {
                             continue;
@@ -289,7 +273,6 @@ class UseDeclarationSniff implements Sniff
                     }
                 }//end if
             } else {
-                // Ensure use statements are grouped.
                 $next = $phpcsFile->findNext(Tokens::$emptyTokens, ($end + 1), null, true);
                 if ($next !== $useTokens[($usePos + 1)]) {
                     $error = 'Imported traits must be grouped together';
@@ -321,7 +304,6 @@ class UseDeclarationSniff implements Sniff
 
         if ($tokens[$opener]['line'] !== $tokens[$stackPtr]['line']) {
             $error = 'The opening brace of a trait import statement must be on the same line as the USE keyword';
-            // Figure out if we can fix this error.
             $canFix = true;
             for ($i = ($stackPtr + 1); $i < $opener; $i++) {
                 if ($tokens[$i]['line'] !== $tokens[($i + 1)]['line']
@@ -338,7 +320,6 @@ class UseDeclarationSniff implements Sniff
                     $phpcsFile->fixer->beginChangeset();
                     for ($i = ($stackPtr + 1); $i < $opener; $i++) {
                         if ($tokens[$i]['line'] !== $tokens[($i + 1)]['line']) {
-                            // Everything should have a single space around it.
                             $phpcsFile->fixer->replaceToken($i, ' ');
                         }
                     }
@@ -394,7 +375,6 @@ class UseDeclarationSniff implements Sniff
                     $phpcsFile->fixer->beginChangeset();
                     for ($x = ($opener + 1); $x < $next; $x++) {
                         if ($tokens[$x]['line'] === $tokens[$next]['line']) {
-                            // Preserve indent.
                             break;
                         }
 
@@ -655,7 +635,6 @@ class UseDeclarationSniff implements Sniff
                     $phpcsFile->fixer->beginChangeset();
                     for ($x = ($closer - 1); $x > $prev; $x--) {
                         if ($tokens[$x]['line'] === $tokens[$closer]['line']) {
-                            // Preserve indent.
                             continue;
                         }
 

@@ -81,8 +81,6 @@ class ForbiddenBreakContinueVariableArgumentsSniff extends Sniff
         $errorType          = '';
         for ($curToken = $stackPtr + 1; $curToken < $nextSemicolonToken; $curToken++) {
             if ($tokens[$curToken]['type'] === 'T_STRING') {
-                // If the next non-whitespace token after the string
-                // is an opening parenthesis then it's a function call.
                 $openBracket = $phpcsFile->findNext(Tokens::$emptyTokens, $curToken + 1, null, true);
                 if ($tokens[$openBracket]['code'] === \T_OPEN_PARENTHESIS) {
                     $errorType = 'variableArgument';

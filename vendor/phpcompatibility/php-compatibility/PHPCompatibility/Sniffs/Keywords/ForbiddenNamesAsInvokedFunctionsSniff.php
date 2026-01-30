@@ -132,14 +132,11 @@ class ForbiddenNamesAsInvokedFunctionsSniff extends Sniff
             $isString = true;
         }
 
-        // Make sure this is a function call.
         $next = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
         if ($next === false || $tokens[$next]['code'] !== \T_OPEN_PARENTHESIS) {
-            // Not a function call.
             return;
         }
 
-        // This sniff isn't concerned about function declarations.
         $prev = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($stackPtr - 1), null, true);
         if ($prev !== false && $tokens[$prev]['code'] === \T_FUNCTION) {
             return;
@@ -158,11 +155,8 @@ class ForbiddenNamesAsInvokedFunctionsSniff extends Sniff
             return;
         }
 
-        // For the word catch, it is valid to have an open parenthesis
-        // after it, but only if it is preceded by a right curly brace.
         if ($tokenCode === \T_CATCH) {
             if ($prev !== false && $tokens[$prev]['code'] === \T_CLOSE_CURLY_BRACKET) {
-                // Ok, it's fine.
                 return;
             }
         }

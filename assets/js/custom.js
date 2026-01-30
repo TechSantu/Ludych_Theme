@@ -62,6 +62,9 @@
 						},
 						1000: {
 							items: 2
+						},
+						1200: {
+							items: 3
 						}
 					}
 				}
@@ -98,15 +101,14 @@
 				}
 			);
 
-			// Load More Services
 			$("#load-more-services").on(
 				"click",
 				function (e) {
 					e.preventDefault();
 
-					var button   = $(this);
-					var page     = button.data("page");
-					var maxPage  = button.data("max-pages");
+					var button = $(this);
+					var page = button.data("page");
+					var maxPage = button.data("max-pages");
 					var postType = button.data("post-type");
 					var nextPage = page + 1;
 

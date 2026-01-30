@@ -50,7 +50,6 @@ final class RecurseScopeMapDefaultKeywordConditionsTest extends AbstractTokenize
         $token      = $this->getTargetToken($testMarker, [T_MATCH_DEFAULT, T_DEFAULT, T_STRING], $testContent);
         $tokenArray = $tokens[$token];
 
-        // Make sure we're looking at the right token.
         $this->assertSame(
             T_MATCH_DEFAULT,
             $tokenArray['code'],
@@ -162,7 +161,6 @@ final class RecurseScopeMapDefaultKeywordConditionsTest extends AbstractTokenize
         $expectedScopeOpener = $this->getTargetToken($openerMarker, [T_COLON, T_OPEN_CURLY_BRACKET, T_SEMICOLON]);
         $expectedScopeCloser = $this->getTargetToken($closerMarker, [T_BREAK, T_CLOSE_CURLY_BRACKET, T_RETURN, T_ENDSWITCH]);
 
-        // Make sure we're looking at the right token.
         $this->assertSame(
             T_DEFAULT,
             $tokenArray['code'],
@@ -302,10 +300,6 @@ final class RecurseScopeMapDefaultKeywordConditionsTest extends AbstractTokenize
                 'closerMarker' => '/* testSimpleSwitchDefault */',
             ],
             'simple_switch_default_with_curlies'                        => [
-                // For a default structure with curly braces, the scope opener
-                // will be the open curly and the closer the close curly.
-                // However, scope conditions will not be set for open to close,
-                // but only for the open token up to the "break/return/continue" etc.
                 'testMarker'          => '/* testSimpleSwitchDefaultWithCurlies */',
                 'openerMarker'        => '/* testSimpleSwitchDefaultWithCurliesScopeOpener */',
                 'closerMarker'        => '/* testSimpleSwitchDefaultWithCurliesScopeCloser */',
@@ -362,7 +356,6 @@ final class RecurseScopeMapDefaultKeywordConditionsTest extends AbstractTokenize
         $token      = $this->getTargetToken($testMarker, [T_MATCH_DEFAULT, T_DEFAULT, T_STRING], $testContent);
         $tokenArray = $tokens[$token];
 
-        // Make sure we're looking at the right token.
         $this->assertSame(
             T_STRING,
             $tokenArray['code'],

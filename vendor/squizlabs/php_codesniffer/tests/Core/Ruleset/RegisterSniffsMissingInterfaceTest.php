@@ -29,7 +29,6 @@ final class RegisterSniffsMissingInterfaceTest extends TestCase
      */
     public function testNoNoticesForSniffsImplementingInterface()
     {
-        // Set up the ruleset.
         $standard = __DIR__.'/RegisterSniffsMissingInterfaceValidTest.xml';
         $config   = new ConfigDouble(["--standard=$standard"]);
 
@@ -47,7 +46,6 @@ final class RegisterSniffsMissingInterfaceTest extends TestCase
      */
     public function testDeprecationNoticeWhenSniffDoesntImplementInterface()
     {
-        // Set up the ruleset.
         $standard = __DIR__.'/RegisterSniffsMissingInterfaceInvalidTest.xml';
         $config   = new ConfigDouble(["--standard=$standard"]);
 

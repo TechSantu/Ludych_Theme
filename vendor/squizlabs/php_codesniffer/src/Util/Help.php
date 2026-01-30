@@ -157,7 +157,6 @@ final class Help
         $filteredOptions = $this->getAllOptions();
 
         foreach ($filteredOptions as $category => $options) {
-            // Initial state set to "true" to prevent a spacer at the start of an array.
             $lastWasSpacer = true;
             $spacerCount   = 0;
 
@@ -176,7 +175,6 @@ final class Help
                 $lastWasSpacer = false;
             }
 
-            // Make sure the final array doesn't contain a spacer at the end.
             if (empty($filteredOptions[$category]) === false) {
                 end($filteredOptions[$category]);
                 $key = key($filteredOptions[$category]);
@@ -186,7 +184,6 @@ final class Help
                 }
             }
 
-            // Remove categories now left empty.
             if (empty($filteredOptions[$category]) === true || count($filteredOptions[$category]) === $spacerCount) {
                 unset($filteredOptions[$category]);
             }
@@ -384,7 +381,6 @@ final class Help
     {
         $options = [];
 
-        // phpcs:disable Squiz.Strings.ConcatenationSpacing.PaddingFound -- Readability is more important.
         $options['Scan targets'] = [
             'file'       => [
                 'argument'    => '<file|directory>',
@@ -616,7 +612,6 @@ final class Help
                 'description' => 'Verbose output: Print sniff processing information.',
             ],
         ];
-        // phpcs:enable
 
         return $options;
 

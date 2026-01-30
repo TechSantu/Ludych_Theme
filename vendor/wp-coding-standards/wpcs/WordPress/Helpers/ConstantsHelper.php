@@ -49,12 +49,10 @@ final class ConstantsHelper {
 	public static function is_use_of_global_constant( File $phpcsFile, $stackPtr ) {
 		$tokens = $phpcsFile->getTokens();
 
-		// Check for the existence of the token.
 		if ( ! isset( $tokens[ $stackPtr ] ) ) {
 			return false;
 		}
 
-		// Is this one of the tokens this function handles ?
 		if ( \T_STRING !== $tokens[ $stackPtr ]['code'] ) {
 			return false;
 		}
@@ -64,11 +62,9 @@ final class ConstantsHelper {
 			&& ( \T_OPEN_PARENTHESIS === $tokens[ $next ]['code']
 				|| \T_DOUBLE_COLON === $tokens[ $next ]['code'] )
 		) {
-			// Function call or declaration.
 			return false;
 		}
 
-		// Array of tokens which if found preceding the $stackPtr indicate that a T_STRING is not a global constant.
 		$tokens_to_ignore  = array(
 			\T_NAMESPACE  => true,
 			\T_USE        => true,
@@ -86,19 +82,16 @@ final class ConstantsHelper {
 
 		$prev = $phpcsFile->findPrevious( Tokens::$emptyTokens, ( $stackPtr - 1 ), null, true );
 		if ( isset( $tokens_to_ignore[ $tokens[ $prev ]['code'] ] ) ) {
-			// Not the use of a constant.
 			return false;
 		}
 
 		if ( ContextHelper::is_token_namespaced( $phpcsFile, $stackPtr ) === true ) {
-			// Namespaced constant of the same name.
 			return false;
 		}
 
 		if ( \T_CONST === $tokens[ $prev ]['code']
 			&& Scopes::isOOConstant( $phpcsFile, $prev )
 		) {
-			// Class constant declaration of the same name.
 			return false;
 		}
 
@@ -120,11 +113,9 @@ final class ConstantsHelper {
 				) {
 					$hasNsSep = $phpcsFile->findNext( \T_NS_SEPARATOR, ( $nextOnLine + 1 ), $stackPtr );
 					if ( false !== $hasNsSep ) {
-						// Namespaced const (group) use statement.
 						return false;
 					}
 				} else {
-					// Not a const use statement.
 					return false;
 				}
 			}

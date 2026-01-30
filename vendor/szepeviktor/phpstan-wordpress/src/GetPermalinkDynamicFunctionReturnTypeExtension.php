@@ -45,13 +45,11 @@ class GetPermalinkDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dy
         if (count($args) !== 0) {
             $type = $scope->getType($args[0]->value);
 
-            // Called with a WP_Post instance
             if ((new ObjectType(WP_Post::class))->isSuperTypeOf($type)->yes()) {
                 return new StringType();
             }
         }
 
-        // When called without arguments or with a $type that isn't a WP_Post instance, return default return type
         return null;
     }
 }

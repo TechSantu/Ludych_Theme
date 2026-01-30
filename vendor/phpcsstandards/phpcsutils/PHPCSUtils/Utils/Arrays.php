@@ -36,11 +36,9 @@ final class Arrays
     private static $doubleArrowTargets = [
         \T_DOUBLE_ARROW     => \T_DOUBLE_ARROW,
 
-        // Nested arrays.
         \T_ARRAY            => \T_ARRAY,
         \T_OPEN_SHORT_ARRAY => \T_OPEN_SHORT_ARRAY,
 
-        // Inline function, control structures and other things to skip over.
         \T_LIST             => \T_LIST,
         \T_FN               => \T_FN,
         \T_MATCH            => \T_MATCH,
@@ -102,7 +100,6 @@ final class Arrays
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Is this one of the tokens this function handles ?
         if (isset($tokens[$stackPtr]) === false
             || isset(Collections::arrayOpenTokensBC()[$tokens[$stackPtr]['code']]) === false
         ) {
@@ -210,7 +207,6 @@ final class Arrays
                 break;
             }
 
-            // Skip over closed scopes which may contain foreach structures or generators.
             if ((isset(Collections::closedScopes()[$tokens[$doubleArrow]['code']]) === true
                 || $tokens[$doubleArrow]['code'] === \T_FN
                 || $tokens[$doubleArrow]['code'] === \T_MATCH)
@@ -220,7 +216,6 @@ final class Arrays
                 continue;
             }
 
-            // Skip over attributes which may contain arrays as a passed parameters.
             if ($tokens[$doubleArrow]['code'] === \T_ATTRIBUTE
                 && isset($tokens[$doubleArrow]['attribute_closer'])
             ) {
@@ -228,7 +223,6 @@ final class Arrays
                 continue;
             }
 
-            // Skip over potentially keyed long lists.
             if ($tokens[$doubleArrow]['code'] === \T_LIST
                 && isset($tokens[$doubleArrow]['parenthesis_closer'])
             ) {
@@ -236,7 +230,6 @@ final class Arrays
                 continue;
             }
 
-            // Start of nested long/short array.
             break;
         } while ($doubleArrow < $end);
 

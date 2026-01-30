@@ -49,23 +49,18 @@ class InlineIfDeclarationSniff implements Sniff
             $closeBracket = $tokens[$openBracket]['parenthesis_closer'];
         }
 
-        // Find the beginning of the statement. If we don't find a
-        // semicolon (end of statement) or comma (end of array value)
-        // then assume the content before the closing parenthesis is the end.
         $else         = $phpcsFile->findNext(T_INLINE_ELSE, ($stackPtr + 1));
         $statementEnd = $phpcsFile->findNext([T_SEMICOLON, T_COMMA], ($else + 1), $closeBracket);
         if ($statementEnd === false) {
             $statementEnd = $phpcsFile->findPrevious(T_WHITESPACE, ($closeBracket - 1), null, true);
         }
 
-        // Make sure it's all on the same line.
         if ($tokens[$statementEnd]['line'] !== $tokens[$stackPtr]['line']) {
             $error = 'Inline shorthand IF statement must be declared on a single line';
             $phpcsFile->addError($error, $stackPtr, 'NotSingleLine');
             return;
         }
 
-        // Make sure there are spaces around the question mark.
         $contentBefore = $phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), null, true);
         $contentAfter  = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
         if ($tokens[$contentBefore]['code'] !== T_CLOSE_PARENTHESIS) {
@@ -87,10 +82,6 @@ class InlineIfDeclarationSniff implements Sniff
             }
         }
 
-        // If there is no content between the ? and the : operators, then they are
-        // trying to replicate an elvis operator, even though PHP doesn't have one.
-        // In this case, we want no spaces between the two operators so ?: looks like
-        // an operator itself.
         $next = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
         if ($tokens[$next]['code'] === T_INLINE_ELSE) {
             $inlineElse = $next;
@@ -116,7 +107,6 @@ class InlineIfDeclarationSniff implements Sniff
                 }
             }
 
-            // Make sure the ELSE has the correct spacing.
             $inlineElse    = $phpcsFile->findNext(T_INLINE_ELSE, ($stackPtr + 1), $statementEnd, false);
             $contentBefore = $phpcsFile->findPrevious(T_WHITESPACE, ($inlineElse - 1), null, true);
             $spaceBefore   = ($tokens[$inlineElse]['column'] - ($tokens[$contentBefore]['column'] + $tokens[$contentBefore]['length']));

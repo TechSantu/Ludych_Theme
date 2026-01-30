@@ -64,8 +64,6 @@ final class ConstructorTest extends AbstractRulesetTestCase
             'Absolute path to standard directory passed' => [
                 'cliArgs'  => [
                     '--standard='.__DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'TestStandard',
-                    // Limit this to a valid sniff to prevent running into error messages unrelated to what
-                    // is being tested here.
                     '--sniffs=TestStandard.ValidSniffs.RegisterEmptyArray',
                 ],
                 'expected' => 'TestStandard',
@@ -92,11 +90,6 @@ final class ConstructorTest extends AbstractRulesetTestCase
 
         $autoloadPaths = Autoload::getSearchPaths();
 
-        // Note: doing a full comparison of the Autoloader registered standards would make this test unstable
-        // as the `CodeSniffer.conf` of the user running the tests could interfer if they have additional
-        // external standards registered.
-        // Also note that `--runtime-set` is being used to set `installed_paths` to prevent making any changes to
-        // the `CodeSniffer.conf` file of the user running the tests.
         foreach ($expected as $path => $namespacedStandardName) {
             $this->assertArrayHasKey($path, $autoloadPaths, "Path $path has not been registered with the autoloader");
             $this->assertSame($namespacedStandardName, $autoloadPaths[$path], 'Expected (namespaced) standard name does not match');
@@ -154,8 +147,6 @@ final class ConstructorTest extends AbstractRulesetTestCase
                 '--runtime-set',
                 'installed_paths',
                 $extraInstalledPath,
-                // Limit this to a valid sniff to prevent running into error messages unrelated to what
-                // is being tested here.
                 '--sniffs=TestStandard.ValidSniffs.RegisterEmptyArray',
             ],
             'expected' => ($defaultPaths + [$extraInstalledPath => 'Fixtures\TestStandard']),
@@ -181,7 +172,6 @@ final class ConstructorTest extends AbstractRulesetTestCase
     {
         $config = new ConfigDouble($cliArgs);
 
-        // Overrule the cache setting (which is being ignored in the Config when the tests are running).
         $config->cache = $cache;
 
         $ruleset = new Ruleset($config);

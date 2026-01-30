@@ -36,11 +36,9 @@ class Code implements Report
     public function generateFileReport($report, File $phpcsFile, $showSources=false, $width=80)
     {
         if ($report['errors'] === 0 && $report['warnings'] === 0) {
-            // Nothing to print.
             return false;
         }
 
-        // How many lines to show above and below the error line.
         $surroundingLines = 2;
 
         $file   = $report['filename'];
@@ -56,12 +54,8 @@ class Code implements Report
             try {
                 $phpcsFile->parse();
 
-                // Make sure the fixer is aware of the reparsed file to prevent a race-condition
-                // with the Diff report also re-parsing the file.
                 $phpcsFile->fixer->startFile($phpcsFile);
             } catch (Exception $e) {
-                // This is a second parse, so ignore exceptions.
-                // They would have been added to the file's error list already.
             }
 
             if (PHP_CODESNIFFER_VERBOSITY === 1) {
@@ -80,7 +74,6 @@ class Code implements Report
             $tokens = $phpcsFile->getTokens();
         }//end if
 
-        // Create an array that maps lines to the first token on the line.
         $lineTokens = [];
         $lastLine   = 0;
         $stackPtr   = 0;
@@ -98,12 +91,8 @@ class Code implements Report
             }
         }
 
-        // Make sure the last token in the file sits on an imaginary
-        // last line so it is easier to generate code snippets at the
-        // end of the file.
         $lineTokens[$lastLine]['end'] = $stackPtr;
 
-        // Determine the longest code line we will be showing.
         $maxSnippetLength = 0;
         $eolLen           = strlen($phpcsFile->eolChar);
         foreach ($report['messages'] as $line => $lineErrors) {
@@ -124,7 +113,6 @@ class Code implements Report
 
         $maxSnippetLength += ($maxLineNumLength + 8);
 
-        // Determine the longest error message we will be showing.
         $maxErrorLength = 0;
         foreach ($report['messages'] as $lineErrors) {
             foreach ($lineErrors as $colErrors) {
@@ -139,7 +127,6 @@ class Code implements Report
             }
         }
 
-        // The padding that all lines will require that are printing an error message overflow.
         if ($report['warnings'] > 0) {
             $typeLength = 7;
         } else {
@@ -155,14 +142,11 @@ class Code implements Report
 
         $errorPaddingLength = strlen($errorPadding);
 
-        // The maximum amount of space an error message can use.
         $maxErrorSpace = ($width - $errorPaddingLength);
         if ($showSources === true) {
-            // Account for the chars used to print colors.
             $maxErrorSpace += 8;
         }
 
-        // Figure out the max report width we need and can use.
         $fileLength = strlen($file);
         $maxWidth   = max(($fileLength + 6), ($maxErrorLength + $errorPaddingLength));
         $width      = max(min($width, $maxWidth), $maxSnippetLength);
@@ -170,7 +154,6 @@ class Code implements Report
             $width = 70;
         }
 
-        // Print the file header.
         echo PHP_EOL."\033[1mFILE: ";
         if ($fileLength <= ($width - 6)) {
             echo $file;
@@ -209,7 +192,6 @@ class Code implements Report
                 for ($i = $lineTokens[$startLine]['start']; $i <= $lineTokens[$endLine]['end']; $i++) {
                     $snippetLine = $tokens[$i]['line'];
                     if ($lineTokens[$snippetLine]['start'] === $i) {
-                        // Starting a new line.
                         if ($snippetLine === $line) {
                             $snippet .= "\033[1m".'>> ';
                         } else {
@@ -250,7 +232,6 @@ class Code implements Report
                         $underline = true;
                     }
 
-                    // Underline invisible characters as well.
                     if ($underline === true && trim($tokenContent) === '') {
                         $snippet .= "\033[4m".' '."\033[0m".$tokenContent;
                     } else {

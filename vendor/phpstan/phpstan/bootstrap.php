@@ -79,8 +79,6 @@ final class PharAutoloader
 				&& !class_exists(\Symfony\Polyfill\Php73\Php73::class, false)
 			) {
 				$GLOBALS['__composer_autoload_files']['0d59ee240a4cd96ddbb4ff164fccea4d'] = true;
-				// already loaded by bootstrap inside the hrtime condition
-				// require_once 'phar://' . __DIR__ . '/phpstan.phar/vendor/symfony/polyfill-php73/Php73.php';
 				require_once 'phar://' . __DIR__ . '/phpstan.phar/vendor/symfony/polyfill-php73/bootstrap.php';
 			}
 

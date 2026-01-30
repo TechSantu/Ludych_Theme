@@ -104,7 +104,6 @@ final class ConcatPositionSniff implements Sniff
          * Validate the setting.
          */
         if ($this->allowOnly !== self::POSITION_END) {
-            // Use the default.
             $this->allowOnly = self::POSITION_START;
         }
 
@@ -112,13 +111,11 @@ final class ConcatPositionSniff implements Sniff
         $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
 
         if ($nextNonEmpty === false) {
-            // Parse error/live coding.
             return;
         }
 
         $tokens = $phpcsFile->getTokens();
         if ($tokens[$prevNonEmpty]['line'] === $tokens[$nextNonEmpty]['line']) {
-            // Not multi-line concatenation. Not our target.
             return;
         }
 
@@ -129,11 +126,9 @@ final class ConcatPositionSniff implements Sniff
             $position = self::POSITION_START;
         }
 
-        // Record metric.
         $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, $position);
 
         if ($this->allowOnly === $position) {
-            // All okay.
             return;
         }
 
@@ -148,22 +143,18 @@ final class ConcatPositionSniff implements Sniff
             if ($this->allowOnly === self::POSITION_END) {
                 $phpcsFile->fixer->beginChangeset();
 
-                // Move the concat operator.
                 $phpcsFile->fixer->replaceToken($stackPtr, '');
                 $phpcsFile->fixer->addContent($prevNonEmpty, ' .');
 
                 if ($position === self::POSITION_START
                     && $tokens[($stackPtr + 1)]['code'] === \T_WHITESPACE
                 ) {
-                    // Remove trailing space.
                     $phpcsFile->fixer->replaceToken(($stackPtr + 1), '');
                 } elseif ($position === self::POSITION_STANDALONE) {
-                    // Remove potential indentation space.
                     if ($tokens[($stackPtr - 1)]['code'] === \T_WHITESPACE) {
                         $phpcsFile->fixer->replaceToken(($stackPtr - 1), '');
                     }
 
-                    // Remove new line.
                     if ($tokens[($stackPtr + 1)]['code'] === \T_WHITESPACE) {
                         $phpcsFile->fixer->replaceToken(($stackPtr + 1), '');
                     }
@@ -173,25 +164,20 @@ final class ConcatPositionSniff implements Sniff
                 return;
             }
 
-            // Fixer for allowOnly === self::POSITION_START.
             $phpcsFile->fixer->beginChangeset();
 
-            // Move the concat operator.
             $phpcsFile->fixer->replaceToken($stackPtr, '');
             $phpcsFile->fixer->addContentBefore($nextNonEmpty, '. ');
 
             if ($position === self::POSITION_END
                 && $tokens[($stackPtr - 1)]['code'] === \T_WHITESPACE
             ) {
-                // Remove trailing space.
                 $phpcsFile->fixer->replaceToken(($stackPtr - 1), '');
             } elseif ($position === self::POSITION_STANDALONE) {
-                // Remove potential indentation space.
                 if ($tokens[($stackPtr - 1)]['code'] === \T_WHITESPACE) {
                     $phpcsFile->fixer->replaceToken(($stackPtr - 1), '');
                 }
 
-                // Remove new line.
                 if ($tokens[($stackPtr + 1)]['code'] === \T_WHITESPACE) {
                     $phpcsFile->fixer->replaceToken(($stackPtr + 1), '');
                 }

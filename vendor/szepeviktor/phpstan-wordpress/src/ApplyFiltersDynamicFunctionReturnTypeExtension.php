@@ -53,7 +53,6 @@ class ApplyFiltersDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dy
             return $default;
         }
 
-        // Fetch the `@param` values from the docblock.
         $params = $resolvedPhpDoc->getParamTags();
 
         foreach ($params as $param) {

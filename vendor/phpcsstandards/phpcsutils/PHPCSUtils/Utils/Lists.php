@@ -101,7 +101,6 @@ final class Lists
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Is this one of the tokens this function handles ?
         if (isset($tokens[$stackPtr]) === false
             || isset(Collections::listOpenTokensBC()[$tokens[$stackPtr]['code']]) === false
         ) {
@@ -201,7 +200,6 @@ final class Lists
     {
         $openClose = self::getOpenClose($phpcsFile, $stackPtr);
         if ($openClose === false) {
-            // The `getOpenClose()` method does the $stackPtr validation.
             $received = $stackPtr;
             $tokens   = $phpcsFile->getTokens();
             if (\is_int($stackPtr) && isset($tokens[$stackPtr])) {
@@ -241,7 +239,6 @@ final class Lists
                     $keys['key_end_token']      = $lastNonEmpty;
                     $keys['double_arrow_token'] = $i;
 
-                    // Partial reset.
                     $start        = null;
                     $lastNonEmpty = null;
                     $list         = null; // Prevent confusion when short array was used as the key.
@@ -250,24 +247,19 @@ final class Lists
 
                 case \T_COMMA:
                 case $tokens[$closer]['code']:
-                    // Check if this is the end of the list or only a token with the same type as the list closer.
                     if ($tokens[$i]['code'] === $tokens[$closer]['code']) {
                         if ($i !== $closer) {
                             /*
                              * Shouldn't be possible anymore now nested brackets are being skipped over,
                              * but keep it just in case.
                              */
-                            // @codeCoverageIgnoreStart
                             $lastNonEmpty = $i;
                             break;
-                            // @codeCoverageIgnoreEnd
                         } elseif ($start === null && $lastComma === $opener) {
-                            // This is an empty list.
                             break 2;
                         }
                     }
 
-                    // Ok, so this is actually the end of the list item.
                     $current        = self::$listItemDefaults;
                     $current['raw'] = \trim(GetTokensAsString::normal($phpcsFile, ($lastComma + 1), ($i - 1)));
 
@@ -298,7 +290,6 @@ final class Lists
 
                     $vars[] = $current;
 
-                    // Reset.
                     $start        = null;
                     $lastNonEmpty = null;
                     $reference    = null;
@@ -335,7 +326,6 @@ final class Lists
                         $start = $i;
                     }
 
-                    // Skip over everything within all types of brackets which may be used in keys.
                     if (isset($tokens[$i]['bracket_opener'], $tokens[$i]['bracket_closer'])
                         && $i === $tokens[$i]['bracket_opener']
                     ) {

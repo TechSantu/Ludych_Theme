@@ -4,20 +4,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 global $post_id;
 
-$about_text        = get_field( 'about_text', $post_id );
-$about_title       = get_field( 'about_title', $post_id );
-$about_description = get_field( 'about_description', $post_id );
-$about_image       = get_field( 'about_image', $post_id );
-$author_name       = get_field( 'author_name', $post_id );
-$author_about      = get_field( 'author_about', $post_id );
+$blog_section_subtitle = get_field( 'blog_section_subtitle', $post_id );
+$blog_section_title    = get_field( 'blog_section_title', $post_id );
+$blog_section_heading  = get_field( 'blog_section_heading', $post_id );
+
+$args = array(
+	'post_type'      => 'post',
+	'posts_per_page' => 6,
+	'post_status'    => 'publish',
+);
+$blog_query = new WP_Query( $args );
 ?>
 
-
-	<!-- our blog start -->
 	<section class="our-blog">
 		<div class="custom-container">
 			<div class="global-header middle-align">
-				<h2>News & Blog</h2>
+				<h2><?php echo esc_html( $blog_section_subtitle ); ?></h2>
 				<div class="min-title">
 					<div class="icon-box">
 						<svg xmlns="http://www.w3.org/2000/svg" width="39" height="39" viewBox="0 0 39 39" fill="none">
@@ -33,67 +35,41 @@ $author_about      = get_field( 'author_about', $post_id );
 							</defs>
 						</svg>
 					</div>
-					<h6>News & Blog</h6>
+					<h6><?php echo esc_html( $blog_section_title ); ?></h6>
 				</div>
-				<h5>Our Latest <span>News & Blog</span></h5>
+				<h5><?php echo ( $blog_section_heading ); ?></h5>
 			</div>
-			<div class="row">
-				<div class="col-xl-4 col-md-6 col-sm-12">
+
+			<?php if ( $blog_query->have_posts() ) : ?>
+			<div id="ourBlogItem" class="owl-carousel owl-theme">
+				<?php
+				while ( $blog_query->have_posts() ) :
+					$blog_query->the_post();
+					$categories = get_the_category();
+					$category_name = ! empty( $categories ) ? $categories[0]->name : '';
+					?>
 					<div class="blog-Item">
 						<div class="blog-thumbnail">
-							<img src="<?php echo get_template_directory_uri(); ?>/assets/images/blog-1.png" alt="">
+							<?php if ( has_post_thumbnail() ) : ?>
+								<img src="<?php echo get_the_post_thumbnail_url( get_the_ID(), 'full' ); ?>" alt="<?php the_title_attribute(); ?>">
+							<?php endif; ?>
 							<span class="blog-tag">
-								Website Development
+								<?php echo esc_html( $category_name ); ?>
 							</span>
 						</div>
 						<div class="cntn-outer">
-							<h4>Digital Marketing Strategies for the Healthcare Industry</h4>
-							<p>The healthcare industry continues to experience rapid digital transformation. Patients
-								now rely on search engines, online reviews, and digital platforms to evaluate providers,
-								compare services, and make informed decisions. To remain competitive and compliant,
-								healthcare organizations must adopt structured, data-driven digital marketing
-								strategies. As a digital marketing agency in Arizona, Ludych works with healthcare
-								providers, clinics, and medical organizations to design scalable marketing systems that
-								improve visibility, patient acquisition, and long-term trust—without compromising
-								regulatory standards.</p>
-							<a href="#" class="btn">Read More</a>
+							<h4><?php the_title(); ?></h4>
+							<p><?php echo wp_trim_words( get_the_excerpt(), 25, '...' ); ?></p>
+							<a href="<?php the_permalink(); ?>" class="btn">Read More</a>
 						</div>
 					</div>
-				</div>
-				<div class="col-xl-4 col-md-6 col-sm-12">
-					<div class="blog-Item">
-						<div class="blog-thumbnail">
-							<img src="<?php echo get_template_directory_uri(); ?>/assets/images/blog-2.png" alt="">
-							<span class="blog-tag">
-								Website Development
-							</span>
-						</div>
-						<div class="cntn-outer">
-							<h4>The Future of B2B Digital Marketingin 2024</h4>
-							<p>Explore emerging trends and technologies that are reshaping how B2B companies approach
-								digital marketing strategies.</p>
-							<a href="#" class="btn">Read More</a>
-						</div>
-					</div>
-				</div>
-				<div class="col-xl-4 col-md-6 col-sm-12">
-					<div class="blog-Item">
-						<div class="blog-thumbnail">
-							<img src="<?php echo get_template_directory_uri(); ?>/assets/images/blog-3.jpg" alt="">
-							<span class="blog-tag">
-								Website Development
-							</span>
-						</div>
-						<div class="cntn-outer">
-							<h4>Do Your Business with Expert Digital Solutions</h4>
-							<p>Do Your Business with Expert Digital Solutions In today’s fast-paced digital world,
-								success is no longer defined solely by hard work or traditional marketing strategies.
-							</p>
-							<a href="#" class="btn">Read More</a>
-						</div>
-					</div>
-				</div>
+				<?php
+				endwhile;
+				wp_reset_postdata();
+				?>
 			</div>
+			<?php else : ?>
+				<p class="text-center">No blog posts found.</p>
+			<?php endif; ?>
 		</div>
 	</section>
-	<!-- our blog end -->

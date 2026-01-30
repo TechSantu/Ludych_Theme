@@ -381,12 +381,10 @@ final class Parentheses
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Check for the existence of the token.
         if (isset($tokens[$stackPtr]) === false) {
             return false;
         }
 
-        // Make sure the token is nested in parenthesis.
         if (empty($tokens[$stackPtr]['nested_parenthesis']) === true) {
             return false;
         }
@@ -395,7 +393,6 @@ final class Parentheses
         $parentheses = $tokens[$stackPtr]['nested_parenthesis'];
 
         if (empty($validOwners) === true) {
-            // No owners specified, just return the first/last parentheses opener.
             if ($reverse === true) {
                 \end($parentheses);
             } else {
@@ -411,7 +408,6 @@ final class Parentheses
 
         foreach ($parentheses as $opener => $closer) {
             if (self::isOwnerIn($phpcsFile, $opener, $validOwners) === true) {
-                // We found a token with a valid owner.
                 return $opener;
             }
         }

@@ -104,7 +104,6 @@ class ForbiddenNamesAsDeclaredSniff extends Sniff
      */
     public function register()
     {
-        // Do the list merge only once.
         $this->allForbiddenNames = array_merge($this->forbiddenNames, $this->softReservedNames);
 
         $targets = array(
@@ -141,20 +140,15 @@ class ForbiddenNamesAsDeclaredSniff extends Sniff
         $tokenType      = $tokens[$stackPtr]['type'];
         $tokenContentLc = strtolower($tokens[$stackPtr]['content']);
 
-        // For string tokens we only care about 'trait' as that is the only one
-        // which may not be correctly recognized as it's own token.
-        // This only happens in older versions of PHP where the token doesn't exist yet as a keyword.
         if ($tokenCode === \T_STRING && $tokenContentLc !== 'trait') {
             return;
         }
 
         if (\in_array($tokenType, array('T_CLASS', 'T_INTERFACE', 'T_TRAIT'), true)) {
-            // Check for the declared name being a name which is not tokenized as T_STRING.
             $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
             if ($nextNonEmpty !== false && isset($this->forbiddenTokens[$tokens[$nextNonEmpty]['code']]) === true) {
                 $name = $tokens[$nextNonEmpty]['content'];
             } else {
-                // Get the declared name if it's a T_STRING.
                 $name = $phpcsFile->getDeclarationName($stackPtr);
             }
             unset($nextNonEmpty);
@@ -185,7 +179,6 @@ class ForbiddenNamesAsDeclaredSniff extends Sniff
                 }
             }
         } elseif ($tokenCode === \T_STRING) {
-            // Traits which are not yet tokenized as T_TRAIT.
             $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
             if ($nextNonEmpty === false) {
                 return;
@@ -221,8 +214,6 @@ class ForbiddenNamesAsDeclaredSniff extends Sniff
             return;
         }
 
-        // Still here, so this is one of the reserved words.
-        // Build up the error message.
         $error     = "'%s' is a";
         $isError   = null;
         $errorCode = $this->stringToErrorCode($nameLc) . 'Found';

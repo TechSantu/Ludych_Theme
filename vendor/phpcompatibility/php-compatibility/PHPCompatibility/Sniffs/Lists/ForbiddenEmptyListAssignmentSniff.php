@@ -46,8 +46,6 @@ class ForbiddenEmptyListAssignmentSniff extends Sniff
      */
     public function register()
     {
-        // Set up a list of tokens to disregard when determining whether the list() is empty.
-        // Only needs to be set up once.
         $this->ignoreTokens                       = Tokens::$emptyTokens;
         $this->ignoreTokens[\T_COMMA]             = \T_COMMA;
         $this->ignoreTokens[\T_OPEN_PARENTHESIS]  = \T_OPEN_PARENTHESIS;
@@ -86,7 +84,6 @@ class ForbiddenEmptyListAssignmentSniff extends Sniff
             $open  = $stackPtr;
             $close = $tokens[$stackPtr]['bracket_closer'];
         } else {
-            // T_LIST.
             $open = $phpcsFile->findNext(\T_OPEN_PARENTHESIS, $stackPtr, null, false, null, true);
             if ($open === false || isset($tokens[$open]['parenthesis_closer']) === false) {
                 return;

@@ -122,7 +122,6 @@ class NewKeyedListSniff extends Sniff
         if ($tokens[$stackPtr]['code'] === \T_OPEN_SHORT_ARRAY
             && $this->isShortList($phpcsFile, $stackPtr) === false
         ) {
-            // Short array, not short list.
             return;
         }
 
@@ -132,14 +131,12 @@ class NewKeyedListSniff extends Sniff
                 || $tokens[$nextNonEmpty]['code'] !== \T_OPEN_PARENTHESIS
                 || isset($tokens[$nextNonEmpty]['parenthesis_closer']) === false
             ) {
-                // Parse error or live coding.
                 return;
             }
 
             $opener = $nextNonEmpty;
             $closer = $tokens[$nextNonEmpty]['parenthesis_closer'];
         } else {
-            // Short list syntax.
             $opener = $stackPtr;
 
             if (isset($tokens[$stackPtr]['bracket_closer'])) {
@@ -206,7 +203,6 @@ class NewKeyedListSniff extends Sniff
                 return $i;
             }
 
-            // Skip past nested list constructs.
             if ($tokens[$i]['code'] === \T_LIST) {
                 $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($i + 1), null, true);
                 if ($nextNonEmpty !== false

@@ -44,19 +44,15 @@ final class SetSniffPropertyTest extends AbstractRulesetTestCase
             ],
         ];
 
-        // Set up the ruleset.
         $standard = __DIR__."/SetProperty{$name}Test.xml";
         $config   = new ConfigDouble(["--standard=$standard"]);
         $ruleset  = new Ruleset($config);
 
-        // Verify that the sniff has been registered.
         $this->assertGreaterThan(0, count($ruleset->sniffCodes), 'No sniff codes registered');
 
-        // Verify that our target sniff has been registered.
         $this->assertArrayHasKey($sniffCode, $ruleset->sniffCodes, 'Target sniff not registered');
         $this->assertSame($sniffClass, $ruleset->sniffCodes[$sniffCode], 'Target sniff not registered with the correct class');
 
-        // Test that the property as declared in the ruleset has been set on the sniff.
         $this->assertArrayHasKey($sniffClass, $ruleset->sniffs, 'Sniff class not listed in registered sniffs');
 
         $sniffObject = $ruleset->sniffs[$sniffClass];
@@ -100,12 +96,10 @@ final class SetSniffPropertyTest extends AbstractRulesetTestCase
         $propertyName  = 'indent';
         $expectedValue = '10';
 
-        // Set up the ruleset.
         $standard = __DIR__.'/SetPropertyAppliesPropertyToMultipleSniffsInCategoryTest.xml';
         $config   = new ConfigDouble(["--standard=$standard"]);
         $ruleset  = new Ruleset($config);
 
-        // Test that the two sniffs which support the property have received the value.
         $sniffClass = 'PHP_CodeSniffer\Standards\PEAR\Sniffs\Functions\FunctionCallSignatureSniff';
         $this->assertArrayHasKey($sniffClass, $ruleset->sniffs, 'Sniff class '.$sniffClass.' not listed in registered sniffs');
         $sniffObject = $ruleset->sniffs[$sniffClass];
@@ -116,7 +110,6 @@ final class SetSniffPropertyTest extends AbstractRulesetTestCase
         $sniffObject = $ruleset->sniffs[$sniffClass];
         $this->assertSame($expectedValue, $sniffObject->$propertyName, 'Property value not set to expected value for '.$sniffClass);
 
-        // Test that the property doesn't get set for the one sniff which doesn't support the property.
         $sniffClass = 'PHP_CodeSniffer\Standards\PEAR\Sniffs\Functions\ValidDefaultValueSniff';
         $this->assertArrayHasKey($sniffClass, $ruleset->sniffs, 'Sniff class '.$sniffClass.' not listed in registered sniffs');
 
@@ -138,7 +131,6 @@ final class SetSniffPropertyTest extends AbstractRulesetTestCase
         $exceptionMsg = 'ERROR: Property "indentation" does not exist on sniff Generic.Arrays.ArrayIndent.'.PHP_EOL.PHP_EOL;
         $this->expectRuntimeExceptionMessage($exceptionMsg);
 
-        // Set up the ruleset.
         $standard = __DIR__.'/SetPropertyThrowsErrorOnInvalidPropertyTest.xml';
         $config   = new ConfigDouble(["--standard=$standard"]);
         new Ruleset($config);
@@ -158,7 +150,6 @@ final class SetSniffPropertyTest extends AbstractRulesetTestCase
         $exceptionMsg = 'ERROR: Property "arbitrarystring" does not exist on sniff TestStandard.SetProperty.NotAllowedViaAttribute.'.PHP_EOL.PHP_EOL;
         $this->expectRuntimeExceptionMessage($exceptionMsg);
 
-        // Set up the ruleset.
         $standard = __DIR__.'/SetPropertyNotAllowedViaAttributeTest.xml';
         $config   = new ConfigDouble(["--standard=$standard"]);
         new Ruleset($config);
@@ -176,7 +167,6 @@ final class SetSniffPropertyTest extends AbstractRulesetTestCase
      */
     public function testSetPropertyDoesNotThrowErrorOnInvalidPropertyWhenSetForStandard()
     {
-        // Set up the ruleset.
         $standard = __DIR__.'/SetPropertyDoesNotThrowErrorOnInvalidPropertyWhenSetForStandardTest.xml';
         $config   = new ConfigDouble(["--standard=$standard"]);
         new Ruleset($config);
@@ -194,7 +184,6 @@ final class SetSniffPropertyTest extends AbstractRulesetTestCase
      */
     public function testSetPropertyDoesNotThrowErrorOnInvalidPropertyWhenSetForCategory()
     {
-        // Set up the ruleset.
         $standard = __DIR__.'/SetPropertyDoesNotThrowErrorOnInvalidPropertyWhenSetForCategoryTest.xml';
         $config   = new ConfigDouble(["--standard=$standard"]);
         new Ruleset($config);
@@ -212,7 +201,6 @@ final class SetSniffPropertyTest extends AbstractRulesetTestCase
         $sniffCode  = 'Generic.Formatting.SpaceAfterCast';
         $sniffClass = 'PHP_CodeSniffer\\Standards\\Generic\\Sniffs\\Formatting\\SpaceAfterCastSniff';
 
-        // Set up the ruleset.
         $config  = new ConfigDouble(['--standard=PSR1']);
         $ruleset = new Ruleset($config);
 
@@ -225,10 +213,8 @@ final class SetSniffPropertyTest extends AbstractRulesetTestCase
             ]
         );
 
-        // Verify that there are sniffs registered.
         $this->assertGreaterThan(0, count($ruleset->sniffCodes), 'No sniff codes registered');
 
-        // Verify that our target sniff has NOT been registered after attempting to set the property.
         $this->assertArrayNotHasKey($sniffCode, $ruleset->sniffCodes, 'Unused sniff was registered in sniffCodes, but shouldn\'t have been');
         $this->assertArrayNotHasKey($sniffClass, $ruleset->sniffs, 'Unused sniff was registered in sniffs, but shouldn\'t have been');
 
@@ -247,7 +233,6 @@ final class SetSniffPropertyTest extends AbstractRulesetTestCase
         $sniffCode  = "TestStandard.SetProperty.{$name}";
         $sniffClass = 'Fixtures\TestStandard\Sniffs\SetProperty\\'.$name.'Sniff';
 
-        // Set up the ruleset.
         $standard = __DIR__."/SetProperty{$name}Test.xml";
         $config   = new ConfigDouble(["--standard=$standard"]);
         $ruleset  = new Ruleset($config);
@@ -264,14 +249,11 @@ final class SetSniffPropertyTest extends AbstractRulesetTestCase
             ]
         );
 
-        // Verify that the sniff has been registered.
         $this->assertGreaterThan(0, count($ruleset->sniffCodes), 'No sniff codes registered');
 
-        // Verify that our target sniff has been registered.
         $this->assertArrayHasKey($sniffCode, $ruleset->sniffCodes, 'Target sniff not registered');
         $this->assertSame($sniffClass, $ruleset->sniffCodes[$sniffCode], 'Target sniff not registered with the correct class');
 
-        // Test that the property as declared in the ruleset has been set on the sniff.
         $this->assertArrayHasKey($sniffClass, $ruleset->sniffs, 'Sniff class not listed in registered sniffs');
 
         $sniffObject = $ruleset->sniffs[$sniffClass];
@@ -298,7 +280,6 @@ final class SetSniffPropertyTest extends AbstractRulesetTestCase
         $sniffCode  = "TestStandard.SetProperty.{$name}";
         $sniffClass = 'Fixtures\TestStandard\Sniffs\SetProperty\\'.$name.'Sniff';
 
-        // Set up the ruleset.
         $standard = __DIR__."/SetProperty{$name}Test.xml";
         $config   = new ConfigDouble(["--standard=$standard"]);
         $ruleset  = new Ruleset($config);
@@ -311,14 +292,11 @@ final class SetSniffPropertyTest extends AbstractRulesetTestCase
             $propertyValue
         );
 
-        // Verify that the sniff has been registered.
         $this->assertGreaterThan(0, count($ruleset->sniffCodes), 'No sniff codes registered');
 
-        // Verify that our target sniff has been registered.
         $this->assertArrayHasKey($sniffCode, $ruleset->sniffCodes, 'Target sniff not registered');
         $this->assertSame($sniffClass, $ruleset->sniffCodes[$sniffCode], 'Target sniff not registered with the correct class');
 
-        // Test that the property as declared in the ruleset has been set on the sniff.
         $this->assertArrayHasKey($sniffClass, $ruleset->sniffs, 'Sniff class not listed in registered sniffs');
 
         $sniffObject = $ruleset->sniffs[$sniffClass];
@@ -397,14 +375,12 @@ final class SetSniffPropertyTest extends AbstractRulesetTestCase
             $this->expectException($exceptionClass);
             $this->expectExceptionMessage($exceptionMsg);
         } else {
-            // PHPUnit < 5.2.0.
             $this->setExpectedException($exceptionClass, $exceptionMsg);
         }
 
         $name       = 'AllowedAsDeclared';
         $sniffClass = 'Fixtures\TestStandard\Sniffs\SetProperty\\'.$name.'Sniff';
 
-        // Set up the ruleset.
         $standard = __DIR__."/SetProperty{$name}Test.xml";
         $config   = new ConfigDouble(["--standard=$standard"]);
         $ruleset  = new Ruleset($config);

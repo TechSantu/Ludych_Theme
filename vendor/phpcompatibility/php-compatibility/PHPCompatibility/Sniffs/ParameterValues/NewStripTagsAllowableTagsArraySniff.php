@@ -91,14 +91,12 @@ class NewStripTagsAllowableTagsArraySniff extends AbstractFunctionCallParameterS
         $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, $targetParam['start'], $targetParam['end'], true);
 
         if ($nextNonEmpty === false) {
-            // Shouldn't be possible.
             return;
         }
 
         if ($tokens[$nextNonEmpty]['code'] !== \T_ARRAY
             && $tokens[$nextNonEmpty]['code'] !== \T_OPEN_SHORT_ARRAY
         ) {
-            // Not passed as a hard-coded array.
             return;
         }
 
@@ -112,7 +110,6 @@ class NewStripTagsAllowableTagsArraySniff extends AbstractFunctionCallParameterS
 
         if ($this->supportsAbove('7.4') === true) {
             if (strpos($targetParam['raw'], '>') === false) {
-                // Efficiency: prevent needlessly walking the array.
                 return;
             }
 
@@ -127,7 +124,6 @@ class NewStripTagsAllowableTagsArraySniff extends AbstractFunctionCallParameterS
                     if ($tokens[$i]['code'] === \T_STRING
                         || $tokens[$i]['code'] === \T_VARIABLE
                     ) {
-                        // Variable, constant, function call. Ignore complete item as undetermined.
                         break;
                     }
 
@@ -142,7 +138,6 @@ class NewStripTagsAllowableTagsArraySniff extends AbstractFunctionCallParameterS
                             array($item['raw'])
                         );
 
-                        // Only throw one error per array item.
                         break;
                     }
                 }

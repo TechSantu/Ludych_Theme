@@ -1022,7 +1022,6 @@ class RemovedFunctionsSniff extends AbstractRemovedFeatureSniff
      */
     public function register()
     {
-        // Handle case-insensitivity of function names.
         $this->removedFunctions = $this->arrayKeysToLowercase($this->removedFunctions);
 
         return array(\T_STRING);
@@ -1056,7 +1055,6 @@ class RemovedFunctionsSniff extends AbstractRemovedFeatureSniff
 
         $prevToken = $phpcsFile->findPrevious(\T_WHITESPACE, ($stackPtr - 1), null, true);
         if (isset($ignore[$tokens[$prevToken]['code']]) === true) {
-            // Not a call to a PHP function.
             return;
         }
 

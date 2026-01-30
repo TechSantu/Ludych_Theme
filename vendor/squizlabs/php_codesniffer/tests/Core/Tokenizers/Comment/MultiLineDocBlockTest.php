@@ -36,19 +36,16 @@ final class MultiLineDocBlockTest extends CommentTestCase
             'Multi line docblock: variety of text and tags' => [
                 'marker'       => '/* testMultilineDocblock */',
                 'closerOffset' => 95,
-                // phpcs:ignore Squiz.Arrays.ArrayDeclaration.SingleLineNotAllowed
                 'expectedTags' => [21, 29, 36, 46, 56, 63, 73, 80, 90],
             ],
             'Multi line docblock: no leading stars'         => [
                 'marker'       => '/* testMultilineDocblockNoStars */',
                 'closerOffset' => 32,
-                // phpcs:ignore Squiz.Arrays.ArrayDeclaration.SingleLineNotAllowed
                 'expectedTags' => [10, 16, 21, 27],
             ],
             'Multi line docblock: indented'                 => [
                 'marker'       => '/* testMultilineDocblockIndented */',
                 'closerOffset' => 60,
-                // phpcs:ignore Squiz.Arrays.ArrayDeclaration.SingleLineNotAllowed
                 'expectedTags' => [21, 28, 38, 45, 55],
             ],
             'Multi line docblock: opener not on own line'   => [

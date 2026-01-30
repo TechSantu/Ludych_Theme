@@ -54,12 +54,10 @@ class ColonSpacingSniff implements Sniff, DeprecatedSniff
 
         $prev = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($stackPtr - 1), null, true);
         if ($tokens[$prev]['code'] !== T_STYLE) {
-            // The colon is not part of a style definition.
             return;
         }
 
         if ($tokens[$prev]['content'] === 'progid') {
-            // Special case for IE filters.
             return;
         }
 
@@ -73,7 +71,6 @@ class ColonSpacingSniff implements Sniff, DeprecatedSniff
 
         $next = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
         if ($tokens[$next]['code'] === T_SEMICOLON || $tokens[$next]['code'] === T_STYLE) {
-            // Empty style definition, ignore it.
             return;
         }
 

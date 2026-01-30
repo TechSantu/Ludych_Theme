@@ -42,8 +42,6 @@ final class ConstructTest extends AbstractFileListTestCase
 
         $i = 0;
 
-        // Sort the values to make the tests stable as different OSes will read directories
-        // in a different order and the order is not relevant for these tests. Just the values.
         $fileListArray = iterator_to_array($fileList);
         ksort($fileListArray);
 

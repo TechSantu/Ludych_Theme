@@ -164,7 +164,6 @@ class NewOperatorsSniff extends AbstractNewFeatureSniff
         $tokens    = $phpcsFile->getTokens();
         $tokenType = $tokens[$stackPtr]['type'];
 
-        // Translate older PHPCS token combis for new operators to the actual operator.
         if (isset($this->newOperators[$tokenType]) === false) {
             if (isset($this->PHPCSCompatTranslate[$tokenType])
                 && ((isset($this->PHPCSCompatTranslate[$tokenType]['before'], $tokens[$stackPtr - 1]) === true
@@ -175,14 +174,11 @@ class NewOperatorsSniff extends AbstractNewFeatureSniff
                 $tokenType = $this->PHPCSCompatTranslate[$tokenType]['real_token'];
             }
         } elseif ($tokenType === 'T_COALESCE') {
-            // Make sure that T_COALESCE is not confused with T_COALESCE_EQUAL.
             if (isset($tokens[($stackPtr + 1)]) !== false && $tokens[($stackPtr + 1)]['code'] === \T_EQUAL) {
-                // Ignore as will be dealt with via the T_EQUAL token.
                 return;
             }
         }
 
-        // If the translation did not yield one of the tokens we are looking for, bow out.
         if (isset($this->newOperators[$tokenType]) === false) {
             return;
         }
@@ -272,7 +268,6 @@ class NewOperatorsSniff extends AbstractNewFeatureSniff
     private function isTCoalesceEqual($tokens, $stackPtr)
     {
         if ($tokens[$stackPtr]['code'] !== \T_EQUAL || isset($tokens[($stackPtr - 1)]) === false) {
-            // Function called for wrong token or token has no predecessor.
             return false;
         }
 
@@ -301,12 +296,10 @@ class NewOperatorsSniff extends AbstractNewFeatureSniff
     private function isTCoalesce($tokens, $stackPtr)
     {
         if ($tokens[$stackPtr]['code'] !== \T_INLINE_THEN || isset($tokens[($stackPtr - 1)]) === false) {
-            // Function called for wrong token or token has no predecessor.
             return false;
         }
 
         if ($tokens[($stackPtr - 1)]['code'] === \T_INLINE_THEN) {
-            // Make sure not to confuse it with the T_COALESCE_EQUAL token.
             if (isset($tokens[($stackPtr + 1)]) === false || $tokens[($stackPtr + 1)]['code'] !== \T_EQUAL) {
                 return true;
             }

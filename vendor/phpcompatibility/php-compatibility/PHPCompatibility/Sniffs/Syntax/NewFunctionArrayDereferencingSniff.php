@@ -88,7 +88,6 @@ class NewFunctionArrayDereferencingSniff extends Sniff
                 continue;
             }
 
-            // PHP 7.0 function array dereferencing using curly braces.
             if ($tokens[$openBrace]['type'] === 'T_OPEN_CURLY_BRACKET') {
                 $phpcsFile->addError(
                     'Function array dereferencing using curly braces is not present in PHP version 5.6 or earlier',
@@ -117,24 +116,20 @@ class NewFunctionArrayDereferencingSniff extends Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Next non-empty token should be the open parenthesis.
         $openParenthesis = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true, null, true);
         if ($openParenthesis === false || $tokens[$openParenthesis]['code'] !== \T_OPEN_PARENTHESIS) {
             return array();
         }
 
-        // Don't throw errors during live coding.
         if (isset($tokens[$openParenthesis]['parenthesis_closer']) === false) {
             return array();
         }
 
-        // Is this T_STRING really a function or method call ?
         $prevToken = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($stackPtr - 1), null, true);
         if ($prevToken !== false
             && \in_array($tokens[$prevToken]['code'], array(\T_DOUBLE_COLON, \T_OBJECT_OPERATOR), true) === false
         ) {
             if ($tokens[$prevToken]['code'] === \T_BITWISE_AND) {
-                // This may be a function declared by reference.
                 $prevToken = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($prevToken - 1), null, true);
             }
 
@@ -148,7 +143,6 @@ class NewFunctionArrayDereferencingSniff extends Sniff
             );
 
             if (isset($ignore[$tokens[$prevToken]['code']]) === true) {
-                // Not a call to a PHP function or method.
                 return array();
             }
         }
@@ -166,18 +160,15 @@ class NewFunctionArrayDereferencingSniff extends Sniff
                 || $tokens[$nextNonEmpty]['type'] === 'T_OPEN_CURLY_BRACKET' // PHP 7.0+.
             ) {
                 if (isset($tokens[$nextNonEmpty]['bracket_closer']) === false) {
-                    // Live coding or parse error.
                     break;
                 }
 
                 $braces[$nextNonEmpty] = $tokens[$nextNonEmpty]['bracket_closer'];
 
-                // Continue, just in case there is nested array access, i.e. `echo $foo->bar()[0][2];`.
                 $current = $tokens[$nextNonEmpty]['bracket_closer'];
                 continue;
             }
 
-            // If we're still here, we've reached the end of the function call.
             break;
 
         } while (true);

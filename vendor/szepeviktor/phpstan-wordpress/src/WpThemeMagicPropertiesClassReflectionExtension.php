@@ -28,10 +28,8 @@ class WpThemeMagicPropertiesClassReflectionExtension implements \PHPStan\Reflect
         return in_array($propertyName, $this->properties, true);
     }
 
-    // phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter
     public function getProperty(ClassReflection $classReflection, string $propertyName): PropertyReflection
     {
-        // @phpstan-ignore-next-line This is not covered by BC.
         return new DummyPropertyReflection();
     }
 }

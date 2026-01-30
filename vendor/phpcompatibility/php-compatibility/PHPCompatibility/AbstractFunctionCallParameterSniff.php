@@ -74,7 +74,6 @@ abstract class AbstractFunctionCallParameterSniff extends Sniff
      */
     public function register()
     {
-        // Handle case-insensitivity of function names.
         $this->targetFunctions = $this->arrayKeysToLowercase($this->targetFunctions);
 
         return array(\T_STRING);
@@ -113,19 +112,16 @@ abstract class AbstractFunctionCallParameterSniff extends Sniff
             if ($tokens[$prevNonEmpty]['code'] !== \T_DOUBLE_COLON
                 && $tokens[$prevNonEmpty]['code'] !== \T_OBJECT_OPERATOR
             ) {
-                // Not a call to a PHP method.
                 return;
             }
         } else {
             if (isset($this->ignoreTokens[$tokens[$prevNonEmpty]['code']]) === true) {
-                // Not a call to a PHP function.
                 return;
             }
 
             if ($tokens[$prevNonEmpty]['code'] === \T_NS_SEPARATOR
                 && $tokens[$prevNonEmpty - 1]['code'] === \T_STRING
             ) {
-                // Namespaced function.
                 return;
             }
         }

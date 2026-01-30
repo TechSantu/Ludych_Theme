@@ -80,7 +80,6 @@ class JSLintSniff implements Sniff, DeprecatedSniff
             }
         }
 
-        // Ignore the rest of the file.
         return $phpcsFile->numTokens;
 
     }//end process()

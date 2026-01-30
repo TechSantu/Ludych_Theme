@@ -70,7 +70,6 @@ class NewConstantArraysUsingConstSniff extends Sniff
                 'Found'
             );
 
-            // Skip past the content of the array.
             $stackPtr = $hasArray;
             if ($tokens[$hasArray]['code'] === \T_OPEN_SHORT_ARRAY && isset($tokens[$hasArray]['bracket_closer'])) {
                 $stackPtr = $tokens[$hasArray]['bracket_closer'];

@@ -28,13 +28,10 @@ class ClassDeclarationSniff extends PSR2ClassDeclarationSniff
      */
     public function process(File $phpcsFile, $stackPtr)
     {
-        // We want all the errors from the PSR2 standard, plus some of our own.
         parent::process($phpcsFile, $stackPtr);
 
-        // Check that this is the only class or interface in the file.
         $nextClass = $phpcsFile->findNext([T_CLASS, T_INTERFACE], ($stackPtr + 1));
         if ($nextClass !== false) {
-            // We have another, so an error is thrown.
             $error = 'Only one interface or class is allowed in a file';
             $phpcsFile->addError($error, $nextClass, 'MultipleClasses');
         }
@@ -105,9 +102,7 @@ class ClassDeclarationSniff extends PSR2ClassDeclarationSniff
 
         $closeBrace = $tokens[$stackPtr]['scope_closer'];
 
-        // Check that the closing brace has one blank line after it.
         for ($nextContent = ($closeBrace + 1); $nextContent < $phpcsFile->numTokens; $nextContent++) {
-            // Ignore comments on the same line as the brace.
             if ($tokens[$nextContent]['line'] === $tokens[$closeBrace]['line']
                 && ($tokens[$nextContent]['code'] === T_WHITESPACE
                 || $tokens[$nextContent]['code'] === T_COMMENT
@@ -122,7 +117,6 @@ class ClassDeclarationSniff extends PSR2ClassDeclarationSniff
         }
 
         if ($nextContent === $phpcsFile->numTokens) {
-            // Ignore the line check as this is the very end of the file.
             $difference = 1;
         } else {
             $difference = ($tokens[$nextContent]['line'] - $tokens[$closeBrace]['line'] - 1);

@@ -42,7 +42,6 @@ final class PopulateTokenListenersTest extends AbstractRulesetTestCase
     protected function initializeConfigAndRuleset()
     {
         if (isset(self::$ruleset) === false) {
-            // Set up the ruleset.
             $standard      = __DIR__.'/PopulateTokenListenersTest.xml';
             $config        = new ConfigDouble(["--standard=$standard"]);
             self::$ruleset = new Ruleset($config);
@@ -67,8 +66,6 @@ final class PopulateTokenListenersTest extends AbstractRulesetTestCase
 
         new Ruleset($config);
 
-        // Verify that the sniff has not been registered/has been unregistered.
-        // These assertions will only take effect for PHPUnit 10+.
         $this->assertArrayNotHasKey($sniffClass, self::$ruleset->sniffs, "Sniff class $sniffClass is listed in registered sniffs");
         $this->assertArrayNotHasKey('TestStandard.InvalidSniffs.RegisterNoArray', self::$ruleset->sniffCodes, 'Sniff code is registered');
 
@@ -176,8 +173,6 @@ final class PopulateTokenListenersTest extends AbstractRulesetTestCase
         $actualValue = $property->getValue(self::$ruleset);
         (PHP_VERSION_ID < 80100) && $property->setAccessible(false);
 
-        // Only verify there is one deprecated sniff registered.
-        // There are other tests which test the deprecated sniff handling in more detail.
         $this->assertTrue(is_array($actualValue));
         $this->assertCount(1, $actualValue);
 
@@ -193,13 +188,11 @@ final class PopulateTokenListenersTest extends AbstractRulesetTestCase
     {
         $sniffClass = 'PHP_CodeSniffer\\Standards\\Generic\\Sniffs\\NamingConventions\\UpperCaseConstantNameSniff';
 
-        // Verify that our target sniff has been registered.
         $this->assertArrayHasKey($sniffClass, self::$ruleset->sniffs, "Sniff class $sniffClass not listed in registered sniffs");
 
         $sniffObject = self::$ruleset->sniffs[$sniffClass];
         $reflection  = new ReflectionObject($sniffObject);
 
-        // Just making sure there are no properties on the sniff object (which doesn't have declared properties).
         $this->assertSame([], $reflection->getProperties(), "Unexpected properties found on sniff class $sniffClass");
 
     }//end testDoesntTriggerPropertySettingForNoProperties()
@@ -218,12 +211,10 @@ final class PopulateTokenListenersTest extends AbstractRulesetTestCase
      */
     public function testTriggersPropertySettingWhenPropertiesProvided($sniffClass, $propertyName, $expected)
     {
-        // Verify that our target sniff has been registered.
         $this->assertArrayHasKey($sniffClass, self::$ruleset->sniffs, "Sniff class $sniffClass not listed in registered sniffs");
 
         $sniffObject = self::$ruleset->sniffs[$sniffClass];
 
-        // Verify the property has been set.
         $this->assertSame($expected, $sniffObject->$propertyName, "Property on sniff class $sniffClass set to unexpected value");
 
     }//end testTriggersPropertySettingWhenPropertiesProvided()
@@ -321,7 +312,6 @@ final class PopulateTokenListenersTest extends AbstractRulesetTestCase
 
             foreach ($listeners as $className => $details) {
                 if ($className === $exclude) {
-                    // Skip this one as it is the one sniff for which things will be different.
                     continue;
                 }
 
@@ -417,7 +407,6 @@ final class PopulateTokenListenersTest extends AbstractRulesetTestCase
 
             foreach ($listeners as $className => $details) {
                 if ($className === $exclude) {
-                    // Skip this one as it is the one sniff for which things will be different.
                     continue;
                 }
 
@@ -452,7 +441,6 @@ final class PopulateTokenListenersTest extends AbstractRulesetTestCase
 
             foreach ($listeners as $className => $details) {
                 if ($className === $exclude) {
-                    // Skip this one as it is the one sniff for which things will be different.
                     continue;
                 }
 

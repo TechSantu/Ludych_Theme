@@ -19,6 +19,5 @@ final class Sniff implements PHPCS_Sniff
 
     public function process(File $phpcsFile, $stackPtr)
     {
-        // Do something.
     }
 }

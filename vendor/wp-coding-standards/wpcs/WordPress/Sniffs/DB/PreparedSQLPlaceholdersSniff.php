@@ -209,7 +209,6 @@ final class PreparedSQLPlaceholdersSniff extends Sniff {
 		$skip_to                  = null;
 
 		for ( $i = $query['start']; $i <= $query['end']; $i++ ) {
-			// Skip over groups of tokens if they are part of an inline function call.
 			if ( isset( $skip_from, $skip_to ) && $i >= $skip_from && $i <= $skip_to ) {
 				$i = $skip_to;
 				continue;
@@ -223,7 +222,6 @@ final class PreparedSQLPlaceholdersSniff extends Sniff {
 					continue;
 				}
 
-				// Detect a specific pattern for variable replacements in combination with `IN`.
 				if ( \T_STRING === $this->tokens[ $i ]['code'] ) {
 
 					if ( 'sprintf' === strtolower( $this->tokens[ $i ]['content'] ) ) {
@@ -255,7 +253,6 @@ final class PreparedSQLPlaceholdersSniff extends Sniff {
 								continue;
 							}
 
-							// We know for sure this sprintf() uses positional parameters, so this will be fine.
 							$skip_from  = ( $sprintf_parameters[1]['end'] + 1 );
 							$last_param = end( $sprintf_parameters );
 							$skip_to    = ( $last_param['end'] + 1 );
@@ -282,7 +279,6 @@ final class PreparedSQLPlaceholdersSniff extends Sniff {
 							$prev_content = TextStrings::stripQuotes( $this->tokens[ $prev ]['content'] );
 							$regex_quote  = $this->get_regex_quote_snippet( $prev_content, $this->tokens[ $prev ]['content'] );
 
-							// Only examine the implode if preceded by an ` IN (`.
 							if ( preg_match( '`\s+IN\s*\(\s*(' . $regex_quote . ')?$`i', $prev_content, $match ) > 0 ) {
 
 								if ( isset( $match[1] ) && $regex_quote !== $this->regex_quote ) {
@@ -327,7 +323,6 @@ final class PreparedSQLPlaceholdersSniff extends Sniff {
 			if ( \T_DOUBLE_QUOTED_STRING === $this->tokens[ $i ]['code']
 				|| \T_HEREDOC === $this->tokens[ $i ]['code']
 			) {
-				// Only interested in actual query text, so strip out variables.
 				$stripped_content = TextStrings::stripEmbeds( $content );
 				if ( $stripped_content !== $content ) {
 					$vars_without_wpdb = array_filter(
@@ -380,7 +375,6 @@ final class PreparedSQLPlaceholdersSniff extends Sniff {
 						foreach ( $matches[ $match_key ] as $index => $match ) {
 							$data = array( $matches[0][ $index ] );
 
-							// Both a `%` as well as a `_` are wildcards in SQL.
 							if ( strpos( $match, '%' ) === false && strpos( $match, '_' ) === false ) {
 								$this->phpcsFile->addWarning(
 									'Unless you are using SQL wildcards, using LIKE is inefficient. Use a straight compare instead. Found: %s.',
@@ -537,7 +531,6 @@ final class PreparedSQLPlaceholdersSniff extends Sniff {
 		}
 
 		if ( false === $text_string_tokens_found ) {
-			// Query string passed in as a variable or function call, nothing to examine.
 			return;
 		}
 
@@ -580,7 +573,6 @@ final class PreparedSQLPlaceholdersSniff extends Sniff {
 		$replacements = $parameters;
 		unset( $replacements['query'], $replacements[1] ); // Remove the query param, whether passed positionally or named.
 
-		// The parameters may have been passed as an array in the variadic $args parameter.
 		$args_param = PassedParameters::getParameterFromStack( $parameters, 2, 'args' );
 		if ( false !== $args_param && 2 === $total_parameters ) {
 			$next = $this->phpcsFile->findNext(
@@ -602,7 +594,6 @@ final class PreparedSQLPlaceholdersSniff extends Sniff {
 		$total_replacements  = \count( $replacements );
 		$total_placeholders -= $valid_in_clauses['adjustment_count'];
 
-		// Bow out when `IN` clauses have been used which appear to be correct.
 		if ( $valid_in_clauses['uses_in'] > 0
 			&& $valid_in_clauses['uses_in'] === $valid_in_clauses['implode_fill']
 			&& 1 === $total_replacements

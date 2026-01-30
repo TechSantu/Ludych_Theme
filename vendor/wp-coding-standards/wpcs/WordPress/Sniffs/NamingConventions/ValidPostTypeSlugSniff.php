@@ -134,7 +134,6 @@ final class ValidPostTypeSlugSniff extends AbstractFunctionParameterSniff {
 	public function process_parameters( $stackPtr, $group_name, $matched_content, $parameters ) {
 		$post_type_param = PassedParameters::getParameterFromStack( $parameters, 1, 'post_type' );
 		if ( false === $post_type_param || '' === $post_type_param['clean'] ) {
-			// Error for using empty slug.
 			$this->phpcsFile->addError(
 				'register_post_type() called without a post type slug. The slug must be a non-empty string.',
 				false === $post_type_param ? $stackPtr : $post_type_param['start'],
@@ -148,7 +147,6 @@ final class ValidPostTypeSlugSniff extends AbstractFunctionParameterSniff {
 
 		$has_invalid_tokens = $this->phpcsFile->findNext( $this->valid_tokens, $post_type_param['start'], ( $post_type_param['end'] + 1 ), true );
 		if ( false !== $has_invalid_tokens || false === $string_pos ) {
-			// Check for non string based slug parameter (we cannot determine if this is valid).
 			$this->phpcsFile->addWarning(
 				'The post type slug is not a string literal. It is not possible to automatically determine the validity of this slug. Found: %s.',
 				$stackPtr,
@@ -163,7 +161,6 @@ final class ValidPostTypeSlugSniff extends AbstractFunctionParameterSniff {
 
 		$post_type = TextStrings::getCompleteTextString( $this->phpcsFile, $string_start );
 		if ( isset( Tokens::$heredocTokens[ $this->tokens[ $string_start ]['code'] ] ) ) {
-			// Trim off potential indentation from PHP 7.3 flexible heredoc/nowdoc content.
 			$post_type = ltrim( $post_type );
 		}
 
@@ -171,7 +168,6 @@ final class ValidPostTypeSlugSniff extends AbstractFunctionParameterSniff {
 			$post_type,
 		);
 
-		// Warn for dynamic parts in the slug parameter.
 		if ( \T_DOUBLE_QUOTED_STRING === $this->tokens[ $string_pos ]['code']
 			|| ( \T_HEREDOC === $this->tokens[ $string_pos ]['code']
 			&& strpos( $this->tokens[ $string_pos ]['content'], '$' ) !== false )
@@ -186,7 +182,6 @@ final class ValidPostTypeSlugSniff extends AbstractFunctionParameterSniff {
 		}
 
 		if ( preg_match( self::VALID_POST_TYPE_CHARACTERS, $post_type ) === 0 ) {
-			// Error for invalid characters.
 			$this->phpcsFile->addError(
 				'register_post_type() called with invalid post type "%s". Post type contains invalid characters. Only lowercase alphanumeric characters, dashes, and underscores are allowed.',
 				$string_pos,
@@ -196,7 +191,6 @@ final class ValidPostTypeSlugSniff extends AbstractFunctionParameterSniff {
 		}
 
 		if ( isset( $this->reserved_names[ $post_type ] ) ) {
-			// Error for using reserved slug names.
 			$this->phpcsFile->addError(
 				'register_post_type() called with reserved post type "%s". Reserved post types should not be used as they interfere with the functioning of WordPress itself.',
 				$string_pos,
@@ -204,7 +198,6 @@ final class ValidPostTypeSlugSniff extends AbstractFunctionParameterSniff {
 				$data
 			);
 		} elseif ( stripos( $post_type, 'wp_' ) === 0 ) {
-			// Error for using reserved slug prefix.
 			$this->phpcsFile->addError(
 				'The post type passed to register_post_type() uses a prefix reserved for WordPress itself. Found: "%s".',
 				$string_pos,
@@ -213,7 +206,6 @@ final class ValidPostTypeSlugSniff extends AbstractFunctionParameterSniff {
 			);
 		}
 
-		// Error for slugs that are too long.
 		if ( strlen( $post_type ) > self::POST_TYPE_MAX_LENGTH ) {
 			$this->phpcsFile->addError(
 				'A post type slug must not exceed %d characters. Found: "%s" (%d characters).',
