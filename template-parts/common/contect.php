@@ -83,7 +83,7 @@ $title     = get_theme_mod( 'ludych_contact_form_title', 'Get Your <span>Free Qu
 							</div>
 							<h5><?php echo ( $title ); ?></h5>
 						</div>
-						<form id="ludych-contact-form">
+						<form id="ludych-contact-form" method="post" action="">
 							<div class="row">
 								<div class="col-xl-6 col-md-6 col-sm-12">
 									<div class="form-group">
@@ -100,7 +100,7 @@ $title     = get_theme_mod( 'ludych_contact_form_title', 'Get Your <span>Free Qu
 								<div class="col-xl-6 col-md-6 col-sm-12">
 									<div class="form-group">
 										<label>Phone Number</label>
-										<input type="tel" name="phone" class="form-control" placeholder="Phone Number*" pattern="^[\d\s+\-()]{7,20}$" title="Please enter a valid phone number.">
+										<input type="tel" name="phone" class="form-control" placeholder="Phone Number*" pattern="[0-9+() \-]{7,20}" title="Please enter a valid phone number.">
 									</div>
 								</div>
 								<div class="col-xl-6 col-md-6 col-sm-12">
