@@ -10,3 +10,4 @@ require_once get_template_directory() . '/inc/customizer.php';
 require_once get_template_directory() . '/inc/ajax-load-more.php';
 require_once get_template_directory() . '/inc/post-types.php';
 require_once get_template_directory() . '/inc/acf-fields.php';
+require_once get_template_directory() . '/inc/contact-form-handler.php';

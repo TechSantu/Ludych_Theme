@@ -51,5 +51,38 @@ function ludych_register_custom_post_types() {
 		'show_in_rest' => true,
 		'menu_icon'    => 'dashicons-testimonial',
 	) );
+
+	// Form Submission Post Type
+	register_post_type( 'form_submission', array(
+		'labels'       => array(
+			'name'          => __( 'Form Submissions', 'ludych-theme' ),
+			'singular_name' => __( 'Submission', 'ludych-theme' ),
+		),
+		'public'       => false,
+		'show_ui'      => true,
+		'has_archive'  => false,
+		'supports'     => array( 'title', 'editor', 'custom-fields' ),
+		'menu_icon'    => 'dashicons-email-alt',
+	) );
 }
 add_action( 'init', 'ludych_register_custom_post_types' );
+
+// Add columns to Form Submissions list
+add_filter( 'manage_form_submission_posts_columns', function( $columns ) {
+	$new_columns = array(
+		'cb'                 => $columns['cb'],
+		'title'              => $columns['title'],
+		'submission_email'   => __( 'Email', 'ludych-theme' ),
+		'submission_phone'   => __( 'Phone', 'ludych-theme' ),
+		'submission_company' => __( 'Company', 'ludych-theme' ),
+		'submission_ip'      => __( 'IP Address', 'ludych-theme' ),
+		'date'               => $columns['date'],
+	);
+	return $new_columns;
+} );
+
+add_action( 'manage_form_submission_posts_custom_column', function( $column, $post_id ) {
+	if ( strpos( $column, 'submission_' ) === 0 ) {
+		echo esc_html( get_post_meta( $post_id, '_' . $column, true ) );
+	}
+}, 10, 2 );

@@ -353,5 +353,161 @@ function ludych_customize_register( $wp_customize ) {
 			'type'    => 'text',
 		)
 	);
+
+	/**
+	 * Contact Settings
+	 */
+	$wp_customize->add_section(
+		'ludych_contact_section',
+		array(
+			'title'       => __( 'Contact Settings', 'ludych-theme' ),
+			'priority'    => 50,
+			'description' => __( 'Manage dynamic information for the Contact Us section.', 'ludych-theme' ),
+		)
+	);
+
+	// Address
+	$wp_customize->add_setting(
+		'ludych_contact_address',
+		array(
+			'default'           => '1820 E Ray Road, STE A110, Chandler, Arizona 85225',
+			'sanitize_callback' => 'sanitize_textarea_field',
+			'transport'         => 'refresh',
+		)
+	);
+	$wp_customize->add_control(
+		'ludych_contact_address',
+		array(
+			'label'   => __( 'Physical Address', 'ludych-theme' ),
+			'section' => 'ludych_contact_section',
+			'type'    => 'textarea',
+		)
+	);
+
+	// Phone
+	$wp_customize->add_setting(
+		'ludych_contact_phone',
+		array(
+			'default'           => '520-660-8791',
+			'sanitize_callback' => 'sanitize_text_field',
+			'transport'         => 'refresh',
+		)
+	);
+	$wp_customize->add_control(
+		'ludych_contact_phone',
+		array(
+			'label'   => __( 'Phone Number', 'ludych-theme' ),
+			'section' => 'ludych_contact_section',
+			'type'    => 'text',
+		)
+	);
+
+	// Email
+	$wp_customize->add_setting(
+		'ludych_contact_email',
+		array(
+			'default'           => 'biz@ludych.com',
+			'sanitize_callback' => 'sanitize_email',
+			'transport'         => 'refresh',
+		)
+	);
+	$wp_customize->add_control(
+		'ludych_contact_email',
+		array(
+			'label'   => __( 'Contact Email (Publicly Shown)', 'ludych-theme' ),
+			'section' => 'ludych_contact_section',
+			'type'    => 'text',
+		)
+	);
+
+	// Notification Email
+	$wp_customize->add_setting(
+		'ludych_contact_notification_email',
+		array(
+			'default'           => get_option( 'admin_email' ),
+			'sanitize_callback' => 'sanitize_email',
+			'transport'         => 'refresh',
+		)
+	);
+	$wp_customize->add_control(
+		'ludych_contact_notification_email',
+		array(
+			'label'       => __( 'Form Recipient Email', 'ludych-theme' ),
+			'description' => __( 'The email address that will receive form submission notifications.', 'ludych-theme' ),
+			'section'     => 'ludych_contact_section',
+			'type'        => 'text',
+		)
+	);
+
+	// Open Time
+	$wp_customize->add_setting(
+		'ludych_contact_open_time',
+		array(
+			'default'           => 'Monday - Friday: 10:00 - 20:00',
+			'sanitize_callback' => 'sanitize_text_field',
+			'transport'         => 'refresh',
+		)
+	);
+	$wp_customize->add_control(
+		'ludych_contact_open_time',
+		array(
+			'label'   => __( 'Opening Hours', 'ludych-theme' ),
+			'section' => 'ludych_contact_section',
+			'type'    => 'text',
+		)
+	);
+
+	// Form Titles
+	$wp_customize->add_setting(
+		'ludych_contact_form_subtitle',
+		array(
+			'default'           => 'Get In Touch',
+			'sanitize_callback' => 'sanitize_text_field',
+			'transport'         => 'refresh',
+		)
+	);
+	$wp_customize->add_control(
+		'ludych_contact_form_subtitle',
+		array(
+			'label'   => __( 'Form Subtitle', 'ludych-theme' ),
+			'section' => 'ludych_contact_section',
+			'type'    => 'text',
+		)
+	);
+
+	$wp_customize->add_setting(
+		'ludych_contact_form_title',
+		array(
+			'default'           => 'Get Your <span>Free Quote</span> Today!',
+			'sanitize_callback' => 'wp_kses_post',
+			'transport'         => 'refresh',
+		)
+	);
+	$wp_customize->add_control(
+		'ludych_contact_form_title',
+		array(
+			'label'   => __( 'Form Title', 'ludych-theme' ),
+			'section' => 'ludych_contact_section',
+			'type'    => 'text',
+		)
+	);
+
+	// Redirect URL
+	$wp_customize->add_setting(
+		'ludych_contact_redirect_url',
+		array(
+			'default'           => home_url( '/thank-you' ),
+			'sanitize_callback' => 'esc_url_raw',
+			'transport'         => 'refresh',
+		)
+	);
+	$wp_customize->add_control(
+		'ludych_contact_redirect_url',
+		array(
+			'label'   => __( 'Form Redirect URL', 'ludych-theme' ),
+			'section' => 'ludych_contact_section',
+			'type'    => 'url',
+		)
+	);
 }
 add_action( 'customize_register', 'ludych_customize_register' );

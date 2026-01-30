@@ -141,6 +141,74 @@
 					);
 				}
 			);
+
+			// Input Restrictions
+			$('input[name="phone"]').on(
+				'input',
+				function () {
+					this.value = this.value.replace(/[^\d\s+\-()]/g, '');
+				}
+			);
+
+			$('input[name="name"]').on(
+				'input',
+				function () {
+					this.value = this.value.replace(/[^a-zA-Z\s]/g, '');
+				}
+			);
+
+			$('input[name="email"]').on(
+				'input',
+				function () {
+					this.value = this.value.replace(/\s/g, '');
+				}
+			);
+
+			// Contact Form AJAX
+			$("#ludych-contact-form").on(
+				"submit",
+				function (e) {
+					e.preventDefault();
+
+					var form = $(this);
+					var messageBox = form.find(".form-message");
+					var submitBtn = form.find("button[type='submit']");
+					var originalBtnText = submitBtn.find("span").text();
+
+					$.ajax(
+						{
+							url: ludych_ajax_obj.ajax_url,
+							type: "post",
+							data: form.serialize(),
+							beforeSend: function () {
+								submitBtn.prop("disabled", true);
+								submitBtn.find("span").html('Sending... <i class="fa-solid fa-spinner fa-spin"></i>');
+								messageBox.removeClass("alert alert-success alert-danger").html("");
+							},
+							success: function (response) {
+								if (response.success) {
+									messageBox.addClass("alert alert-success").html(response.data.message);
+									form[0].reset();
+
+									// Redirect after 2 seconds
+									setTimeout(function () {
+										window.location.href = response.data.redirect_url;
+									}, 2000);
+								} else {
+									submitBtn.prop("disabled", false);
+									submitBtn.find("span").text(originalBtnText);
+									messageBox.addClass("alert alert-danger").html(response.data.message);
+								}
+							},
+							error: function () {
+								submitBtn.prop("disabled", false);
+								submitBtn.find("span").text(originalBtnText);
+								messageBox.addClass("alert alert-danger").html("An error occurred. Please try again.");
+							}
+						}
+					);
+				}
+			);
 		}
 	);
 })(jQuery);

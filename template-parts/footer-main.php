@@ -79,7 +79,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 						<div class="footer-nav">
 							<h6>Email</h6>
 							<?php
-							$footer_email = get_theme_mod( 'ludych_footer_email', 'support@ludych.com' );
+							$footer_email = get_theme_mod( 'ludych_contact_email', 'biz@ludych.com' );
 							if ( $footer_email ) :
 								?>
 								<a href="mailto:<?php echo esc_attr( $footer_email ); ?>"><?php echo esc_html( $footer_email ); ?></a>
