@@ -42,23 +42,24 @@ $faq_heading  = get_field( 'faq_heading', $post_id );
 					<?php if ( have_rows( 'faqs_repeater', $post_id ) ) : ?>
 					<div class="faq_inner">
 						<ul class="accordion-list">
-							<?php 
+							<?php
 							$count = 0;
-							while ( have_rows( 'faqs_repeater', $post_id ) ) : the_row(); 
-								$question = get_sub_field( 'question' );
-								$answer   = get_sub_field( 'answer' );
+							while ( have_rows( 'faqs_repeater', $post_id ) ) :
+								the_row();
+								$question     = get_sub_field( 'question' );
+								$answer       = get_sub_field( 'answer' );
 								$active_class = ( 0 === $count ) ? 'active' : '';
 								$answer_style = ( 0 === $count ) ? '' : 'style="display: none;"';
-							?>
+								?>
 							<li class="<?php echo esc_attr( $active_class ); ?>">
 								<h4><?php echo esc_html( $question ); ?></h4>
 								<div class="answer" <?php echo $answer_style; ?>>
 									<p><?php echo wp_kses_post( $answer ); ?></p>
 								</div>
 							</li>
-							<?php 
-							$count++;
-							endwhile; 
+								<?php
+								++$count;
+							endwhile;
 							?>
 						</ul>
 					</div>

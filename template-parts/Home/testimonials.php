@@ -33,7 +33,7 @@ $testimonial_heading  = get_field( 'testimonial_heading', $post_id );
 				<h5><?php echo ( $testimonial_heading ); ?></h5>
 			</div>
 			<?php
-			$testimonial_args = array(
+			$testimonial_args  = array(
 				'post_type'      => 'testimonial',
 				'posts_per_page' => -1,
 				'post_status'    => 'publish',
@@ -41,7 +41,7 @@ $testimonial_heading  = get_field( 'testimonial_heading', $post_id );
 			$testimonial_query = new WP_Query( $testimonial_args );
 
 			if ( $testimonial_query->have_posts() ) :
-			?>
+				?>
 			<div id="clientTestimonial" class="owl-carousel owl-theme">
 				<?php
 				while ( $testimonial_query->have_posts() ) :
@@ -63,7 +63,7 @@ $testimonial_heading  = get_field( 'testimonial_heading', $post_id );
 						<?php endif; ?>
 					</div>
 				</div>
-				<?php
+					<?php
 				endwhile;
 				wp_reset_postdata();
 				?>

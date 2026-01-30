@@ -8,7 +8,7 @@ $blog_section_subtitle = get_field( 'blog_section_subtitle', $post_id );
 $blog_section_title    = get_field( 'blog_section_title', $post_id );
 $blog_section_heading  = get_field( 'blog_section_heading', $post_id );
 
-$args = array(
+$args       = array(
 	'post_type'      => 'post',
 	'posts_per_page' => 6,
 	'post_status'    => 'publish',
@@ -45,7 +45,7 @@ $blog_query = new WP_Query( $args );
 				<?php
 				while ( $blog_query->have_posts() ) :
 					$blog_query->the_post();
-					$categories = get_the_category();
+					$categories    = get_the_category();
 					$category_name = ! empty( $categories ) ? $categories[0]->name : '';
 					?>
 					<div class="blog-Item">
@@ -63,7 +63,7 @@ $blog_query = new WP_Query( $args );
 							<a href="<?php the_permalink(); ?>" class="btn">Read More</a>
 						</div>
 					</div>
-				<?php
+					<?php
 				endwhile;
 				wp_reset_postdata();
 				?>

@@ -106,9 +106,9 @@
 				function (e) {
 					e.preventDefault();
 
-					var button = $(this);
-					var page = button.data("page");
-					var maxPage = button.data("max-pages");
+					var button   = $(this);
+					var page     = button.data("page");
+					var maxPage  = button.data("max-pages");
 					var postType = button.data("post-type");
 					var nextPage = page + 1;
 
