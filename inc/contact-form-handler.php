@@ -51,7 +51,7 @@ function ludych_handle_contact_form() {
 	$custom_email = get_theme_mod( 'ludych_contact_notification_email', $admin_email );
 
 	$subject = sprintf( '[%s] New Contact Form Submission', get_bloginfo( 'name' ) );
-	
+
 	// Branded HTML Email Template
 	$body = '
 	<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px;">

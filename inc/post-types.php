@@ -54,7 +54,7 @@ function ludych_register_custom_post_types() {
 
 	// Form Submission Post Type
 	register_post_type( 'form_submission', array(
-		'labels'      => array(
+		'labels'       => array(
 			'name'          => __( 'Form Submissions', 'ludych-theme' ),
 			'singular_name' => __( 'Submission', 'ludych-theme' ),
 		),
