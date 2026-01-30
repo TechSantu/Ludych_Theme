@@ -170,9 +170,9 @@
 				function (e) {
 					e.preventDefault();
 
-					var form = $(this);
-					var messageBox = form.find(".form-message");
-					var submitBtn = form.find("button[type='submit']");
+					var form            = $(this);
+					var messageBox      = form.find(".form-message");
+					var submitBtn       = form.find("button[type='submit']");
 					var originalBtnText = submitBtn.find("span").text();
 
 					$.ajax(

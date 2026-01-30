@@ -32,4 +32,4 @@ foreach ( $parts as $part ) {
 <?php get_template_part( 'template-parts/common/contect' ); ?>
 <?php
 get_footer();
-?>
+

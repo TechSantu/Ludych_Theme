@@ -11,11 +11,11 @@ function ludych_handle_contact_form() {
 	// Security check
 	// check_ajax_referer( 'ludych_contact_nonce', 'nonce' );
 
-	$name    = sanitize_text_field( $_POST['name'] ?? '' );
-	$email   = sanitize_email( $_POST['email'] ?? '' );
-	$phone   = sanitize_text_field( $_POST['phone'] ?? '' );
-	$company = sanitize_text_field( $_POST['company'] ?? '' );
-	$message = sanitize_textarea_field( $_POST['message'] ?? '' );
+	$name     = sanitize_text_field( $_POST['name'] ?? '' );
+	$email    = sanitize_email( $_POST['email'] ?? '' );
+	$phone    = sanitize_text_field( $_POST['phone'] ?? '' );
+	$company  = sanitize_text_field( $_POST['company'] ?? '' );
+	$message  = sanitize_textarea_field( $_POST['message'] ?? '' );
 	$page_url = esc_url_raw( $_POST['page_url'] ?? '' );
 
 	if ( empty( $name ) || ! is_email( $email ) || empty( $message ) ) {
@@ -47,9 +47,9 @@ function ludych_handle_contact_form() {
 	}
 
 	// 2. Send Email
-	$admin_email = get_option( 'admin_email' );
+	$admin_email  = get_option( 'admin_email' );
 	$custom_email = get_theme_mod( 'ludych_contact_notification_email', $admin_email );
-	
+
 	$subject = sprintf( '[%s] New Contact Form Submission', get_bloginfo( 'name' ) );
 	$body    = "Name: $name\n";
 	$body   .= "Email: $email\n";
@@ -67,10 +67,10 @@ function ludych_handle_contact_form() {
 
 	// 3. Response
 	$redirect_url = get_theme_mod( 'ludych_contact_redirect_url', home_url( '/thank-you' ) );
-	
-	wp_send_json_success( array( 
+
+	wp_send_json_success( array(
 		'message'      => __( 'Your message has been sent successfully.', 'ludych-theme' ),
-		'redirect_url' => $redirect_url 
+		'redirect_url' => $redirect_url,
 	) );
 }
 
