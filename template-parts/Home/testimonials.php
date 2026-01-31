@@ -3,18 +3,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 global $post_id;
-$current_id = $post_id ? $post_id : get_the_ID();
 
-$testimonial_heading       = get_field( 'testimonial_heading', $current_id );
-$testimonial_title         = get_field( 'testimonial_title', $current_id );
-$testimonial_subtitle      = get_field( 'testimonial_subtitle', $current_id );
-$testimonial_subtitle_span = get_field( 'testimonial_subtitle_span', $current_id );
+$testimonial_heading       = get_field( 'testimonial_heading', $post_id );
+$testimonial_title         = get_field( 'testimonial_title', $post_id );
+$testimonial_subtitle      = get_field( 'testimonial_subtitle', $post_id );
+$testimonial_subtitle_span = get_field( 'testimonial_subtitle_span', $post_id );
 ?>
 
 	<section class="client-testimonial">
 		<div class="custom-container">
 			<div class="global-header middle-align">
-				<h2><?php echo esc_html( $testimonial_heading ? $testimonial_heading : 'Testimonials' ); ?></h2>
+				<h2><?php echo esc_html( $testimonial_heading ); ?></h2>
 				<div class="min-title">
 					<div class="icon-box">
 						<svg xmlns="http://www.w3.org/2000/svg" width="39" height="39" viewBox="0 0 39 39" fill="none">
@@ -30,7 +29,7 @@ $testimonial_subtitle_span = get_field( 'testimonial_subtitle_span', $current_id
 							</defs>
 						</svg>
 					</div>
-					<h6><?php echo esc_html( $testimonial_title ? $testimonial_title : 'Testimonials' ); ?></h6>
+					<h6><?php echo esc_html( $testimonial_title ); ?></h6>
 				</div>
 				<h5><?php echo esc_html( $testimonial_subtitle ); ?> <span><?php echo esc_html( $testimonial_subtitle_span ); ?></span></h5>
 			</div>
@@ -49,7 +48,8 @@ $testimonial_subtitle_span = get_field( 'testimonial_subtitle_span', $current_id
 				while ( $testimonial_query->have_posts() ) :
 					$testimonial_query->the_post();
 					$designation      = get_field( 'testimonial_designation' );
-					$role_under_title = get_field( 'testimonial_role' ); // New field for the h6 under title
+					$role             = get_field( 'testimonial_role' );
+					$testimonial_name = get_the_title();
 					?>
 				<div class="client-Item">
 					<div class="client-info">
@@ -57,8 +57,8 @@ $testimonial_subtitle_span = get_field( 'testimonial_subtitle_span', $current_id
 							<h5><?php echo esc_html( $designation ); ?></h5>
 						</div>
 						<p><?php the_content(); ?></p>
-						<h4><?php the_title(); ?></h4>
-						<h6><?php echo esc_html( $role_under_title ? $role_under_title : get_the_title() ); ?></h6>
+						<h4><?php echo esc_html( $testimonial_name ); ?></h4>
+						<h6><?php echo esc_html( $role ? $role : $testimonial_name ); ?></h6>
 					</div>
 					<div class="client-profile">
 						<?php if ( has_post_thumbnail() ) : ?>
