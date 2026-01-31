@@ -4,10 +4,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 global $post_id;
 
-$testimonial_heading       = get_field( 'testimonial_heading', $post_id );
+$testimonial_heading       = get_field( 'testimonial_subtitle', $post_id );
 $testimonial_title         = get_field( 'testimonial_title', $post_id );
-$testimonial_subtitle      = get_field( 'testimonial_subtitle', $post_id );
-$testimonial_subtitle_span = get_field( 'testimonial_subtitle_span', $post_id );
+$testimonial_subtitle      = get_field( 'testimonial_heading', $post_id );
 ?>
 
 	<section class="client-testimonial">
@@ -31,7 +30,7 @@ $testimonial_subtitle_span = get_field( 'testimonial_subtitle_span', $post_id );
 					</div>
 					<h6><?php echo esc_html( $testimonial_title ); ?></h6>
 				</div>
-				<h5><?php echo esc_html( $testimonial_subtitle ); ?> <span><?php echo esc_html( $testimonial_subtitle_span ); ?></span></h5>
+				<h5><?php echo esc_html( $testimonial_subtitle ); ?></h5>
 			</div>
 			<?php
 			$testimonial_args  = array(

@@ -80,58 +80,6 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 	) );
 
 	acf_add_local_field_group( array(
-		'key'                   => 'group_testimonial_section_settings',
-		'title'                 => __( 'Testimonial Section Settings', 'ludych-theme' ),
-		'fields'                => array(
-			array(
-				'key'   => 'field_testimonial_heading',
-				'label' => __( 'Section Heading (h2)', 'ludych-theme' ),
-				'name'  => 'testimonial_heading',
-				'type'  => 'text',
-				'default_value' => 'Testimonials',
-			),
-			array(
-				'key'   => 'field_testimonial_title',
-				'label' => __( 'Section Title (h6)', 'ludych-theme' ),
-				'name'  => 'testimonial_title',
-				'type'  => 'text',
-				'default_value' => 'Testimonials',
-			),
-			array(
-				'key'   => 'field_testimonial_subtitle',
-				'label' => __( 'Section Subtitle (h5)', 'ludych-theme' ),
-				'name'  => 'testimonial_subtitle',
-				'type'  => 'text',
-				'default_value' => 'Testimonials:',
-			),
-			array(
-				'key'   => 'field_testimonial_subtitle_span',
-				'label' => __( 'Section Subtitle Span', 'ludych-theme' ),
-				'name'  => 'testimonial_subtitle_span',
-				'type'  => 'text',
-				'default_value' => 'Trusted by Our Clients',
-			),
-		),
-		'location'              => array(
-			array(
-				array(
-					'param'    => 'page_type',
-					'operator' => '==',
-					'value'    => 'front_page',
-				),
-			),
-		),
-		'menu_order'            => 0,
-		'position'              => 'normal',
-		'style'                 => 'default',
-		'label_placement'       => 'top',
-		'instruction_placement' => 'label',
-		'hide_on_screen'        => '',
-		'active'                => true,
-		'description'           => '',
-	) );
-
-	acf_add_local_field_group( array(
 		'key'                   => 'group_tech_stack_settings',
 		'title'                 => __( 'Technology Stack Section Settings', 'ludych-theme' ),
 		'fields'                => array(
