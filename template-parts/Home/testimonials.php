@@ -30,7 +30,7 @@ $testimonial_subtitle      = get_field( 'testimonial_heading', $post_id );
 					</div>
 					<h6><?php echo esc_html( $testimonial_title ); ?></h6>
 				</div>
-				<h5><?php echo esc_html( $testimonial_subtitle ); ?></h5>
+				<h5><?php echo ( $testimonial_subtitle ); ?></h5>
 			</div>
 			<?php
 			$testimonial_args  = array(
