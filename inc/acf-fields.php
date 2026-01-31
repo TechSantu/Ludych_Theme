@@ -53,6 +53,12 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				'name'  => 'testimonial_designation',
 				'type'  => 'text',
 			),
+			array(
+				'key'   => 'field_testimonial_role',
+				'label' => __( 'Role (shown under name)', 'ludych-theme' ),
+				'name'  => 'testimonial_role',
+				'type'  => 'text',
+			),
 		),
 		'location'              => array(
 			array(
@@ -89,6 +95,58 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				'name'  => 'tech_stack_text',
 				'type'  => 'textarea',
 				'rows'  => 3,
+			),
+		),
+		'location'              => array(
+			array(
+				array(
+					'param'    => 'page_type',
+					'operator' => '==',
+					'value'    => 'front_page',
+				),
+			),
+		),
+		'menu_order'            => 0,
+		'position'              => 'normal',
+		'style'                 => 'default',
+		'label_placement'       => 'top',
+		'instruction_placement' => 'label',
+		'hide_on_screen'        => '',
+		'active'                => true,
+		'description'           => '',
+	) );
+
+	acf_add_local_field_group( array(
+		'key'                   => 'group_testimonial_section_settings',
+		'title'                 => __( 'Testimonials Section Settings', 'ludych-theme' ),
+		'fields'                => array(
+			array(
+				'key'   => 'field_testimonial_heading',
+				'label' => __( 'Section Large Heading', 'ludych-theme' ),
+				'name'  => 'testimonial_heading',
+				'type'  => 'text',
+				'default_value' => 'Testimonials',
+			),
+			array(
+				'key'   => 'field_testimonial_title',
+				'label' => __( 'Section Small Title', 'ludych-theme' ),
+				'name'  => 'testimonial_title',
+				'type'  => 'text',
+				'default_value' => 'Testimonials',
+			),
+			array(
+				'key'   => 'field_testimonial_subtitle',
+				'label' => __( 'Section Subtitle', 'ludych-theme' ),
+				'name'  => 'testimonial_subtitle',
+				'type'  => 'text',
+				'default_value' => 'Testimonials:',
+			),
+			array(
+				'key'   => 'field_testimonial_subtitle_span',
+				'label' => __( 'Section Subtitle Highlight (Span)', 'ludych-theme' ),
+				'name'  => 'testimonial_subtitle_span',
+				'type'  => 'text',
+				'default_value' => 'Trusted by Our Clients',
 			),
 		),
 		'location'              => array(
