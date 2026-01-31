@@ -26,9 +26,9 @@ $services_title = get_field( 'services_title', $post_id );
 							</defs>
 						</svg>
 					</div>
-					<h6><?php echo esc_html( $services_title ); ?></h6>
+					<h6><?php echo esc_html( $services_text ); ?></h6>
 				</div>
-				<h5><?php echo ( $services_text ); ?></h5>
+				<h5><?php echo ( $services_title ); ?></h5>
 			</div>
 			<div class="busines-partner-items">
 				<div class="row" id="services-container">
