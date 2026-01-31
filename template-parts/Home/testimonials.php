@@ -4,9 +4,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 global $post_id;
 
-$testimonial_heading       = get_field( 'testimonial_subtitle', $post_id );
-$testimonial_title         = get_field( 'testimonial_title', $post_id );
-$testimonial_subtitle      = get_field( 'testimonial_heading', $post_id );
+$testimonial_heading  = get_field( 'testimonial_subtitle', $post_id );
+$testimonial_title    = get_field( 'testimonial_title', $post_id );
+$testimonial_subtitle = get_field( 'testimonial_heading', $post_id );
 ?>
 
 	<section class="client-testimonial">
