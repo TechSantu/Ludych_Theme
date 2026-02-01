@@ -88,7 +88,6 @@ function ludych_ajax_blog_filter() {
 		ob_start();
 		$big = 999999999;
 		echo paginate_links( array(
-			'base'      => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ), 
 			'base'      => $base_url . '%_%',
 			'format'    => '?paged=%#%', 
 			'total'     => $query->max_num_pages,
