@@ -53,7 +53,6 @@ $services_query = new WP_Query( $args );
 					<?php
 					while ( $services_query->have_posts() ) :
 						$services_query->the_post();
-						$item_features = get_field( 'card_features' );
 						?>
 						<div class="col-xl-4 col-md-6 col-sm-12">
 							<div class="partner-item">
@@ -61,22 +60,28 @@ $services_query = new WP_Query( $args );
 								
 								<?php if ( has_post_thumbnail() ) : ?>
 									<div class="partner-thumb-item">
-										<?php the_post_thumbnail( 'medium' ); ?>
+										<?php the_post_thumbnail( 'large' ); ?>
 									</div>
 								<?php endif; ?>
 								
-								<p><?php echo wp_trim_words( get_the_excerpt(), 20, '...' ); ?></p>
-								
-								<?php if ( $item_features ) : ?>
+								<?php
+								$features = get_field( 'features' );
+								if ( $features ) {
+									the_excerpt();
+									?>
 									<ul>
-										<?php foreach ( $item_features as $feature ) : ?>
+										<?php foreach ( $features as $feature ) : ?>
 											<li>
 												<span><i class="fa-solid fa-circle-check"></i></span>
-												<p><?php echo esc_html( $feature['feature_text'] ); ?></p>
+												<p><?php echo esc_html( is_array( $feature ) ? $feature['feature_text'] : $feature ); ?></p>
 											</li>
 										<?php endforeach; ?>
 									</ul>
-								<?php endif; ?>
+									<?php
+								} else {
+									the_content();
+								}
+								?>
 								
 								<a href="<?php the_permalink(); ?>" class="learnBtn">read more...</a>
 							</div>

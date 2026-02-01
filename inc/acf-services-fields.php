@@ -228,7 +228,7 @@ function ludych_register_services_acf_fields() {
 			array(
 				'key'          => 'field_card_features',
 				'label'        => 'Card Features List',
-				'name'         => 'card_features',
+				'name'         => 'features',
 				'type'         => 'repeater',
 				'layout'       => 'table',
 				'button_label' => 'Add Feature',
