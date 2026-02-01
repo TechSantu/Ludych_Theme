@@ -4,10 +4,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 global $post_id;
 
-$expertise_heading   = 'Our Expertise';
-$expertise_subtitle  = 'Our Expertise';
-$expertise_title     = get_field( 'expertise_title', $post_id );
-$expertise_desc      = get_field( 'expertise_description', $post_id );
+$expertise_heading  = 'Our Expertise';
+$expertise_subtitle = 'Our Expertise';
+$expertise_title    = get_field( 'expertise_title', $post_id );
+$expertise_desc     = get_field( 'expertise_description', $post_id );
 ?>
 
 <section class="our-expertise-wrap">
@@ -42,17 +42,19 @@ $expertise_desc      = get_field( 'expertise_description', $post_id );
 
 			<div class="row">
 				<?php if ( have_rows( 'expertise_items', $post_id ) ) : ?>
-					<?php while ( have_rows( 'expertise_items', $post_id ) ) : the_row(); 
+					<?php
+					while ( have_rows( 'expertise_items', $post_id ) ) :
+						the_row();
 						$item_image = get_sub_field( 'item_image' );
 						$item_title = get_sub_field( 'item_title' );
 						$item_desc  = get_sub_field( 'item_description' );
-					?>
+						?>
 						<div class="col-md-6 col-lg-4 mt-3 mb-3">
 							<div class="expertise-card">
 								<?php if ( $item_image ) : ?>
 									<figure>
 										<img src="<?php echo esc_url( $item_image['url'] ); ?>" 
-										     alt="<?php echo esc_attr( $item_image['alt'] ); ?>" />
+											alt="<?php echo esc_attr( $item_image['alt'] ); ?>" />
 									</figure>
 								<?php endif; ?>
 								

@@ -4,12 +4,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 global $post_id;
 
-$industries_heading   = get_field( 'industries_heading', $post_id );
-$industries_subtitle  = get_field( 'industries_subtitle', $post_id );
-$industries_title     = get_field( 'industries_title', $post_id );
+$industries_heading  = get_field( 'industries_heading', $post_id );
+$industries_subtitle = get_field( 'industries_subtitle', $post_id );
+$industries_title    = get_field( 'industries_title', $post_id );
 
 // Query other services
-$args = array(
+$args           = array(
 	'post_type'      => 'services',
 	'posts_per_page' => 6,
 	'post__not_in'   => array( $post_id ),
@@ -50,9 +50,11 @@ $services_query = new WP_Query( $args );
 		<div class="busines-partner-items">
 			<div class="row">
 				<?php if ( $services_query->have_posts() ) : ?>
-					<?php while ( $services_query->have_posts() ) : $services_query->the_post(); 
+					<?php
+					while ( $services_query->have_posts() ) :
+						$services_query->the_post();
 						$item_features = get_field( 'card_features' );
-					?>
+						?>
 						<div class="col-xl-4 col-md-6 col-sm-12">
 							<div class="partner-item">
 								<h3><?php the_title(); ?></h3>
@@ -79,7 +81,10 @@ $services_query = new WP_Query( $args );
 								<a href="<?php the_permalink(); ?>" class="learnBtn">read more...</a>
 							</div>
 						</div>
-					<?php endwhile; wp_reset_postdata(); ?>
+						<?php
+					endwhile;
+					wp_reset_postdata();
+					?>
 				<?php endif; ?>
 			</div>
 		</div>

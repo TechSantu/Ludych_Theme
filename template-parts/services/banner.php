@@ -9,7 +9,7 @@ $banner_bg = get_template_directory_uri() . '/assets/images/services-bg.jpg';
 $banner_title = 'Services';
 
 $service_categories = get_the_terms( $post_id, 'service_category' );
-$banner_subtitle = '';
+$banner_subtitle    = '';
 if ( $service_categories && ! is_wp_error( $service_categories ) ) {
 	$banner_subtitle = $service_categories[0]->name;
 }
