@@ -9,9 +9,9 @@
 }
 
 img, svg {
-    vertical-align: middle;
-    max-width: 100%;
-    height: auto;
+	vertical-align: middle;
+	max-width: 100%;
+	height: auto;
 }
 
 /* Color */
@@ -1645,19 +1645,19 @@ footer.footer {
 	width: 100%; height: 100%; background: #000; opacity: 0.5;
 }
 .inner-banner-wrap .custom-container {
-    position: relative;
-    z-index: 9; padding: 0 100px;
+	position: relative;
+	z-index: 9; padding: 0 100px;
 }
 .inner-banner{
 	display: flex; gap: 50px;
-    min-height: 550px; padding: 95px 0 50px; width: 100%;
+	min-height: 550px; padding: 95px 0 50px; width: 100%;
 }
 .inner-banner .global-header{width: 100%;}
 .inner-banner .global-header h2{
 	position: relative; display: inline-block; color: white;
-    background: linear-gradient(to right, #013CFF, #E816D4);
-    -webkit-background-clip: text;  -webkit-text-fill-color: #071027;
-    -webkit-text-stroke: 2px transparent; opacity: 0.25;
+	background: linear-gradient(to right, #013CFF, #E816D4);
+	-webkit-background-clip: text;  -webkit-text-fill-color: #071027;
+	-webkit-text-stroke: 2px transparent; opacity: 0.25;
 }
 .inner-banner .global-header .min-title{justify-content: center; margin-top: -30px;}
 .inner-banner .global-header h5{color: var(--white);}
@@ -1671,10 +1671,10 @@ footer.footer {
 /*--- Our Expertise Page CSS ---*/
 .with-our-process {
 	padding: 0;
-    margin: 80px 0 !important;
+	margin: 80px 0 !important;
 }
 .with-our-process .min-title {
-    margin-top: -45px !important;
+	margin-top: -45px !important;
 }
 
 .our-expertise-wrap{
@@ -1687,9 +1687,9 @@ footer.footer {
 .our-expertise .global-header{text-align: center;}
 .our-expertise .global-header h2{
 	position: relative; display: inline-block; color: white;
-    background: linear-gradient(to right, #013CFF, #E816D4);
-    -webkit-background-clip: text;  -webkit-text-fill-color: #071027;
-    -webkit-text-stroke: 2px transparent; opacity: 0.25;
+	background: linear-gradient(to right, #013CFF, #E816D4);
+	-webkit-background-clip: text;  -webkit-text-fill-color: #071027;
+	-webkit-text-stroke: 2px transparent; opacity: 0.25;
 }
 .our-expertise .global-header .min-title{justify-content: center; margin-top: -30px;}
 .our-expertise .global-header h6,
@@ -1699,12 +1699,12 @@ footer.footer {
 .our-expertise .global-header p{width: 80%; margin: 10px auto;}
 
 .expertise-card{
-	border: 2px solid #3D72FB45; height: 100%; 
+	border: 2px solid #3D72FB45; height: 100%;
 	padding: 10px; border-radius: 20px 0px 20px 0px; transition: 0.3s;
 }
 .expertise-card:hover{
 	border-style: solid; transition: 0.3s;
-	border-color: #013CFF; border-radius: 25px;	
+	border-color: #013CFF; border-radius: 25px;
 }
 .expertise-card figure{border-radius: 20px; overflow: hidden; padding-top: 65%; margin-bottom: 10px; position: relative;}
 .expertise-card figure img{width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;}
@@ -1727,11 +1727,11 @@ footer.footer {
 }
 .ready-to-ship .custom-container{
 	display: flex; gap: 50px;
-    align-items: flex-start;    
+	align-items: flex-start;
 }
 .ready-to-ship .intro-text h6{
 	color: #D8CACA; font-size: 20px;
-    font-weight: 400; line-height: 36px;
+	font-weight: 400; line-height: 36px;
 }
 .ready-to-ship .intro-text h2{
 	margin-bottom: 0; max-width: 80%;
@@ -1742,22 +1742,22 @@ footer.footer {
 }
 .ready-to-ship .schedule-call-btn{
 	display: flex; min-height: 56px; min-width: 56px; max-width: 56px;
-    justify-content: center; align-items: center; gap: 0px; border-radius: 100px;
-    position: absolute; top: 50%; left: 50%; z-index: 9; background: var(--white);
+	justify-content: center; align-items: center; gap: 0px; border-radius: 100px;
+	position: absolute; top: 50%; left: 50%; z-index: 9; background: var(--white);
 	transform: translate(-50%, -50%); transition: 0.5s;
 }
 .ready-to-ship .schedule-call-btn:hover{background-color: rgba(255, 255, 255, 0.8);}
 .ready-to-ship .schedule-call-text{
 	animation: CTABlack_rotate 20s linear infinite;
-    will-change: transform;
+	will-change: transform;
 }
 
 @keyframes CTABlack_rotate {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg); /* '1turn' is also fine, but deg is more common */
-    }
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg); /* '1turn' is also fine, but deg is more common */
+	}
 }
 /*--- END CSS ---*/
