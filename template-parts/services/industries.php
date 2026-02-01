@@ -7,6 +7,15 @@ global $post_id;
 $industries_heading   = get_field( 'industries_heading', $post_id );
 $industries_subtitle  = get_field( 'industries_subtitle', $post_id );
 $industries_title     = get_field( 'industries_title', $post_id );
+
+// Query other services
+$args = array(
+	'post_type'      => 'services',
+	'posts_per_page' => 6,
+	'post__not_in'   => array( $post_id ),
+	'orderby'        => 'rand',
+);
+$services_query = new WP_Query( $args );
 ?>
 
 <section class="our-services industry-serve">
@@ -40,48 +49,37 @@ $industries_title     = get_field( 'industries_title', $post_id );
 
 		<div class="busines-partner-items">
 			<div class="row">
-				<?php if ( have_rows( 'industries_items', $post_id ) ) : ?>
-					<?php while ( have_rows( 'industries_items', $post_id ) ) : the_row(); 
-						$item_title     = get_sub_field( 'item_title' );
-						$item_image     = get_sub_field( 'item_image' );
-						$item_desc      = get_sub_field( 'item_description' );
-						$item_features  = get_sub_field( 'item_features' );
-						$item_link      = get_sub_field( 'item_link' );
+				<?php if ( $services_query->have_posts() ) : ?>
+					<?php while ( $services_query->have_posts() ) : $services_query->the_post(); 
+						$item_features = get_field( 'card_features' );
 					?>
 						<div class="col-xl-4 col-md-6 col-sm-12">
 							<div class="partner-item">
-								<?php if ( $item_title ) : ?>
-									<h3><?php echo esc_html( $item_title ); ?></h3>
-								<?php endif; ?>
+								<h3><?php the_title(); ?></h3>
 								
-								<?php if ( $item_image ) : ?>
+								<?php if ( has_post_thumbnail() ) : ?>
 									<div class="partner-thumb-item">
-										<img src="<?php echo esc_url( $item_image['url'] ); ?>" 
-										     alt="<?php echo esc_attr( $item_image['alt'] ); ?>">
+										<?php the_post_thumbnail( 'medium' ); ?>
 									</div>
 								<?php endif; ?>
 								
-								<?php if ( $item_desc ) : ?>
-									<p><?php echo esc_html( $item_desc ); ?></p>
-								<?php endif; ?>
+								<p><?php echo wp_trim_words( get_the_excerpt(), 20, '...' ); ?></p>
 								
 								<?php if ( $item_features ) : ?>
 									<ul>
 										<?php foreach ( $item_features as $feature ) : ?>
 											<li>
 												<span><i class="fa-solid fa-circle-check"></i></span>
-												<p><?php echo esc_html( is_array( $feature ) ? $feature['feature_text'] : $feature ); ?></p>
+												<p><?php echo esc_html( $feature['feature_text'] ); ?></p>
 											</li>
 										<?php endforeach; ?>
 									</ul>
 								<?php endif; ?>
 								
-								<?php if ( $item_link ) : ?>
-									<a href="<?php echo esc_url( $item_link ); ?>" class="learnBtn">read more...</a>
-								<?php endif; ?>
+								<a href="<?php the_permalink(); ?>" class="learnBtn">read more...</a>
 							</div>
 						</div>
-					<?php endwhile; ?>
+					<?php endwhile; wp_reset_postdata(); ?>
 				<?php endif; ?>
 			</div>
 		</div>
