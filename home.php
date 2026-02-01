@@ -16,7 +16,7 @@ get_header();
 						the_post();
 						get_template_part( 'template-parts/blog/content' );
 					endwhile;
-					
+
 					the_posts_pagination( array(
 						'mid_size'  => 2,
 						'prev_text' => '<i class="fa-solid fa-arrow-left"></i>',
