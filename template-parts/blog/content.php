@@ -1,0 +1,34 @@
+<?php
+/**
+ * Template part for displaying posts in archive
+ */
+
+$categories = get_the_category();
+$cat_name   = ! empty( $categories ) ? $categories[0]->name : 'Uncategorized';
+?>
+
+<div class="col-xl-4 col-md-6 col-sm-12">
+    <div class="blog-Item">
+        <div class="blog-thumbnail">
+            <?php if ( has_post_thumbnail() ) : ?>
+                <a href="<?php the_permalink(); ?>">
+                    <?php the_post_thumbnail( 'medium_large' ); ?>
+                </a>
+            <?php else : ?>
+                <a href="<?php the_permalink(); ?>">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/blog-1.png" alt="<?php the_title_attribute(); ?>">
+                </a>
+            <?php endif; ?>
+            <span class="blog-tag">
+                <?php echo esc_html( $cat_name ); ?>
+            </span>
+        </div>
+        <div class="cntn-outer">
+            <h4><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h4>
+            <?php the_excerpt(); ?>
+        </div>
+        <div class="action-btn">
+            <a href="<?php the_permalink(); ?>" class="btn">Read More</a>
+        </div>
+    </div>
+</div>
