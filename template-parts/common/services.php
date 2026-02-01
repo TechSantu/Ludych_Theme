@@ -50,7 +50,7 @@ $services_title = get_field( 'services_title', $post_id );
 								<div class="partner-item">
 									<h3><?php the_title(); ?></h3>
 									<div class="partner-thumb-item">
-											<?php the_post_thumbnail( 'large' ); ?>
+										<?php the_post_thumbnail( 'large' ); ?>
 									</div>
 									<?php
 									$features = get_field( 'features' );
