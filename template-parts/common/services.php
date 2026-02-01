@@ -54,7 +54,8 @@ $services_title = get_field( 'services_title', $post_id );
 									</div>
 									<?php
 									$features = get_field( 'features' );
-									if ( $features ) :
+									if ( $features ) {
+										the_excerpt();
 										?>
 										<ul>
 											<?php foreach ( $features as $feature ) : ?>
@@ -64,7 +65,11 @@ $services_title = get_field( 'services_title', $post_id );
 												</li>
 											<?php endforeach; ?>
 										</ul>
-									<?php endif; ?>
+										<?php
+									} else {
+										the_content();
+									}
+									?>
 									<a href="<?php the_permalink(); ?>" class="learnBtn">read more...</a>
 								</div>
 							</div>

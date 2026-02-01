@@ -1,10 +1,4 @@
 <?php
-/**
- * Single Post Template for Services
- * 
- * Template for displaying single services posts
- */
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
