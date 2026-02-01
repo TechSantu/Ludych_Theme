@@ -60,6 +60,8 @@ $blog_query = new WP_Query( $args );
 						<div class="cntn-outer">
 							<h4><?php the_title(); ?></h4>
 							<p><?php echo wp_trim_words( get_the_excerpt(), 25, '...' ); ?></p>
+						</div>
+						<div class="action-btn">
 							<a href="<?php the_permalink(); ?>" class="btn">Read More</a>
 						</div>
 					</div>
