@@ -61,3 +61,51 @@ function ludych_load_more_services() {
 
 add_action( 'wp_ajax_load_more_services', 'ludych_load_more_services' );
 add_action( 'wp_ajax_nopriv_load_more_services', 'ludych_load_more_services' );
+
+function ludych_ajax_blog_filter() {
+	$paged    = isset( $_POST['paged'] ) ? intval( $_POST['paged'] ) : 1;
+	$layout   = isset( $_POST['layout'] ) && $_POST['layout'] === 'list' ? 'list' : 'grid';
+	$base_url = isset( $_POST['base_url'] ) ? esc_url( $_POST['base_url'] ) : home_url( '/blog/' );
+	
+	$args = array(
+		'post_type'      => 'post',
+		'paged'          => $paged,
+		'post_status'    => 'publish',
+	);
+
+	$query = new WP_Query( $args );
+
+	$response = array();
+
+	if ( $query->have_posts() ) {
+		ob_start();
+		while ( $query->have_posts() ) {
+			$query->the_post();
+			get_template_part( 'template-parts/blog/content', $layout === 'list' ? 'list' : '' );
+		}
+		$response['content'] = ob_get_clean();
+
+		ob_start();
+		$big = 999999999;
+		echo paginate_links( array(
+			'base'      => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ), 
+			'base'      => $base_url . '%_%',
+			'format'    => '?paged=%#%', 
+			'total'     => $query->max_num_pages,
+			'current'   => max( 1, $paged ),
+			'prev_text' => '<i class="fa-solid fa-arrow-left"></i>',
+			'next_text' => '<i class="fa-solid fa-arrow-right"></i>',
+		) );
+		$response['pagination'] = ob_get_clean();
+		
+	} else {
+		$response['content']    = '<div class="col-12"><p>' . esc_html__( 'No posts found.', 'ludych-theme' ) . '</p></div>';
+		$response['pagination'] = '';
+	}
+	
+	wp_reset_postdata();
+
+	wp_send_json( $response );
+}
+add_action( 'wp_ajax_ludych_ajax_blog_filter', 'ludych_ajax_blog_filter' );
+add_action( 'wp_ajax_nopriv_ludych_ajax_blog_filter', 'ludych_ajax_blog_filter' );
