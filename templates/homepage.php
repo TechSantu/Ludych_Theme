@@ -6,30 +6,29 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Template Name: Home Page
  */
 
-
 global $post_id;
 $post_id = get_the_ID();
+get_header();
 ?>
-
-<?php get_header(); ?>
 
 <?php
 $parts = array(
-	'banner',
-	'about',
-	'services',
-	'our_work',
-	'why_choose_us',
-	'our_work_progress',
-	'testimonials',
-	'our_blog',
-	'faq_section',
+	'Home/banner',
+	'Home/about',
+	'common/services',
+	'common/our_work',
+	'Home/why_choose_us',
+	'common/our_work_progress',
+	'Home/testimonials',
+	'common/our_blog',
+	'Home/faq_section',
+	'common/contect',
 );
+
 foreach ( $parts as $part ) {
-	get_template_part( 'template-parts/Home/' . $part );
+	get_template_part( 'template-parts/' . $part );
 }
 ?>
-<?php get_template_part( 'template-parts/common/contect' ); ?>
+
 <?php
 get_footer();
-
