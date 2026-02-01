@@ -27,8 +27,19 @@ if ( $related_query->have_posts() ) :
             <?php
             while ( $related_query->have_posts() ) :
                 $related_query->the_post();
+                
                 $rel_cats = get_the_category();
-                $rel_cat_name = ! empty( $rel_cats ) ? $rel_cats[0]->name : '';
+                $rel_cat_name = '';
+
+                if ( ! empty( $rel_cats ) ) {
+                    foreach ( $rel_cats as $category ) {
+                        // Skip 'Uncategorized' and get the first real category
+                        if ( 'uncategorized' !== strtolower( $category->name ) ) {
+                            $rel_cat_name = $category->name;
+                            break;
+                        }
+                    }
+                }
                 ?>
                 <div class="col-md-2 col-lg-3">
                     <div class="blog-cart">

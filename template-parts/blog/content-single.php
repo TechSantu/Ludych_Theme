@@ -3,7 +3,7 @@
  * Template part for displaying single post content
  */
 $categories = get_the_category();
-$cat_name   = ! empty( $categories ) ? $categories[0]->name : 'Uncategorized';
+$cat_name   = ! empty( $categories ) ? $categories[0]->name : '';
 ?>
 <div class="col-12">
     <div class="blog-details">
@@ -13,12 +13,17 @@ $cat_name   = ! empty( $categories ) ? $categories[0]->name : 'Uncategorized';
             <?php else : ?>
                 <img src="<?php echo get_template_directory_uri(); ?>/assets/images/blog-1.png" alt="<?php the_title_attribute(); ?>">
             <?php endif; ?>
-            <span class="blog-tag">
-                <?php echo esc_html( $cat_name ); ?>
-            </span>
+            
+            <?php if ( $cat_name ) : ?>
+                <span class="blog-tag">
+                    <?php echo esc_html( $cat_name ); ?>
+                </span>
+            <?php endif; ?>
         </div>
         <div class="blog-detail-text">
-            <span class="post-date"><?php echo get_the_date( 'l F j, Y' ); ?></span>
+            <span class="post-date">
+                <?php echo strtoupper( get_the_date( 'D' ) ) . get_the_date( ' F j, Y' ); ?>
+            </span>
 
             <h1><?php the_title(); ?></h1>
             
