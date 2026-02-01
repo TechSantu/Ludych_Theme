@@ -106,9 +106,9 @@
 				function (e) {
 					e.preventDefault();
 
-					var button = $(this);
-					var page = button.data("page");
-					var maxPage = button.data("max-pages");
+					var button   = $(this);
+					var page     = button.data("page");
+					var maxPage  = button.data("max-pages");
 					var postType = button.data("post-type");
 					var nextPage = page + 1;
 
@@ -177,9 +177,9 @@
 				function (e) {
 					e.preventDefault();
 
-					var form = $(this);
-					var messageBox = form.find(".form-message");
-					var submitBtn = form.find("button[type='submit']");
+					var form            = $(this);
+					var messageBox      = form.find(".form-message");
+					var submitBtn       = form.find("button[type='submit']");
 					var originalBtnText = submitBtn.find("span").text();
 
 					$.ajax(
@@ -220,12 +220,12 @@
 			// Mobile Menu Dropdown Toggle
 			$('.navbar-nav .dropdown > a').on('click', function (e) {
 				if ($(window).width() < 992) {
-					var $el = $(this);
+					var $el     = $(this);
 					var $parent = $el.parent('.dropdown');
 
 					// If click is on the arrow area (pseudo-element) or if the link is just a toggle
 					// For now, let's make it so first click opens, second click navigates
-					if (!$parent.hasClass('show')) {
+					if ( ! $parent.hasClass('show')) {
 						e.preventDefault();
 						$('.navbar-nav .dropdown').removeClass('show');
 						$('.navbar-nav .dropdown-menu').removeClass('show');
@@ -236,7 +236,7 @@
 			});
 
 			function loadBlogPosts(page, layout) {
-				var container = $('#blog-posts-container');
+				var container  = $('#blog-posts-container');
 				var pagination = $('#blog-pagination-container');
 
 				var baseUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
@@ -283,14 +283,14 @@
 
 			$(document).on('click', '.switcher-btn', function (e) {
 				e.preventDefault();
-				var btn = $(this);
+				var btn    = $(this);
 				var layout = btn.data('type');
 
 				$('.switcher-btn').removeClass('btn-secondary').addClass('btn-light');
 				btn.removeClass('btn-light').addClass('btn-secondary');
 
 				var params = new URLSearchParams(window.location.search);
-				var page = params.get('paged') || 1;
+				var page   = params.get('paged') || 1;
 
 				loadBlogPosts(page, layout);
 			});
@@ -299,7 +299,7 @@
 				e.preventDefault();
 				var url = $(this).attr('href');
 
-				var page = 1;
+				var page  = 1;
 				var match = url.match(/\/page\/(\d+)/);
 				if (match) {
 					page = match[1];

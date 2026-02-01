@@ -66,11 +66,11 @@ function ludych_ajax_blog_filter() {
 	$paged    = isset( $_POST['paged'] ) ? intval( $_POST['paged'] ) : 1;
 	$layout   = isset( $_POST['layout'] ) && $_POST['layout'] === 'list' ? 'list' : 'grid';
 	$base_url = isset( $_POST['base_url'] ) ? esc_url( $_POST['base_url'] ) : home_url( '/blog/' );
-	
+
 	$args = array(
-		'post_type'      => 'post',
-		'paged'          => $paged,
-		'post_status'    => 'publish',
+		'post_type'   => 'post',
+		'paged'       => $paged,
+		'post_status' => 'publish',
 	);
 
 	$query = new WP_Query( $args );
@@ -89,19 +89,19 @@ function ludych_ajax_blog_filter() {
 		$big = 999999999;
 		echo paginate_links( array(
 			'base'      => $base_url . '%_%',
-			'format'    => '?paged=%#%', 
+			'format'    => '?paged=%#%',
 			'total'     => $query->max_num_pages,
 			'current'   => max( 1, $paged ),
 			'prev_text' => '<i class="fa-solid fa-arrow-left"></i>',
 			'next_text' => '<i class="fa-solid fa-arrow-right"></i>',
 		) );
 		$response['pagination'] = ob_get_clean();
-		
+
 	} else {
 		$response['content']    = '<div class="col-12"><p>' . esc_html__( 'No posts found.', 'ludych-theme' ) . '</p></div>';
 		$response['pagination'] = '';
 	}
-	
+
 	wp_reset_postdata();
 
 	wp_send_json( $response );
