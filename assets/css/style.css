@@ -8,6 +8,12 @@
 	margin: 0;
 }
 
+img, svg {
+    vertical-align: middle;
+    max-width: 100%;
+    height: auto;
+}
+
 /* Color */
 
 :root {
@@ -365,7 +371,9 @@ textarea:focus {
 	background-clip: text;
 	-webkit-text-fill-color: white;
 	-webkit-text-stroke: 2px transparent;
-	margin-bottom: -10px;
+	margin-bottom: -20px;
+	opacity: 0.3;
+	line-height: 1.2;
 }
 
 .global-header .min-title {
@@ -761,9 +769,9 @@ li.nav-item.dropdown .dropdown-menu li:has(a.dropdown-toggle) {
 }
 
 .hero-banner-cntn h1 {
-	font-size: 75px;
+	font-size: 64px;
 	font-weight: 600;
-	line-height: 85px;
+	line-height: 1.2;
 }
 
 .hero-banner-cntn .small-head h4 {
@@ -833,7 +841,7 @@ li.nav-item.dropdown .dropdown-menu li:has(a.dropdown-toggle) {
 
 .partner-item ul {
 	padding: 0;
-	margin: 20px 0;
+	margin: 0px 0;
 	list-style: none;
 }
 
@@ -879,7 +887,7 @@ li.nav-item.dropdown .dropdown-menu li:has(a.dropdown-toggle) {
 	flex-direction: column;
 	border: 0px;
 	border-bottom: 8px solid var(--button-border);
-	gap: 35px;
+	gap: 25px;
 	background-color: var(--white);
 }
 
@@ -891,6 +899,9 @@ li.nav-item.dropdown .dropdown-menu li:has(a.dropdown-toggle) {
 	color: var(--button-border);
 	margin-top: auto;
 }
+.busines-partner-items .partner-item a.learnBtn:hover{
+	color: var(--secondary-dark);
+}
 
 .partner-item {
 	background: var(--white);
@@ -898,7 +909,7 @@ li.nav-item.dropdown .dropdown-menu li:has(a.dropdown-toggle) {
 	margin: 8px 0px;
 	height: 100%;
 	text-align: left;
-	border-radius: 40px;
+	border-radius: 24px;
 	border: 1px solid var(--border-light);
 	transition: all 0.3s ease-in-out;
 }
@@ -938,26 +949,28 @@ li.nav-item.dropdown .dropdown-menu li:has(a.dropdown-toggle) {
 
 .author-signature h5 {
 	font-family: "Sacramento", Sans-serif;
-	font-size: 26px;
-	font-weight: 700;
+	font-size: 40px;
 }
 
 .about-thumb img {
 	max-width: 100%;
 }
 
+.about-cntn {
+	position: relative;
+	width: 95%;
+	margin-left: auto;
+}
 .about-cntn p {
 	margin: 13px 0px;
 	font-size: 18px;
 	line-height: 30px;
 }
-
-.about-cntn {
-	position: relative;
-}
-
 .about-cntn p.space-decraese {
 	width: 75%;
+}
+.about-cntn .global-header h2{
+	line-height: 1;
 }
 
 .about-cntn a {
@@ -973,10 +986,7 @@ li.nav-item.dropdown .dropdown-menu li:has(a.dropdown-toggle) {
 	margin-top: 30px;
 }
 
-.about-cntn {
-	width: 95%;
-	margin-left: auto;
-}
+
 
 .abt-counter-item h4 {
 	font-size: 40px;
@@ -1086,6 +1096,8 @@ li.nav-item.dropdown .dropdown-menu li:has(a.dropdown-toggle) {
 	border-radius: 15px;
 	overflow: hidden;
 	height: 100%;
+	display: flex;
+	flex-direction: column;
 }
 
 .blog-thumbnail {
@@ -1116,6 +1128,18 @@ li.nav-item.dropdown .dropdown-menu li:has(a.dropdown-toggle) {
 	color: #474A4F;
 	font-weight: 300;
 	margin: 10px 0px 10px;
+}
+
+.blog-Item .action-btn{
+	margin-top: auto; padding: 0 20px 20px;
+}
+.blog-Item .action-btn .btn {
+	padding: 0px;
+	color: var(--button-border);
+}
+.blog-Item .action-btn .btn:hover {
+	padding: 0px;
+	color: var(--secondary-light);
 }
 
 .cntn-outer a.btn {
@@ -1471,7 +1495,6 @@ footer.footer {
 
 .faq-outer .header-left {
 	display: flex;
-	align-items: center;
 	height: 100%;
 }
 
@@ -1608,3 +1631,133 @@ footer.footer {
 	line-height: 24px;
 	color: #ACB5D4;
 }
+
+/*--- Services Page CSS ---*/
+.grey-bg{background-color: #F6F6F6;}
+
+.inner-banner-wrap {
+	background-position: center; background-size: cover;
+	color: var(--white); position: relative;
+}
+.inner-banner-wrap.with-overlay:before{
+	content: '';
+	position: absolute; left: 0; top: 0; z-index: 1;
+	width: 100%; height: 100%; background: #000; opacity: 0.5;
+}
+.inner-banner-wrap .custom-container {
+    position: relative;
+    z-index: 9; padding: 0 100px;
+}
+.inner-banner{
+	display: flex; gap: 50px;
+    min-height: 550px; padding: 95px 0 50px; width: 100%;
+}
+.inner-banner .global-header{width: 100%;}
+.inner-banner .global-header h2{
+	position: relative; display: inline-block; color: white;
+    background: linear-gradient(to right, #013CFF, #E816D4);
+    -webkit-background-clip: text;  -webkit-text-fill-color: #071027;
+    -webkit-text-stroke: 2px transparent; opacity: 0.25;
+}
+.inner-banner .global-header .min-title{justify-content: center; margin-top: -30px;}
+.inner-banner .global-header h5{color: var(--white);}
+
+
+.inner-banner .global-header.service{max-width: 680px; margin: 0 auto;}
+.inner-banner .global-header p{width: 80%; margin: 10px auto;}
+
+/*--- END CSS ---*/
+
+/*--- Our Expertise Page CSS ---*/
+.with-our-process {
+	padding: 0;
+    margin: 80px 0 !important;
+}
+.with-our-process .min-title {
+    margin-top: -45px !important;
+}
+
+.our-expertise-wrap{
+	position: relative;
+}
+.our-expertise{
+	background: var(--secondary-light) url(../images/dark-section-bg.png) 0 0 repeat-y;
+	border-radius: 50px; padding: 50px; margin: 100px 0; color: var(--white);
+}
+.our-expertise .global-header{text-align: center;}
+.our-expertise .global-header h2{
+	position: relative; display: inline-block; color: white;
+    background: linear-gradient(to right, #013CFF, #E816D4);
+    -webkit-background-clip: text;  -webkit-text-fill-color: #071027;
+    -webkit-text-stroke: 2px transparent; opacity: 0.25;
+}
+.our-expertise .global-header .min-title{justify-content: center; margin-top: -30px;}
+.our-expertise .global-header h6,
+.our-expertise .global-header h5{color: var(--white);}
+
+.our-expertise .global-header.service{max-width: 680px; margin: 0 auto;}
+.our-expertise .global-header p{width: 80%; margin: 10px auto;}
+
+.expertise-card{
+	border: 2px solid #3D72FB45; height: 100%; 
+	padding: 10px; border-radius: 20px 0px 20px 0px; transition: 0.3s;
+}
+.expertise-card:hover{
+	border-style: solid; transition: 0.3s;
+	border-color: #013CFF; border-radius: 25px;	
+}
+.expertise-card figure{border-radius: 20px; overflow: hidden; padding-top: 65%; margin-bottom: 10px; position: relative;}
+.expertise-card figure img{width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;}
+
+.expertise-card .expertise-info{padding: 10px;}
+.expertise-card .expertise-info h3{font-size: 25px;}
+.expertise-card .expertise-info p{font-weight: 400; color: #7784A3;}
+
+.industry-serve{padding: 80px 0;}
+.industry-serve .global-header{text-align: center;}
+.industry-serve .global-header h5 span{display: inline-block;}
+.industry-serve .global-header .min-title{justify-content: center; margin-top: -35px;}
+
+/*--- END CSS ---*/
+
+/*--- Our Expertise Page CSS ---*/
+.ready-to-ship{
+	background: var(--secondary-light);
+	color: var(--white); padding: 40px 0;
+}
+.ready-to-ship .custom-container{
+	display: flex; gap: 50px;
+    align-items: flex-start;    
+}
+.ready-to-ship .intro-text h6{
+	color: #D8CACA; font-size: 20px;
+    font-weight: 400; line-height: 36px;
+}
+.ready-to-ship .intro-text h2{
+	margin-bottom: 0; max-width: 80%;
+}
+.ready-to-ship .schedule-call{
+	min-height: 120px; min-width: 120px; max-width: 120px; position: relative;
+	display: flex; justify-content: center; align-items: center;
+}
+.ready-to-ship .schedule-call-btn{
+	display: flex; min-height: 56px; min-width: 56px; max-width: 56px;
+    justify-content: center; align-items: center; gap: 0px; border-radius: 100px;
+    position: absolute; top: 50%; left: 50%; z-index: 9; background: var(--white);
+	transform: translate(-50%, -50%); transition: 0.5s;
+}
+.ready-to-ship .schedule-call-btn:hover{background-color: rgba(255, 255, 255, 0.8);}
+.ready-to-ship .schedule-call-text{
+	animation: CTABlack_rotate 20s linear infinite;
+    will-change: transform;
+}
+
+@keyframes CTABlack_rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg); /* '1turn' is also fine, but deg is more common */
+    }
+}
+/*--- END CSS ---*/
