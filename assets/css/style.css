@@ -1897,6 +1897,9 @@ footer.footer {
 	margin: 10px auto;
 }
 
+.inner-banner .global-header.services-head {max-width: 900px; margin: 0 auto;}
+.inner-banner .global-header.services-head p {width: 100%; margin: 10px auto;}
+
 /*--- END CSS ---*/
 
 /*--- Our Expertise Page CSS ---*/
@@ -2020,6 +2023,10 @@ footer.footer {
 
 /*--- END CSS ---*/
 
+
+.with-bullet-list ul li{display: flex; gap: 10px; margin: 10px 0;}
+.with-bullet-list ul li p{font-weight: 500; font-size: 16px;}
+
 /*--- Our Expertise Page CSS ---*/
 .ready-to-ship {
 	background: var(--secondary-light);
@@ -2093,4 +2100,84 @@ footer.footer {
 	}
 }
 
+/*--- END CSS ---*/
+
+/*--- Our Journey CSS ---*/
+.our-Journey-wrap{background: var(--secondary-light); position: relative;}
+.our-Journey-wrap .our-Journey{color: var(--white);}
+.our-Journey .global-header{margin-bottom: 80px;}
+.our-Journey .global-header h2 {
+    position: relative; display: inline-block; color: white;
+    background: linear-gradient(to right, #013CFF, #E816D4);
+    -webkit-background-clip: text; -webkit-text-fill-color: #071027;
+    -webkit-text-stroke: 2px transparent; opacity: 0.5;
+}
+.our-Journey .global-header {text-align: center;}
+.our-Journey .global-header .min-title {justify-content: center; margin-top: -30px; position: relative;}
+.our-Journey .global-header h5 {max-width: 100%;}
+/*--- END CSS ---*/
+
+/*--- Our Journey CSS ---*/
+.health-solution-wrap{padding: 100px 0; position: relative;}
+.health-solution-wrap .global-header h2{line-height: 1;}
+.health-solution-wrap .global-header .min-title{margin-top: -50px;}
+
+.health-solution-info p{font-size: 18px;}
+.health-solution-info.with-bullet-list ul {margin-top: 30px;}
+
+
+/*--- Grid Layout ---*/
+.counter-wrap{margin-top: 80px;}
+.counter-wrap .counter-grid {
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    display: grid; gap: 20px; max-width: 1050px; margin: auto;
+}
+.counter-wrap .counter-card {
+    padding: 25px 20px 20px; text-align: center;
+    border-radius: 30px 0 30px 0; color: white;
+}
+.bg-blue { background-color: #4477ff;}
+.bg-dark { background-color: #050a24;}
+
+.counter-wrap .counter-value, .counter-wrap .suffix { font-size: 36px;}
+.counter-wrap .counter-label {margin-top: 10px; font-size: 16px; opacity: 0.8;}
+/*--- END CSS ---*/
+
+
+/*--- Measurable CSS ---*/
+.measurable-wrap{
+	background-color: #020E37; padding: 100px 0; position: relative;
+    background-image: url(https://creativedesign.net.in/ludych/wp-content/uploads/2025/10/innerbg.jpg);
+    background-position: center center; background-repeat: no-repeat;
+    background-size: cover; background-attachment: fixed;
+}
+.measurable-wrap:before{
+	content: '';
+	position: absolute; left: 0; top: 0; z-index: 0;
+	width: 100%; height: 100%; background: #000; opacity: 0.4;
+}
+.measurable-wrap .global-header{
+    margin: 0 auto; text-align: center;
+	position: relative; z-index: 1; color: var(--white);
+}
+.measurable-wrap .global-header h2 {
+    position: relative; display: inline-block; color: white;
+    background: linear-gradient(to right, #013CFF, #E816D4);
+    -webkit-background-clip: text; -webkit-text-fill-color: #071027;
+    -webkit-text-stroke: 2px transparent; opacity: 0.5;
+}
+.measurable-wrap .global-header .min-title {justify-content: center; margin-top: -30px; position: relative; z-index: 1;}
+.measurable-wrap .global-header h5 {color: var(--white);}
+
+/* Bottom Strip Styles */
+.measurable-wrap .counter-wrap{position: relative; z-index: 1;}
+.measurable-wrap .counter-strip {
+	grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    display: grid; padding: 40px 20px; color: white;
+}
+.strip-item {padding: 10px 20px 5px; border-left: 4px solid transparent;}
+.border-blue { border-color: #2e5bff; }
+.border-pink { border-color: #ff00ff; }
+.border-cyan { border-color: #00ffff; }
+.border-green { border-color: #00ff00; }
 /*--- END CSS ---*/
