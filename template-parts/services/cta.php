@@ -3,14 +3,27 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$contact_page_url = home_url( '/contact-us/' );
+$contact_page_url = get_field( 'cta_button_link', $post_id );
+if ( ! $contact_page_url ) {
+	$contact_page_url = home_url( '/contact-us/' );
+}
+
+$cta_heading = get_field( 'cta_heading', $post_id );
+if ( ! $cta_heading ) {
+	$cta_heading = 'Ready to Ship Something Real?';
+}
+
+$cta_desc = get_field( 'cta_description', $post_id );
+if ( ! $cta_desc ) {
+	$cta_desc = 'From discovery to deploy, we build platforms that scale. No junior devs, no scope creep, just working software.';
+}
 ?>
 
 <section class="ready-to-ship">
 	<div class="custom-container">
 		<div class="intro-text">
-			<h6>Ready to Ship Something Real?</h6>
-			<h2>From discovery to deploy, we build platforms that scale. No junior devs, no scope creep, just working software.</h2>
+			<h6><?php echo esc_html( $cta_heading ); ?></h6>
+			<h2><?php echo esc_html( $cta_desc ); ?></h2>
 		</div>
 		
 		<div class="schedule-call">

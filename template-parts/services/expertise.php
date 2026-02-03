@@ -4,8 +4,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 global $post_id;
 
-$expertise_heading  = 'Our Expertise';
-$expertise_subtitle = 'Our Expertise';
+$expertise_heading = get_field( 'expertise_heading', $post_id );
+if ( ! $expertise_heading ) {
+	$expertise_heading = 'Our Expertise';
+}
+
+$expertise_subtitle = get_field( 'expertise_subtitle', $post_id );
+if ( ! $expertise_subtitle ) {
+	$expertise_subtitle = 'Our Expertise';
+}
 $expertise_title    = get_field( 'expertise_title', $post_id );
 $expertise_desc     = get_field( 'expertise_description', $post_id );
 ?>

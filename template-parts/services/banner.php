@@ -4,19 +4,34 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 global $post_id;
 
-$banner_bg = get_template_directory_uri() . '/assets/images/services-bg.jpg';
-
-$banner_title = 'Services';
-
-$service_categories = get_the_terms( $post_id, 'service_category' );
-$banner_subtitle    = '';
-if ( $service_categories && ! is_wp_error( $service_categories ) ) {
-	$banner_subtitle = $service_categories[0]->name;
+$banner_bg = get_field( 'banner_background_image', $post_id );
+if ( ! $banner_bg ) {
+	$banner_bg = get_template_directory_uri() . '/assets/images/services-bg.jpg';
 }
 
-$banner_heading = get_the_title();
+$banner_title = 'Services'; // This seems to be a static label "Services" in the design, or maybe a breadcrumb-like thing. Let's keep it but maybe allow override? Or is it the H2?
+// In the code it is H2. The main title is H5 $banner_heading.
 
-$banner_desc = get_the_excerpt();
+// Eyebrow / Subtitle
+$banner_subtitle = get_field( 'banner_eyebrow', $post_id );
+if ( ! $banner_subtitle ) {
+	$service_categories = get_the_terms( $post_id, 'service_category' );
+	if ( $service_categories && ! is_wp_error( $service_categories ) ) {
+		$banner_subtitle = $service_categories[0]->name;
+	}
+}
+
+// Heading
+$banner_heading = get_field( 'banner_heading', $post_id );
+if ( ! $banner_heading ) {
+	$banner_heading = get_the_title();
+}
+
+// Description
+$banner_desc = get_field( 'banner_description', $post_id );
+if ( ! $banner_desc ) {
+	$banner_desc = get_the_excerpt();
+}
 ?>
 
 <section class="inner-banner-wrap with-overlay text-center" 

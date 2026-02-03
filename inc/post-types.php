@@ -63,7 +63,39 @@ function ludych_register_custom_post_types() {
 		'show_in_rest' => true,
 		'has_archive'  => false,
 		'supports'     => array( 'title', 'editor', 'custom-fields' ),
+
 		'menu_icon'    => 'dashicons-email-alt',
+	) );
+
+	// Services Post Type
+	register_post_type( 'services', array(
+		'labels'       => array(
+			'name'          => __( 'Services', 'ludych-theme' ),
+			'singular_name' => __( 'Service', 'ludych-theme' ),
+			'add_new'       => __( 'Add New Service', 'ludych-theme' ),
+			'add_new_item'  => __( 'Add New Service', 'ludych-theme' ),
+			'edit_item'     => __( 'Edit Service', 'ludych-theme' ),
+		),
+		'public'       => true,
+		'has_archive'  => true,
+		'supports'     => array( 'title', 'editor', 'thumbnail', 'excerpt' ),
+		'show_in_rest' => true,
+		'menu_icon'    => 'dashicons-grid-view',
+		'taxonomies'   => array( 'service_category' ),
+		'rewrite'      => array( 'slug' => 'services' ),
+	) );
+
+	register_taxonomy( 'service_category', 'services', array(
+		'labels'            => array(
+			'name'          => __( 'Service Categories', 'ludych-theme' ),
+			'singular_name' => __( 'Service Category', 'ludych-theme' ),
+			'menu_name'     => __( 'Service Categories', 'ludych-theme' ),
+		),
+		'hierarchical'      => true,
+		'show_in_rest'      => true,
+		'show_admin_column' => true,
+		'query_var'         => true,
+		'rewrite'           => array( 'slug' => 'service-category' ),
 	) );
 }
 add_action( 'init', 'ludych_register_custom_post_types' );
