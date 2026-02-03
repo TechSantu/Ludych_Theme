@@ -10,7 +10,7 @@ if ( ! $tech_stack_title ) {
 
 $tech_stack_text = get_field( 'tech_stack_text', $current_post_id );
 if ( ! $tech_stack_text ) {
-	$tech_stack_text = 'We use the latest technologies to build scalable and secure applications.';
+    $tech_stack_text = 'We use the latest technologies to build <span>scalable and secure applications.</span>';
 }
 ?>
 

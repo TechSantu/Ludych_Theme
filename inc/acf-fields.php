@@ -317,10 +317,10 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				'default_value' => 'Process',
 			),
 			array(
-				'key'           => 'field_work_progress_title',
-				'label'         => 'Process Main Title',
-				'name'          => 'work_progress_title',
-				'type'          => 'text',
+				'key'   => 'field_work_progress_title',
+				'label' => 'Process Main Title',
+				'name'  => 'work_progress_title',
+				'type'  => 'text',
 				'default_value' => 'Our Working Process',
 			),
 			array(
@@ -395,10 +395,10 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				'default_value' => 'News & Blog',
 			),
 			array(
-				'key'           => 'field_blog_section_heading',
-				'label'         => 'Blog Section Heading',
-				'name'          => 'blog_section_heading',
-				'type'          => 'text',
+				'key'   => 'field_blog_section_heading',
+				'label' => 'Blog Section Heading',
+				'name'  => 'blog_section_heading',
+				'type'  => 'text',
 				'default_value' => 'Read Our Latest News',
 			),
 
