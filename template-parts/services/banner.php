@@ -9,7 +9,7 @@ if ( ! $banner_bg ) {
 	$banner_bg = get_template_directory_uri() . '/assets/images/services-bg.jpg';
 }
 
-$banner_title = 'Services'; 
+$banner_title = 'Services';
 
 // Eyebrow / Subtitle
 $banner_subtitle = get_field( 'banner_eyebrow', $post_id );

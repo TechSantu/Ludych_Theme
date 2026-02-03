@@ -16,7 +16,7 @@ if ( ! $blog_section_title ) {
 
 $blog_section_heading = get_field( 'blog_section_heading', $post_id );
 if ( ! $blog_section_heading ) {
-    $blog_section_heading = 'Read Our <span>Latest</span> News';
+	$blog_section_heading = 'Read Our <span>Latest</span> News';
 }
 
 $args       = array(
