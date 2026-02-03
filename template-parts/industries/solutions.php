@@ -4,9 +4,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 global $post_id;
 
-$heading   = get_field( 'solutions_heading', $post_id );
-$subtitle  = get_field( 'solutions_subtitle', $post_id );
-$title     = get_field( 'solutions_title', $post_id );
+$heading  = get_field( 'solutions_heading', $post_id );
+$subtitle = get_field( 'solutions_subtitle', $post_id );
+$title    = get_field( 'solutions_title', $post_id );
 ?>
 
 <section class="our-services industry-serve">
@@ -39,7 +39,9 @@ $title     = get_field( 'solutions_title', $post_id );
 		<div class="busines-partner-items">
 			<div class="row">
 				<?php if ( have_rows( 'solutions_items', $post_id ) ) : ?>
-					<?php while ( have_rows( 'solutions_items', $post_id ) ) : the_row(); 
+					<?php
+					while ( have_rows( 'solutions_items', $post_id ) ) :
+						the_row();
 						$item_title = get_sub_field( 'title' );
 						$item_image = get_sub_field( 'image' );
 						$item_desc  = get_sub_field( 'description' );
@@ -62,7 +64,10 @@ $title     = get_field( 'solutions_title', $post_id );
 
 								<?php if ( have_rows( 'features' ) ) : ?>
 									<ul>
-										<?php while ( have_rows( 'features' ) ) : the_row(); ?>
+										<?php
+										while ( have_rows( 'features' ) ) :
+											the_row();
+											?>
 											<li>
 												<span><i class="fa-solid fa-circle-check"></i></span>
 												<p><?php echo esc_html( get_sub_field( 'text' ) ); ?></p>

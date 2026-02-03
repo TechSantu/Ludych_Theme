@@ -4,11 +4,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 global $post_id;
 
-$heading = get_field( 'detail_heading', $post_id );
+$heading  = get_field( 'detail_heading', $post_id );
 $subtitle = get_field( 'detail_subtitle', $post_id );
-$title = get_field( 'detail_title', $post_id );
-$image = get_field( 'detail_image', $post_id );
-$desc  = get_field( 'detail_description', $post_id );
+$title    = get_field( 'detail_title', $post_id );
+$image    = get_field( 'detail_image', $post_id );
+$desc     = get_field( 'detail_description', $post_id );
 ?>
 
 <section class="health-solution-wrap">
@@ -54,7 +54,10 @@ $desc  = get_field( 'detail_description', $post_id );
 					
 					<?php if ( have_rows( 'detail_features', $post_id ) ) : ?>
 						<ul>
-							<?php while ( have_rows( 'detail_features', $post_id ) ) : the_row(); ?>
+							<?php
+							while ( have_rows( 'detail_features', $post_id ) ) :
+								the_row();
+								?>
 								<li>
 									<span><i class="fa-solid fa-circle-check"></i></span>
 									<p><?php echo esc_html( get_sub_field( 'text' ) ); ?></p>
@@ -71,11 +74,13 @@ $desc  = get_field( 'detail_description', $post_id );
 				<div class="col-12">
 					<div class="counter-wrap">
 						<ul class="counter-grid">
-							<?php while ( have_rows( 'detail_counters', $post_id ) ) : the_row(); 
-								$val = get_sub_field( 'value' );
+							<?php
+							while ( have_rows( 'detail_counters', $post_id ) ) :
+								the_row();
+								$val    = get_sub_field( 'value' );
 								$suffix = get_sub_field( 'suffix' );
-								$label = get_sub_field( 'label' );
-								$style = get_sub_field( 'style_class' );
+								$label  = get_sub_field( 'label' );
+								$style  = get_sub_field( 'style_class' );
 								?>
 								<li class="counter-card <?php echo esc_attr( $style ); ?>">
 									<span class="counter-value" data-target="<?php echo esc_attr( $val ); ?>">0</span>

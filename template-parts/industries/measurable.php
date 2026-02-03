@@ -9,9 +9,9 @@ if ( ! $bg_image ) {
 	$bg_image = get_template_directory_uri() . '/assets/images/services-bg.jpg';
 }
 
-$heading   = get_field( 'measurable_heading', $post_id );
-$subtitle  = get_field( 'measurable_subtitle', $post_id );
-$title     = get_field( 'measurable_title', $post_id );
+$heading  = get_field( 'measurable_heading', $post_id );
+$subtitle = get_field( 'measurable_subtitle', $post_id );
+$title    = get_field( 'measurable_title', $post_id );
 ?>
 
 <section class="measurable-wrap" style="background-image: url('<?php echo esc_url( $bg_image ); ?>');">
@@ -44,7 +44,9 @@ $title     = get_field( 'measurable_title', $post_id );
 		<?php if ( have_rows( 'measurable_counters', $post_id ) ) : ?>
 			<div class="counter-wrap">
 				<ul class="counter-strip">
-					<?php while ( have_rows( 'measurable_counters', $post_id ) ) : the_row();
+					<?php
+					while ( have_rows( 'measurable_counters', $post_id ) ) :
+						the_row();
 						$val      = get_sub_field( 'value' );
 						$decimals = get_sub_field( 'decimals' );
 						$suffix   = get_sub_field( 'suffix' );

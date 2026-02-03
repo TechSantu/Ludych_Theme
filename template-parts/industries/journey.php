@@ -4,10 +4,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 global $post_id;
 
-$heading   = get_field( 'journey_heading', $post_id );
-$subtitle  = get_field( 'journey_subtitle', $post_id );
-$title     = get_field( 'journey_title', $post_id );
-$image     = get_field( 'journey_image', $post_id );
+$heading  = get_field( 'journey_heading', $post_id );
+$subtitle = get_field( 'journey_subtitle', $post_id );
+$title    = get_field( 'journey_title', $post_id );
+$image    = get_field( 'journey_image', $post_id );
 ?>
 
 <section class="our-Journey-wrap why-Onchoose-us">
@@ -49,8 +49,10 @@ $image     = get_field( 'journey_image', $post_id );
 				<div class="col-xl-6 col-md-6 col-sm-12">
 					<div class="content-wrapper">
 						<?php if ( have_rows( 'journey_items', $post_id ) ) : ?>
-							<?php while ( have_rows( 'journey_items', $post_id ) ) : the_row(); 
-								$icon = get_sub_field( 'icon' );
+							<?php
+							while ( have_rows( 'journey_items', $post_id ) ) :
+								the_row();
+								$icon    = get_sub_field( 'icon' );
 								$j_title = get_sub_field( 'title' );
 								$j_desc  = get_sub_field( 'description' );
 								?>
