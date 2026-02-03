@@ -413,10 +413,10 @@ textarea:focus {
 }
 
 .global-header.with-left-header {
-    text-align: left !important;
+	text-align: left !important;
 }
 .global-header.with-left-header .min-title {
-    justify-content: flex-start !important;
+	justify-content: flex-start !important;
 }
 
 .our-services h5 span {
@@ -950,7 +950,7 @@ li.nav-item.dropdown .dropdown-menu li:has(a.dropdown-toggle) {
 
 .partner-item .text-link{
 	color: var(--button-border);
-    margin-top: auto;
+	margin-top: auto;
 }
 .partner-item .text-link:hover{
 	color: var(--secondary-dark);
@@ -1810,7 +1810,7 @@ footer.footer {
 .why-Onchoose-us .content-wrapper,
 .workby-wrap .content-wrapper  {
 	display: grid; gap: 40px;
-	grid-template-columns: repeat(2, 1fr);	
+	grid-template-columns: repeat(2, 1fr);
 }
 
 .why-Onchoose-us .content-wrapper .content-box-inner,
@@ -1836,15 +1836,15 @@ footer.footer {
 
 
 .workby-wrap .content-wrapper  {
-	grid-template-columns: repeat(4, 1fr);	
+	grid-template-columns: repeat(4, 1fr);
 }
 .workby-wrap .content-wrapper .content-box-inner h3 {
 	font-size: 24px; line-height: 1.4;
 }
 .workby-wrap .content-wrapper.mission-vision {
-	grid-template-columns: repeat(3, 1fr); gap: 80px; position: relative; margin-top: 50px;	
+	grid-template-columns: repeat(3, 1fr); gap: 80px; position: relative; margin-top: 50px;
 	border: 1px solid rgb(255, 255, 255, 0.4); border-right: 0px; padding: 80px;
-} 
+}
 
 
 
