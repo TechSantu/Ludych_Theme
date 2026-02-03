@@ -3,6 +3,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+$post_id = get_the_ID();
+
 $contact_page_url = get_field( 'cta_button_link', $post_id );
 if ( ! $contact_page_url ) {
 	$contact_page_url = home_url( '/contact-us/' );
