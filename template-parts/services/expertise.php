@@ -13,8 +13,8 @@ $expertise_subtitle = get_field( 'expertise_subtitle', $post_id );
 if ( ! $expertise_subtitle ) {
 	$expertise_subtitle = 'Our Expertise';
 }
-$expertise_title    = get_field( 'expertise_title', $post_id );
-$expertise_desc     = get_field( 'expertise_description', $post_id );
+$expertise_title = get_field( 'expertise_title', $post_id );
+$expertise_desc  = get_field( 'expertise_description', $post_id );
 ?>
 
 <section class="our-expertise-wrap">
