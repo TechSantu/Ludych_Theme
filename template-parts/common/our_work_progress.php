@@ -5,8 +5,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 global $post_id;
 
 $heading     = get_field('work_progress_heading', $post_id);
+if ( ! $heading ) {
+    $heading = 'Our Process';
+}
+
 $small_title = get_field('work_progress_small_title', $post_id);
+if ( ! $small_title ) {
+    $small_title = 'Process';
+}
+
 $main_title  = get_field('work_progress_title', $post_id);
+if ( ! $main_title ) {
+    $main_title = 'Our Working Process';
+}
 ?>
 
 <section class="our-work-progress">

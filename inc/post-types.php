@@ -97,6 +97,37 @@ function ludych_register_custom_post_types() {
 		'query_var'         => true,
 		'rewrite'           => array( 'slug' => 'service-category' ),
 	) );
+
+	// Industries Post Type
+	register_post_type( 'industries', array(
+		'labels'       => array(
+			'name'          => __( 'Industries', 'ludych-theme' ),
+			'singular_name' => __( 'Industry', 'ludych-theme' ),
+			'add_new'       => __( 'Add New Industry', 'ludych-theme' ),
+			'add_new_item'  => __( 'Add New Industry', 'ludych-theme' ),
+			'edit_item'     => __( 'Edit Industry', 'ludych-theme' ),
+		),
+		'public'       => true,
+		'has_archive'  => true,
+		'supports'     => array( 'title', 'editor', 'thumbnail', 'excerpt' ),
+		'show_in_rest' => true,
+		'menu_icon'    => 'dashicons-building',
+		'taxonomies'   => array( 'industry_category' ),
+		'rewrite'      => array( 'slug' => 'industries' ),
+	) );
+
+	register_taxonomy( 'industry_category', 'industries', array(
+		'labels'            => array(
+			'name'          => __( 'Industry Categories', 'ludych-theme' ),
+			'singular_name' => __( 'Industry Category', 'ludych-theme' ),
+			'menu_name'     => __( 'Industry Categories', 'ludych-theme' ),
+		),
+		'hierarchical'      => true,
+		'show_in_rest'      => true,
+		'show_admin_column' => true,
+		'query_var'         => true,
+		'rewrite'           => array( 'slug' => 'industry-category' ),
+	) );
 }
 add_action( 'init', 'ludych_register_custom_post_types' );
 

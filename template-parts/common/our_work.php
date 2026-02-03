@@ -4,7 +4,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 $current_post_id  = get_the_ID();
 $tech_stack_title = get_field( 'tech_stack_title', $current_post_id );
+if ( ! $tech_stack_title ) {
+    $tech_stack_title = 'Technology Stack';
+}
+
 $tech_stack_text  = get_field( 'tech_stack_text', $current_post_id );
+if ( ! $tech_stack_text ) {
+    $tech_stack_text = 'We use the latest technologies to build scalable and secure applications.';
+}
 ?>
 
 <section class="work-progress">

@@ -5,8 +5,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 global $post_id;
 
 $blog_section_subtitle = get_field( 'blog_section_subtitle', $post_id );
+if ( ! $blog_section_subtitle ) {
+    $blog_section_subtitle = 'News & Blog';
+}
+
 $blog_section_title    = get_field( 'blog_section_title', $post_id );
+if ( ! $blog_section_title ) {
+    $blog_section_title = 'News & Blog'; // The icon text
+}
+
 $blog_section_heading  = get_field( 'blog_section_heading', $post_id );
+if ( ! $blog_section_heading ) {
+    $blog_section_heading = 'Read Our Latest News';
+}
 
 $args       = array(
 	'post_type'      => 'post',
