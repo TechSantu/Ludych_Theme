@@ -412,6 +412,13 @@ textarea:focus {
 	margin-top: -69px;
 }
 
+.global-header.with-left-header {
+    text-align: left !important;
+}
+.global-header.with-left-header .min-title {
+    justify-content: flex-start !important;
+}
+
 .our-services h5 span {
 	display: block;
 }
@@ -925,14 +932,28 @@ li.nav-item.dropdown .dropdown-menu li:has(a.dropdown-toggle) {
 .partner-item h3 {
 	margin: 0px 0px 15px;
 	font-weight: 400;
-	font-size: 40px;
-	line-height: 45px;
+	font-size: 30px;
+	line-height: 35px;
+}
+.partner-item h4 {
+	margin: 0px;
+	font-weight: 400;
+	font-size: 30px;
+	line-height: 35px;
 }
 
 .partner-item .globalBtnOutline {
 	margin-top: 20px;
 	color: #222629;
 	font-size: 16px;
+}
+
+.partner-item .text-link{
+	color: var(--button-border);
+    margin-top: auto;
+}
+.partner-item .text-link:hover{
+	color: var(--secondary-dark);
 }
 
 .partner-thumb-item {
@@ -1763,56 +1784,69 @@ footer.footer {
 }
 
 /* technology stack end */
-.why-Onchoose-us {
+.why-Onchoose-us,
+.workby-wrap {
 	background: var(--secondary-light);
 	padding: 80px 0px;
 	color: var(--white);
 }
 
-.why-Onchoose-us .global-header h2 {
+.why-Onchoose-us .global-header h2,
+.workby-wrap .global-header h2 {
 	-webkit-text-fill-color: var(--secondary-light);
 }
 
-.why-Onchoose-us .global-header h5 {
+.why-Onchoose-us .global-header h5,
+.workby-wrap .global-header h5 {
 	color: #fff;
 	max-width: 900px;
 }
 
-.why-Onchoose-us .thumbnail-box img {
-	max-width: 90%;
-	border-radius: 10px;
+.why-Onchoose-us .thumbnail-box img,
+.workby-wrap .thumbnail-box img {
+	max-width: 90%; border-radius: 10px;
 }
 
-.why-Onchoose-us .content-wrapper {
-	display: grid;
-	grid-template-columns: repeat(2, 1fr);
-	gap: 40px;
+.why-Onchoose-us .content-wrapper,
+.workby-wrap .content-wrapper  {
+	display: grid; gap: 40px;
+	grid-template-columns: repeat(2, 1fr);	
 }
 
-.why-Onchoose-us .content-wrapper .content-box-inner {
-	display: flex;
-	flex-direction: column;
-	gap: 15px;
+.why-Onchoose-us .content-wrapper .content-box-inner,
+.workby-wrap .content-wrapper .content-box-inner {
+	display: flex; flex-direction: column; gap: 15px;
 }
 
-.why-Onchoose-us .content-wrapper .content-box-inner h3 {
-	font-size: 18px;
-	font-weight: 500;
-	line-height: 25px;
-	margin-bottom: 0px;
-	margin-top: 10px;
+.why-Onchoose-us .content-wrapper .content-box-inner h3,
+.workby-wrap .content-wrapper .content-box-inner h3 {
+	font-size: 18px; font-weight: 500; line-height: 25px;
+	margin-bottom: 0px; margin-top: 10px;
 }
 
-.why-Onchoose-us .content-wrapper .content-box-inner p {
-	font-size: 16px;
-	font-weight: 400;
-	line-height: 24px;
-	color: #ACB5D4;
+.why-Onchoose-us .content-wrapper .content-box-inner p,
+.workby-wrap .content-wrapper .content-box-inner p {
+	font-size: 16px; font-weight: 400;
+	line-height: 24px; color: #ACB5D4;
 }
-
-.why-Onchoose-us .content-wrapper .content-box-inner img {
+.why-Onchoose-us .content-wrapper .content-box-inner img,
+.workby-wrap .content-wrapper .content-box-inner img {
 	width: 70px;
 }
+
+
+.workby-wrap .content-wrapper  {
+	grid-template-columns: repeat(4, 1fr);	
+}
+.workby-wrap .content-wrapper .content-box-inner h3 {
+	font-size: 24px; line-height: 1.4;
+}
+.workby-wrap .content-wrapper.mission-vision {
+	grid-template-columns: repeat(3, 1fr); gap: 80px; position: relative; margin-top: 50px;	
+	border: 1px solid rgb(255, 255, 255, 0.4); border-right: 0px; padding: 80px;
+} 
+
+
 
 /*--- Services Page CSS ---*/
 .grey-bg {
@@ -1869,7 +1903,7 @@ footer.footer {
 
 .inner-banner .global-header .min-title {
 	justify-content: center;
-	margin-top: -30px;
+	margin-top: -30px; position: relative;
 }
 
 .inner-banner .global-header h5 {
@@ -2180,4 +2214,18 @@ footer.footer {
 .border-pink { border-color: #ff00ff; }
 .border-cyan { border-color: #00ffff; }
 .border-green { border-color: #00ff00; }
+/*--- END CSS ---*/
+
+/*--- Our Teams CSS ---*/
+.ourTeams-wrap{padding: 100px 0; position: relative;}
+.ourTeams-wrap .global-header h2{line-height: 1;}
+.ourTeams-wrap .global-header .min-title{margin-top: -30px;}
+/*--- END CSS ---*/
+
+/*--- About Us CSS ---*/
+.about-wrap .global-header{margin-bottom: 80px;}
+.about-wrap .global-header h5 span{display: inline-block;}
+.about-wrap .global-header .min-title{margin-top: -50px;}
+.global-header.about-head {max-width: 800px; margin: 0 auto;}
+.global-header.about-head p {width: 100%; margin: 10px auto;}
 /*--- END CSS ---*/
