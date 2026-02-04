@@ -3,7 +3,7 @@
         'name' => 'techsantu/ludych-theme',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '03c0b163ba28a389ebe8551a620d9fbe886c51e8',
+        'reference' => '4f7c43a36328a5354a63824955fe81e041916ad7',
         'type' => 'wordpress-theme',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -121,7 +121,7 @@
         'techsantu/ludych-theme' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '03c0b163ba28a389ebe8551a620d9fbe886c51e8',
+            'reference' => '4f7c43a36328a5354a63824955fe81e041916ad7',
             'type' => 'wordpress-theme',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
