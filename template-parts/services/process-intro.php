@@ -62,7 +62,7 @@ if ( ! $process_description ) {
 				<img src="<?php echo esc_url( $process_image['url'] ); ?>" alt="<?php echo esc_attr( $process_image['alt'] ); ?>">
 			</div>
 			<div class="left-content col-lg-6">
-				<p><?php echo esc_html( $process_description ); ?></p>
+				<p><?php echo ( $process_description ); ?></p>
 			</div>
 		</div>
 	</div>
