@@ -11,7 +11,8 @@ $industries_title    = get_field( 'industries_title', $post_id );
 if ( ! $industries_heading ) {
 	$industries_heading = 'Industry We Serve';
 }
-if ( ! $industries_subtitle ) {industries_heading
+if ( ! $industries_subtitle ) {
+	industries_heading
 	$industries_subtitle = 'Industry We Serve';
 }
 if ( ! $industries_title ) {
