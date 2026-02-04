@@ -12,7 +12,6 @@ if ( ! $industries_heading ) {
 	$industries_heading = 'Industry We Serve';
 }
 if ( ! $industries_subtitle ) {
-	industries_heading
 	$industries_subtitle = 'Industry We Serve';
 }
 if ( ! $industries_title ) {
