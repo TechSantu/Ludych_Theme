@@ -5,11 +5,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 global $post_id;
 
-$bg_image   = get_field( 'strategies_bg_image', $post_id );
-$heading    = get_field( 'strategies_heading', $post_id );
-$subtitle   = get_field( 'strategies_subtitle', $post_id );
-$title      = get_field( 'strategies_title', $post_id );
-$desc       = get_field( 'strategies_description', $post_id );
+$bg_image = get_field( 'strategies_bg_image', $post_id );
+$heading  = get_field( 'strategies_heading', $post_id );
+$subtitle = get_field( 'strategies_subtitle', $post_id );
+$title    = get_field( 'strategies_title', $post_id );
+$desc     = get_field( 'strategies_description', $post_id );
 
 if ( ! $bg_image ) {
 	$bg_image = get_template_directory_uri() . '/assets/images/inner-background.jpg';
