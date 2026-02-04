@@ -632,7 +632,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				'key'   => 'field_strategies_description',
 				'label' => 'Description',
 				'name'  => 'strategies_description',
-				'type'  => 'textarea',
+				'type'  => 'wysiwyg',
 				'rows'  => 6,
 			),
 
