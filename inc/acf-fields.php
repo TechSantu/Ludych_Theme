@@ -196,8 +196,10 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				'key'           => 'field_process_intro_description',
 				'label'         => 'Description',
 				'name'          => 'process_intro_description',
-				'type'          => 'textarea',
-				'rows'          => 4,
+				'type'          => 'wysiwyg',
+				'tabs'          => 'all',
+				'toolbar'       => 'basic',
+				'media_upload'  => 0,
 				'default_value' => 'Ludych is a full-stack digital agency based in Chandler, AZ. We ship platforms, integrations, and data products—not just websites. Our team blends senior engineering talent with rigorous PMO discipline and QA rigor, delivering end-to-end services across custom development, data analytics, DevOps/SRE, digital marketing, and product consulting.',
 			),
 
