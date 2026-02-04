@@ -45,7 +45,7 @@ if ( ! $bg_image ) {
 
 		<?php if ( $desc ) : ?>
 			<div class="strategies-wrap">
-				<p><?php echo esc_html( $desc ); ?></p>
+				<p><?php echo ( $desc ); ?></p>
 			</div>
 		<?php endif; ?>
 	</div>
