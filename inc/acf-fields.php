@@ -570,13 +570,6 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 						'type'  => 'text',
 					),
 					array(
-						'key'           => 'field_sol_image',
-						'label'         => 'Image',
-						'name'          => 'image',
-						'type'          => 'image',
-						'return_format' => 'url',
-					),
-					array(
 						'key'   => 'field_sol_desc',
 						'label' => 'Description',
 						'name'  => 'description',
