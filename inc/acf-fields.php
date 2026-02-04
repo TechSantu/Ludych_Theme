@@ -266,6 +266,70 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				),
 			),
 
+			// Tab: Industries / Related
+			array(
+				'key'   => 'field_tab_industries',
+				'label' => 'Industries / Related Services',
+				'type'  => 'tab',
+			),
+			array(
+				'key'   => 'field_industries_heading',
+				'label' => 'Section Heading',
+				'name'  => 'industries_heading',
+				'type'  => 'text',
+			),
+			array(
+				'key'   => 'field_industries_subtitle',
+				'label' => 'Section Subtitle',
+				'name'  => 'industries_subtitle',
+				'type'  => 'text',
+			),
+			array(
+				'key'   => 'field_industries_title',
+				'label' => 'Main Title',
+				'name'  => 'industries_title',
+				'type'  => 'text',
+			),
+			array(
+				'key'        => 'field_industries_items',
+				'label'      => 'Industry Items',
+				'name'       => 'industries_items',
+				'type'       => 'repeater',
+				'layout'     => 'block',
+				'sub_fields' => array(
+					array(
+						'key'   => 'field_industries_item_title',
+						'label' => 'Title',
+						'name'  => 'item_title',
+						'type'  => 'text',
+					),
+					array(
+						'key'   => 'field_industries_item_description',
+						'label' => 'Description',
+						'name'  => 'item_description',
+						'type'  => 'textarea',
+						'rows'  => 3,
+					),
+					array(
+						'key'        => 'field_industries_item_features',
+						'label'      => 'Features',
+						'name'       => 'item_features',
+						'type'       => 'repeater',
+						'layout'     => 'table',
+						'sub_fields' => array(
+							array(
+								'key'   => 'field_industries_item_feature_text',
+								'label' => 'Feature Text',
+								'name'  => 'feature_text',
+								'type'  => 'text',
+							),
+						),
+					),
+				),
+			),
+
+
+
 
 			// Tab: CTA
 			array(
