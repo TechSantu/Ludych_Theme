@@ -18,9 +18,15 @@ $main_title = get_field('work_progress_title', $post_id);
 if ( ! $main_title ) {
 	$main_title = 'Our Working Process';
 }
+
+$extra_class = get_query_var( 'work_progress_class', '' );
+$section_class = 'our-work-progress';
+if ( $extra_class ) {
+	$section_class .= ' ' . $extra_class;
+}
 ?>
 
-<section class="our-work-progress">
+<section class="<?php echo esc_attr( $section_class ); ?>">
 	<div class="custom-container">
 
 		<div class="global-header middle-align">

@@ -15,6 +15,13 @@ if ( ! $expertise_subtitle ) {
 }
 $expertise_title = get_field( 'expertise_title', $post_id );
 $expertise_desc  = get_field( 'expertise_description', $post_id );
+
+if ( ! $expertise_title ) {
+	$expertise_title = 'Building <span>Scalable Solutions</span><br> for a <span>Digital Future</span>';
+}
+if ( ! $expertise_desc ) {
+	$expertise_desc = 'We build tailored software that matches your business goals and scales with growth. From concept to launch, our team delivers secure, high-performing applications that drive innovation and efficiency.';
+}
 ?>
 
 <section class="our-expertise-wrap">

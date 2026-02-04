@@ -8,6 +8,16 @@ $industries_heading  = get_field( 'industries_heading', $post_id );
 $industries_subtitle = get_field( 'industries_subtitle', $post_id );
 $industries_title    = get_field( 'industries_title', $post_id );
 
+if ( ! $industries_heading ) {
+	$industries_heading = 'Industry We Serve';
+}
+if ( ! $industries_subtitle ) {
+	$industries_subtitle = 'Industry We Serve';
+}
+if ( ! $industries_title ) {
+	$industries_title = 'Our <span>Software Development</span> Services';
+}
+
 // Query other services
 $args           = array(
 	'post_type'      => 'services',
@@ -49,7 +59,46 @@ $services_query = new WP_Query( $args );
 
 		<div class="busines-partner-items">
 			<div class="row">
-				<?php if ( $services_query->have_posts() ) : ?>
+				<?php if ( have_rows( 'industries_items', $post_id ) ) : ?>
+					<?php
+					while ( have_rows( 'industries_items', $post_id ) ) :
+						the_row();
+						$item_title       = get_sub_field( 'item_title' );
+						$item_description = get_sub_field( 'item_description' );
+						?>
+						<div class="col-xl-4 col-md-6 col-sm-12">
+							<div class="partner-item">
+								<?php if ( $item_title ) : ?>
+									<h3><?php echo wp_kses_post( $item_title ); ?></h3>
+								<?php endif; ?>
+
+								<?php if ( $item_description ) : ?>
+									<p><?php echo esc_html( $item_description ); ?></p>
+								<?php endif; ?>
+
+								<?php if ( have_rows( 'item_features' ) ) : ?>
+									<ul>
+										<?php
+										while ( have_rows( 'item_features' ) ) :
+											the_row();
+											$feature_text = get_sub_field( 'feature_text' );
+											if ( ! $feature_text ) {
+												continue;
+											}
+											?>
+											<li>
+												<span><i class="fa-solid fa-circle-check"></i></span>
+												<p><?php echo esc_html( $feature_text ); ?></p>
+											</li>
+										<?php endwhile; ?>
+									</ul>
+								<?php endif; ?>
+							</div>
+						</div>
+						<?php
+					endwhile;
+					?>
+				<?php elseif ( $services_query->have_posts() ) : ?>
 					<?php
 					while ( $services_query->have_posts() ) :
 						$services_query->the_post();
@@ -57,13 +106,13 @@ $services_query = new WP_Query( $args );
 						<div class="col-xl-4 col-md-6 col-sm-12">
 							<div class="partner-item">
 								<h3><?php the_title(); ?></h3>
-								
+
 								<?php if ( has_post_thumbnail() ) : ?>
 									<div class="partner-thumb-item">
 										<?php the_post_thumbnail( 'large' ); ?>
 									</div>
 								<?php endif; ?>
-								
+
 								<?php
 								$features = get_field( 'features' );
 								if ( $features ) {
@@ -82,7 +131,7 @@ $services_query = new WP_Query( $args );
 									the_content();
 								}
 								?>
-								
+
 								<a href="<?php the_permalink(); ?>" class="learnBtn">read more...</a>
 							</div>
 						</div>

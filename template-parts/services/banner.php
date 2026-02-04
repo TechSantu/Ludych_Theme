@@ -57,9 +57,9 @@ if ( ! $banner_desc ) {
 					<?php endif; ?>
 				</div>
 				
-				<?php if ( $banner_heading ) : ?>
-					<h5><?php echo esc_html( $banner_heading ); ?></h5>
-				<?php endif; ?>
+<?php if ( $banner_heading ) : ?>
+	<h5><?php echo wp_kses_post( $banner_heading ); ?></h5>
+<?php endif; ?>
 				
 				<?php if ( $banner_desc ) : ?>
 					<p><?php echo esc_html( $banner_desc ); ?></p>

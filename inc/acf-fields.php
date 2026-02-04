@@ -244,6 +244,87 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				'name'  => 'industries_title',
 				'type'  => 'text',
 			),
+			array(
+				'key'        => 'field_industries_items',
+				'label'      => 'Industry Items',
+				'name'       => 'industries_items',
+				'type'       => 'repeater',
+				'layout'     => 'block',
+				'sub_fields' => array(
+					array(
+						'key'   => 'field_industries_item_title',
+						'label' => 'Title',
+						'name'  => 'item_title',
+						'type'  => 'text',
+					),
+					array(
+						'key'   => 'field_industries_item_description',
+						'label' => 'Description',
+						'name'  => 'item_description',
+						'type'  => 'textarea',
+						'rows'  => 3,
+					),
+					array(
+						'key'        => 'field_industries_item_features',
+						'label'      => 'Features',
+						'name'       => 'item_features',
+						'type'       => 'repeater',
+						'layout'     => 'table',
+						'sub_fields' => array(
+							array(
+								'key'   => 'field_industries_item_feature_text',
+								'label' => 'Feature Text',
+								'name'  => 'feature_text',
+								'type'  => 'text',
+							),
+						),
+					),
+				),
+			),
+
+			// Tab: Process Intro
+			array(
+				'key'   => 'field_tab_process_intro',
+				'label' => 'Process Intro',
+				'type'  => 'tab',
+			),
+			array(
+				'key'           => 'field_process_intro_heading',
+				'label'         => 'Section Heading',
+				'name'          => 'process_intro_heading',
+				'type'          => 'text',
+				'default_value' => 'Our Process',
+			),
+			array(
+				'key'           => 'field_process_intro_subtitle',
+				'label'         => 'Section Subtitle (Icon Text)',
+				'name'          => 'process_intro_subtitle',
+				'type'          => 'text',
+				'default_value' => 'Transforming Ideas Into Scalable Digital Success',
+			),
+			array(
+				'key'           => 'field_process_intro_title',
+				'label'         => 'Main Title',
+				'name'          => 'process_intro_title',
+				'type'          => 'textarea',
+				'rows'          => 2,
+				'default_value' => 'Discovery to Deploy.,<br> <span>Zero Surprises.</span>',
+			),
+			array(
+				'key'           => 'field_process_intro_image',
+				'label'         => 'Image',
+				'name'          => 'process_intro_image',
+				'type'          => 'image',
+				'return_format' => 'array',
+			),
+			array(
+				'key'           => 'field_process_intro_description',
+				'label'         => 'Description',
+				'name'          => 'process_intro_description',
+				'type'          => 'textarea',
+				'rows'          => 4,
+				'default_value' => 'Ludych is a full-stack digital agency based in Chandler, AZ. We ship platforms, integrations, and data products—not just websites. Our team blends senior engineering talent with rigorous PMO discipline and QA rigor, delivering end-to-end services across custom development, data analytics, DevOps/SRE, digital marketing, and product consulting.',
+			),
 
 			// Tab: CTA
 			array(
