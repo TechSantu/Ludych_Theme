@@ -5,12 +5,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 global $post_id;
 
-$heading  = get_field( 'solutions_heading', $post_id );
-$subtitle = get_field( 'solutions_subtitle', $post_id );
-$title    = get_field( 'solutions_title', $post_id );
+$bg_image   = get_field( 'strategies_bg_image', $post_id );
+$heading    = get_field( 'strategies_heading', $post_id );
+$subtitle   = get_field( 'strategies_subtitle', $post_id );
+$title      = get_field( 'strategies_title', $post_id );
+$desc       = get_field( 'strategies_description', $post_id );
+
+if ( ! $bg_image ) {
+	$bg_image = get_template_directory_uri() . '/assets/images/inner-background.jpg';
+}
 ?>
 
-<section class="our-services industry-serve future-ready-section">
+<section class="Strategies" style="background-image: url('<?php echo esc_url( $bg_image ); ?>');">
 	<div class="custom-container">
 		<div class="global-header">
 			<?php if ( $heading ) : ?>
@@ -37,35 +43,9 @@ $title    = get_field( 'solutions_title', $post_id );
 			<?php endif; ?>
 		</div>
 
-		<?php if ( have_rows( 'solutions_items', $post_id ) ) : ?>
-			<div class="Future-Ready">
-				<div class="rows future-ready-grid">
-					<?php
-					while ( have_rows( 'solutions_items', $post_id ) ) :
-						the_row();
-						$item_title       = get_sub_field( 'title' );
-						$item_image       = get_sub_field( 'image' );
-						$item_description = get_sub_field( 'description' );
-						?>
-						<div class="future-ready-items">
-							<div class="Future-Ready-item">
-								<?php if ( $item_image ) : ?>
-									<div class="items-thumb">
-										<img src="<?php echo esc_url( $item_image ); ?>" alt="<?php echo esc_attr( $item_title ); ?>">
-									</div>
-								<?php endif; ?>
-								<div class="items-inner">
-									<?php if ( $item_title ) : ?>
-										<h3><?php echo esc_html( $item_title ); ?></h3>
-									<?php endif; ?>
-									<?php if ( $item_description ) : ?>
-										<p><?php echo esc_html( $item_description ); ?></p>
-									<?php endif; ?>
-								</div>
-							</div>
-						</div>
-					<?php endwhile; ?>
-				</div>
+		<?php if ( $desc ) : ?>
+			<div class="strategies-wrap">
+				<p><?php echo esc_html( $desc ); ?></p>
 			</div>
 		<?php endif; ?>
 	</div>

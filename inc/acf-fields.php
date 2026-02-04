@@ -434,27 +434,6 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				),
 			),
 
-			// Tab: Technology Stack
-			array(
-				'key'   => 'field_tab_tech_stack',
-				'label' => 'Technology Stack',
-				'type'  => 'tab',
-			),
-			array(
-				'key'           => 'field_tech_stack_title_service', // Unique key
-				'label'         => 'Tech Stack Title',
-				'name'          => 'tech_stack_title',
-				'type'          => 'text',
-				'default_value' => 'Technology Stack',
-			),
-			array(
-				'key'   => 'field_tech_stack_text_service', // Unique key
-				'label' => 'Tech Stack Description',
-				'name'  => 'tech_stack_text',
-				'type'  => 'textarea',
-				'rows'  => 3,
-			),
-
 			// Tab: News & Blog
 			array(
 				'key'   => 'field_tab_blog',
@@ -615,6 +594,48 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 						),
 					),
 				),
+			),
+
+			// Tab: Strategies
+			array(
+				'key'   => 'field_ind_tab_strategies',
+				'label' => 'Strategies',
+				'type'  => 'tab',
+			),
+			array(
+				'key'           => 'field_strategies_bg',
+				'label'         => 'Background Image',
+				'name'          => 'strategies_bg_image',
+				'type'          => 'image',
+				'return_format' => 'url',
+			),
+			array(
+				'key'           => 'field_strategies_heading',
+				'label'         => 'Section Heading',
+				'name'          => 'strategies_heading',
+				'type'          => 'text',
+				'default_value' => 'Smart Solutions',
+			),
+			array(
+				'key'           => 'field_strategies_subtitle',
+				'label'         => 'Section Subtitle',
+				'name'          => 'strategies_subtitle',
+				'type'          => 'text',
+				'default_value' => 'Empowering Businesses with Smart Solutions',
+			),
+			array(
+				'key'   => 'field_strategies_title',
+				'label' => 'Main Title',
+				'name'  => 'strategies_title',
+				'type'  => 'textarea',
+				'rows'  => 2,
+			),
+			array(
+				'key'   => 'field_strategies_description',
+				'label' => 'Description',
+				'name'  => 'strategies_description',
+				'type'  => 'textarea',
+				'rows'  => 6,
 			),
 
 			// Tab: Journey

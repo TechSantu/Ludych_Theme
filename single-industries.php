@@ -15,11 +15,10 @@ if ( have_posts() ) :
 		$parts = array(
 			'industries/banner',
 			'industries/solutions',
-			'industries/journey',
-			'industries/detail',
-			'industries/measurable',
+			'industries/strategies',
 			'common/our_blog',
 			'services/cta', // Reusing services CTA as keys match
+			'common/contect',
 		);
 
 		foreach ( $parts as $part ) {

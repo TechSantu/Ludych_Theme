@@ -20,7 +20,6 @@ if ( have_posts() ) :
 			'services/expertise',
 			'services/industries',
 			'common/our_work_progress',
-			'common/our_work',
 			'common/our_blog',
 			'services/cta',
 			'common/contect',

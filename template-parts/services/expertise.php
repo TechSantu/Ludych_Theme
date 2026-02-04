@@ -2,25 +2,25 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
 global $post_id;
 
-$expertise_heading = get_field( 'expertise_heading', $post_id );
-if ( ! $expertise_heading ) {
-	$expertise_heading = 'Our Expertise';
-}
+$heading     = get_field( 'expertise_heading', $post_id );
+$subtitle    = get_field( 'expertise_subtitle', $post_id );
+$title       = get_field( 'expertise_title', $post_id );
+$description = get_field( 'expertise_description', $post_id );
 
-$expertise_subtitle = get_field( 'expertise_subtitle', $post_id );
-if ( ! $expertise_subtitle ) {
-	$expertise_subtitle = 'Our Expertise';
+if ( ! $heading ) {
+	$heading = 'Our Expertise';
 }
-$expertise_title = get_field( 'expertise_title', $post_id );
-$expertise_desc  = get_field( 'expertise_description', $post_id );
-
-if ( ! $expertise_title ) {
-	$expertise_title = 'Building <span>Scalable Solutions</span><br> for a <span>Digital Future</span>';
+if ( ! $subtitle ) {
+	$subtitle = 'Our Expertise';
 }
-if ( ! $expertise_desc ) {
-	$expertise_desc = 'We build tailored software that matches your business goals and scales with growth. From concept to launch, our team delivers secure, high-performing applications that drive innovation and efficiency.';
+if ( ! $title ) {
+	$title = 'Building <span>Scalable Solutions</span><br> for a <span>Digital Future</span>';
+}
+if ( ! $description ) {
+	$description = 'We build tailored software that matches your business goals and scales with growth. From concept to launch, our team delivers secure, high-performing applications that drive innovation and efficiency.';
 }
 ?>
 
@@ -28,8 +28,9 @@ if ( ! $expertise_desc ) {
 	<div class="custom-container">
 		<div class="our-expertise">
 			<div class="global-header">
-				<h2><?php echo esc_html( $expertise_heading ); ?></h2>
-				
+				<?php if ( $heading ) : ?>
+					<h2><?php echo esc_html( $heading ); ?></h2>
+				<?php endif; ?>
 				<div class="min-title">
 					<div class="icon-box">
 						<svg xmlns="http://www.w3.org/2000/svg" width="39" height="39" viewBox="0 0 39 39" fill="none">
@@ -42,50 +43,47 @@ if ( ! $expertise_desc ) {
 							</defs>
 						</svg>
 					</div>
-					<h6><?php echo esc_html( $expertise_subtitle ); ?></h6>
+					<?php if ( $subtitle ) : ?>
+						<h6><?php echo esc_html( $subtitle ); ?></h6>
+					<?php endif; ?>
 				</div>
-				
-				<?php if ( $expertise_title ) : ?>
-					<h5><?php echo wp_kses_post( $expertise_title ); ?></h5>
+				<?php if ( $title ) : ?>
+					<h5><?php echo wp_kses_post( $title ); ?></h5>
 				<?php endif; ?>
-				
-				<?php if ( $expertise_desc ) : ?>
-					<p><?php echo esc_html( $expertise_desc ); ?></p>
+				<?php if ( $description ) : ?>
+					<p><?php echo esc_html( $description ); ?></p>
 				<?php endif; ?>
 			</div>
 
-			<div class="row">
-				<?php if ( have_rows( 'expertise_items', $post_id ) ) : ?>
+			<?php if ( have_rows( 'expertise_items', $post_id ) ) : ?>
+				<div class="row">
 					<?php
 					while ( have_rows( 'expertise_items', $post_id ) ) :
 						the_row();
-						$item_image = get_sub_field( 'item_image' );
-						$item_title = get_sub_field( 'item_title' );
-						$item_desc  = get_sub_field( 'item_description' );
+						$item_image       = get_sub_field( 'item_image' );
+						$item_title       = get_sub_field( 'item_title' );
+						$item_description = get_sub_field( 'item_description' );
 						?>
 						<div class="col-md-6 col-lg-4 mt-3 mb-3">
 							<div class="expertise-card">
-								<?php if ( $item_image ) : ?>
+								<?php if ( $item_image && ! empty( $item_image['url'] ) ) : ?>
 									<figure>
-										<img src="<?php echo esc_url( $item_image['url'] ); ?>" 
-											alt="<?php echo esc_attr( $item_image['alt'] ); ?>" />
+										<img src="<?php echo esc_url( $item_image['url'] ); ?>" alt="<?php echo esc_attr( $item_image['alt'] ); ?>" />
 									</figure>
 								<?php endif; ?>
-								
 								<div class="expertise-info">
 									<?php if ( $item_title ) : ?>
 										<h3><?php echo wp_kses_post( $item_title ); ?></h3>
 									<?php endif; ?>
-									
-									<?php if ( $item_desc ) : ?>
-										<p><?php echo esc_html( $item_desc ); ?></p>
+									<?php if ( $item_description ) : ?>
+										<p><?php echo esc_html( $item_description ); ?></p>
 									<?php endif; ?>
 								</div>
 							</div>
 						</div>
 					<?php endwhile; ?>
-				<?php endif; ?>
-			</div>
+				</div>
+			<?php endif; ?>
 		</div>
 	</div>
 </section>
