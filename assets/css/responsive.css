@@ -26,6 +26,13 @@
 
 }
 
+@media only screen and (max-width: 1024px){
+	.cs-tabs ul li{width: calc((100% - 30px) / 3);}
+	.cs-lists ul li{width: calc((100% - 0px) / 2);}
+	.cs-lists ul li .cs-tool-box .cs-box-desc h3{font-size: 24px;}
+}
+
+
 @media only screen and (max-width: 991px) {
 	.navbar-collapse ul.navbar-nav {
 		width: 100%;
@@ -159,6 +166,8 @@
 	.navbar-toggler-icon {
 		width: 30px;
 	}
+
+	.cs-tabs ul li{width: calc((100% - 15px) / 2);}
 
 }
 
