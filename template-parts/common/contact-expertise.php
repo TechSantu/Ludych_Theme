@@ -84,10 +84,10 @@ if ( ! is_array( $expertise_items ) || empty( $expertise_items ) ) {
 						$title = $item['title'] ?? '';
 						$desc  = $item['description'] ?? '';
 						$col   = $item['col_class'] ?? 'col-md-6 col-lg-4 mt-3 mb-3';
-						if ( ! $title && ! $desc ) {
-							continue;
-						}
-						?>
+					if ( ! $title && ! $desc ) {
+						continue;
+					}
+					?>
 						<div class="<?php echo esc_attr( $col ); ?>">
 							<div class="expertise-card">
 								<div class="expertise-info">

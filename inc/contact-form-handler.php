@@ -11,12 +11,12 @@ function ludych_handle_contact_form() {
 	// Security check
 	check_ajax_referer( 'ludych_contact_nonce', 'nonce' );
 
-	$name     = sanitize_text_field( $_POST['name'] ?? '' );
-	$email    = sanitize_email( $_POST['email'] ?? '' );
-	$phone    = sanitize_text_field( $_POST['phone'] ?? '' );
-	$company  = sanitize_text_field( $_POST['company'] ?? '' );
-	$message  = sanitize_textarea_field( $_POST['message'] ?? '' );
-	$page_url = esc_url_raw( $_POST['page_url'] ?? '' );
+	$name             = sanitize_text_field( $_POST['name'] ?? '' );
+	$email            = sanitize_email( $_POST['email'] ?? '' );
+	$phone            = sanitize_text_field( $_POST['phone'] ?? '' );
+	$company          = sanitize_text_field( $_POST['company'] ?? '' );
+	$message          = sanitize_textarea_field( $_POST['message'] ?? '' );
+	$page_url         = esc_url_raw( $_POST['page_url'] ?? '' );
 	$recaptcha_token  = sanitize_text_field( $_POST['recaptcha_token'] ?? '' );
 	$recaptcha_action = sanitize_text_field( $_POST['recaptcha_action'] ?? '' );
 

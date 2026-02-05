@@ -177,10 +177,10 @@
 				function (e) {
 					e.preventDefault();
 
-					var form            = $(this);
-					var messageBox      = form.find(".form-message");
-					var submitBtn       = form.find("button[type='submit']");
-					var originalBtnText = submitBtn.find("span").text();
+					var form             = $(this);
+					var messageBox       = form.find(".form-message");
+					var submitBtn        = form.find("button[type='submit']");
+					var originalBtnText  = submitBtn.find("span").text();
 					var recaptchaEnabled = form.data("recaptcha-enabled") === 1 || form.data("recaptcha-enabled") === "1";
 					var recaptchaSiteKey = form.data("recaptcha-sitekey");
 
