@@ -33,32 +33,26 @@ get_header();
 	</div>
 </section>
 
-<section class="case-studies-weap grey-bg">
-	<div class="custom-container">
-		<div class="row">
-			<div class="col-xl-12 col-md-12 col-sm-12">
-				<div class="work-progress-card">
-					<?php if ( has_post_thumbnail() ) : ?>
-						<div class="img-box">
-							<?php the_post_thumbnail( 'large' ); ?>
-						</div>
-					<?php endif; ?>
+<section class="our-blog grey-bg">
+		<div class="custom-container">            
+			<div class="row">
+				<div class="col-12">
+					<div class="blog-details">
+						
+						<div class="blog-detail-text">
+							<span class="post-date">
+								<?php echo strtoupper( get_the_date( 'D' ) ) . get_the_date( ' F j, Y' ); ?>
+							</span>
 
-					<?php
-					$subtitle = get_field( 'case_study_subtitle' );
-					if ( $subtitle ) :
-						?>
-						<h4><?php echo esc_html( $subtitle ); ?></h4>
-					<?php endif; ?>
-
-					<div class="content">
-						<?php the_content(); ?>
+							<h1><?php the_title(); ?></h1>
+							
+							<?php the_content(); ?>
+						</div>                        
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-</section>
+	</section>
 
 <?php
 get_footer();
