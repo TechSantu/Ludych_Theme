@@ -20,21 +20,21 @@ if ( ! $process_title ) {
 	$process_title = 'Discovery to Deploy.,<br> <span>Zero Surprises.</span>';
 }
 
-$process_image = get_field( 'process_intro_image', $post_id );
-if ( ! $process_image ) {
-	$process_image = array(
-		'url' => get_template_directory_uri() . '/assets/images/about-left.jpg',
-		'alt' => 'Our process',
-	);
-}
-
-$process_description = get_field( 'process_intro_description', $post_id );
-if ( ! $process_description ) {
-	$process_description = 'Ludych is a full-stack digital agency based in Chandler, AZ. We ship platforms, integrations, and data products—not just websites. Our team blends senior engineering talent with rigorous PMO discipline and QA rigor, delivering end-to-end services across custom development, data analytics, DevOps/SRE, digital marketing, and product consulting.';
+$process_steps = get_field( 'process_intro_steps', $post_id );
+$process_steps_count = is_array( $process_steps ) ? count( $process_steps ) : 0;
+$process_step_col_class = 'col-xl-4 col-md-6 col-sm-12';
+if ( 1 === $process_steps_count ) {
+	$process_step_col_class = 'col-12';
+} elseif ( 2 === $process_steps_count ) {
+	$process_step_col_class = 'col-xl-6 col-md-6 col-sm-12';
+} elseif ( 3 === $process_steps_count ) {
+	$process_step_col_class = 'col-xl-4 col-md-6 col-sm-12';
+} elseif ( 4 === $process_steps_count ) {
+	$process_step_col_class = 'col-xl-3 col-md-6 col-sm-12';
 }
 ?>
 
-<section class="our-work-progress with-our-process about-us">
+<section class="our-work-progress with-our-process">
 	<div class="custom-container">
 		<div class="global-header middle-align">
 			<h2><?php echo esc_html( $process_heading ); ?></h2>
@@ -57,13 +57,43 @@ if ( ! $process_description ) {
 			</div>
 			<h5><?php echo wp_kses_post( $process_title ); ?></h5>
 		</div>
-		<div class="service-full row">
-			<div class="image col-lg-6">
-				<img src="<?php echo esc_url( $process_image['url'] ); ?>" alt="<?php echo esc_attr( $process_image['alt'] ); ?>">
-			</div>
-			<div class="left-content col-lg-6">
-				<p><?php echo ( $process_description ); ?></p>
-			</div>
+
+		<div class="row">
+			<?php if ( have_rows( 'process_intro_steps', $post_id ) ) : ?>
+				<?php
+				while ( have_rows( 'process_intro_steps', $post_id ) ) :
+					the_row();
+					$icon  = get_sub_field( 'step_icon' );
+					$title = get_sub_field( 'step_title' );
+					$desc  = get_sub_field( 'step_description' );
+					?>
+					<div class="<?php echo esc_attr( $process_step_col_class ); ?>">
+						<div class="work-progress-card">
+
+							<?php if ( $icon ) : ?>
+								<div class="img-box">
+									<?php if ( is_array( $icon ) ) : ?>
+										<img src="<?php echo esc_url( $icon['url'] ); ?>" alt="<?php echo esc_attr( $icon['alt'] ); ?>">
+									<?php else : ?>
+										<?php echo wp_kses_post( $icon ); ?>
+									<?php endif; ?>
+								</div>
+							<?php endif; ?>
+
+							<?php if ( $title ) : ?>
+								<h3><?php echo esc_html( $title ); ?></h3>
+							<?php endif; ?>
+
+							<?php if ( $desc ) : ?>
+								<div class="content">
+									<?php echo wp_kses_post( $desc ); ?>
+								</div>
+							<?php endif; ?>
+
+						</div>
+					</div>
+				<?php endwhile; ?>
+			<?php endif; ?>
 		</div>
 	</div>
 </section>
