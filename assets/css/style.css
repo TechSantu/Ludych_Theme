@@ -1937,46 +1937,25 @@ footer.footer {
 /*--- END CSS ---*/
 
 /*--- Our Expertise Page CSS ---*/
-.with-our-process {
-	padding: 0;
-	margin: 80px 0 !important;
-}
+.with-our-process {padding: 0; margin: 80px 0 !important;}
+.with-our-process .global-header{margin-bottom: 80px;}
+.with-our-process .min-title {margin-top: -45px !important;}
+.with-our-process .work-progress-card::after{display: none;}
 
-.with-our-process .min-title {
-	margin-top: -45px !important;
-}
 
-.our-expertise-wrap {
-	position: relative;
-}
-
+.our-expertise-wrap {position: relative;}
 .our-expertise {
 	background: var(--secondary-light) url(../images/dark-section-bg.png) 0 0 repeat-y;
-	border-radius: 50px;
-	padding: 50px;
-	margin: 100px 0;
-	color: var(--white);
+	border-radius: 50px; padding: 50px; margin: 100px 0; color: var(--white);
 }
-
-.our-expertise .global-header {
-	text-align: center;
-}
-
+.our-expertise .global-header {text-align: center;}
 .our-expertise .global-header h2 {
-	position: relative;
-	display: inline-block;
-	color: white;
+	position: relative; display: inline-block; color: white;
 	background: linear-gradient(to right, #013CFF, #E816D4);
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: #071027;
-	-webkit-text-stroke: 2px transparent;
-	opacity: 0.25;
+	-webkit-background-clip: text; -webkit-text-fill-color: #071027;
+	-webkit-text-stroke: 2px transparent; opacity: 0.25;
 }
-
-.our-expertise .global-header .min-title {
-	justify-content: center;
-	margin-top: -30px;
-}
+.our-expertise .global-header .min-title {justify-content: center; margin-top: -30px;}
 
 .our-expertise .global-header h6,
 .our-expertise .global-header h5 {
@@ -2231,57 +2210,36 @@ footer.footer {
 /*--- END CSS ---*/
 
 /*---- Healthcare CSS ----*/
-.items-thumb {
-	background-color: #3d72fb;
-	width: 60px;
-	height: 60px;
-	border-radius: 50%;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	flex-shrink: 0;
-}
-
-.items-thumb svg {
-	width: 28px;
-	height: 28px;
-	fill: #fff;
-}
-.Future-Ready-item{
-	background-color: #FCFAFB;
-	display: flex;
-	gap: 40px;
-	border: 1px dashed #3d72fb;
-	border-radius: 30px 80px 30px 80px;
-	padding: 40px;
-
-}
-
-.future-ready-grid {
-	display: grid;
-	grid-template-columns: repeat(2, 1fr);
-	gap: 30px;
-}
-
 .future-ready-section {
-	background-color: transparent;
+	background-color: transparent; padding: 80px 0 100px;
 	background-image: linear-gradient(180deg, #FFF5FE 0%, #E8ECF9 100%);
 }
+.future-ready-section .global-header{margin-bottom: 80px;}
+.global-header .min-title {margin-top: -50px !important;}
+
+.future-ready-grid {display: grid; gap: 30px; grid-template-columns: repeat(2, 1fr);}
+.Future-Ready-item{
+	background-color: #FCFAFB; display: flex; gap: 30px; padding: 50px;
+	border: 1px dashed #3d72fb; border-radius: 30px 80px 30px 80px; height: 100%;	
+}
+.Future-Ready-item h3{margin-bottom:15px;}
+.items-thumb {
+	background-color: #3d72fb; width: 70px; height: 70px; border-radius: 50%;
+	display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.items-thumb svg {width: 40px; height: 40px; fill: #fff;}
+
+
+
 
 
 /*------- Smart Solutions----------*/
 
 .Strategies {
-	background-position: top center;
-	background-repeat: no-repeat;
-	background-size: cover;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	padding: 80px 0;
+	background-position: top center; background-repeat: no-repeat; background-size: cover;
+	display: flex; flex-direction: column; align-items: center; padding: 80px 0;
 }
 .Strategies .global-header {
-	display: flex;
-	flex-direction: column;
+	display: flex; flex-direction: column;
 	align-items: center;
 }
