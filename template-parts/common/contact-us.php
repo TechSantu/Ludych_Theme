@@ -160,64 +160,120 @@ if ( ! $open_time ) {
 			</div>
 		</div>
 
+		<?php
+		$why_choose_heading = get_field( 'contact_why_heading', 'option' );
+		if ( ! $why_choose_heading ) {
+			$why_choose_heading = 'Why Choose Ludych?';
+		}
+		$why_choose_description = get_field( 'contact_why_description', 'option' );
+		if ( ! $why_choose_description ) {
+			$why_choose_description = "We're not just another digital agency. We're your strategic partner in building exceptional\n"
+				. 'digital experiences that drive real business results.';
+		}
+		$why_choose_items = get_field( 'contact_why_items', 'option' );
+		if ( ! is_array( $why_choose_items ) || empty( $why_choose_items ) ) {
+			$why_choose_items = array(
+				array(
+					'title'       => 'Expert Team',
+					'description' => 'Experienced professionals across all digital disciplines',
+				),
+				array(
+					'title'       => 'Proven Results',
+					'description' => 'Track record of delivering measurable business outcomes',
+				),
+				array(
+					'title'       => 'Custom Solutions',
+					'description' => 'Tailored strategies that fit your unique business needs',
+				),
+				array(
+					'title'       => 'Ongoing Support',
+					'description' => 'Continuous optimization and dedicated account management',
+				),
+			);
+		}
+
+		$quick_info_items = get_field( 'contact_quick_info_items', 'option' );
+		if ( ! is_array( $quick_info_items ) || empty( $quick_info_items ) ) {
+			$quick_info_items = array(
+				array(
+					'title'       => 'Quick Response',
+					'description' => 'We respond to all inquiries within 24 hours',
+				),
+				array(
+					'title'       => 'Free Consultation',
+					'description' => '30-minute strategy session at no cost',
+				),
+			);
+		}
+
+		$gmb_url   = get_field( 'contact_gmb_url', 'option' );
+		$gmb_label = get_field( 'contact_gmb_label', 'option' );
+		if ( ! $gmb_url ) {
+			$gmb_url = 'https://share.google/freloSCMwOgzU5wz5';
+		}
+		if ( ! $gmb_label ) {
+			$gmb_label = 'View Our Google Business Profile';
+		}
+		?>
+
 		<div class="row">
 			<div class="col-xl-8 col-md-8 col-sm-12">
 				<div class="contact-form why-choose-ludych">
 					<div class="global-header left-align">
-						<h2>Why Choose Ludych?</h2>
-						<p>We're not just another digital agency. We're your strategic partner in building exceptional
-							digital experiences that drive real business results.</p>
+						<h2><?php echo esc_html( $why_choose_heading ); ?></h2>
+						<p><?php echo nl2br( esc_html( $why_choose_description ) ); ?></p>
 					</div>
 
 					<ul class="why-choose-list">
-						<li>
-							<i class="fa-solid fa-check"></i>
-							<div class="list-content">
-								<h6>Expert Team</h6>
-								<p>Experienced professionals across all digital disciplines</p>
-							</div>
-						</li>
-						<li>
-							<i class="fa-solid fa-check"></i>
-							<div class="list-content">
-								<h6>Proven Results</h6>
-								<p>Track record of delivering measurable business outcomes</p>
-							</div>
-						</li>
-						<li>
-							<i class="fa-solid fa-check"></i>
-							<div class="list-content">
-								<h6>Custom Solutions</h6>
-								<p>Tailored strategies that fit your unique business needs</p>
-							</div>
-						</li>
-						<li>
-							<i class="fa-solid fa-check"></i>
-							<div class="list-content">
-								<h6>Ongoing Support</h6>
-								<p>Continuous optimization and dedicated account management</p>
-							</div>
-						</li>
+						<?php foreach ( $why_choose_items as $item ) : ?>
+							<?php
+							$title = $item['title'] ?? '';
+							$desc  = $item['description'] ?? '';
+							if ( ! $title && ! $desc ) {
+								continue;
+							}
+							?>
+							<li>
+								<i class="fa-solid fa-check"></i>
+								<div class="list-content">
+									<?php if ( $title ) : ?>
+										<h6><?php echo esc_html( $title ); ?></h6>
+									<?php endif; ?>
+									<?php if ( $desc ) : ?>
+										<p><?php echo esc_html( $desc ); ?></p>
+									<?php endif; ?>
+								</div>
+							</li>
+						<?php endforeach; ?>
 					</ul>
 
 					<div class="row quick-info">
-						<div class="col-md-6 col-sm-12">
-							<div class="info-card">
-								<h5>Quick Response</h5>
-								<p>We respond to all inquiries within 24 hours</p>
+						<?php foreach ( $quick_info_items as $item ) : ?>
+							<?php
+							$title = $item['title'] ?? '';
+							$desc  = $item['description'] ?? '';
+							if ( ! $title && ! $desc ) {
+								continue;
+							}
+							?>
+							<div class="col-md-6 col-sm-12">
+								<div class="info-card">
+									<?php if ( $title ) : ?>
+										<h5><?php echo esc_html( $title ); ?></h5>
+									<?php endif; ?>
+									<?php if ( $desc ) : ?>
+										<p><?php echo esc_html( $desc ); ?></p>
+									<?php endif; ?>
+								</div>
 							</div>
-						</div>
-						<div class="col-md-6 col-sm-12">
-							<div class="info-card">
-								<h5>Free Consultation</h5>
-								<p>30-minute strategy session at no cost</p>
-							</div>
-						</div>
+						<?php endforeach; ?>
 					</div>
 
-					<a class="btn gmb-btn" href="https://share.google/freloSCMwOgzU5wz5" target="_blank" rel="noopener">
-						View Our Google Business Profile
-					</a>
+					<?php if ( $gmb_url && $gmb_label ) : ?>
+						<a class="btn gmb-btn" href="<?php echo esc_url( $gmb_url ); ?>" target="_blank" rel="noopener">
+							<?php echo esc_html( $gmb_label ); ?>
+						</a>
+					<?php endif; ?>
 				</div>
 			</div>
 		</div>
