@@ -181,39 +181,60 @@
 					var messageBox      = form.find(".form-message");
 					var submitBtn       = form.find("button[type='submit']");
 					var originalBtnText = submitBtn.find("span").text();
+					var recaptchaEnabled = form.data("recaptcha-enabled") === 1 || form.data("recaptcha-enabled") === "1";
+					var recaptchaSiteKey = form.data("recaptcha-sitekey");
 
-					$.ajax(
-						{
-							url: ludych_ajax_obj.ajax_url,
-							type: "post",
-							data: form.serialize(),
-							beforeSend: function () {
-								submitBtn.prop("disabled", true);
-								submitBtn.find("span").html('Sending... <i class="fa-solid fa-spinner fa-spin"></i>');
-								messageBox.removeClass("alert alert-success alert-danger").html("");
-							},
-							success: function (response) {
-								if (response.success) {
-									messageBox.addClass("alert alert-success").html(response.data.message);
-									form[0].reset();
+					function sendAjax() {
+						$.ajax(
+							{
+								url: ludych_ajax_obj.ajax_url,
+								type: "post",
+								data: form.serialize(),
+								beforeSend: function () {
+									submitBtn.prop("disabled", true);
+									submitBtn.find("span").html('Sending... <i class="fa-solid fa-spinner fa-spin"></i>');
+									messageBox.removeClass("alert alert-success alert-danger").html("");
+								},
+								success: function (response) {
+									if (response.success) {
+										messageBox.addClass("alert alert-success").html(response.data.message);
+										form[0].reset();
 
-									// Redirect after 2 seconds
-									setTimeout(function () {
-										window.location.href = response.data.redirect_url;
-									}, 2000);
-								} else {
+										// Redirect after 2 seconds
+										setTimeout(function () {
+											window.location.href = response.data.redirect_url;
+										}, 2000);
+									} else {
+										submitBtn.prop("disabled", false);
+										submitBtn.find("span").text(originalBtnText);
+										messageBox.addClass("alert alert-danger").html(response.data.message);
+									}
+								},
+								error: function () {
 									submitBtn.prop("disabled", false);
 									submitBtn.find("span").text(originalBtnText);
-									messageBox.addClass("alert alert-danger").html(response.data.message);
+									messageBox.addClass("alert alert-danger").html("An error occurred. Please try again.");
 								}
-							},
-							error: function () {
-								submitBtn.prop("disabled", false);
-								submitBtn.find("span").text(originalBtnText);
-								messageBox.addClass("alert alert-danger").html("An error occurred. Please try again.");
 							}
-						}
-					);
+						);
+					}
+
+					if (recaptchaEnabled && recaptchaSiteKey && window.grecaptcha) {
+						grecaptcha.ready(function () {
+							grecaptcha.execute(recaptchaSiteKey, { action: "contact_form" })
+								.then(function (token) {
+									form.find('input[name="recaptcha_token"]').val(token);
+									sendAjax();
+								})
+								.catch(function () {
+									messageBox.addClass("alert alert-danger").html("reCAPTCHA failed. Please try again.");
+									submitBtn.prop("disabled", false);
+									submitBtn.find("span").text(originalBtnText);
+								});
+						});
+					} else {
+						sendAjax();
+					}
 				}
 			);
 

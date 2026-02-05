@@ -10,6 +10,8 @@ $email     = get_theme_mod( 'ludych_contact_email', 'biz@ludych.com' );
 $open_time = get_theme_mod( 'ludych_contact_open_time', 'Monday - Friday: 10:00 - 20:00' );
 $subtitle  = get_theme_mod( 'ludych_contact_form_subtitle', 'Get In Touch' );
 $title     = get_theme_mod( 'ludych_contact_form_title', 'Get Your <span>Free Quote</span> Today!' );
+$recaptcha_enabled = (bool) get_theme_mod( 'ludych_recaptcha_enabled', false );
+$recaptcha_site_key = get_theme_mod( 'ludych_recaptcha_site_key', '' );
 ?>
 	<section class="contact-us">
 		<div class="custom-container">
@@ -83,7 +85,7 @@ $title     = get_theme_mod( 'ludych_contact_form_title', 'Get Your <span>Free Qu
 							</div>
 							<h5><?php echo ( $title ); ?></h5>
 						</div>
-						<form id="ludych-contact-form" method="post" action="">
+						<form id="ludych-contact-form" method="post" action="" data-recaptcha-sitekey="<?php echo esc_attr( $recaptcha_site_key ); ?>" data-recaptcha-enabled="<?php echo $recaptcha_enabled ? '1' : '0'; ?>">
 							<div class="row">
 								<div class="col-xl-6 col-md-6 col-sm-12">
 									<div class="form-group">
@@ -118,11 +120,16 @@ $title     = get_theme_mod( 'ludych_contact_form_title', 'Get Your <span>Free Qu
 								</div>
 							</div>
 							<input type="hidden" name="action" value="ludych_contact_form">
+							<input type="hidden" name="recaptcha_token" value="">
+							<input type="hidden" name="recaptcha_action" value="contact_form">
 							<?php wp_nonce_field( 'ludych_contact_nonce', 'nonce' ); ?>
 							<input type="hidden" name="page_url" value="<?php echo esc_url( home_url( $wp->request ) ); ?>">
 							<button type="submit" class="btn"><span>Inquiry Now</span></button>
 							<div class="form-message mt-3"></div>
 						</form>
+						<?php if ( $recaptcha_enabled && $recaptcha_site_key ) : ?>
+							<script src="https://www.google.com/recaptcha/api.js?render=<?php echo esc_attr( $recaptcha_site_key ); ?>"></script>
+						<?php endif; ?>
 					</div>
 				</div>
 			</div>

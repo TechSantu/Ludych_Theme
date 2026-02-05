@@ -509,5 +509,82 @@ function ludych_customize_register( $wp_customize ) {
 			'type'    => 'url',
 		)
 	);
+
+	// reCAPTCHA v3
+	$wp_customize->add_setting(
+		'ludych_recaptcha_enabled',
+		array(
+			'default'           => false,
+			'sanitize_callback' => 'rest_sanitize_boolean',
+			'transport'         => 'refresh',
+		)
+	);
+	$wp_customize->add_control(
+		'ludych_recaptcha_enabled',
+		array(
+			'label'   => __( 'Enable reCAPTCHA v3', 'ludych-theme' ),
+			'section' => 'ludych_contact_section',
+			'type'    => 'checkbox',
+		)
+	);
+
+	$wp_customize->add_setting(
+		'ludych_recaptcha_site_key',
+		array(
+			'default'           => '',
+			'sanitize_callback' => 'sanitize_text_field',
+			'transport'         => 'refresh',
+		)
+	);
+	$wp_customize->add_control(
+		'ludych_recaptcha_site_key',
+		array(
+			'label'       => __( 'reCAPTCHA Site Key', 'ludych-theme' ),
+			'description' => __( 'Public site key for Google reCAPTCHA v3.', 'ludych-theme' ),
+			'section'     => 'ludych_contact_section',
+			'type'        => 'text',
+		)
+	);
+
+	$wp_customize->add_setting(
+		'ludych_recaptcha_secret_key',
+		array(
+			'default'           => '',
+			'sanitize_callback' => 'sanitize_text_field',
+			'transport'         => 'refresh',
+		)
+	);
+	$wp_customize->add_control(
+		'ludych_recaptcha_secret_key',
+		array(
+			'label'       => __( 'reCAPTCHA Secret Key', 'ludych-theme' ),
+			'description' => __( 'Private secret key for server-side verification.', 'ludych-theme' ),
+			'section'     => 'ludych_contact_section',
+			'type'        => 'text',
+		)
+	);
+
+	$wp_customize->add_setting(
+		'ludych_recaptcha_score_threshold',
+		array(
+			'default'           => 0.5,
+			'sanitize_callback' => 'floatval',
+			'transport'         => 'refresh',
+		)
+	);
+	$wp_customize->add_control(
+		'ludych_recaptcha_score_threshold',
+		array(
+			'label'       => __( 'reCAPTCHA Score Threshold', 'ludych-theme' ),
+			'description' => __( 'Recommended: 0.5 (range 0.0 - 1.0).', 'ludych-theme' ),
+			'section'     => 'ludych_contact_section',
+			'type'        => 'number',
+			'input_attrs' => array(
+				'min'  => 0,
+				'max'  => 1,
+				'step' => 0.1,
+			),
+		)
+	);
 }
 add_action( 'customize_register', 'ludych_customize_register' );

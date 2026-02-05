@@ -18,6 +18,7 @@ get_template_part( 'template-parts/common/contact-banner' );
 
 <?php
 get_template_part( 'template-parts/common/contact-us' );
+get_template_part( 'template-parts/common/contact-expertise' );
 ?>
 
 <?php

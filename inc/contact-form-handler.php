@@ -17,6 +17,8 @@ function ludych_handle_contact_form() {
 	$company  = sanitize_text_field( $_POST['company'] ?? '' );
 	$message  = sanitize_textarea_field( $_POST['message'] ?? '' );
 	$page_url = esc_url_raw( $_POST['page_url'] ?? '' );
+	$recaptcha_token  = sanitize_text_field( $_POST['recaptcha_token'] ?? '' );
+	$recaptcha_action = sanitize_text_field( $_POST['recaptcha_action'] ?? '' );
 
 	if ( empty( $name ) || ! is_email( $email ) || empty( $message ) ) {
 		wp_send_json_error( array( 'message' => __( 'Please provide a valid name, email, and message.', 'ludych-theme' ) ) );
@@ -28,6 +30,51 @@ function ludych_handle_contact_form() {
 
 	$ip_address = $_SERVER['REMOTE_ADDR'];
 	$date_time  = current_time( 'mysql' );
+
+	$recaptcha_enabled         = (bool) get_theme_mod( 'ludych_recaptcha_enabled', false );
+	$recaptcha_site_key        = get_theme_mod( 'ludych_recaptcha_site_key', '' );
+	$recaptcha_secret_key      = get_theme_mod( 'ludych_recaptcha_secret_key', '' );
+	$recaptcha_threshold       = floatval( get_theme_mod( 'ludych_recaptcha_score_threshold', 0.5 ) );
+	$recaptcha_action_expected = 'contact_form';
+
+	if ( $recaptcha_enabled && $recaptcha_site_key && $recaptcha_secret_key ) {
+		if ( empty( $recaptcha_token ) ) {
+			wp_send_json_error( array( 'message' => __( 'reCAPTCHA verification failed. Please try again.', 'ludych-theme' ) ) );
+		}
+
+		$verify_response = wp_remote_post(
+			'https://www.google.com/recaptcha/api/siteverify',
+			array(
+				'timeout' => 10,
+				'body'    => array(
+					'secret'   => $recaptcha_secret_key,
+					'response' => $recaptcha_token,
+					'remoteip' => $ip_address,
+				),
+			)
+		);
+
+		if ( is_wp_error( $verify_response ) ) {
+			wp_send_json_error( array( 'message' => __( 'reCAPTCHA service error. Please try again later.', 'ludych-theme' ) ) );
+		}
+
+		$verify_body = wp_remote_retrieve_body( $verify_response );
+		$verify_data = json_decode( $verify_body, true );
+		$score       = isset( $verify_data['score'] ) ? floatval( $verify_data['score'] ) : 0.0;
+		$action      = isset( $verify_data['action'] ) ? sanitize_text_field( $verify_data['action'] ) : '';
+
+		if ( empty( $verify_data['success'] ) ) {
+			wp_send_json_error( array( 'message' => __( 'reCAPTCHA verification failed. Please try again.', 'ludych-theme' ) ) );
+		}
+
+		if ( $recaptcha_action && $recaptcha_action_expected !== $action ) {
+			wp_send_json_error( array( 'message' => __( 'reCAPTCHA action mismatch. Please try again.', 'ludych-theme' ) ) );
+		}
+
+		if ( $score < $recaptcha_threshold ) {
+			wp_send_json_error( array( 'message' => __( 'reCAPTCHA score too low. Please try again.', 'ludych-theme' ) ) );
+		}
+	}
 
 	// 1. Record in Database (CPT)
 	$post_id = wp_insert_post( array(
