@@ -2217,7 +2217,7 @@ footer.footer {
 .cs-tabs ul{display: flex; align-items: center; gap: 15px; flex-wrap: wrap;}
 .cs-tabs ul li{width: calc((100% - 75px) / 6);}
 .cs-tabs ul li a{
-	display: block; padding: 10px; text-align: center; 
+	display: block; padding: 10px; text-align: center;
 	background: var(--button-border); color: #fff;
 }
 .cs-tabs ul li a:hover{background: var(--secondary-light);}
@@ -2226,22 +2226,22 @@ footer.footer {
 .cs-lists ul{display: flex; flex-wrap: wrap;}
 .cs-lists ul li{width: calc((100% - 0px) / 3);}
 .cs-lists ul li .cs-tool-box {
-    font-size: 16px; line-height: 1.5;
-    text-align: center; color: #5d7183;
-    padding: 30px 20px;
-    border-right: .5px solid #dedede;
-    border-bottom: .5px solid #dedede;
-    box-shadow: 0 0 7px 0 transparent;
-    background: #ffffff;
-    transition: .2s ease-in-out;
+	font-size: 16px; line-height: 1.5;
+	text-align: center; color: #5d7183;
+	padding: 30px 20px;
+	border-right: .5px solid #dedede;
+	border-bottom: .5px solid #dedede;
+	box-shadow: 0 0 7px 0 transparent;
+	background: #ffffff;
+	transition: .2s ease-in-out;
 
-	display: flex; flex-direction: column; 
+	display: flex; flex-direction: column;
 	justify-content: space-between; height: 100%;
 }
 .cs-lists ul li .cs-tool-box:hover {
-    background-color: #f5fcff;
-    box-shadow: 0 4px 20px 0 rgba(46, 168, 216, .31);
-    border-radius: 6.5px;
+	background-color: #f5fcff;
+	box-shadow: 0 4px 20px 0 rgba(46, 168, 216, .31);
+	border-radius: 6.5px;
 }
 .cs-lists ul li .cs-tool-box figure img {filter: grayscale(100%);}
 .cs-lists ul li .cs-tool-box:hover figure img {filter: grayscale(0);}
