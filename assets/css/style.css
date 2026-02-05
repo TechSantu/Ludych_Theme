@@ -2220,7 +2220,7 @@ footer.footer {
 .future-ready-grid {display: grid; gap: 30px; grid-template-columns: repeat(2, 1fr);}
 .Future-Ready-item{
 	background-color: #FCFAFB; display: flex; gap: 30px; padding: 50px;
-	border: 1px dashed #3d72fb; border-radius: 30px 80px 30px 80px; height: 100%;	
+	border: 1px dashed #3d72fb; border-radius: 30px 80px 30px 80px; height: 100%;
 }
 .Future-Ready-item h3{margin-bottom:15px;}
 .items-thumb {
