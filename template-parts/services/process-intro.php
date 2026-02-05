@@ -20,8 +20,8 @@ if ( ! $process_title ) {
 	$process_title = 'Discovery to Deploy.,<br> <span>Zero Surprises.</span>';
 }
 
-$process_steps = get_field( 'process_intro_steps', $post_id );
-$process_steps_count = is_array( $process_steps ) ? count( $process_steps ) : 0;
+$process_steps          = get_field( 'process_intro_steps', $post_id );
+$process_steps_count    = is_array( $process_steps ) ? count( $process_steps ) : 0;
 $process_step_col_class = 'col-xl-4 col-md-6 col-sm-12';
 if ( 1 === $process_steps_count ) {
 	$process_step_col_class = 'col-12';
