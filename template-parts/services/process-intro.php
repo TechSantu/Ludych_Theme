@@ -37,7 +37,7 @@ $process_steps_filtered = array_values(
 		}
 	)
 );
-$process_steps_count = count( $process_steps_filtered );
+$process_steps_count    = count( $process_steps_filtered );
 $process_step_col_class = 'col-xl-4 col-md-6 col-sm-12';
 if ( 1 === $process_steps_count ) {
 	$process_step_col_class = 'col-12';

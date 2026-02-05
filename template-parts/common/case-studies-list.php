@@ -37,9 +37,9 @@ $case_studies = new WP_Query( $query_args );
 				<?php if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) : ?>
 					<?php foreach ( $terms as $term ) : ?>
 						<?php
-							$term_url = add_query_arg( 'case-study-category', $term->slug, get_permalink() );
+							$term_url  = add_query_arg( 'case-study-category', $term->slug, get_permalink() );
 							$is_active = $active_term === $term->slug;
-							?>
+						?>
 							<li>
 								<a href="<?php echo esc_url( $term_url ); ?>" class="<?php echo $is_active ? 'active' : ''; ?>">
 									<?php echo esc_html( $term->name ); ?>
@@ -57,11 +57,11 @@ $case_studies = new WP_Query( $query_args );
 						<?php
 							$case_studies->the_post();
 							$subtitle = get_field( 'case_study_subtitle' );
-							if ( ! $subtitle ) {
-								$subtitle = get_the_excerpt();
-							}
+						if ( ! $subtitle ) {
+							$subtitle = get_the_excerpt();
+						}
 							$logo_url = get_the_post_thumbnail_url( get_the_ID(), 'full' );
-							?>
+						?>
 							<li>
 								<a href="<?php the_permalink(); ?>" class="cs-tool-box">
 									<?php if ( $logo_url ) : ?>

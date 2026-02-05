@@ -2281,8 +2281,8 @@ footer.footer {
 	align-items: center;
 }
 .strategies-wrap {
-    gap: 20px;
-    display: flex;
-    flex-direction: column;
-    text-align: center;
+	gap: 20px;
+	display: flex;
+	flex-direction: column;
+	text-align: center;
 }
