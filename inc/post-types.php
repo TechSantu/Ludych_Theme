@@ -128,6 +128,37 @@ function ludych_register_custom_post_types() {
 		'query_var'         => true,
 		'rewrite'           => array( 'slug' => 'industry-category' ),
 	) );
+
+	// Case Studies Post Type
+	register_post_type( 'case_study', array(
+		'labels'       => array(
+			'name'          => __( 'Case Studies', 'ludych-theme' ),
+			'singular_name' => __( 'Case Study', 'ludych-theme' ),
+			'add_new'       => __( 'Add New Case Study', 'ludych-theme' ),
+			'add_new_item'  => __( 'Add New Case Study', 'ludych-theme' ),
+			'edit_item'     => __( 'Edit Case Study', 'ludych-theme' ),
+		),
+		'public'       => true,
+		'has_archive'  => true,
+		'supports'     => array( 'title', 'editor', 'thumbnail', 'excerpt' ),
+		'show_in_rest' => true,
+		'menu_icon'    => 'dashicons-portfolio',
+		'taxonomies'   => array( 'case_study_category' ),
+		'rewrite'      => array( 'slug' => 'case-studies' ),
+	) );
+
+	register_taxonomy( 'case_study_category', 'case_study', array(
+		'labels'            => array(
+			'name'          => __( 'Case Study Categories', 'ludych-theme' ),
+			'singular_name' => __( 'Case Study Category', 'ludych-theme' ),
+			'menu_name'     => __( 'Case Study Categories', 'ludych-theme' ),
+		),
+		'hierarchical'      => true,
+		'show_in_rest'      => true,
+		'show_admin_column' => true,
+		'query_var'         => true,
+		'rewrite'           => array( 'slug' => 'case-study-category' ),
+	) );
 }
 add_action( 'init', 'ludych_register_custom_post_types' );
 

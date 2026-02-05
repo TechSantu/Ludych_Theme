@@ -20,8 +20,24 @@ if ( ! $process_title ) {
 	$process_title = 'Discovery to Deploy.,<br> <span>Zero Surprises.</span>';
 }
 
-$process_steps          = get_field( 'process_intro_steps', $post_id );
-$process_steps_count    = is_array( $process_steps ) ? count( $process_steps ) : 0;
+$process_steps = get_field( 'process_intro_steps', $post_id );
+if ( ! is_array( $process_steps ) ) {
+	$process_steps = array();
+}
+$process_steps_filtered = array_values(
+	array_filter(
+		$process_steps,
+		function ( $step ) {
+			if ( ! is_array( $step ) ) {
+				return false;
+			}
+			return ! empty( $step['step_title'] )
+				|| ! empty( $step['step_description'] )
+				|| ! empty( $step['step_icon'] );
+		}
+	)
+);
+$process_steps_count = count( $process_steps_filtered );
 $process_step_col_class = 'col-xl-4 col-md-6 col-sm-12';
 if ( 1 === $process_steps_count ) {
 	$process_step_col_class = 'col-12';
@@ -58,14 +74,13 @@ if ( 1 === $process_steps_count ) {
 			<h5><?php echo wp_kses_post( $process_title ); ?></h5>
 		</div>
 
-		<div class="row">
-			<?php if ( have_rows( 'process_intro_steps', $post_id ) ) : ?>
-				<?php
-				while ( have_rows( 'process_intro_steps', $post_id ) ) :
-					the_row();
-					$icon  = get_sub_field( 'step_icon' );
-					$title = get_sub_field( 'step_title' );
-					$desc  = get_sub_field( 'step_description' );
+		<?php if ( ! empty( $process_steps_filtered ) ) : ?>
+			<div class="row">
+				<?php foreach ( $process_steps_filtered as $step ) : ?>
+					<?php
+					$icon  = $step['step_icon'] ?? '';
+					$title = $step['step_title'] ?? '';
+					$desc  = $step['step_description'] ?? '';
 					?>
 					<div class="<?php echo esc_attr( $process_step_col_class ); ?>">
 						<div class="work-progress-card">
@@ -92,8 +107,8 @@ if ( 1 === $process_steps_count ) {
 
 						</div>
 					</div>
-				<?php endwhile; ?>
-			<?php endif; ?>
-		</div>
+				<?php endforeach; ?>
+			</div>
+		<?php endif; ?>
 	</div>
 </section>
