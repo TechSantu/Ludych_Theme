@@ -339,6 +339,56 @@
 					scrollTop: $(".our-blog").offset().top - 100
 				}, 500);
 			});
+
+			// Case Studies AJAX Filter
+			$(document).on('click', '.cs-tabs a', function (e) {
+				var tabsContainer = $('.cs-tabs');
+				var listContainer = $('.cs-lists ul');
+
+				if (!tabsContainer.length || !listContainer.length) {
+					return;
+				}
+
+				e.preventDefault();
+
+				var link = $(this);
+				var term = link.data('term') || '';
+				var baseUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+
+				$.ajax({
+					url: ludych_ajax_obj.ajax_url,
+					type: 'post',
+					data: {
+						action: 'ludych_ajax_case_studies_filter',
+						term: term
+					},
+					beforeSend: function () {
+						listContainer.css('opacity', '0.5');
+					},
+					success: function (response) {
+						listContainer.css('opacity', '1');
+						if (response && response.content !== undefined) {
+							listContainer.html(response.content);
+						}
+
+						$('.cs-tabs a').removeClass('active');
+						link.addClass('active');
+
+						var params = new URLSearchParams(window.location.search);
+						if (term) {
+							params.set('case-study-category', term);
+						} else {
+							params.delete('case-study-category');
+						}
+						var newUrl = baseUrl + (params.toString() ? "?" + params.toString() : "");
+						window.history.pushState({ path: newUrl }, '', newUrl);
+					},
+					error: function () {
+						listContainer.css('opacity', '1');
+						console.log('Error loading case studies');
+					}
+				});
+			});
 		}
 	);
 })(jQuery);

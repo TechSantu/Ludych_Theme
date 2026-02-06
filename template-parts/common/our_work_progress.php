@@ -19,6 +19,32 @@ if ( ! $main_title ) {
 	$main_title = 'Our Working Process';
 }
 
+$work_steps = get_field( 'work_progress_steps', $post_id );
+if ( ! is_array( $work_steps ) ) {
+	$work_steps = array();
+}
+$work_steps_filtered = array_values(
+	array_filter(
+		$work_steps,
+		function ( $step ) {
+			if ( ! is_array( $step ) ) {
+				return false;
+			}
+			return ! empty( $step['step_title'] )
+				|| ! empty( $step['step_description'] )
+				|| ! empty( $step['step_icon'] );
+		}
+	)
+);
+$work_steps_count = count( $work_steps_filtered );
+$work_steps_map   = array(
+	1 => 'col-12',
+	2 => 'col-xl-6 col-lg-6 col-md-6 col-sm-12',
+	3 => 'col-xl-4 col-lg-4 col-md-6 col-sm-12',
+	4 => 'col-xl-3 col-lg-3 col-md-6 col-sm-12',
+);
+$work_step_col_class = $work_steps_map[ $work_steps_count ] ?? 'col-xl-4 col-lg-4 col-md-6 col-sm-12';
+
 $extra_class   = get_query_var( 'work_progress_class', '' );
 $section_class = 'our-work-progress';
 if ( $extra_class ) {
@@ -63,24 +89,22 @@ if ( $extra_class ) {
 
 		</div>
 
-		<div class="row">
-
-			<?php if ( have_rows('work_progress_steps', $post_id) ) : ?>
-				<?php
-				while ( have_rows('work_progress_steps', $post_id) ) :
-					the_row();
-					$icon  = get_sub_field('step_icon');
-					$title = get_sub_field('step_title');
-					$desc  = get_sub_field('step_description');
+		<?php if ( ! empty( $work_steps_filtered ) ) : ?>
+			<div class="row">
+				<?php foreach ( $work_steps_filtered as $step ) : ?>
+					<?php
+					$icon  = $step['step_icon'] ?? '';
+					$title = $step['step_title'] ?? '';
+					$desc  = $step['step_description'] ?? '';
 					?>
-					<div class="col-xl-3 col-md-6 col-sm-12">
+					<div class="<?php echo esc_attr( $work_step_col_class ); ?>">
 						<div class="work-progress-card">
 
 							<?php if ( $icon ) : ?>
 								<div class="img-box">
-									<img 
-										src="<?php echo esc_url( $icon['url'] ); ?>" 
-										alt="<?php echo esc_attr( $icon['alt'] ); ?>">
+									<img
+										src="<?php echo esc_url( $icon['url'] ?? '' ); ?>"
+										alt="<?php echo esc_attr( $icon['alt'] ?? '' ); ?>">
 								</div>
 							<?php endif; ?>
 
@@ -96,9 +120,8 @@ if ( $extra_class ) {
 
 						</div>
 					</div>
-				<?php endwhile; ?>
-			<?php endif; ?>
-
-		</div>
+				<?php endforeach; ?>
+			</div>
+		<?php endif; ?>
 	</div>
 </section>

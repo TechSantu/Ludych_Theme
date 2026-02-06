@@ -684,6 +684,10 @@ li.nav-item.dropdown .dropdown-menu .nav-link {
 	color: #000;
 	white-space: nowrap;
 }
+li.nav-item.dropdown .dropdown-menu .nav-link:hover{
+	color: #3d72fb;
+}
+.nav-active{color: #3d72fb;}
 
 li.nav-item.dropdown:hover .dropdown-menu .dropdown-menu {
 	left: 100%;

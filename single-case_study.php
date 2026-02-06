@@ -13,7 +13,7 @@ get_header();
 	<div class="custom-container">
 		<div class="inner-banner">
 			<div class="global-header blogs">
-				<h2><?php the_title(); ?></h2>
+				<h2>Case Study</h2>
 				<div class="min-title">
 					<div class="icon-box">
 						<svg xmlns="http://www.w3.org/2000/svg" width="39" height="39" viewBox="0 0 39 39" fill="none">
@@ -26,7 +26,7 @@ get_header();
 							</defs>
 						</svg>
 					</div>
-					<h6>Case Study</h6>
+					<h6><?php the_title(); ?></h6>
 				</div>
 			</div>
 		</div>

@@ -20,6 +20,16 @@ if ( ! $process_title ) {
 	$process_title = 'Discovery to Deploy.,<br> <span>Zero Surprises.</span>';
 }
 
+$process_image = get_field( 'process_intro_image', $post_id );
+if ( ! is_array( $process_image ) ) {
+	$process_image = array();
+}
+
+$process_description = get_field( 'process_intro_description', $post_id );
+if ( ! $process_description ) {
+	$process_description = 'Ludych is a full-stack digital agency based in Chandler, AZ. We ship platforms, integrations, and data products—not just websites. Our team blends senior engineering talent with rigorous PMO discipline and QA rigor, delivering end-to-end services across custom development, data analytics, DevOps/SRE, digital marketing, and product consulting.';
+}
+
 $process_steps = get_field( 'process_intro_steps', $post_id );
 if ( ! is_array( $process_steps ) ) {
 	$process_steps = array();
@@ -37,17 +47,14 @@ $process_steps_filtered = array_values(
 		}
 	)
 );
-$process_steps_count    = count( $process_steps_filtered );
-$process_step_col_class = 'col-xl-4 col-md-6 col-sm-12';
-if ( 1 === $process_steps_count ) {
-	$process_step_col_class = 'col-12';
-} elseif ( 2 === $process_steps_count ) {
-	$process_step_col_class = 'col-xl-6 col-md-6 col-sm-12';
-} elseif ( 3 === $process_steps_count ) {
-	$process_step_col_class = 'col-xl-4 col-md-6 col-sm-12';
-} elseif ( 4 === $process_steps_count ) {
-	$process_step_col_class = 'col-xl-3 col-md-6 col-sm-12';
-}
+$process_steps_count = count( $process_steps_filtered );
+$process_steps_map   = array(
+	1 => 'col-12',
+	2 => 'col-xl-6 col-lg-6 col-md-6 col-sm-12',
+	3 => 'col-xl-4 col-lg-4 col-md-6 col-sm-12',
+	4 => 'col-xl-3 col-lg-3 col-md-6 col-sm-12',
+);
+$process_step_col_class = $process_steps_map[ $process_steps_count ] ?? 'col-xl-4 col-lg-4 col-md-6 col-sm-12';
 ?>
 
 <section class="our-work-progress with-our-process">
@@ -73,6 +80,28 @@ if ( 1 === $process_steps_count ) {
 			</div>
 			<h5><?php echo wp_kses_post( $process_title ); ?></h5>
 		</div>
+
+		<?php if ( ! empty( $process_image ) || $process_description ) : ?>
+			<div class="service-full row">
+				<?php if ( ! empty( $process_image ) ) : ?>
+					<?php
+					$process_image_url = $process_image['url'] ?? '';
+					$process_image_alt = $process_image['alt'] ?? '';
+					if ( ! $process_image_alt ) {
+						$process_image_alt = $process_heading;
+					}
+					?>
+					<div class="image col-lg-6">
+						<img src="<?php echo esc_url( $process_image_url ); ?>" alt="<?php echo esc_attr( $process_image_alt ); ?>">
+					</div>
+				<?php endif; ?>
+				<?php if ( $process_description ) : ?>
+					<div class="left-content col-lg-6">
+						<?php echo wp_kses_post( $process_description ); ?>
+					</div>
+				<?php endif; ?>
+			</div>
+		<?php endif; ?>
 
 		<?php if ( ! empty( $process_steps_filtered ) ) : ?>
 			<div class="row">

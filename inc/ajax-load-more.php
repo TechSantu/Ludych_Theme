@@ -108,3 +108,75 @@ function ludych_ajax_blog_filter() {
 }
 add_action( 'wp_ajax_ludych_ajax_blog_filter', 'ludych_ajax_blog_filter' );
 add_action( 'wp_ajax_nopriv_ludych_ajax_blog_filter', 'ludych_ajax_blog_filter' );
+
+function ludych_ajax_case_studies_filter() {
+	$term = isset( $_POST['term'] ) ? sanitize_text_field( wp_unslash( $_POST['term'] ) ) : '';
+
+	$query_args = array(
+		'post_type'      => 'case_study',
+		'posts_per_page' => 12,
+		'post_status'    => 'publish',
+	);
+
+	if ( $term ) {
+		$query_args['tax_query'] = array(
+			array(
+				'taxonomy' => 'case_study_category',
+				'field'    => 'slug',
+				'terms'    => $term,
+			),
+		);
+	}
+
+	$case_studies = new WP_Query( $query_args );
+
+	ob_start();
+	if ( $case_studies->have_posts() ) {
+		while ( $case_studies->have_posts() ) {
+			$case_studies->the_post();
+			$subtitle = get_field( 'case_study_subtitle' );
+			if ( ! $subtitle ) {
+				$subtitle = get_the_excerpt();
+			}
+			$logo_url = get_the_post_thumbnail_url( get_the_ID(), 'full' );
+			?>
+			<li>
+				<a href="<?php the_permalink(); ?>" class="cs-tool-box">
+					<?php if ( $logo_url ) : ?>
+						<figure>
+							<img src="<?php echo esc_url( $logo_url ); ?>" alt="<?php echo esc_attr( get_the_title() ); ?>">
+						</figure>
+					<?php endif; ?>
+					<div class="cs-box-desc">
+						<h3><?php the_title(); ?></h3>
+						<?php if ( $subtitle ) : ?>
+							<h4><?php echo esc_html( $subtitle ); ?></h4>
+						<?php endif; ?>
+					</div>
+				</a>
+			</li>
+			<?php
+		}
+		wp_reset_postdata();
+	} else {
+		?>
+		<li>
+			<div class="cs-tool-box">
+				<div class="cs-box-desc">
+					<h3><?php esc_html_e( 'No case studies found.', 'ludych-theme' ); ?></h3>
+				</div>
+			</div>
+		</li>
+		<?php
+	}
+	$content = ob_get_clean();
+
+	wp_send_json(
+		array(
+			'content' => $content,
+		)
+	);
+}
+
+add_action( 'wp_ajax_ludych_ajax_case_studies_filter', 'ludych_ajax_case_studies_filter' );
+add_action( 'wp_ajax_nopriv_ludych_ajax_case_studies_filter', 'ludych_ajax_case_studies_filter' );

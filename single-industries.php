@@ -17,7 +17,7 @@ if ( have_posts() ) :
 			'industries/solutions',
 			'industries/strategies',
 			'common/our_blog',
-			'services/cta', // Reusing services CTA as keys match
+			'services/cta',
 			'common/contect',
 		);
 

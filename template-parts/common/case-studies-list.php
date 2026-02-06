@@ -4,10 +4,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 $active_term = isset( $_GET['case-study-category'] ) ? sanitize_text_field( wp_unslash( $_GET['case-study-category'] ) ) : '';
-$terms       = get_terms( array(
+$terms    = get_terms( array(
 	'taxonomy'   => 'case_study_category',
 	'hide_empty' => true,
 ) );
+$base_url = get_post_type_archive_link( 'case_study' );
 
 $query_args = array(
 	'post_type'      => 'case_study',
@@ -32,16 +33,16 @@ $case_studies = new WP_Query( $query_args );
 		<div class="cs-tabs">
 			<ul>
 				<li>
-					<a href="<?php echo esc_url( get_permalink() ); ?>" class="<?php echo $active_term ? '' : 'active'; ?>">All Services</a>
+					<a href="<?php echo esc_url( $base_url ); ?>" data-term="" class="<?php echo $active_term ? '' : 'active'; ?>">All Services</a>
 				</li>
 				<?php if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) : ?>
 					<?php foreach ( $terms as $term ) : ?>
 						<?php
-							$term_url  = add_query_arg( 'case-study-category', $term->slug, get_permalink() );
+							$term_url  = add_query_arg( 'case-study-category', $term->slug, $base_url );
 							$is_active = $active_term === $term->slug;
 						?>
 							<li>
-								<a href="<?php echo esc_url( $term_url ); ?>" class="<?php echo $is_active ? 'active' : ''; ?>">
+								<a href="<?php echo esc_url( $term_url ); ?>" data-term="<?php echo esc_attr( $term->slug ); ?>" class="<?php echo $is_active ? 'active' : ''; ?>">
 									<?php echo esc_html( $term->name ); ?>
 								</a>
 							</li>
