@@ -36,8 +36,8 @@ $work_steps_filtered = array_values(
 		}
 	)
 );
-$work_steps_count = count( $work_steps_filtered );
-$work_steps_map   = array(
+$work_steps_count    = count( $work_steps_filtered );
+$work_steps_map      = array(
 	1 => 'col-12',
 	2 => 'col-xl-6 col-lg-6 col-md-6 col-sm-12',
 	3 => 'col-xl-4 col-lg-4 col-md-6 col-sm-12',

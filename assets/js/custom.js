@@ -345,14 +345,14 @@
 				var tabsContainer = $('.cs-tabs');
 				var listContainer = $('.cs-lists ul');
 
-				if (!tabsContainer.length || !listContainer.length) {
+				if ( ! tabsContainer.length || ! listContainer.length) {
 					return;
 				}
 
 				e.preventDefault();
 
-				var link = $(this);
-				var term = link.data('term') || '';
+				var link    = $(this);
+				var term    = link.data('term') || '';
 				var baseUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
 
 				$.ajax({

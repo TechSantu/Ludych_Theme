@@ -4,11 +4,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 $active_term = isset( $_GET['case-study-category'] ) ? sanitize_text_field( wp_unslash( $_GET['case-study-category'] ) ) : '';
-$terms    = get_terms( array(
+$terms       = get_terms( array(
 	'taxonomy'   => 'case_study_category',
 	'hide_empty' => true,
 ) );
-$base_url = get_post_type_archive_link( 'case_study' );
+$base_url    = get_post_type_archive_link( 'case_study' );
 
 $query_args = array(
 	'post_type'      => 'case_study',

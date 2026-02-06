@@ -47,8 +47,8 @@ $process_steps_filtered = array_values(
 		}
 	)
 );
-$process_steps_count = count( $process_steps_filtered );
-$process_steps_map   = array(
+$process_steps_count    = count( $process_steps_filtered );
+$process_steps_map      = array(
 	1 => 'col-12',
 	2 => 'col-xl-6 col-lg-6 col-md-6 col-sm-12',
 	3 => 'col-xl-4 col-lg-4 col-md-6 col-sm-12',
