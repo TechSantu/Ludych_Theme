@@ -112,7 +112,7 @@ function ludych_handle_contact_form() {
 		'post_status'  => 'publish',
 	), true );
 
-	if ( is_wp_error( $post_id ) || empty( $post_id ) ) {
+	if ( is_wp_error( $post_id ) || 0 === $post_id ) {
 		wp_send_json_error( array( 'message' => __( 'Unable to save your submission. Please try again later.', 'ludych-theme' ) ) );
 	}
 
