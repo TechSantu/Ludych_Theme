@@ -240,32 +240,32 @@
 
 			// Mobile Menu Dropdown Toggle
 			$('.navbar-nav .dropdown > a').on('click', function (e) {
-			if ($(window).width() < 992) {
-				var $el = $(this);
-				var $parent = $el.parent('.dropdown');
-				var $menu = $el.next('.dropdown-menu');
+				if ($(window).width() < 992) {
+					var $el     = $(this);
+					var $parent = $el.parent('.dropdown');
+					var $menu   = $el.next('.dropdown-menu');
 
-				// Case 1: If the menu is already open, CLOSE it on the second click
-				if ($parent.hasClass('show')) {
-					e.preventDefault(); // Stop navigation
-					$parent.removeClass('show');
-					$menu.removeClass('show');
-					$el.attr('aria-expanded', 'false');
-				} 
-				// Case 2: If the menu is closed, OPEN it
-				else {
-					e.preventDefault();
-					e.stopPropagation();
+					// Case 1: If the menu is already open, CLOSE it on the second click
+					if ($parent.hasClass('show')) {
+						e.preventDefault(); // Stop navigation
+						$parent.removeClass('show');
+						$menu.removeClass('show');
+						$el.attr('aria-expanded', 'false');
+					}
+					// Case 2: If the menu is closed, OPEN it
+					else {
+						e.preventDefault();
+						e.stopPropagation();
 
-					// Close other open menus
-					$('.navbar-nav .dropdown, .navbar-nav .dropdown-menu').removeClass('show');
-					
-					$parent.addClass('show');
-					$menu.addClass('show');
-					$el.attr('aria-expanded', 'true');
+						// Close other open menus
+						$('.navbar-nav .dropdown, .navbar-nav .dropdown-menu').removeClass('show');
+
+						$parent.addClass('show');
+						$menu.addClass('show');
+						$el.attr('aria-expanded', 'true');
+					}
 				}
-			}
-		});
+			});
 
 			function loadBlogPosts(page, layout) {
 				var container  = $('#blog-posts-container');

@@ -646,10 +646,10 @@ header.sticky .navbar-toggler .hamburger-toggle .hamburger span {
 
 .top-navbar ul.navbar-nav > .nav-item{position: relative;}
 .top-navbar ul.navbar-nav > .nav-item:after {
-	content: "";	
-    position: absolute; left: 0; bottom: -10px; z-index: 2;
-    transition: .3s; display: block;
-    transition-timing-function: cubic-bezier(.58, .3, .005, 1);
+	content: "";
+	position: absolute; left: 0; bottom: -10px; z-index: 2;
+	transition: .3s; display: block;
+	transition-timing-function: cubic-bezier(.58, .3, .005, 1);
 	height: 3px; width: 100%; background-color: transparent;
 }
 .top-navbar ul.navbar-nav > .nav-item:hover:after{

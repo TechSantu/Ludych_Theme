@@ -45,7 +45,7 @@
 		color: #000 !important;
 	}
 
-	li.nav-item.dropdown .dropdown-menu a.dropdown-item, 
+	li.nav-item.dropdown .dropdown-menu a.dropdown-item,
 	li.nav-item.dropdown .dropdown-menu .nav-link {
 		padding: 0px 19px;
 		line-height: 1.4;
@@ -210,13 +210,13 @@
 
 	.our-blog .owl-nav{display: none;}
 
-	.contact-cntn{margin-bottom: 30px; padding: 40px; border-radius: 25px; gap: 20px;}	
+	.contact-cntn{margin-bottom: 30px; padding: 40px; border-radius: 25px; gap: 20px;}
 
 	.ready-to-ship .schedule-call{margin-right: 10px;}
 
 	.future-ready-grid {grid-template-columns: repeat(1, 1fr);}
-	
-	
+
+
 	.footer .footer-right{flex-wrap: wrap;}
 }
 
@@ -247,7 +247,7 @@
 	.logo-tabs-list{margin-bottom: 20px; flex-direction: inherit; flex-wrap: wrap;}
 	.logo-tabs-list a.list-tab-panel-btn{width: 50%;}
 	.logo-tabs-list a.list-tab-panel-btn:first-child{width: 100%;}
-	
+
 	.client-Item .client-info{max-width: 100%;}
 	.client-Item .client-profile{display: none;}
 
@@ -264,7 +264,7 @@
 @media only screen and (max-width:640px) {
 	.cs-lists ul li{width: calc((100% - 0px) / 1);}
 	.cs-lists ul li .cs-tool-box{border-right: 0px;}
-	.cs-lists ul li .cs-tool-box .cs-box-desc h3{font-size: 20px;}	
+	.cs-lists ul li .cs-tool-box .cs-box-desc h3{font-size: 20px;}
 
 	.blog-item2{flex-direction: column;}
 	.blog-item2 .blog-thumbnail {max-width: 100%; min-width: 240px;}
@@ -273,7 +273,7 @@
 @media only screen and (max-width: 575px) {
 	.navbar-toggler-icon {width: 25px;}
 
-	.global-header h2{font-size: 64px;}	
+	.global-header h2{font-size: 64px;}
 
 	.why-Onchoose-us .content-wrapper{grid-template-columns: repeat(1, 1fr);}
 
