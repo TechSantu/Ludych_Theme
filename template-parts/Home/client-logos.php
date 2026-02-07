@@ -2,26 +2,16 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-global $post_id;
+$section_heading = 'Trusted by teams that ship';
+$section_title   = 'Clients and Partners';
 
-$section_heading = get_field( 'client_logos_heading', $post_id );
-$section_title   = get_field( 'client_logos_title', $post_id );
-$logos           = get_field( 'client_logos', $post_id );
-
-if ( empty( $section_heading ) ) {
-	$section_heading = 'Trusted by teams that ship';
-}
-if ( empty( $section_title ) ) {
-	$section_title = 'Clients and Partners';
-}
-
-$default_logos = array(
-	get_template_directory_uri() . '/assets/images/case-studies/logo-1.png',
-	get_template_directory_uri() . '/assets/images/case-studies/logo-2.png',
-	get_template_directory_uri() . '/assets/images/case-studies/logo-3.png',
-	get_template_directory_uri() . '/assets/images/case-studies/logo-4.png',
-	get_template_directory_uri() . '/assets/images/case-studies/logo-5.png',
-);
+$logos_query = new WP_Query( array(
+	'post_type'      => 'client_logo',
+	'post_status'    => 'publish',
+	'posts_per_page' => -1,
+	'orderby'        => 'menu_order',
+	'order'          => 'ASC',
+) );
 ?>
 	<section class="client-logos grey-bg">
 		<div class="custom-container">
@@ -46,19 +36,37 @@ $default_logos = array(
 			</div>
 			<div id="clientLogos" class="owl-carousel owl-theme">
 				<?php
-				if ( is_array( $logos ) && ! empty( $logos ) ) :
-					foreach ( $logos as $logo ) :
-						$logo_url = isset( $logo['url'] ) ? $logo['url'] : '';
-						$logo_alt = isset( $logo['alt'] ) ? $logo['alt'] : '';
-						if ( $logo_url ) :
+				if ( $logos_query->have_posts() ) :
+					while ( $logos_query->have_posts() ) :
+						$logos_query->the_post();
+						$logo_id  = get_post_thumbnail_id();
+						$logo_alt = get_post_meta( $logo_id, '_wp_attachment_image_alt', true );
+						if ( $logo_id ) :
 							?>
 							<div class="client-logo-item">
-								<img src="<?php echo esc_url( $logo_url ); ?>" alt="<?php echo esc_attr( $logo_alt ); ?>">
+								<?php
+								echo wp_get_attachment_image(
+									$logo_id,
+									'full',
+									false,
+									array(
+										'alt' => esc_attr( $logo_alt ? $logo_alt : get_the_title() ),
+									)
+								);
+								?>
 							</div>
 							<?php
 						endif;
-					endforeach;
+					endwhile;
+					wp_reset_postdata();
 				else :
+					$default_logos = array(
+						get_template_directory_uri() . '/assets/images/case-studies/logo-1.png',
+						get_template_directory_uri() . '/assets/images/case-studies/logo-2.png',
+						get_template_directory_uri() . '/assets/images/case-studies/logo-3.png',
+						get_template_directory_uri() . '/assets/images/case-studies/logo-4.png',
+						get_template_directory_uri() . '/assets/images/case-studies/logo-5.png',
+					);
 					foreach ( $default_logos as $logo_url ) :
 						?>
 						<div class="client-logo-item">

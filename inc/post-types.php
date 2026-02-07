@@ -52,6 +52,23 @@ function ludych_register_custom_post_types() {
 		'menu_icon'    => 'dashicons-testimonial',
 	) );
 
+	// Client Logos Post Type
+	register_post_type( 'client_logo', array(
+		'labels'       => array(
+			'name'          => __( 'Client Logos', 'ludych-theme' ),
+			'singular_name' => __( 'Client Logo', 'ludych-theme' ),
+			'add_new'       => __( 'Add New Client Logo', 'ludych-theme' ),
+			'add_new_item'  => __( 'Add New Client Logo', 'ludych-theme' ),
+			'edit_item'     => __( 'Edit Client Logo', 'ludych-theme' ),
+		),
+		'public'       => false,
+		'show_ui'      => true,
+		'has_archive'  => false,
+		'show_in_rest' => true,
+		'supports'     => array( 'title', 'thumbnail' ),
+		'menu_icon'    => 'dashicons-images-alt2',
+	) );
+
 	// Form Submission Post Type
 	register_post_type( 'form_submission', array(
 		'labels'       => array(
