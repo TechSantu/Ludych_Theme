@@ -70,6 +70,36 @@
 				}
 			);
 
+			$("#clientLogos").owlCarousel(
+				{
+					nav: false,
+					dots: false,
+					loop: true,
+					margin: 30,
+					autoplay: true,
+					autoplayTimeout: 3000,
+					autoplaySpeed: 1500,
+					autoplayHoverPause: true,
+					responsive: {
+						0: {
+							items: 2
+						},
+						576: {
+							items: 3
+						},
+						768: {
+							items: 4
+						},
+						992: {
+							items: 5
+						},
+						1200: {
+							items: 6
+						}
+					}
+				}
+			);
+
 			$(".accordion-list > li > .answer").hide();
 
 			$(".accordion-list > li:first")

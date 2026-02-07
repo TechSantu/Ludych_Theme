@@ -136,6 +136,19 @@
 		border-bottom: 0px solid #e6e6e6;
 	}
 
+	.client-logos {
+		padding: 50px 0px;
+	}
+
+	.client-logos .client-logo-item {
+		min-height: 70px;
+		padding: 12px 14px;
+	}
+
+	.client-logos .client-logo-item img {
+		max-height: 36px;
+	}
+
 	.navbar-collapse.collapse.show {
 		top: 0;
 		position: fixed;

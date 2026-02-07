@@ -1129,6 +1129,46 @@ li.nav-item.dropdown .dropdown-menu li:has(a.dropdown-toggle) {
 	background-color: #474A4F;
 }
 
+/* client logos start */
+.client-logos {
+	padding: 70px 0px;
+}
+
+.client-logos .global-header {
+	margin-bottom: 35px;
+}
+
+.client-logos .client-logo-item {
+	background: #fff;
+	border: 1px solid #eee;
+	border-radius: 12px;
+	padding: 18px 22px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 90px;
+	transition: all 0.3s ease;
+}
+
+.client-logos .client-logo-item img {
+	max-height: 48px;
+	width: auto;
+	filter: grayscale(100%);
+	opacity: 0.8;
+	transition: all 0.3s ease;
+}
+
+.client-logos .client-logo-item:hover {
+	border-color: #d9d9d9;
+	box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+}
+
+.client-logos .client-logo-item:hover img {
+	filter: grayscale(0%);
+	opacity: 1;
+}
+/* client logos end */
+
 .cntn-outer {
 	padding: 20px;
 	display: flex;

@@ -14,6 +14,7 @@ get_header();
 <?php
 $parts = array(
 	'Home/banner',
+	'Home/client-logos',
 	'Home/about',
 	'common/services',
 	'common/our_work',

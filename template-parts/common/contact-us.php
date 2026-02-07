@@ -125,7 +125,7 @@ if ( empty( $redirect_url ) ) {
 									<input type="tel" name="phone" class="form-control" placeholder="Enter your phone number" pattern="[0-9+() \\-]{7,20}" title="Please enter a valid phone number.">
 								</div>
 							</div>
-							<div class="col-lg-6">
+							<div class="col-lg-12">
 								<div class="form-group">
 									<label>Company Name *</label>
 									<input type="text" name="company" class="form-control" placeholder="Enter your company name" minlength="2" maxlength="120" required>
