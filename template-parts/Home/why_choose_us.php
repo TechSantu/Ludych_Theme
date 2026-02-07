@@ -46,7 +46,7 @@ $why_image      = get_field('why_choose_us_image', $post_id);
 		</div>
 
 		<div class="row">
-			<div class="col-xl-6 col-md-6 col-sm-12">
+			<div class="col-lg-6 mb-5">
 				<?php if ( $why_image ) : ?>
 					<div class="thumbnail-box">
 						<img src="<?php echo esc_url( $why_image['url'] ); ?>" alt="<?php echo esc_attr( $why_image['alt'] ); ?>">
@@ -54,7 +54,7 @@ $why_image      = get_field('why_choose_us_image', $post_id);
 				<?php endif; ?>
 			</div>
 
-			<div class="col-xl-6 col-md-6 col-sm-12">
+			<div class="col-lg-6">
 				<div class="content-wrapper">
 
 					<?php if ( have_rows( 'why_choose_us_box', $post_id ) ) : ?>

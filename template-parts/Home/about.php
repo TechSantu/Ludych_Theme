@@ -14,12 +14,12 @@ $author_about      = get_field( 'author_about', $post_id );
 	<section class="about-us">
 		<div class="custom-container">
 			<div class="row">
-				<div class="col-xl-6 col-md-6 col-sm-12">
+				<div class="col-lg-6">
 					<div class="about-thumb">
 						<img src="<?php echo esc_url( $about_image['url'] ); ?>" alt="<?php echo esc_attr( $about_image['alt'] ); ?>">
 					</div>
 				</div>
-				<div class="col-xl-6 col-md-6 col-sm-12">
+				<div class="col-lg-6">
 					<div class="about-cntn">
 						<div class="global-header left-align">
 							<h2><?php echo esc_html( $about_text ); ?></h2>
@@ -52,7 +52,7 @@ $author_about      = get_field( 'author_about', $post_id );
 							while ( have_rows( 'about_service', $post_id ) ) :
 								the_row();
 								?>
-								<div class="col-xl-3 col-md-3 col-sm-6 col-12">
+								<div class="col-xl-3 col-md-3 col-6">
 									<div class="abt-counter-item">
 										<h4><?php the_sub_field( 'number' ); ?></h4>
 										<h6><?php the_sub_field( 'name' ); ?></h6>

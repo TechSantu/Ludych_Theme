@@ -6,6 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 function theme_enqueue_assets() {
 	wp_enqueue_style( 'font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css', array(), '6.5.1' );
+	wp_enqueue_style( 'google-font-sacramento', 'https://fonts.googleapis.com/css2?family=Sacramento&display=swap', array(), null );
 	wp_enqueue_style( 'bootstrap-css', get_template_directory_uri() . '/assets/css/bootstrap.min.css', array(), '5.0' );
 	wp_enqueue_style( 'owl-carousel', get_template_directory_uri() . '/assets/css/owl.carousel.min.css', array(), '2.3.4' );
 	wp_enqueue_style( 'theme-style', get_template_directory_uri() . '/assets/css/style.css', array( 'bootstrap-css' ), '1.0' );

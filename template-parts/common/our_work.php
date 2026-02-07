@@ -43,8 +43,8 @@ if ( ! $tech_stack_text ) {
 		if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) :
 			?>
 			<div class="row">
-				<div class="col-3">
-					<div class="list-group" id="list-tab" role="tablist">
+				<div class="col-md-3">
+					<div class="list-group logo-tabs-list" id="list-tab" role="tablist">
 						<?php foreach ( $terms as $index => $term ) : ?>
 							<a class="list-tab-panel-btn list-tab-panel-btn-action <?php echo 0 === $index ? 'active' : ''; ?>" 
 								id="list-tab-<?php echo esc_attr( $term->slug ); ?>-list"
@@ -57,7 +57,7 @@ if ( ! $tech_stack_text ) {
 						<?php endforeach; ?>
 					</div>
 				</div>
-				<div class="col-9">
+				<div class="col-md-9">
 					<div class="tab-content" id="nav-tabContent">
 						<?php foreach ( $terms as $index => $term ) : ?>
 							<div class="tab-pane fade <?php echo 0 === $index ? 'show active' : ''; ?>" 

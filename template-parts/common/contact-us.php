@@ -2,6 +2,7 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+global $wp;
 
 $address   = get_field( 'contact_address', 'option' );
 $phone     = get_field( 'contact_phone', 'option' );
@@ -20,12 +21,21 @@ if ( ! $email ) {
 if ( ! $open_time ) {
 	$open_time = 'Monday - Friday: 10:00 - 20:00';
 }
+
+$subtitle           = get_theme_mod( 'ludych_contact_form_subtitle', 'Get In Touch' );
+$title              = get_theme_mod( 'ludych_contact_form_title', 'Get Your <span>Free Quote</span> Today!' );
+$recaptcha_enabled  = (bool) get_theme_mod( 'ludych_recaptcha_enabled', false );
+$recaptcha_site_key = get_theme_mod( 'ludych_recaptcha_site_key', '' );
+$redirect_url       = get_theme_mod( 'ludych_contact_redirect_url', '' );
+if ( empty( $redirect_url ) ) {
+	$redirect_url = home_url( '/thank-you' );
+}
 ?>
 
 <section class="contact-us">
 	<div class="custom-container">
 		<div class="row">
-			<div class="col-xl-4 col-md-4 col-sm-12">
+			<div class="col-xl-4 col-md-5 col-sm-12">
 				<div class="contact-cntn">
 					<?php if ( $address ) : ?>
 						<div class="cntc-box">
@@ -66,10 +76,10 @@ if ( ! $open_time ) {
 					</div>
 				</div>
 			</div>
-			<div class="col-xl-8 col-md-8 col-sm-12">
+			<div class="col-xl-8 col-md-7 col-sm-12">
 				<div class="contact-form">
 					<div class="global-header left-align">
-						<h2>Get In Touch</h2>
+						<h2><?php echo esc_html( $subtitle ); ?></h2>
 						<div class="min-title">
 							<div class="icon-box">
 								<svg xmlns="http://www.w3.org/2000/svg" width="39" height="39" viewBox="0 0 39 39" fill="none">
@@ -85,77 +95,55 @@ if ( ! $open_time ) {
 									</defs>
 								</svg>
 							</div>
-							<h6>Testimonials</h6>
+							<h6><?php echo esc_html( $subtitle ); ?></h6>
 						</div>
-						<h5>Get Your <span>Free Quote</span> Today!</h5>
+						<h5><?php echo ( $title ); ?></h5>
 					</div>
-					<form>
+					<form id="ludych-contact-form" method="post" action="" data-recaptcha-sitekey="<?php echo esc_attr( $recaptcha_site_key ); ?>" data-recaptcha-enabled="<?php echo $recaptcha_enabled ? '1' : '0'; ?>" data-redirect-url="<?php echo esc_url( $redirect_url ); ?>">
 						<div class="row">
-							<div class="col-xl-6 col-md-6 col-sm-12">
+							<div class="col-lg-6">
 								<div class="form-group">
-									<label>First Name *</label>
-									<input type="text" class="form-control" placeholder="Enter your first name">
+									<label>Your Name</label>
+									<input type="text" name="name" class="form-control" placeholder="Name*" minlength="2" maxlength="100" required>
 								</div>
 							</div>
-							<div class="col-xl-6 col-md-6 col-sm-12">
+							<div class="col-lg-6">
 								<div class="form-group">
-									<label>Last Name *</label>
-									<input type="text" class="form-control" placeholder="Enter your last name">
+									<label>Email Address</label>
+									<input type="email" name="email" class="form-control" placeholder="Email Address*" maxlength="190" required>
 								</div>
 							</div>
-							<div class="col-xl-6 col-md-6 col-sm-12">
-								<div class="form-group">
-									<label>Email Address *</label>
-									<input type="email" class="form-control" placeholder="Enter your email address">
-								</div>
-							</div>
-							<div class="col-xl-6 col-md-6 col-sm-12">
+							<div class="col-lg-6">
 								<div class="form-group">
 									<label>Phone Number</label>
-									<input type="text" class="form-control" placeholder="Enter your phone number">
+									<input type="tel" name="phone" class="form-control" placeholder="Phone Number*" pattern="[0-9+() \\-]{7,20}" title="Please enter a valid phone number.">
 								</div>
 							</div>
-							<div class="col-xl-6 col-md-6 col-sm-12">
+							<div class="col-lg-6">
 								<div class="form-group">
-									<label>Company Name *</label>
-									<input type="text" class="form-control" placeholder="Enter your company name">
+									<label>Company Name</label>
+									<input type="text" name="company" class="form-control" placeholder="Company Name">
 								</div>
 							</div>
-							<div class="col-xl-6 col-md-6 col-sm-12">
+							<div class="col-12">
 								<div class="form-group">
-									<label>Service Interested In</label>
-									<select class="form-control">
-										<option value="" selected>Web Development</option>
-										<option value="wordpress-development">WordPress Development</option>
-										<option value="software-development">Software Development</option>
-										<option value="ui-ux">UI/UX Design</option>
-										<option value="digital-marketing">Digital Marketing</option>
-										<option value="seo">SEO</option>
-										<option value="other">Other</option>
-									</select>
-								</div>
-							</div>
-							<div class="col-xl-6 col-md-6 col-sm-12">
-								<div class="form-group">
-									<label>Project Budget</label>
-									<select class="form-control">
-										<option value="" selected>$10k - $25k</option>
-										<option value="under-10k">Under $10k</option>
-										<option value="25k-50k">$25k - $50k</option>
-										<option value="50k-100k">$50k - $100k</option>
-										<option value="100k-plus">$100k+</option>
-									</select>
-								</div>
-							</div>
-							<div class="col-xl-12 col-md-12 col-sm-12">
-								<div class="form-group">
-									<label>Project Details *</label>
-									<textarea name="message" class="form-control" placeholder="Write your message..."></textarea>
+									<label>Please describe your project requirements*</label>
+									<textarea name="message" class="form-control" placeholder="Write your message..." minlength="10" required></textarea>
 								</div>
 							</div>
 						</div>
-						<button type="submit" class="btn">Inquiry Now</button>
+						<input type="hidden" name="action" value="ludych_contact_form">
+						<input type="hidden" name="recaptcha_token" value="">
+						<input type="hidden" name="recaptcha_action" value="contact_form">
+						<input type="hidden" name="redirect_url" value="<?php echo esc_url( $redirect_url ); ?>">
+						<?php wp_nonce_field( 'ludych_contact_nonce', 'nonce' ); ?>
+						<input type="hidden" name="page_url" value="<?php echo esc_url( home_url( $wp->request ) ); ?>">
+						<button type="submit" class="btn"><span>Inquiry Now</span></button>
+						<div class="form-message mt-3"></div>
 					</form>
+					<?php if ( $recaptcha_enabled && $recaptcha_site_key ) : ?>
+						<script src="https://www.google.com/recaptcha/api.js?render=<?php echo esc_attr( $recaptcha_site_key ); ?>"></script>
+					<?php endif; ?>
 				</div>
 			</div>
 		</div>

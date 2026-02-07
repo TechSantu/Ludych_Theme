@@ -12,7 +12,7 @@ $faq_heading  = get_field( 'faq_heading', $post_id );
 	<section class="faq-outer">
 		<div class="custom-container">
 			<div class="row">
-				<div class="col-xl-5 col-md-5 col-sm-12">
+				<div class="col-lg-5 col-sm-12">
 					<div class="header-left">
 						<div class="global-header left-align">
 							<h2><?php echo esc_html( $faq_subtitle ); ?></h2>
@@ -38,7 +38,7 @@ $faq_heading  = get_field( 'faq_heading', $post_id );
 						</div>
 					</div>
 				</div>
-				<div class="col-xl-7 col-md-7 col-sm-12">
+				<div class="col-lg-7 col-sm-12">
 					<?php if ( have_rows( 'faqs_repeater', $post_id ) ) : ?>
 					<div class="faq_inner">
 						<ul class="accordion-list">

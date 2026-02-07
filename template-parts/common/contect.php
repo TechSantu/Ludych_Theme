@@ -16,7 +16,7 @@ $recaptcha_site_key = get_theme_mod( 'ludych_recaptcha_site_key', '' );
 	<section class="contact-us">
 		<div class="custom-container">
 			<div class="row">
-				<div class="col-xl-4 col-md-4 col-sm-12">
+				<div class="col-lg-4 col-sm-12">
 					<div class="contact-cntn">
 						<?php if ( $address ) : ?>
 						<div class="cntc-box">
@@ -61,7 +61,7 @@ $recaptcha_site_key = get_theme_mod( 'ludych_recaptcha_site_key', '' );
 						</div>
 					</div>
 				</div>
-				<div class="col-xl-8 col-md-8 col-sm-12">
+				<div class="col-lg-8 col-sm-12">
 					<div class="contact-form">
 						<div class="global-header left-align">
 							<h2><?php echo esc_html( $subtitle ); ?></h2>

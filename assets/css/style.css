@@ -287,7 +287,7 @@ textarea:focus {
 
 .globalBtnOutline span {
 	position: relative;
-	z-index: 9;
+	z-index: 9; text-align: center;
 }
 
 /* Slider navbar */
@@ -443,14 +443,14 @@ textarea:focus {
 	font-weight: 300;
 	line-height: 17.58px;
 	color: var(--white);
-	padding-top: 0px;
-	padding-bottom: 0px;
+	padding-top: 10px;
+	padding-bottom: 10px;
 	transform: all 0.4s ease-in-out;
 }
+.loginBtn-cntn .globalBtnOutline{padding: 10px 20px;}
 
 .top-navbar a.nav-link:hover,
 header.sticky a.nav-link:hover {
-	color: var(--white);
 	transform: all 0.4s ease-in-out;
 }
 
@@ -577,7 +577,7 @@ li.nav-item.dropdown .dropdown-menu a.dropdown-item:hover {
 	width: 100%;
 	height: 2px;
 	position: absolute;
-	background: #333;
+	background: var(--white);
 	border-radius: 1px;
 	z-index: 1;
 	transition: transform 0.2s cubic-bezier(0.77, 0.2, 0.05, 1), background 0.2s cubic-bezier(0.77, 0.2, 0.05, 1), all 0.2s ease-in-out;
@@ -644,6 +644,18 @@ header.sticky .navbar-toggler .hamburger-toggle .hamburger span {
 	margin: 0 auto;
 }
 
+.top-navbar ul.navbar-nav > .nav-item{position: relative;}
+.top-navbar ul.navbar-nav > .nav-item:after {
+	content: "";	
+    position: absolute; left: 0; bottom: -10px; z-index: 2;
+    transition: .3s; display: block;
+    transition-timing-function: cubic-bezier(.58, .3, .005, 1);
+	height: 3px; width: 100%; background-color: transparent;
+}
+.top-navbar ul.navbar-nav > .nav-item:hover:after{
+	background-color: #3D72FB;  bottom: 0px;
+}
+
 .dropdown-toggle::after {
 	font: normal normal normal 14px / 1 FontAwesome;
 	font-size: inherit;
@@ -663,7 +675,7 @@ li.nav-item.dropdown:hover .dropdown-toggle::after {
 
 li.nav-item.dropdown:hover .dropdown-menu {
 	display: block;
-	top: 30px;
+	top: 45px;
 	left: 0;
 	margin-top: var(--bs-dropdown-spacer);
 	box-shadow: 1px -4px 20px 0px #4a4a4a6e !important;
@@ -687,7 +699,8 @@ li.nav-item.dropdown .dropdown-menu .nav-link {
 li.nav-item.dropdown .dropdown-menu .nav-link:hover{
 	color: #3d72fb;
 }
-.nav-active{color: #3d72fb;}
+.nav-item .current-menu-item,
+.nav-item .current-menu-item a{background-color: #3d72fb; color: #fff !important;}
 
 li.nav-item.dropdown:hover .dropdown-menu .dropdown-menu {
 	left: 100%;
@@ -907,6 +920,8 @@ li.nav-item.dropdown .dropdown-menu li:has(a.dropdown-toggle) {
 .busines-partner-items .partner-item h3 {
 	margin-bottom: 0px;
 }
+
+.busines-partner-items .partner-item .partner-thumb-item img{width: 100%;}
 
 .busines-partner-items .partner-item a.learnBtn {
 	color: var(--button-border);
@@ -1235,6 +1250,7 @@ li.nav-item.dropdown .dropdown-menu li:has(a.dropdown-toggle) {
 .our-blog .global-header {
 	margin-bottom: 60px;
 }
+.our-blog #blog-posts-container .col-sm-12{margin: 15px 0;}
 
 .blog-details {
 	position: relative;
@@ -1266,6 +1282,7 @@ li.nav-item.dropdown .dropdown-menu li:has(a.dropdown-toggle) {
 	margin-bottom: 20px;
 }
 
+.blog-detail-text h2,
 .blog-detail-text h4 {
 	margin-bottom: 20px;
 }
@@ -1279,6 +1296,8 @@ li.nav-item.dropdown .dropdown-menu li:has(a.dropdown-toggle) {
 .blog-detail-text p {
 	margin: 20px 0;
 }
+
+.blog-detail-text ul{margin-bottom: 20px;}
 
 .blog-detail-text ul,
 .blog-detail-text ul li {
@@ -1354,7 +1373,7 @@ li.nav-item.dropdown .dropdown-menu li:has(a.dropdown-toggle) {
 .blog-item2 .blog-thumbnail {
 	max-width: 240px;
 	min-width: 240px;
-	max-height: 200px;
+	max-height: 220px;
 	position: relative;
 }
 
@@ -1500,10 +1519,8 @@ footer.footer {
 
 .footer p,
 .footer li a {
-	font-size: 13px;
-	font-weight: 400;
-	color: #8A8A8A;
-	transition: all 0.3s ease-in-out;
+	font-size: 14px; font-weight: 400;
+	color: #8A8A8A; transition: all 0.3s ease-in-out;
 }
 
 .footer li a:hover {
@@ -2218,8 +2235,8 @@ footer.footer {
 	padding: 80px 0px;
 }
 .cs-tabs{position: relative; margin-bottom: 50px;}
-.cs-tabs ul{display: flex; align-items: center; gap: 15px; flex-wrap: wrap;}
-.cs-tabs ul li{width: calc((100% - 75px) / 6);}
+.cs-tabs ul{display: flex; align-items: center; gap: 15px;}
+.cs-tabs ul li{width: 100%;}
 .cs-tabs ul li a{
 	display: block; padding: 10px; text-align: center;
 	background: var(--button-border); color: #fff;

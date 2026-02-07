@@ -240,21 +240,32 @@
 
 			// Mobile Menu Dropdown Toggle
 			$('.navbar-nav .dropdown > a').on('click', function (e) {
-				if ($(window).width() < 992) {
-					var $el     = $(this);
-					var $parent = $el.parent('.dropdown');
+			if ($(window).width() < 992) {
+				var $el = $(this);
+				var $parent = $el.parent('.dropdown');
+				var $menu = $el.next('.dropdown-menu');
 
-					// If click is on the arrow area (pseudo-element) or if the link is just a toggle
-					// For now, let's make it so first click opens, second click navigates
-					if ( ! $parent.hasClass('show')) {
-						e.preventDefault();
-						$('.navbar-nav .dropdown').removeClass('show');
-						$('.navbar-nav .dropdown-menu').removeClass('show');
-						$parent.addClass('show');
-						$el.next('.dropdown-menu').addClass('show');
-					}
+				// Case 1: If the menu is already open, CLOSE it on the second click
+				if ($parent.hasClass('show')) {
+					e.preventDefault(); // Stop navigation
+					$parent.removeClass('show');
+					$menu.removeClass('show');
+					$el.attr('aria-expanded', 'false');
+				} 
+				// Case 2: If the menu is closed, OPEN it
+				else {
+					e.preventDefault();
+					e.stopPropagation();
+
+					// Close other open menus
+					$('.navbar-nav .dropdown, .navbar-nav .dropdown-menu').removeClass('show');
+					
+					$parent.addClass('show');
+					$menu.addClass('show');
+					$el.attr('aria-expanded', 'true');
 				}
-			});
+			}
+		});
 
 			function loadBlogPosts(page, layout) {
 				var container  = $('#blog-posts-container');
