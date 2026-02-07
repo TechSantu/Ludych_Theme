@@ -34,7 +34,7 @@ function ludych_customize_register( $wp_customize ) {
 	$wp_customize->add_setting(
 		'ludych_lets_connect_url',
 		array(
-			'default'           => '#',
+			'default'           => home_url( '/contact-us/' ),
 			'sanitize_callback' => 'esc_url_raw',
 			'transport'         => 'refresh',
 		)

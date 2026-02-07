@@ -150,7 +150,7 @@
 				}
 			);
 
-			$('input[name="name"]').on(
+			$('input[name="name"], input[name="first_name"], input[name="last_name"]').on(
 				'input',
 				function () {
 					this.value = this.value.replace(/[^a-zA-Z\s]/g, '');

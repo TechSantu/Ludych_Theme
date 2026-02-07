@@ -28,7 +28,28 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<div class="collapse navbar-collapse" id="navbar-content">
 				<div class="only_mobile_view">
 					<div class="mobile_logo">
-						<a href="<?php echo esc_url( home_url( '/' ) ); ?>">Logo</a>
+						<?php
+						$custom_logo_id = get_theme_mod( 'custom_logo' );
+						if ( $custom_logo_id ) :
+							?>
+							<a href="<?php echo esc_url( home_url( '/' ) ); ?>">
+								<?php
+								echo wp_get_attachment_image(
+									$custom_logo_id,
+									'full',
+									false,
+									array(
+										'class' => 'mobile-logo-img',
+										'alt'   => esc_attr( get_bloginfo( 'name' ) ),
+									)
+								);
+								?>
+							</a>
+						<?php else : ?>
+							<a href="<?php echo esc_url( home_url( '/' ) ); ?>">
+								<img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/logo.png' ); ?>" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>" class="mobile-logo-img">
+							</a>
+						<?php endif; ?>
 					</div>
 					<button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
 						data-bs-target="#navbar-content">
@@ -49,11 +70,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 				);
 				?>
 				<div class="loginBtn-cntn">
-					<a href="<?php echo esc_url( get_theme_mod( 'ludych_lets_connect_url', '#' ) ); ?>" class="globalBtnOutline">
+					<a href="<?php echo esc_url( get_theme_mod( 'ludych_lets_connect_url', home_url( '/contact-us/' ) ) ); ?>" class="globalBtnOutline">
 						<span><?php echo esc_html( get_theme_mod( 'ludych_lets_connect_label', "LET's CONNECT" ) ); ?></span>
 					</a>
 				</div>
 			</div>
 		</div>
 	</header>
-

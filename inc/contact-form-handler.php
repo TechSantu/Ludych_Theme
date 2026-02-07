@@ -12,16 +12,44 @@ function ludych_handle_contact_form() {
 	check_ajax_referer( 'ludych_contact_nonce', 'nonce' );
 
 	$name             = sanitize_text_field( $_POST['name'] ?? '' );
+	$first_name       = sanitize_text_field( $_POST['first_name'] ?? '' );
+	$last_name        = sanitize_text_field( $_POST['last_name'] ?? '' );
 	$email            = sanitize_email( $_POST['email'] ?? '' );
 	$phone            = sanitize_text_field( $_POST['phone'] ?? '' );
 	$company          = sanitize_text_field( $_POST['company'] ?? '' );
+	$service          = sanitize_text_field( $_POST['service'] ?? '' );
+	$budget           = sanitize_text_field( $_POST['budget'] ?? '' );
 	$message          = sanitize_textarea_field( $_POST['message'] ?? '' );
 	$page_url         = esc_url_raw( $_POST['page_url'] ?? '' );
 	$recaptcha_token  = sanitize_text_field( $_POST['recaptcha_token'] ?? '' );
 	$recaptcha_action = sanitize_text_field( $_POST['recaptcha_action'] ?? '' );
+	$redirect_url     = esc_url_raw( $_POST['redirect_url'] ?? '' );
 
-	if ( empty( $name ) || ! is_email( $email ) || empty( $message ) ) {
-		wp_send_json_error( array( 'message' => __( 'Please provide a valid name, email, and message.', 'ludych-theme' ) ) );
+	$full_name = trim( $name );
+	if ( empty( $full_name ) ) {
+		$full_name = trim( $first_name . ' ' . $last_name );
+	}
+
+	if ( strlen( $full_name ) < 2 || strlen( $full_name ) > 100 ) {
+		wp_send_json_error( array( 'message' => __( 'Please provide a valid name (2-100 characters).', 'ludych-theme' ) ) );
+	}
+
+	if ( isset( $_POST['first_name'], $_POST['last_name'] ) ) {
+		if ( strlen( trim( $first_name ) ) < 2 || strlen( trim( $last_name ) ) < 2 ) {
+			wp_send_json_error( array( 'message' => __( 'Please provide a valid first and last name.', 'ludych-theme' ) ) );
+		}
+	}
+
+	if ( empty( $email ) || ! is_email( $email ) ) {
+		wp_send_json_error( array( 'message' => __( 'Please provide a valid email address.', 'ludych-theme' ) ) );
+	}
+
+	if ( strlen( trim( $message ) ) < 10 ) {
+		wp_send_json_error( array( 'message' => __( 'Please provide a message with at least 10 characters.', 'ludych-theme' ) ) );
+	}
+
+	if ( isset( $_POST['company'] ) && strlen( trim( $company ) ) < 2 ) {
+		wp_send_json_error( array( 'message' => __( 'Please provide a valid company name.', 'ludych-theme' ) ) );
 	}
 
 	if ( ! empty( $phone ) && ! preg_match( '/^[0-9+() \-]{7,20}$/', $phone ) ) {
@@ -79,19 +107,25 @@ function ludych_handle_contact_form() {
 	// 1. Record in Database (CPT)
 	$post_id = wp_insert_post( array(
 		'post_type'    => 'form_submission',
-		'post_title'   => sprintf( 'Submission from %s - %s', $name, $date_time ),
+		'post_title'   => sprintf( 'Submission from %s - %s', $full_name, $date_time ),
 		'post_content' => $message,
 		'post_status'  => 'publish',
-	) );
+	), true );
 
-	if ( $post_id ) {
-		update_post_meta( $post_id, '_submission_email', $email );
-		update_post_meta( $post_id, '_submission_phone', $phone );
-		update_post_meta( $post_id, '_submission_company', $company );
-		update_post_meta( $post_id, '_submission_ip', $ip_address );
-		update_post_meta( $post_id, '_submission_page_url', $page_url );
-		update_post_meta( $post_id, '_submission_date', $date_time );
+	if ( is_wp_error( $post_id ) || empty( $post_id ) ) {
+		wp_send_json_error( array( 'message' => __( 'Unable to save your submission. Please try again later.', 'ludych-theme' ) ) );
 	}
+
+	update_post_meta( $post_id, '_submission_email', $email );
+	update_post_meta( $post_id, '_submission_phone', $phone );
+	update_post_meta( $post_id, '_submission_company', $company );
+	update_post_meta( $post_id, '_submission_first_name', $first_name );
+	update_post_meta( $post_id, '_submission_last_name', $last_name );
+	update_post_meta( $post_id, '_submission_service', $service );
+	update_post_meta( $post_id, '_submission_budget', $budget );
+	update_post_meta( $post_id, '_submission_ip', $ip_address );
+	update_post_meta( $post_id, '_submission_page_url', $page_url );
+	update_post_meta( $post_id, '_submission_date', $date_time );
 
 	// 2. Send Email
 	$admin_email  = get_option( 'admin_email' );
@@ -109,7 +143,15 @@ function ludych_handle_contact_form() {
 		<table style="width: 100%; border-collapse: collapse;">
 			<tr>
 				<td style="padding: 10px; border-bottom: 1px solid #f0f0f0; width: 30%; color: #888;">Name:</td>
-				<td style="padding: 10px; border-bottom: 1px solid #f0f0f0; font-weight: bold;">' . esc_html( $name ) . '</td>
+				<td style="padding: 10px; border-bottom: 1px solid #f0f0f0; font-weight: bold;">' . esc_html( $full_name ) . '</td>
+			</tr>
+			<tr>
+				<td style="padding: 10px; border-bottom: 1px solid #f0f0f0; color: #888;">First Name:</td>
+				<td style="padding: 10px; border-bottom: 1px solid #f0f0f0;">' . esc_html( $first_name ) . '</td>
+			</tr>
+			<tr>
+				<td style="padding: 10px; border-bottom: 1px solid #f0f0f0; color: #888;">Last Name:</td>
+				<td style="padding: 10px; border-bottom: 1px solid #f0f0f0;">' . esc_html( $last_name ) . '</td>
 			</tr>
 			<tr>
 				<td style="padding: 10px; border-bottom: 1px solid #f0f0f0; color: #888;">Email:</td>
@@ -124,6 +166,14 @@ function ludych_handle_contact_form() {
 				<td style="padding: 10px; border-bottom: 1px solid #f0f0f0;">' . esc_html( $company ) . '</td>
 			</tr>
 			<tr>
+				<td style="padding: 10px; border-bottom: 1px solid #f0f0f0; color: #888;">Service:</td>
+				<td style="padding: 10px; border-bottom: 1px solid #f0f0f0;">' . esc_html( $service ) . '</td>
+			</tr>
+			<tr>
+				<td style="padding: 10px; border-bottom: 1px solid #f0f0f0; color: #888;">Budget:</td>
+				<td style="padding: 10px; border-bottom: 1px solid #f0f0f0;">' . esc_html( $budget ) . '</td>
+			</tr>
+			<tr>
 				<td style="padding: 10px; border-bottom: 1px solid #f0f0f0; vertical-align: top; color: #888;">Message:</td>
 				<td style="padding: 10px; border-bottom: 1px solid #f0f0f0; line-height: 1.6;">' . nl2br( esc_html( $message ) ) . '</td>
 			</tr>
@@ -135,12 +185,25 @@ function ludych_handle_contact_form() {
 		</div>
 	</div>';
 
-	$headers = array( 'Content-Type: text/html; charset=UTF-8', "Reply-To: $name <$email>" );
+	$from_name  = wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES );
+	$from_email = is_email( $admin_email ) ? $admin_email : 'no-reply@' . wp_parse_url( home_url(), PHP_URL_HOST );
+	$headers    = array(
+		'Content-Type: text/html; charset=UTF-8',
+		"From: {$from_name} <{$from_email}>",
+		"Reply-To: {$full_name} <{$email}>",
+	);
 
-	wp_mail( $custom_email, $subject, $body, $headers );
+	$mail_sent = wp_mail( $custom_email, $subject, $body, $headers );
+	if ( ! $mail_sent ) {
+		wp_send_json_error( array( 'message' => __( 'Your message was saved, but the email notification failed. Please try again or contact us directly.', 'ludych-theme' ) ) );
+	}
 
 	// 3. Response
-	$redirect_url = get_theme_mod( 'ludych_contact_redirect_url', home_url( '/thank-you' ) );
+	$theme_redirect = get_theme_mod( 'ludych_contact_redirect_url', '' );
+	$redirect_url   = $redirect_url ?: $theme_redirect;
+	if ( empty( $redirect_url ) ) {
+		$redirect_url = home_url( '/thank-you' );
+	}
 
 	wp_send_json_success( array(
 		'message'      => __( 'Your message has been sent successfully.', 'ludych-theme' ),

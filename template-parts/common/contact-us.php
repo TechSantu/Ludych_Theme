@@ -103,31 +103,63 @@ if ( empty( $redirect_url ) ) {
 						<div class="row">
 							<div class="col-lg-6">
 								<div class="form-group">
-									<label>Your Name</label>
-									<input type="text" name="name" class="form-control" placeholder="Name*" minlength="2" maxlength="100" required>
+									<label>First Name *</label>
+									<input type="text" name="first_name" class="form-control" placeholder="Enter your first name" minlength="2" maxlength="60" required>
 								</div>
 							</div>
 							<div class="col-lg-6">
 								<div class="form-group">
-									<label>Email Address</label>
-									<input type="email" name="email" class="form-control" placeholder="Email Address*" maxlength="190" required>
+									<label>Last Name *</label>
+									<input type="text" name="last_name" class="form-control" placeholder="Enter your last name" minlength="2" maxlength="60" required>
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="form-group">
+									<label>Email Address *</label>
+									<input type="email" name="email" class="form-control" placeholder="Enter your email address" maxlength="190" required>
 								</div>
 							</div>
 							<div class="col-lg-6">
 								<div class="form-group">
 									<label>Phone Number</label>
-									<input type="tel" name="phone" class="form-control" placeholder="Phone Number*" pattern="[0-9+() \\-]{7,20}" title="Please enter a valid phone number.">
+									<input type="tel" name="phone" class="form-control" placeholder="Enter your phone number" pattern="[0-9+() \\-]{7,20}" title="Please enter a valid phone number.">
 								</div>
 							</div>
 							<div class="col-lg-6">
 								<div class="form-group">
-									<label>Company Name</label>
-									<input type="text" name="company" class="form-control" placeholder="Company Name">
+									<label>Company Name *</label>
+									<input type="text" name="company" class="form-control" placeholder="Enter your company name" minlength="2" maxlength="120" required>
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="form-group">
+									<label>Service Interested In</label>
+									<select name="service" class="form-control">
+										<option value="" selected>Web Development</option>
+										<option value="wordpress-development">WordPress Development</option>
+										<option value="software-development">Software Development</option>
+										<option value="ui-ux">UI/UX Design</option>
+										<option value="digital-marketing">Digital Marketing</option>
+										<option value="seo">SEO</option>
+										<option value="other">Other</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="form-group">
+									<label>Project Budget</label>
+									<select name="budget" class="form-control">
+										<option value="" selected>$10k - $25k</option>
+										<option value="under-10k">Under $10k</option>
+										<option value="25k-50k">$25k - $50k</option>
+										<option value="50k-100k">$50k - $100k</option>
+										<option value="100k-plus">$100k+</option>
+									</select>
 								</div>
 							</div>
 							<div class="col-12">
 								<div class="form-group">
-									<label>Please describe your project requirements*</label>
+									<label>Project Details *</label>
 									<textarea name="message" class="form-control" placeholder="Write your message..." minlength="10" required></textarea>
 								</div>
 							</div>
