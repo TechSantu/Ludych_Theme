@@ -2438,6 +2438,13 @@ footer.footer {
 .cs-cols-section .cs-col-desc {
 	text-align: center;
 }
+.cs-cols-section .row {
+	row-gap: 30px;
+}
+.cs-cols-section .cs-col-1,
+.cs-cols-section .cs-col-2 {
+	padding: 32px 36px;
+}
 
 .cs-prob-section {
 	background: #ffffff url(../images/inner-background.jpg) top center / cover no-repeat;
