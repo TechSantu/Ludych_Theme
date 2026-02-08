@@ -164,7 +164,7 @@ if ( empty( $results_table_html ) ) {
 			<div class="cs-cols pt-lg-5">
 				<div class="row gy-4">
 					<?php if ( $who_text ) : ?>
-						<div class="cs-col-1 pt-5 col-lg-6 p-4">
+						<div class="cs-col-1 pt-5 col-lg-6">
 							<p class="cs-col-title"><?php echo esc_html( $who_title ); ?></p>
 							<div class="cs-col-desc">
 								<?php echo wp_kses_post( wpautop( $who_text ) ); ?>
@@ -172,7 +172,7 @@ if ( empty( $results_table_html ) ) {
 						</div>
 					<?php endif; ?>
 					<?php if ( $what_text ) : ?>
-						<div class="cs-col-2 pt-5 col-lg-6 p-4">
+						<div class="cs-col-2 pt-5 col-lg-6">
 							<p class="cs-col-title"><?php echo esc_html( $what_title ); ?></p>
 							<div class="cs-col-desc">
 								<?php echo wp_kses_post( wpautop( $what_text ) ); ?>
