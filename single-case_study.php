@@ -276,109 +276,60 @@ if ( empty( $results_rows ) ) {
 							</div>
 						<?php endif; ?>
 
-						<?php if ( ! empty( $solution_tabs ) ) : ?>
-							<div class="row d-md-flex d-none">
-								<div class="col-xl-3 col-lg-4 col-md-5">
-									<ul class="nav nav-pills nav-stacked flex-column h-100" role="tablist" aria-orientation="vertical">
-										<?php foreach ( $solution_tabs as $index => $tab ) : ?>
-											<?php
-											$tab_id    = 'tab_' . ( $index + 1 );
-											$is_active = 0 === $index;
-											?>
-											<li class="<?php echo $is_active ? 'active' : ''; ?>">
-												<span class="nav-link d-block w-100<?php echo $is_active ? ' active' : ''; ?>" data-tab="<?php echo esc_attr( $tab_id ); ?>">
-													<?php echo esc_html( isset( $tab['tab_title'] ) ? $tab['tab_title'] : '' ); ?>
-												</span>
-											</li>
-										<?php endforeach; ?>
-									</ul>
-								</div>
-								<div class="col-xl-9 col-lg-8 col-md-7">
-									<div class="tab-content p-0 d-flex flex-column h-100">
-										<?php foreach ( $solution_tabs as $index => $tab ) : ?>
-											<?php
-											$tab_id    = 'tab_' . ( $index + 1 );
-											$is_active = 0 === $index;
-											?>
-											<div class="tab-pane<?php echo $is_active ? ' active' : ''; ?>" id="<?php echo esc_attr( $tab_id ); ?>" role="tabpanel">
-												<?php echo wp_kses_post( wpautop( isset( $tab['tab_content'] ) ? $tab['tab_content'] : '' ) ); ?>
-											</div>
-										<?php endforeach; ?>
-									</div>
+						<div class="row d-md-flex d-none">
+							<div class="col-xl-3 col-lg-4 col-md-5">
+								<ul class="nav nav-pills nav-stacked flex-column h-100" role="tablist" aria-orientation="vertical">
+									<?php foreach ( $solution_tabs as $index => $tab ) : ?>
+										<?php
+										$tab_id    = 'tab_' . ( $index + 1 );
+										$is_active = 0 === $index;
+										?>
+										<li class="<?php echo $is_active ? 'active' : ''; ?>">
+											<span class="nav-link d-block w-100<?php echo $is_active ? ' active' : ''; ?>" data-tab="<?php echo esc_attr( $tab_id ); ?>">
+												<?php echo esc_html( isset( $tab['tab_title'] ) ? $tab['tab_title'] : '' ); ?>
+											</span>
+										</li>
+									<?php endforeach; ?>
+								</ul>
+							</div>
+							<div class="col-xl-9 col-lg-8 col-md-7">
+								<div class="tab-content p-0 d-flex flex-column h-100">
+									<?php foreach ( $solution_tabs as $index => $tab ) : ?>
+										<?php
+										$tab_id    = 'tab_' . ( $index + 1 );
+										$is_active = 0 === $index;
+										?>
+										<div class="tab-pane<?php echo $is_active ? ' active' : ''; ?>" id="<?php echo esc_attr( $tab_id ); ?>" role="tabpanel">
+											<?php echo wp_kses_post( wpautop( isset( $tab['tab_content'] ) ? $tab['tab_content'] : '' ) ); ?>
+										</div>
+									<?php endforeach; ?>
 								</div>
 							</div>
+						</div>
 
-							<div class="d-md-none">
-								<div id="tabContentCS">
-									<ul class="nav flex-column point-list mw-100">
-										<?php foreach ( $solution_tabs as $index => $tab ) : ?>
-											<?php
-											$collapse_id = 'collapse' . ( $index + 1 );
-											$is_active   = 0 === $index;
-											?>
-											<li data-toggle="collapse" data-target="#<?php echo esc_attr( $collapse_id ); ?>" aria-expanded="<?php echo $is_active ? 'true' : 'false'; ?>" aria-controls="<?php echo esc_attr( $collapse_id ); ?>">
-												<div class="point-title">
-													<span class="ptitle"><?php echo esc_html( isset( $tab['tab_title'] ) ? $tab['tab_title'] : '' ); ?></span>
-													<i class="point-caret fa fa-caret-down" aria-hidden="true"></i>
+						<div class="d-md-none">
+							<div id="tabContentCS">
+								<ul class="nav flex-column point-list mw-100">
+									<?php foreach ( $solution_tabs as $index => $tab ) : ?>
+										<?php
+										$collapse_id = 'collapse' . ( $index + 1 );
+										$is_active   = 0 === $index;
+										?>
+										<li data-toggle="collapse" data-target="#<?php echo esc_attr( $collapse_id ); ?>" aria-expanded="<?php echo $is_active ? 'true' : 'false'; ?>" aria-controls="<?php echo esc_attr( $collapse_id ); ?>">
+											<div class="point-title">
+												<span class="ptitle"><?php echo esc_html( isset( $tab['tab_title'] ) ? $tab['tab_title'] : '' ); ?></span>
+												<i class="point-caret fa fa-caret-down" aria-hidden="true"></i>
+											</div>
+											<div id="<?php echo esc_attr( $collapse_id ); ?>" class="collapse<?php echo $is_active ? ' show' : ''; ?>" data-parent="#tabContentCS">
+												<div class="point-desc">
+													<?php echo wp_kses_post( wpautop( isset( $tab['tab_content'] ) ? $tab['tab_content'] : '' ) ); ?>
 												</div>
-												<div id="<?php echo esc_attr( $collapse_id ); ?>" class="collapse<?php echo $is_active ? ' show' : ''; ?>" data-parent="#tabContentCS">
-													<div class="point-desc">
-														<?php echo wp_kses_post( wpautop( isset( $tab['tab_content'] ) ? $tab['tab_content'] : '' ) ); ?>
-													</div>
-												</div>
-											</li>
-										<?php endforeach; ?>
-									</ul>
-								</div>
+											</div>
+										</li>
+									<?php endforeach; ?>
+								</ul>
 							</div>
-						<?php elseif ( $ace_assets_items || $ace_control_items || $ace_experiment_items ) : ?>
-							<div class="row d-md-flex d-none">
-								<div class="col-xl-3 col-lg-4 col-md-5">
-									<ul class="nav nav-pills nav-stacked flex-column h-100" role="tablist" aria-orientation="vertical">
-										<?php if ( $ace_assets_items ) : ?>
-											<li class="active"><span class="nav-link d-block w-100 active" data-tab="tab_assets">Assets</span></li>
-										<?php endif; ?>
-										<?php if ( $ace_control_items ) : ?>
-											<li><span class="nav-link d-block w-100" data-tab="tab_control">Control</span></li>
-										<?php endif; ?>
-										<?php if ( $ace_experiment_items ) : ?>
-											<li><span class="nav-link d-block w-100" data-tab="tab_experimentation">Experimentation</span></li>
-										<?php endif; ?>
-									</ul>
-								</div>
-								<div class="col-xl-9 col-lg-8 col-md-7">
-									<div class="tab-content p-0 d-flex flex-column h-100">
-										<?php if ( $ace_assets_items ) : ?>
-											<div class="tab-pane active" id="tab_assets" role="tabpanel">
-												<ul>
-													<?php foreach ( $ace_assets_items as $item ) : ?>
-														<li><?php echo esc_html( $item ); ?></li>
-													<?php endforeach; ?>
-												</ul>
-											</div>
-										<?php endif; ?>
-										<?php if ( $ace_control_items ) : ?>
-											<div class="tab-pane" id="tab_control" role="tabpanel">
-												<ul>
-													<?php foreach ( $ace_control_items as $item ) : ?>
-														<li><?php echo esc_html( $item ); ?></li>
-													<?php endforeach; ?>
-												</ul>
-											</div>
-										<?php endif; ?>
-										<?php if ( $ace_experiment_items ) : ?>
-											<div class="tab-pane" id="tab_experimentation" role="tabpanel">
-												<ul>
-													<?php foreach ( $ace_experiment_items as $item ) : ?>
-														<li><?php echo esc_html( $item ); ?></li>
-													<?php endforeach; ?>
-												</ul>
-											</div>
-										<?php endif; ?>
-									</div>
-								</div>
-							</div>
-						<?php endif; ?>
+						</div>
 					</div>
 				</div>
 			</div>
