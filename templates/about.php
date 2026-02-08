@@ -6,10 +6,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$post_id = get_the_ID();
-$acf     = function_exists( 'get_field' );
+$post_id    = get_the_ID();
+$acf_ready  = function_exists( 'get_field' ) && function_exists( 'acf' ) && is_object( acf() );
 
-$hero_bg = $acf ? get_field( 'about_hero_background', $post_id ) : '';
+$hero_bg = $acf_ready ? get_field( 'about_hero_background', $post_id ) : '';
 if ( is_array( $hero_bg ) ) {
 	$hero_bg = $hero_bg['url'] ?? '';
 }
@@ -17,32 +17,32 @@ if ( ! $hero_bg ) {
 	$hero_bg = get_template_directory_uri() . '/assets/images/services-bg.jpg';
 }
 
-$hero_kicker = $acf ? get_field( 'about_hero_kicker', $post_id ) : '';
+$hero_kicker = $acf_ready ? get_field( 'about_hero_kicker', $post_id ) : '';
 if ( ! $hero_kicker ) {
 	$hero_kicker = 'About Ludych';
 }
 
-$hero_title = $acf ? get_field( 'about_hero_title', $post_id ) : '';
+$hero_title = $acf_ready ? get_field( 'about_hero_title', $post_id ) : '';
 if ( ! $hero_title ) {
 	$hero_title = 'Building Platforms <span>That Scale. Shipping Software</span> That Matters.';
 }
 
-$hero_subtitle = $acf ? get_field( 'about_hero_subtitle', $post_id ) : '';
+$hero_subtitle = $acf_ready ? get_field( 'about_hero_subtitle', $post_id ) : '';
 if ( ! $hero_subtitle ) {
 	$hero_subtitle = 'We bridge the gap between technical excellence and measurable business outcomes.';
 }
 
-$why_title = $acf ? get_field( 'about_why_title', $post_id ) : '';
+$why_title = $acf_ready ? get_field( 'about_why_title', $post_id ) : '';
 if ( ! $why_title ) {
 	$why_title = 'Why Choose Us';
 }
 
-$why_kicker = $acf ? get_field( 'about_why_kicker', $post_id ) : '';
+$why_kicker = $acf_ready ? get_field( 'about_why_kicker', $post_id ) : '';
 if ( ! $why_kicker ) {
 	$why_kicker = 'Why Choose Us';
 }
 
-$why_heading = $acf ? get_field( 'about_why_heading', $post_id ) : '';
+$why_heading = $acf_ready ? get_field( 'about_why_heading', $post_id ) : '';
 if ( ! $why_heading ) {
 	$why_heading = 'Not Your Typical Agency <span>Here\'s Why.</span>';
 }
@@ -78,22 +78,22 @@ $why_items_fallback = array(
 	),
 );
 
-$story_title = $acf ? get_field( 'about_story_title', $post_id ) : '';
+$story_title = $acf_ready ? get_field( 'about_story_title', $post_id ) : '';
 if ( ! $story_title ) {
 	$story_title = 'Our Story';
 }
 
-$story_kicker = $acf ? get_field( 'about_story_kicker', $post_id ) : '';
+$story_kicker = $acf_ready ? get_field( 'about_story_kicker', $post_id ) : '';
 if ( ! $story_kicker ) {
 	$story_kicker = 'Our Story';
 }
 
-$story_heading = $acf ? get_field( 'about_story_heading', $post_id ) : '';
+$story_heading = $acf_ready ? get_field( 'about_story_heading', $post_id ) : '';
 if ( ! $story_heading ) {
 	$story_heading = '<span>Built by Engineers</span> Who Were Tired of the Status Quo';
 }
 
-$story_content = $acf ? get_field( 'about_story_content', $post_id ) : '';
+$story_content = $acf_ready ? get_field( 'about_story_content', $post_id ) : '';
 if ( ! $story_content ) {
 	$story_content = '<p>Ludych exists because we believe software agencies can&mdash;and should&mdash;do better. Too many promise &ldquo;world-class&rdquo; work and deliver junior developers. Too many run &ldquo;agile&rdquo; sprints without PMO discipline. Too many ship code without proper testing.</p>
 	<p>We built an agency around principles, not just profits. Every engineer is mid-to-senior level with 5+ years of production experience. Every project gets RACI clarity, RAID tracking, and transparent roadmaps. Every deployment includes automated testing in CI/CD. Every decision is backed by tracking and dashboards from Day 1.</p>
@@ -101,8 +101,8 @@ if ( ! $story_content ) {
 	<p><strong>Build boldly. Grow smart.</strong></p>';
 }
 
-$story_author_name  = $acf ? get_field( 'about_story_author_name', $post_id ) : '';
-$story_author_title = $acf ? get_field( 'about_story_author_title', $post_id ) : '';
+$story_author_name  = $acf_ready ? get_field( 'about_story_author_name', $post_id ) : '';
+$story_author_title = $acf_ready ? get_field( 'about_story_author_title', $post_id ) : '';
 if ( ! $story_author_name ) {
 	$story_author_name = 'Joseph Appleton';
 }
@@ -110,7 +110,7 @@ if ( ! $story_author_title ) {
 	$story_author_title = 'Founder & Managing Partner';
 }
 
-$story_image = $acf ? get_field( 'about_story_image', $post_id ) : '';
+$story_image = $acf_ready ? get_field( 'about_story_image', $post_id ) : '';
 if ( is_array( $story_image ) ) {
 	$story_image = $story_image['url'] ?? '';
 }
@@ -118,17 +118,17 @@ if ( ! $story_image ) {
 	$story_image = get_template_directory_uri() . '/assets/images/about-left.jpg';
 }
 
-$values_title = $acf ? get_field( 'about_values_title', $post_id ) : '';
+$values_title = $acf_ready ? get_field( 'about_values_title', $post_id ) : '';
 if ( ! $values_title ) {
 	$values_title = 'Work By';
 }
 
-$values_kicker = $acf ? get_field( 'about_values_kicker', $post_id ) : '';
+$values_kicker = $acf_ready ? get_field( 'about_values_kicker', $post_id ) : '';
 if ( ! $values_kicker ) {
 	$values_kicker = 'Values we live and work by';
 }
 
-$values_heading = $acf ? get_field( 'about_values_heading', $post_id ) : '';
+$values_heading = $acf_ready ? get_field( 'about_values_heading', $post_id ) : '';
 if ( ! $values_heading ) {
 	$values_heading = 'The Standards We Hold<br> <span>Ourselves</span> To.';
 }
@@ -156,8 +156,8 @@ $values_items_fallback = array(
 	),
 );
 
-$mission_title   = $acf ? get_field( 'about_mission_title', $post_id ) : '';
-$mission_content = $acf ? get_field( 'about_mission_content', $post_id ) : '';
+$mission_title   = $acf_ready ? get_field( 'about_mission_title', $post_id ) : '';
+$mission_content = $acf_ready ? get_field( 'about_mission_content', $post_id ) : '';
 if ( ! $mission_title ) {
 	$mission_title = 'Our Mission';
 }
@@ -165,8 +165,8 @@ if ( ! $mission_content ) {
 	$mission_content = 'Ship working software that drives measurable growth. Bridge technical excellence with business outcomes through senior engineering, PMO discipline, and QA rigor. Build boldly. Grow smart.';
 }
 
-$vision_title   = $acf ? get_field( 'about_vision_title', $post_id ) : '';
-$vision_content = $acf ? get_field( 'about_vision_content', $post_id ) : '';
+$vision_title   = $acf_ready ? get_field( 'about_vision_title', $post_id ) : '';
+$vision_content = $acf_ready ? get_field( 'about_vision_content', $post_id ) : '';
 if ( ! $vision_title ) {
 	$vision_title = 'Our Vision';
 }
@@ -174,8 +174,8 @@ if ( ! $vision_content ) {
 	$vision_content = 'To be the go-to full-stack agency for technical leaders who refuse to compromise on quality, velocity, or transparency. Where execution meets measurement.';
 }
 
-$value_title   = $acf ? get_field( 'about_value_title', $post_id ) : '';
-$value_content = $acf ? get_field( 'about_value_content', $post_id ) : '';
+$value_title   = $acf_ready ? get_field( 'about_value_title', $post_id ) : '';
+$value_content = $acf_ready ? get_field( 'about_value_content', $post_id ) : '';
 if ( ! $value_title ) {
 	$value_title = 'Our Value';
 }
@@ -187,9 +187,9 @@ if ( ! $value_content ) {
 	<strong>Velocity</strong> - 5+ years experience minimum, no exceptions';
 }
 
-$blog_title   = $acf ? get_field( 'about_blog_title', $post_id ) : '';
-$blog_kicker  = $acf ? get_field( 'about_blog_kicker', $post_id ) : '';
-$blog_heading = $acf ? get_field( 'about_blog_heading', $post_id ) : '';
+$blog_title   = $acf_ready ? get_field( 'about_blog_title', $post_id ) : '';
+$blog_kicker  = $acf_ready ? get_field( 'about_blog_kicker', $post_id ) : '';
+$blog_heading = $acf_ready ? get_field( 'about_blog_heading', $post_id ) : '';
 if ( ! $blog_title ) {
 	$blog_title = 'News & Blog';
 }
@@ -280,7 +280,7 @@ get_header();
 		<div class="busines-partner-items">
 			<div class="row">
 				<?php
-				if ( $acf && have_rows( 'about_why_items', $post_id ) ) :
+				if ( $acf_ready && have_rows( 'about_why_items', $post_id ) ) :
 					while ( have_rows( 'about_why_items', $post_id ) ) :
 						the_row();
 						$item_title = get_sub_field( 'title' );
@@ -401,7 +401,7 @@ get_header();
 				<div class="col-12">
 					<div class="content-wrapper">
 						<?php
-						if ( $acf && have_rows( 'about_values_items', $post_id ) ) :
+						if ( $acf_ready && have_rows( 'about_values_items', $post_id ) ) :
 							while ( have_rows( 'about_values_items', $post_id ) ) :
 								the_row();
 								$item_title = get_sub_field( 'title' );
