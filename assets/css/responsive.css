@@ -303,3 +303,17 @@
 	.case-study-hero {padding: 90px 0 70px;}
 	.case-study-hero__content h1 {font-size: 34px;}
 }
+
+@media only screen and (max-width: 991px) {
+	.case-study-reviews__grid {grid-template-columns: repeat(2, minmax(0, 1fr));}
+	.case-study-logo-grid {grid-template-columns: repeat(3, minmax(0, 1fr));}
+}
+
+@media only screen and (max-width: 640px) {
+	.case-study-reviews__grid {grid-template-columns: 1fr;}
+	.case-study-logo-grid {grid-template-columns: repeat(2, minmax(0, 1fr));}
+}
+
+@media only screen and (max-width: 575px) {
+	.case-study-reviews__header h2 {font-size: 30px;}
+}

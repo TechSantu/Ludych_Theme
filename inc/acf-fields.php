@@ -730,26 +730,28 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				'label'         => 'Kicker',
 				'name'          => 'case_study_kicker',
 				'type'          => 'text',
-				'default_value' => 'Case Study',
+				'default_value' => 'Ads Case Study',
 			),
 			array(
 				'key'   => 'field_case_study_subtitle',
 				'label' => 'Subtitle',
 				'name'  => 'case_study_subtitle',
 				'type'  => 'text',
+				'default_value' => 'Self Reliance Outfitters',
 			),
 			array(
 				'key'   => 'field_case_study_stat_value',
 				'label' => 'Hero Stat Value',
 				'name'  => 'case_study_stat_value',
 				'type'  => 'text',
+				'default_value' => '161%',
 			),
 			array(
 				'key'           => 'field_case_study_stat_label',
 				'label'         => 'Hero Stat Label',
 				'name'          => 'case_study_stat_label',
 				'type'          => 'text',
-				'default_value' => 'Primary Result',
+				'default_value' => 'Increase in Revenue',
 			),
 
 			array(
@@ -786,6 +788,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				'tabs'         => 'all',
 				'toolbar'      => 'basic',
 				'media_upload' => 0,
+				'default_value' => 'An American-owned premium outdoor sporting goods company focused on bushcraft and self-reliance. The brand offers 500+ products designed to help outdoor enthusiasts thrive in the field.',
 			),
 			array(
 				'key'           => 'field_case_study_what_title',
@@ -802,6 +805,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				'tabs'         => 'all',
 				'toolbar'      => 'basic',
 				'media_upload' => 0,
+				'default_value' => 'They sell camping gear, hunting equipment, survival knives, and apparel. The company also runs survival and specialty classes and publishes guides and booklets for their community.',
 			),
 
 			array(
@@ -817,6 +821,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				'tabs'         => 'all',
 				'toolbar'      => 'basic',
 				'media_upload' => 0,
+				'default_value' => 'Before partnering with our team, the brand had never used an agency for paid media. Revenue and sales had plateaued, and leadership wanted growth through search and paid media. Earlier Facebook campaigns had triggered policy issues, which left their account restricted and unable to scale.',
 			),
 
 			array(
@@ -832,6 +837,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				'tabs'         => 'all',
 				'toolbar'      => 'basic',
 				'media_upload' => 0,
+				'default_value' => 'We audited the account and traced the restriction to products flagged as potentially harmful. By refining the catalog and removing restricted items from paid placements, we lifted the policy block. We rebuilt the program with prospecting and remarketing audiences and launched a Facebook Shop to showcase products organically. We then applied our A.C.E. framework to scale.',
 			),
 			array(
 				'key'           => 'field_case_study_ace_assets',
@@ -841,6 +847,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				'instructions'  => 'Enter one bullet item per line.',
 				'rows'          => 5,
 				'new_lines'     => '',
+				'default_value' => "Built memorable ads to attract new and returning buyers.\nCreated original content to strengthen key product lines.\nLaunched a Facebook Shop to surface products to page followers.",
 			),
 			array(
 				'key'           => 'field_case_study_ace_control',
@@ -850,6 +857,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				'instructions'  => 'Enter one bullet item per line.',
 				'rows'          => 5,
 				'new_lines'     => '',
+				'default_value' => "Improved audience targeting based on performance signals.\nAggregated conversion events to stabilize tracking and optimization.",
 			),
 			array(
 				'key'           => 'field_case_study_ace_experimentation',
@@ -859,6 +867,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				'instructions'  => 'Enter one bullet item per line.',
 				'rows'          => 5,
 				'new_lines'     => '',
+				'default_value' => "Tested prospecting campaigns against a controlled audience.\nRan ad-level A/B tests with a true 50/50 budget split.",
 			),
 
 			array(
@@ -874,6 +883,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				'tabs'         => 'all',
 				'toolbar'      => 'basic',
 				'media_upload' => 0,
+				'default_value' => 'Results below are shown with client permission for the 2021 calendar year. The engagement began in February 2021. Q1 and Q2 produced strong revenue and ROAS after resolving policy issues and aligning to best practices. Q3 started well but dropped sharply due to iOS 14 attribution changes. We adjusted measurement to account for lost tracking. In Q4, we added Google Ads to capture incremental demand, leading to a 161% revenue increase compared to Q1 2021.',
 			),
 			array(
 				'key'          => 'field_case_study_results_table',
@@ -882,6 +892,36 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				'type'         => 'repeater',
 				'layout'       => 'table',
 				'button_label' => 'Add Row',
+				'default_value' => array(
+					array(
+						'period'    => 'Q1',
+						'spend'     => '$1,966.29',
+						'purchases' => '1,034',
+						'revenue'   => '$81,939.40',
+						'roas'      => '41.67',
+					),
+					array(
+						'period'    => 'Q2',
+						'spend'     => '$4,428.00',
+						'purchases' => '1,373',
+						'revenue'   => '$112,794.72',
+						'roas'      => '25.47',
+					),
+					array(
+						'period'    => 'Q3 (iOS 14 changes)',
+						'spend'     => '$4,419.93',
+						'purchases' => '916',
+						'revenue'   => '$69,038.54',
+						'roas'      => '15.61',
+					),
+					array(
+						'period'    => 'Q4',
+						'spend'     => '$8,614.49',
+						'purchases' => '2,093',
+						'revenue'   => '$213,717.45',
+						'roas'      => '24.80',
+					),
+				),
 				'sub_fields'   => array(
 					array(
 						'key'   => 'field_case_study_results_period',
@@ -917,6 +957,59 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 			),
 
 			array(
+				'key'   => 'field_cs_tab_reviews',
+				'label' => 'Reviews & Partners',
+				'type'  => 'tab',
+			),
+			array(
+				'key'           => 'field_case_study_reviews_kicker',
+				'label'         => 'Reviews Kicker',
+				'name'          => 'case_study_reviews_kicker',
+				'type'          => 'text',
+				'default_value' => 'Searchbloom',
+			),
+			array(
+				'key'           => 'field_case_study_reviews_rating',
+				'label'         => 'Reviews Rating Text',
+				'name'          => 'case_study_reviews_rating',
+				'type'          => 'text',
+				'default_value' => '4.9/5.0 Based on 99 Reviews',
+			),
+			array(
+				'key'           => 'field_case_study_reviews_badge',
+				'label'         => 'Reviews Badge',
+				'name'          => 'case_study_reviews_badge',
+				'type'          => 'text',
+				'default_value' => 'Top Rated Agency',
+			),
+			array(
+				'key'          => 'field_case_study_testimonials',
+				'label'        => 'Select Testimonials',
+				'name'         => 'case_study_testimonials',
+				'type'         => 'relationship',
+				'post_type'    => array( 'testimonial' ),
+				'return_format'=> 'id',
+				'min'          => 0,
+				'max'          => 3,
+				'filters'      => array( 'search' ),
+			),
+			array(
+				'key'           => 'field_case_study_partners_heading',
+				'label'         => 'Partners Heading',
+				'name'          => 'case_study_partners_heading',
+				'type'          => 'text',
+				'default_value' => 'You Are Much More Than a Client.',
+			),
+			array(
+				'key'           => 'field_case_study_partners_text',
+				'label'         => 'Partners Text',
+				'name'          => 'case_study_partners_text',
+				'type'          => 'textarea',
+				'rows'          => 3,
+				'default_value' => 'Hundreds of brands trust our team with growth. Here are a few we are proud to work with.',
+			),
+
+			array(
 				'key'   => 'field_cs_tab_cta',
 				'label' => 'CTA',
 				'type'  => 'tab',
@@ -926,7 +1019,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				'label'         => 'CTA Heading',
 				'name'          => 'case_study_cta_heading',
 				'type'          => 'text',
-				'default_value' => 'Every online detail checked & analyzed',
+				'default_value' => 'Want similar results? Contact us now!',
 			),
 			array(
 				'key'           => 'field_case_study_cta_text',
@@ -934,7 +1027,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				'name'          => 'case_study_cta_text',
 				'type'          => 'textarea',
 				'rows'          => 3,
-				'default_value' => 'It goes to show that every site is different. We will help you make your mark.',
+				'default_value' => 'While every site is different, we will help you make your mark.',
 			),
 			array(
 				'key'   => 'field_case_study_cta_button',
