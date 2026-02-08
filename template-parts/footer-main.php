@@ -129,12 +129,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 								</div>
 							</div>
 							<div class="col-12">
-                                <div class="office-item">
-                                    <div class="footer-map">
-                                        <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d51376610.418691374!2d-99.091086!3d38.191797!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xaa3076b5283652d9%3A0x2a5b6ef1354a7b77!2sLudych%20Technology!5e0!3m2!1sen!2sus!4v1770576168737!5m2!1sen!2sus" width="500" height="200" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                                    </div>
-                                </div>
-                            </div>
+								<div class="office-item">
+									<div class="footer-map">
+										<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d51376610.418691374!2d-99.091086!3d38.191797!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xaa3076b5283652d9%3A0x2a5b6ef1354a7b77!2sLudych%20Technology!5e0!3m2!1sen!2sus!4v1770576168737!5m2!1sen!2sus" width="500" height="200" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
