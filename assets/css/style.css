@@ -1649,6 +1649,19 @@ footer.footer {
 	margin-bottom: 30px;
 }
 
+.footer-map {
+	width: 100%;
+}
+
+.footer-map iframe {
+	display: block;
+	width: 100%;
+	height: auto;
+	min-height: 200px;
+	border: 0;
+	aspect-ratio: 16 / 9;
+}
+
 /* footer end */
 
 /* top sticky button start */
