@@ -6,8 +6,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$post_id    = get_the_ID();
-$acf_ready  = function_exists( 'get_field' ) && function_exists( 'acf' ) && is_object( acf() );
+$post_id   = get_the_ID();
+$acf_ready = function_exists( 'get_field' ) && function_exists( 'acf' ) && is_object( acf() );
 
 $hero_bg = $acf_ready ? get_field( 'about_hero_background', $post_id ) : '';
 if ( is_array( $hero_bg ) ) {
@@ -308,7 +308,7 @@ get_header();
 								<?php endif; ?>
 							</div>
 						</div>
-					<?php
+						<?php
 					endwhile;
 				else :
 					foreach ( $why_items_fallback as $item ) :
