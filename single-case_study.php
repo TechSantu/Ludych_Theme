@@ -8,7 +8,7 @@ $post_id = get_the_ID();
 
 get_header();
 
-$cs_get_field = function( $key, $default = '' ) use ( $post_id ) {
+$cs_get_field = function ( $key, $default = '' ) use ( $post_id ) {
 	if ( function_exists( 'get_field' ) ) {
 		$value = get_field( $key, $post_id );
 		if ( $value !== null && $value !== '' ) {
@@ -30,29 +30,29 @@ if ( empty( $hero_bg ) ) {
 	$hero_bg = get_template_directory_uri() . '/assets/images/services-bg.jpg';
 }
 
-$kicker      = $cs_get_field( 'case_study_kicker', 'Case Study' );
-$subtitle    = $cs_get_field( 'case_study_subtitle' );
-$stat_value  = $cs_get_field( 'case_study_stat_value' );
-$stat_label  = $cs_get_field( 'case_study_stat_label', 'Primary Result' );
-$about_title = $cs_get_field( 'case_study_about_title', 'About Our Partner' );
-$about_small = $cs_get_field( 'case_study_about_small', 'Partner Overview' );
-$who_title   = $cs_get_field( 'case_study_who_title', 'Who They Are' );
-$who_text    = $cs_get_field( 'case_study_who_text' );
-$what_title  = $cs_get_field( 'case_study_what_title', 'What They Do' );
-$what_text   = $cs_get_field( 'case_study_what_text' );
-$problem     = $cs_get_field( 'case_study_problem' );
-$solution    = $cs_get_field( 'case_study_solution' );
-$results     = $cs_get_field( 'case_study_results' );
-$reviews_kicker = $cs_get_field( 'case_study_reviews_kicker', 'Searchbloom' );
-$reviews_rating = $cs_get_field( 'case_study_reviews_rating', '4.9/5.0 Based on 99 Reviews' );
-$reviews_badge  = $cs_get_field( 'case_study_reviews_badge', 'Top Rated Agency' );
+$kicker           = $cs_get_field( 'case_study_kicker', 'Case Study' );
+$subtitle         = $cs_get_field( 'case_study_subtitle' );
+$stat_value       = $cs_get_field( 'case_study_stat_value' );
+$stat_label       = $cs_get_field( 'case_study_stat_label', 'Primary Result' );
+$about_title      = $cs_get_field( 'case_study_about_title', 'About Our Partner' );
+$about_small      = $cs_get_field( 'case_study_about_small', 'Partner Overview' );
+$who_title        = $cs_get_field( 'case_study_who_title', 'Who They Are' );
+$who_text         = $cs_get_field( 'case_study_who_text' );
+$what_title       = $cs_get_field( 'case_study_what_title', 'What They Do' );
+$what_text        = $cs_get_field( 'case_study_what_text' );
+$problem          = $cs_get_field( 'case_study_problem' );
+$solution         = $cs_get_field( 'case_study_solution' );
+$results          = $cs_get_field( 'case_study_results' );
+$reviews_kicker   = $cs_get_field( 'case_study_reviews_kicker', 'Searchbloom' );
+$reviews_rating   = $cs_get_field( 'case_study_reviews_rating', '4.9/5.0 Based on 99 Reviews' );
+$reviews_badge    = $cs_get_field( 'case_study_reviews_badge', 'Top Rated Agency' );
 $partners_heading = $cs_get_field( 'case_study_partners_heading', 'You Are Much More Than a Client.' );
 $partners_text    = $cs_get_field( 'case_study_partners_text', 'Hundreds of brands trust our team with growth. Here are a few we are proud to work with.' );
-$cta_heading = $cs_get_field( 'case_study_cta_heading', 'Want similar results? Contact us now!' );
-$cta_text    = $cs_get_field( 'case_study_cta_text', 'While every site is different, we will help you make your mark.' );
-$cta_button  = function_exists( 'get_field' ) ? get_field( 'case_study_cta_button', $post_id ) : null;
+$cta_heading      = $cs_get_field( 'case_study_cta_heading', 'Want similar results? Contact us now!' );
+$cta_text         = $cs_get_field( 'case_study_cta_text', 'While every site is different, we will help you make your mark.' );
+$cta_button       = function_exists( 'get_field' ) ? get_field( 'case_study_cta_button', $post_id ) : null;
 
-$list_from_text = function( $text ) {
+$list_from_text = function ( $text ) {
 	if ( ! $text ) {
 		return array();
 	}
@@ -67,11 +67,11 @@ $list_from_text = function( $text ) {
 	return $items;
 };
 
-$ace_assets_text = $cs_get_field( 'case_study_ace_assets' );
-$ace_control_text = $cs_get_field( 'case_study_ace_control' );
-$ace_experiment_text = $cs_get_field( 'case_study_ace_experimentation' );
-$ace_assets_items = $list_from_text( $ace_assets_text );
-$ace_control_items = $list_from_text( $ace_control_text );
+$ace_assets_text      = $cs_get_field( 'case_study_ace_assets' );
+$ace_control_text     = $cs_get_field( 'case_study_ace_control' );
+$ace_experiment_text  = $cs_get_field( 'case_study_ace_experimentation' );
+$ace_assets_items     = $list_from_text( $ace_assets_text );
+$ace_control_items    = $list_from_text( $ace_control_text );
 $ace_experiment_items = $list_from_text( $ace_experiment_text );
 
 $results_table = function_exists( 'get_field' ) ? get_field( 'case_study_results_table', $post_id ) : array();
@@ -303,11 +303,11 @@ if ( ! is_array( $selected_testimonials ) ) {
 			?>
 			<?php foreach ( $testimonial_posts as $testimonial_post ) : ?>
 				<?php
-				$testimonial_id = is_object( $testimonial_post ) ? $testimonial_post->ID : $testimonial_post;
-				$testimonial_name = get_the_title( $testimonial_id );
-				$testimonial_role = function_exists( 'get_field' ) ? get_field( 'testimonial_role', $testimonial_id ) : '';
+				$testimonial_id          = is_object( $testimonial_post ) ? $testimonial_post->ID : $testimonial_post;
+				$testimonial_name        = get_the_title( $testimonial_id );
+				$testimonial_role        = function_exists( 'get_field' ) ? get_field( 'testimonial_role', $testimonial_id ) : '';
 				$testimonial_designation = function_exists( 'get_field' ) ? get_field( 'testimonial_designation', $testimonial_id ) : '';
-				$testimonial_content = get_post_field( 'post_content', $testimonial_id );
+				$testimonial_content     = get_post_field( 'post_content', $testimonial_id );
 				?>
 				<article class="case-study-review-card">
 					<p><?php echo wp_kses_post( wpautop( $testimonial_content ) ); ?></p>
