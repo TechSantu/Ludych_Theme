@@ -433,9 +433,9 @@
 
 			// Case Study Detail Tabs
 			$(document).on('click', '[data-case-study-tabs] .case-study-tabs__btn', function () {
-				var btn = $(this);
+				var btn      = $(this);
 				var targetId = btn.data('tab-target');
-				var tabs = btn.closest('[data-case-study-tabs]');
+				var tabs     = btn.closest('[data-case-study-tabs]');
 				if ( ! targetId || ! tabs.length ) {
 					return;
 				}
@@ -449,8 +449,8 @@
 
 			// Case Study Solution Tabs (Searchbloom-style)
 			$(document).on('click', '.cs-sol-section .nav-link[data-tab]', function () {
-				var btn = $(this);
-				var tabId = btn.data('tab');
+				var btn       = $(this);
+				var tabId     = btn.data('tab');
 				var container = btn.closest('.cs-sol-section');
 				if ( ! tabId || ! container.length ) {
 					return;
@@ -463,7 +463,7 @@
 
 			// Case Study Solution Accordion (mobile)
 			$(document).on('click', '.cs-sol-section [data-toggle="collapse"] .point-title', function () {
-				var item = $(this).closest('[data-toggle="collapse"]');
+				var item   = $(this).closest('[data-toggle="collapse"]');
 				var target = item.data('target');
 				if ( ! target ) {
 					return;

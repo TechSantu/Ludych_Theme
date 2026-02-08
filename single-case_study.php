@@ -30,27 +30,27 @@ if ( empty( $hero_bg ) ) {
 	$hero_bg = get_template_directory_uri() . '/assets/images/services-bg.jpg';
 }
 
-$kicker      = $cs_get_field( 'case_study_kicker', 'Case Study' );
-$subtitle    = $cs_get_field( 'case_study_subtitle' );
-$stat_value  = $cs_get_field( 'case_study_stat_value' );
-$stat_label  = $cs_get_field( 'case_study_stat_label', 'Primary Result' );
-$about_title = $cs_get_field( 'case_study_about_title', 'About Our Partner' );
-$about_small = $cs_get_field( 'case_study_about_small', 'Partner Overview' );
-$who_title   = $cs_get_field( 'case_study_who_title', 'Who They Are' );
-$who_text    = $cs_get_field( 'case_study_who_text' );
-$what_title  = $cs_get_field( 'case_study_what_title', 'What They Do' );
-$what_text   = $cs_get_field( 'case_study_what_text' );
-$problem_title = $cs_get_field( 'case_study_problem_title', 'The Problem' );
-$problem     = $cs_get_field( 'case_study_problem' );
+$kicker         = $cs_get_field( 'case_study_kicker', 'Case Study' );
+$subtitle       = $cs_get_field( 'case_study_subtitle' );
+$stat_value     = $cs_get_field( 'case_study_stat_value' );
+$stat_label     = $cs_get_field( 'case_study_stat_label', 'Primary Result' );
+$about_title    = $cs_get_field( 'case_study_about_title', 'About Our Partner' );
+$about_small    = $cs_get_field( 'case_study_about_small', 'Partner Overview' );
+$who_title      = $cs_get_field( 'case_study_who_title', 'Who They Are' );
+$who_text       = $cs_get_field( 'case_study_who_text' );
+$what_title     = $cs_get_field( 'case_study_what_title', 'What They Do' );
+$what_text      = $cs_get_field( 'case_study_what_text' );
+$problem_title  = $cs_get_field( 'case_study_problem_title', 'The Problem' );
+$problem        = $cs_get_field( 'case_study_problem' );
 $solution_title = $cs_get_field( 'case_study_solution_title', 'The Solution' );
-$solution    = $cs_get_field( 'case_study_solution' );
-$solution_tabs = function_exists( 'get_field' ) ? get_field( 'case_study_solution_tabs', $post_id ) : array();
+$solution       = $cs_get_field( 'case_study_solution' );
+$solution_tabs  = function_exists( 'get_field' ) ? get_field( 'case_study_solution_tabs', $post_id ) : array();
 if ( ! is_array( $solution_tabs ) ) {
 	$solution_tabs = array();
 }
 $results_title = $cs_get_field( 'case_study_results_title', 'Results' );
-$results     = $cs_get_field( 'case_study_results' );
-$cta_button       = function_exists( 'get_field' ) ? get_field( 'case_study_cta_button', $post_id ) : null;
+$results       = $cs_get_field( 'case_study_results' );
+$cta_button    = function_exists( 'get_field' ) ? get_field( 'case_study_cta_button', $post_id ) : null;
 
 $list_from_text = function ( $text ) {
 	if ( ! $text ) {
@@ -356,7 +356,7 @@ if ( empty( $results_rows ) ) {
 									</tr>
 									<?php foreach ( $results_rows as $row ) : ?>
 										<?php
-										$row_values = isset( $row['row_values'] ) && is_array( $row['row_values'] ) ? $row['row_values'] : array();
+										$row_values   = isset( $row['row_values'] ) && is_array( $row['row_values'] ) ? $row['row_values'] : array();
 										$column_count = count( $results_columns );
 										?>
 										<tr>
@@ -367,7 +367,7 @@ if ( empty( $results_rows ) ) {
 													?>
 													<td><?php echo esc_html( isset( $cell['value'] ) ? $cell['value'] : '' ); ?></td>
 													<?php
-													$cell_index++;
+													++$cell_index;
 												endforeach;
 												for ( $i = $cell_index; $i < $column_count; $i++ ) :
 													?>
