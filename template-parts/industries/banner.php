@@ -49,7 +49,7 @@ if ( ! $banner_desc ) {
 					</div>
 					<h6><?php echo esc_html( $banner_eyebrow ); ?></h6>
 				</div>
-				<h5><?php echo wp_kses_post( $banner_heading ); ?></h5>
+				<h1 class="page-title"><?php echo wp_kses_post( $banner_heading ); ?></h1>
 				<?php if ( $banner_desc ) : ?>
 					<p><?php echo esc_html( $banner_desc ); ?></p>
 				<?php endif; ?>

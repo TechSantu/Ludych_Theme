@@ -398,6 +398,13 @@ textarea:focus {
 	color: #000000;
 	margin-top: 18px;
 }
+.global-header .page-title {
+	font-size: 45px;
+	font-weight: 600;
+	line-height: 60px;
+	color: #000000;
+	margin-top: 18px;
+}
 
 .global-header h5 span {
 	color: var(--button-border);
@@ -1973,6 +1980,9 @@ footer.footer {
 }
 
 .inner-banner .global-header h5 {
+	color: var(--white);
+}
+.inner-banner .global-header .page-title {
 	color: var(--white);
 }
 
