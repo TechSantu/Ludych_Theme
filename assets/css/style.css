@@ -2425,7 +2425,7 @@ footer.footer {
 	background-color: #FCFAFB;
 	border: 1px dashed #3d72fb;
 	border-radius: 30px 80px 30px 80px;
-	padding: 32px;
+	padding: 25px;
 	height: 100%;
 }
 .cs-cols-section .cs-cols {
@@ -2440,10 +2440,6 @@ footer.footer {
 }
 .cs-cols-section .row {
 	row-gap: 30px;
-}
-.cs-cols-section .cs-col-1,
-.cs-cols-section .cs-col-2 {
-	padding: 32px 36px;
 }
 
 .cs-prob-section {
