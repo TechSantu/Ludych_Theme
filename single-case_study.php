@@ -74,18 +74,7 @@ $ace_assets_items     = $list_from_text( $ace_assets_text );
 $ace_control_items    = $list_from_text( $ace_control_text );
 $ace_experiment_items = $list_from_text( $ace_experiment_text );
 
-$results_table = function_exists( 'get_field' ) ? get_field( 'case_study_results_table', $post_id ) : array();
-if ( ! is_array( $results_table ) ) {
-	$results_table = array();
-}
-$results_columns = function_exists( 'get_field' ) ? get_field( 'case_study_results_columns', $post_id ) : array();
-if ( ! is_array( $results_columns ) ) {
-	$results_columns = array();
-}
-$results_rows = function_exists( 'get_field' ) ? get_field( 'case_study_results_rows', $post_id ) : array();
-if ( ! is_array( $results_rows ) ) {
-	$results_rows = array();
-}
+$results_table_html = $cs_get_field( 'case_study_results_table_html' );
 
 $selected_testimonials = function_exists( 'get_field' ) ? get_field( 'case_study_testimonials', $post_id ) : array();
 if ( ! is_array( $selected_testimonials ) ) {
@@ -124,54 +113,8 @@ if ( empty( $solution_tabs ) ) {
 if ( empty( $results ) ) {
 	$results = 'The results below are provided with permission from the brand and cover the 2021 calendar year. Q1 and Q2 were strong for both revenue and ROAS, achieved through policy resolution and best-practice execution. Q3 saw a downturn due to iOS 14 attribution changes, but adjustments helped account for tracking loss. In Q4, adding Google Ads captured additional demand, producing a 161% revenue increase versus Q1 2021.';
 }
-if ( empty( $results_columns ) ) {
-	$results_columns = array(
-		array( 'column_label' => 'Year 2021' ),
-		array( 'column_label' => 'Spend' ),
-		array( 'column_label' => 'Purchases' ),
-		array( 'column_label' => 'Revenue' ),
-		array( 'column_label' => 'ROAS' ),
-	);
-}
-if ( empty( $results_rows ) ) {
-	$results_rows = array(
-		array(
-			'row_values' => array(
-				array( 'value' => 'Q1' ),
-				array( 'value' => '$1,966.29' ),
-				array( 'value' => '1,034' ),
-				array( 'value' => '$81,939.40' ),
-				array( 'value' => '41.67' ),
-			),
-		),
-		array(
-			'row_values' => array(
-				array( 'value' => 'Q2' ),
-				array( 'value' => '$4,428.00' ),
-				array( 'value' => '1,373' ),
-				array( 'value' => '$112,794.72' ),
-				array( 'value' => '25.47' ),
-			),
-		),
-		array(
-			'row_values' => array(
-				array( 'value' => "Q3\n(iOS 14 changes)" ),
-				array( 'value' => '$4,419.93' ),
-				array( 'value' => '916' ),
-				array( 'value' => '$69,038.54' ),
-				array( 'value' => '15.61' ),
-			),
-		),
-		array(
-			'row_values' => array(
-				array( 'value' => 'Q4' ),
-				array( 'value' => '$8,614.49' ),
-				array( 'value' => '2,093' ),
-				array( 'value' => '$213,717.45' ),
-				array( 'value' => '24.80' ),
-			),
-		),
-	);
+if ( empty( $results_table_html ) ) {
+	$results_table_html = '<table class="table table-bordered"><tbody><tr><td>Year 2021</td><td>Spend</td><td>Purchases</td><td>Revenue</td><td>ROAS</td></tr><tr><td>Q1</td><td>$1,966.29</td><td>1,034</td><td>$81,939.40</td><td>41.67</td></tr><tr><td>Q2</td><td>$4,428.00</td><td>1,373</td><td>$112,794.72</td><td>25.47</td></tr><tr><td>Q3<br><small>(iOS 14 changes)</small></td><td>$4,419.93</td><td>916</td><td>$69,038.54</td><td>15.61</td></tr><tr><td>Q4</td><td>$8,614.49</td><td>2,093</td><td>$213,717.45</td><td>24.80</td></tr></tbody></table>';
 }
 ?>
 
@@ -276,55 +219,15 @@ if ( empty( $results_rows ) ) {
 							</div>
 						<?php endif; ?>
 
-						<div class="d-md-flex d-none cs-sol-tabs-top">
-							<ul class="nav nav-pills nav-stacked flex-row w-100" role="tablist" aria-orientation="horizontal">
-								<?php foreach ( $solution_tabs as $index => $tab ) : ?>
-									<?php
-									$tab_id    = 'tab_' . ( $index + 1 );
-									$is_active = 0 === $index;
-									?>
-									<li class="<?php echo $is_active ? 'active' : ''; ?>">
-										<span class="nav-link d-block<?php echo $is_active ? ' active' : ''; ?>" data-tab="<?php echo esc_attr( $tab_id ); ?>">
-											<?php echo esc_html( isset( $tab['tab_title'] ) ? $tab['tab_title'] : '' ); ?>
-										</span>
-									</li>
-								<?php endforeach; ?>
-							</ul>
-						</div>
-						<div class="tab-content p-0 d-flex flex-column h-100 d-md-block d-none">
-							<?php foreach ( $solution_tabs as $index => $tab ) : ?>
-								<?php
-								$tab_id    = 'tab_' . ( $index + 1 );
-								$is_active = 0 === $index;
-								?>
-								<div class="tab-pane<?php echo $is_active ? ' active' : ''; ?>" id="<?php echo esc_attr( $tab_id ); ?>" role="tabpanel">
-									<?php echo wp_kses_post( wpautop( isset( $tab['tab_content'] ) ? $tab['tab_content'] : '' ) ); ?>
+						<div class="cs-expertise-grid">
+							<?php foreach ( $solution_tabs as $tab ) : ?>
+								<div class="expertise-card">
+									<div class="expertise-info">
+										<h3><?php echo esc_html( isset( $tab['tab_title'] ) ? $tab['tab_title'] : '' ); ?></h3>
+										<?php echo wp_kses_post( wpautop( isset( $tab['tab_content'] ) ? $tab['tab_content'] : '' ) ); ?>
+									</div>
 								</div>
 							<?php endforeach; ?>
-						</div>
-
-						<div class="d-md-none">
-							<div id="tabContentCS">
-								<ul class="nav flex-column point-list mw-100">
-									<?php foreach ( $solution_tabs as $index => $tab ) : ?>
-										<?php
-										$collapse_id = 'collapse' . ( $index + 1 );
-										$is_active   = 0 === $index;
-										?>
-										<li data-toggle="collapse" data-target="#<?php echo esc_attr( $collapse_id ); ?>" aria-expanded="<?php echo $is_active ? 'true' : 'false'; ?>" aria-controls="<?php echo esc_attr( $collapse_id ); ?>">
-											<div class="point-title">
-												<span class="ptitle"><?php echo esc_html( isset( $tab['tab_title'] ) ? $tab['tab_title'] : '' ); ?></span>
-												<i class="point-caret fa fa-caret-down" aria-hidden="true"></i>
-											</div>
-											<div id="<?php echo esc_attr( $collapse_id ); ?>" class="collapse<?php echo $is_active ? ' show' : ''; ?>" data-parent="#tabContentCS">
-												<div class="point-desc">
-													<?php echo wp_kses_post( wpautop( isset( $tab['tab_content'] ) ? $tab['tab_content'] : '' ) ); ?>
-												</div>
-											</div>
-										</li>
-									<?php endforeach; ?>
-								</ul>
-							</div>
 						</div>
 					</div>
 				</div>
@@ -333,7 +236,7 @@ if ( empty( $results_rows ) ) {
 	</section>
 <?php endif; ?>
 
-<?php if ( $results || $results_table || $results_columns || $results_rows ) : ?>
+<?php if ( $results || $results_table_html ) : ?>
 	<section class="cs-section cs-cols-section cs-result-section py-lg-5 border-bottom-0">
 		<div class="custom-container">
 			<h2 class="cs-section-title mt-0 mb-4"><?php echo esc_html( $results_title ); ?></h2>
@@ -346,65 +249,8 @@ if ( empty( $results_rows ) ) {
 			<div class="cs-results-tholder pb-3">
 				<div class="cs-table-box mb-4 table-responsive">
 					<div class="table-responsive table-selfr">
-						<?php if ( $results_columns && $results_rows ) : ?>
-							<table class="table table-bordered">
-								<tbody>
-									<tr>
-										<?php foreach ( $results_columns as $column ) : ?>
-											<td><?php echo esc_html( isset( $column['column_label'] ) ? $column['column_label'] : '' ); ?></td>
-										<?php endforeach; ?>
-									</tr>
-									<?php foreach ( $results_rows as $row ) : ?>
-										<?php
-										$row_values   = isset( $row['row_values'] ) && is_array( $row['row_values'] ) ? $row['row_values'] : array();
-										$column_count = count( $results_columns );
-										?>
-										<tr>
-											<?php
-											if ( ! empty( $row_values ) ) :
-												$cell_index = 0;
-												foreach ( $row_values as $cell ) :
-													?>
-													<td><?php echo esc_html( isset( $cell['value'] ) ? $cell['value'] : '' ); ?></td>
-													<?php
-													++$cell_index;
-												endforeach;
-												for ( $i = $cell_index; $i < $column_count; $i++ ) :
-													?>
-													<td></td>
-													<?php
-												endfor;
-											elseif ( ! empty( $row['row_label'] ) ) :
-												?>
-												<td colspan="<?php echo esc_attr( max( 1, $column_count ) ); ?>"><?php echo esc_html( $row['row_label'] ); ?></td>
-												<?php
-											endif;
-											?>
-										</tr>
-									<?php endforeach; ?>
-								</tbody>
-							</table>
-						<?php elseif ( $results_table ) : ?>
-							<table class="table table-bordered">
-								<tbody>
-									<tr>
-										<td>Year 2021</td>
-										<td>Spend</td>
-										<td>Purchases</td>
-										<td>Revenue</td>
-										<td>ROAS</td>
-									</tr>
-									<?php foreach ( $results_table as $row ) : ?>
-										<tr>
-											<td><?php echo esc_html( isset( $row['period'] ) ? $row['period'] : '' ); ?></td>
-											<td><?php echo esc_html( isset( $row['spend'] ) ? $row['spend'] : '' ); ?></td>
-											<td><?php echo esc_html( isset( $row['purchases'] ) ? $row['purchases'] : '' ); ?></td>
-											<td><?php echo esc_html( isset( $row['revenue'] ) ? $row['revenue'] : '' ); ?></td>
-											<td><?php echo esc_html( isset( $row['roas'] ) ? $row['roas'] : '' ); ?></td>
-										</tr>
-									<?php endforeach; ?>
-								</tbody>
-							</table>
+						<?php if ( $results_table_html ) : ?>
+							<?php echo wp_kses_post( $results_table_html ); ?>
 						<?php endif; ?>
 					</div>
 				</div>
