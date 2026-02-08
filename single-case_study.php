@@ -50,13 +50,6 @@ if ( ! is_array( $solution_tabs ) ) {
 }
 $results_title = $cs_get_field( 'case_study_results_title', 'Results' );
 $results     = $cs_get_field( 'case_study_results' );
-$reviews_kicker = $cs_get_field( 'case_study_reviews_kicker', 'Searchbloom' );
-$reviews_rating = $cs_get_field( 'case_study_reviews_rating', '4.9/5.0 Based on 99 Reviews' );
-$reviews_badge  = $cs_get_field( 'case_study_reviews_badge', 'Top Rated Agency' );
-$partners_heading = $cs_get_field( 'case_study_partners_heading', 'You Are Much More Than a Client.' );
-$partners_text    = $cs_get_field( 'case_study_partners_text', 'Hundreds of brands trust our team with growth. Here are a few we are proud to work with.' );
-$cta_heading      = $cs_get_field( 'case_study_cta_heading', 'Want similar results? Contact us now!' );
-$cta_text         = $cs_get_field( 'case_study_cta_text', 'While every site is different, we will help you make your mark.' );
 $cta_button       = function_exists( 'get_field' ) ? get_field( 'case_study_cta_button', $post_id ) : null;
 
 $list_from_text = function ( $text ) {
@@ -181,92 +174,96 @@ if ( ! is_array( $selected_testimonials ) ) {
 	</section>
 <?php endif; ?>
 
-<?php if ( $problem ) : ?>
-	<section class="case-study-section grey-bg">
+<?php if ( $problem || $solution || $solution_tabs || $ace_assets_items || $ace_control_items || $ace_experiment_items ) : ?>
+	<section class="case-study-section case-study-two-up">
 		<div class="custom-container">
-			<div class="global-header">
-				<h2><?php echo esc_html( $problem_title ); ?></h2>
-			</div>
-			<?php echo wp_kses_post( wpautop( $problem ) ); ?>
-		</div>
-	</section>
-<?php endif; ?>
-
-<?php if ( $solution || $solution_tabs || $ace_assets_items || $ace_control_items || $ace_experiment_items ) : ?>
-	<section class="case-study-section">
-		<div class="custom-container">
-			<div class="global-header">
-				<h2><?php echo esc_html( $solution_title ); ?></h2>
-			</div>
-			<?php if ( $solution ) : ?>
-				<?php echo wp_kses_post( wpautop( $solution ) ); ?>
-			<?php endif; ?>
-
-			<?php if ( ! empty( $solution_tabs ) ) : ?>
-				<div class="case-study-tabs" data-case-study-tabs>
-					<div class="case-study-tabs__nav" role="tablist">
-						<?php foreach ( $solution_tabs as $index => $tab ) : ?>
-							<?php
-							$tab_id = 'cs-tab-' . ( $index + 1 );
-							$is_active = 0 === $index;
-							?>
-							<button class="case-study-tabs__btn<?php echo $is_active ? ' is-active' : ''; ?>" type="button" data-tab-target="<?php echo esc_attr( $tab_id ); ?>" role="tab" aria-selected="<?php echo $is_active ? 'true' : 'false'; ?>">
-								<?php echo esc_html( isset( $tab['tab_title'] ) ? $tab['tab_title'] : '' ); ?>
-							</button>
-						<?php endforeach; ?>
+			<div class="row">
+				<?php if ( $problem ) : ?>
+					<div class="col-lg-6">
+						<div class="case-study-two-up__card case-study-two-up__card--problem">
+							<h2><?php echo esc_html( $problem_title ); ?></h2>
+							<?php echo wp_kses_post( wpautop( $problem ) ); ?>
+						</div>
 					</div>
-					<div class="case-study-tabs__panels">
-						<?php foreach ( $solution_tabs as $index => $tab ) : ?>
-							<?php
-							$tab_id = 'cs-tab-' . ( $index + 1 );
-							$is_active = 0 === $index;
-							?>
-							<div class="case-study-tabs__panel<?php echo $is_active ? ' is-active' : ''; ?>" id="<?php echo esc_attr( $tab_id ); ?>" role="tabpanel">
-								<?php echo wp_kses_post( wpautop( isset( $tab['tab_content'] ) ? $tab['tab_content'] : '' ) ); ?>
-							</div>
-						<?php endforeach; ?>
+				<?php endif; ?>
+
+				<?php if ( $solution || $solution_tabs || $ace_assets_items || $ace_control_items || $ace_experiment_items ) : ?>
+					<div class="col-lg-6">
+						<div class="case-study-two-up__card case-study-two-up__card--solution">
+							<h2><?php echo esc_html( $solution_title ); ?></h2>
+							<?php if ( $solution ) : ?>
+								<?php echo wp_kses_post( wpautop( $solution ) ); ?>
+							<?php endif; ?>
+
+							<?php if ( ! empty( $solution_tabs ) ) : ?>
+								<div class="case-study-tabs" data-case-study-tabs>
+									<div class="case-study-tabs__nav" role="tablist">
+										<?php foreach ( $solution_tabs as $index => $tab ) : ?>
+											<?php
+											$tab_id = 'cs-tab-' . ( $index + 1 );
+											$is_active = 0 === $index;
+											?>
+											<button class="case-study-tabs__btn<?php echo $is_active ? ' is-active' : ''; ?>" type="button" data-tab-target="<?php echo esc_attr( $tab_id ); ?>" role="tab" aria-selected="<?php echo $is_active ? 'true' : 'false'; ?>">
+												<?php echo esc_html( isset( $tab['tab_title'] ) ? $tab['tab_title'] : '' ); ?>
+											</button>
+										<?php endforeach; ?>
+									</div>
+									<div class="case-study-tabs__panels">
+										<?php foreach ( $solution_tabs as $index => $tab ) : ?>
+											<?php
+											$tab_id = 'cs-tab-' . ( $index + 1 );
+											$is_active = 0 === $index;
+											?>
+											<div class="case-study-tabs__panel<?php echo $is_active ? ' is-active' : ''; ?>" id="<?php echo esc_attr( $tab_id ); ?>" role="tabpanel">
+												<?php echo wp_kses_post( wpautop( isset( $tab['tab_content'] ) ? $tab['tab_content'] : '' ) ); ?>
+											</div>
+										<?php endforeach; ?>
+									</div>
+								</div>
+							<?php elseif ( $ace_assets_items || $ace_control_items || $ace_experiment_items ) : ?>
+								<div class="row case-study-ace-grid">
+									<?php if ( $ace_assets_items ) : ?>
+										<div class="col-12">
+											<div class="case-study-ace-card">
+												<h4>Assets</h4>
+												<ul>
+													<?php foreach ( $ace_assets_items as $item ) : ?>
+														<li><?php echo esc_html( $item ); ?></li>
+													<?php endforeach; ?>
+												</ul>
+											</div>
+										</div>
+									<?php endif; ?>
+									<?php if ( $ace_control_items ) : ?>
+										<div class="col-12">
+											<div class="case-study-ace-card">
+												<h4>Control</h4>
+												<ul>
+													<?php foreach ( $ace_control_items as $item ) : ?>
+														<li><?php echo esc_html( $item ); ?></li>
+													<?php endforeach; ?>
+												</ul>
+											</div>
+										</div>
+									<?php endif; ?>
+									<?php if ( $ace_experiment_items ) : ?>
+										<div class="col-12">
+											<div class="case-study-ace-card">
+												<h4>Experimentation</h4>
+												<ul>
+													<?php foreach ( $ace_experiment_items as $item ) : ?>
+														<li><?php echo esc_html( $item ); ?></li>
+													<?php endforeach; ?>
+												</ul>
+											</div>
+										</div>
+									<?php endif; ?>
+								</div>
+							<?php endif; ?>
+						</div>
 					</div>
-				</div>
-			<?php elseif ( $ace_assets_items || $ace_control_items || $ace_experiment_items ) : ?>
-				<div class="row case-study-ace-grid">
-					<?php if ( $ace_assets_items ) : ?>
-						<div class="col-lg-4">
-							<div class="case-study-ace-card">
-								<h4>Assets</h4>
-								<ul>
-									<?php foreach ( $ace_assets_items as $item ) : ?>
-										<li><?php echo esc_html( $item ); ?></li>
-									<?php endforeach; ?>
-								</ul>
-							</div>
-						</div>
-					<?php endif; ?>
-					<?php if ( $ace_control_items ) : ?>
-						<div class="col-lg-4">
-							<div class="case-study-ace-card">
-								<h4>Control</h4>
-								<ul>
-									<?php foreach ( $ace_control_items as $item ) : ?>
-										<li><?php echo esc_html( $item ); ?></li>
-									<?php endforeach; ?>
-								</ul>
-							</div>
-						</div>
-					<?php endif; ?>
-					<?php if ( $ace_experiment_items ) : ?>
-						<div class="col-lg-4">
-							<div class="case-study-ace-card">
-								<h4>Experimentation</h4>
-								<ul>
-									<?php foreach ( $ace_experiment_items as $item ) : ?>
-										<li><?php echo esc_html( $item ); ?></li>
-									<?php endforeach; ?>
-								</ul>
-							</div>
-						</div>
-					<?php endif; ?>
-				</div>
-			<?php endif; ?>
+				<?php endif; ?>
+			</div>
 		</div>
 	</section>
 <?php endif; ?>
@@ -352,140 +349,6 @@ if ( ! is_array( $selected_testimonials ) ) {
 		</div>
 	</section>
 <?php endif; ?>
-
-<section class="case-study-reviews">
-	<div class="custom-container">
-		<div class="case-study-reviews__header">
-			<?php if ( $reviews_kicker ) : ?>
-				<span class="case-study-reviews__kicker"><?php echo esc_html( $reviews_kicker ); ?></span>
-			<?php endif; ?>
-			<?php if ( $reviews_rating ) : ?>
-				<h2><?php echo esc_html( $reviews_rating ); ?></h2>
-			<?php endif; ?>
-			<?php if ( $reviews_badge ) : ?>
-				<span class="case-study-reviews__badge"><?php echo esc_html( $reviews_badge ); ?></span>
-			<?php endif; ?>
-		</div>
-
-		<div class="case-study-reviews__grid">
-			<?php
-			$testimonial_posts = array();
-			if ( ! empty( $selected_testimonials ) ) {
-				$testimonial_posts = $selected_testimonials;
-			} else {
-				$testimonial_query = new WP_Query( array(
-					'post_type'      => 'testimonial',
-					'posts_per_page' => 3,
-					'post_status'    => 'publish',
-				) );
-				if ( $testimonial_query->have_posts() ) {
-					$testimonial_posts = $testimonial_query->posts;
-				}
-			}
-			?>
-			<?php foreach ( $testimonial_posts as $testimonial_post ) : ?>
-				<?php
-				$testimonial_id          = is_object( $testimonial_post ) ? $testimonial_post->ID : $testimonial_post;
-				$testimonial_name        = get_the_title( $testimonial_id );
-				$testimonial_role        = function_exists( 'get_field' ) ? get_field( 'testimonial_role', $testimonial_id ) : '';
-				$testimonial_designation = function_exists( 'get_field' ) ? get_field( 'testimonial_designation', $testimonial_id ) : '';
-				$testimonial_content     = get_post_field( 'post_content', $testimonial_id );
-				?>
-				<article class="case-study-review-card">
-					<p><?php echo wp_kses_post( wpautop( $testimonial_content ) ); ?></p>
-					<div class="case-study-review-card__meta">
-						<strong><?php echo esc_html( $testimonial_name ); ?></strong>
-						<?php if ( $testimonial_role || $testimonial_designation ) : ?>
-							<span><?php echo esc_html( $testimonial_role ? $testimonial_role : $testimonial_designation ); ?></span>
-						<?php endif; ?>
-					</div>
-				</article>
-			<?php endforeach; ?>
-		</div>
-	</div>
-</section>
-
-<section class="case-study-partners">
-	<div class="custom-container">
-		<div class="global-header text-center">
-			<h2><?php echo esc_html( $partners_heading ); ?></h2>
-			<?php if ( $partners_text ) : ?>
-				<p><?php echo esc_html( $partners_text ); ?></p>
-			<?php endif; ?>
-		</div>
-		<div class="case-study-logo-grid">
-			<?php
-			$logos_query = new WP_Query( array(
-				'post_type'      => 'client_logo',
-				'post_status'    => 'publish',
-				'posts_per_page' => -1,
-				'orderby'        => 'menu_order',
-				'order'          => 'ASC',
-			) );
-
-			if ( $logos_query->have_posts() ) :
-				while ( $logos_query->have_posts() ) :
-					$logos_query->the_post();
-					$logo_id  = get_post_thumbnail_id();
-					$logo_alt = get_post_meta( $logo_id, '_wp_attachment_image_alt', true );
-					if ( $logo_id ) :
-						?>
-						<div class="case-study-logo-item">
-							<?php
-							echo wp_get_attachment_image(
-								$logo_id,
-								'full',
-								false,
-								array(
-									'alt' => esc_attr( $logo_alt ? $logo_alt : get_the_title() ),
-								)
-							);
-							?>
-						</div>
-						<?php
-					endif;
-				endwhile;
-				wp_reset_postdata();
-			else :
-				$default_logos = array(
-					get_template_directory_uri() . '/assets/images/case-studies/logo-1.png',
-					get_template_directory_uri() . '/assets/images/case-studies/logo-2.png',
-					get_template_directory_uri() . '/assets/images/case-studies/logo-3.png',
-					get_template_directory_uri() . '/assets/images/case-studies/logo-4.png',
-					get_template_directory_uri() . '/assets/images/case-studies/logo-5.png',
-				);
-				foreach ( $default_logos as $logo_url ) :
-					?>
-					<div class="case-study-logo-item">
-						<img src="<?php echo esc_url( $logo_url ); ?>" alt="Client Logo">
-					</div>
-					<?php
-				endforeach;
-			endif;
-			?>
-		</div>
-	</div>
-</section>
-
-<section class="case-study-section">
-	<div class="custom-container case-study-cta">
-		<div>
-			<h2><?php echo wp_kses_post( $cta_heading ); ?></h2>
-			<p><?php echo wp_kses_post( $cta_text ); ?></p>
-		</div>
-		<?php
-		if ( is_array( $cta_button ) && ! empty( $cta_button['url'] ) ) :
-			?>
-			<a href="<?php echo esc_url( $cta_button['url'] ); ?>" target="<?php echo esc_attr( $cta_button['target'] ? $cta_button['target'] : '_self' ); ?>" class="globalBtnDark">
-				<span><?php echo esc_html( $cta_button['title'] ? $cta_button['title'] : 'Free Action Plan' ); ?> <i class="fa-solid fa-arrow-right-long"></i></span>
-			</a>
-		<?php else : ?>
-			<a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="globalBtnDark">
-				<span>Free Action Plan <i class="fa-solid fa-arrow-right-long"></i></span>
-			</a>
-		<?php endif; ?>
-	</div>
-</section>
 
 <?php get_template_part( 'template-parts/Home/client-logos' ); ?>
 

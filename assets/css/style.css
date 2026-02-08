@@ -2386,6 +2386,17 @@ footer.footer {
 .case-study-ace-card h4 {margin-bottom: 14px; color: var(--secondary-light);}
 .case-study-ace-card ul {margin: 0; padding-left: 20px;}
 .case-study-ace-card li {margin-bottom: 10px; color: #4e5b73;}
+.case-study-two-up .row {gap: 30px 0;}
+.case-study-two-up__card {
+	background: var(--white);
+	padding: 32px;
+	border-radius: 20px;
+	box-shadow: 0 18px 40px rgba(2, 14, 55, 0.08);
+	height: 100%;
+}
+.case-study-two-up__card h2 {margin-bottom: 16px;}
+.case-study-two-up__card--problem {border-top: 4px solid #ff7a59;}
+.case-study-two-up__card--solution {border-top: 4px solid var(--button-border);}
 .case-study-table-wrap {margin-top: 30px; overflow-x: auto;}
 .case-study-table {
 	width: 100%;
