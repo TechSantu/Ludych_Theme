@@ -291,3 +291,15 @@
 	.why-Onchoose-us .content-wrapper{grid-template-columns: repeat(1, 1fr);}
 
 }
+
+@media only screen and (max-width: 991px) {
+	.case-study-hero__grid {grid-template-columns: 1fr;}
+	.case-study-stat-card {margin-left: 0;}
+	.case-study-hero__content h1 {font-size: 42px;}
+	.case-study-cta {flex-direction: column; align-items: flex-start;}
+}
+
+@media only screen and (max-width: 575px) {
+	.case-study-hero {padding: 90px 0 70px;}
+	.case-study-hero__content h1 {font-size: 34px;}
+}

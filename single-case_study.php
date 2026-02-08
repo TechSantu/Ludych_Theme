@@ -7,13 +7,118 @@ global $post_id;
 $post_id = get_the_ID();
 
 get_header();
+
+$cs_get_field = function( $key, $default = '' ) use ( $post_id ) {
+	if ( function_exists( 'get_field' ) ) {
+		$value = get_field( $key, $post_id );
+		if ( $value !== null && $value !== '' ) {
+			return $value;
+		}
+	}
+	$meta = get_post_meta( $post_id, $key, true );
+	if ( $meta !== '' ) {
+		return $meta;
+	}
+	return $default;
+};
+
+$hero_bg = $cs_get_field( 'case_study_hero_background' );
+if ( empty( $hero_bg ) ) {
+	$hero_bg = get_the_post_thumbnail_url( $post_id, 'full' );
+}
+if ( empty( $hero_bg ) ) {
+	$hero_bg = get_template_directory_uri() . '/assets/images/services-bg.jpg';
+}
+
+$kicker      = $cs_get_field( 'case_study_kicker', 'Case Study' );
+$subtitle    = $cs_get_field( 'case_study_subtitle' );
+$stat_value  = $cs_get_field( 'case_study_stat_value' );
+$stat_label  = $cs_get_field( 'case_study_stat_label', 'Primary Result' );
+$about_title = $cs_get_field( 'case_study_about_title', 'About Our Partner' );
+$about_small = $cs_get_field( 'case_study_about_small', 'Partner Overview' );
+$who_title   = $cs_get_field( 'case_study_who_title', 'Who They Are' );
+$who_text    = $cs_get_field( 'case_study_who_text' );
+$what_title  = $cs_get_field( 'case_study_what_title', 'What They Do' );
+$what_text   = $cs_get_field( 'case_study_what_text' );
+$problem     = $cs_get_field( 'case_study_problem' );
+$solution    = $cs_get_field( 'case_study_solution' );
+$results     = $cs_get_field( 'case_study_results' );
+$cta_heading = $cs_get_field( 'case_study_cta_heading', 'Every online detail checked &amp; analyzed' );
+$cta_text    = $cs_get_field( 'case_study_cta_text', 'It goes to show that every site is different. We will help you make your mark.' );
+$cta_button  = function_exists( 'get_field' ) ? get_field( 'case_study_cta_button', $post_id ) : null;
+
+$list_from_text = function( $text ) {
+	if ( ! $text ) {
+		return array();
+	}
+	$lines = preg_split( '/\r\n|\r|\n/', wp_strip_all_tags( $text ) );
+	$items = array();
+	foreach ( $lines as $line ) {
+		$line = trim( $line );
+		if ( $line !== '' ) {
+			$items[] = $line;
+		}
+	}
+	return $items;
+};
+
+$ace_assets_text = $cs_get_field( 'case_study_ace_assets' );
+$ace_control_text = $cs_get_field( 'case_study_ace_control' );
+$ace_experiment_text = $cs_get_field( 'case_study_ace_experimentation' );
+$ace_assets_items = $list_from_text( $ace_assets_text );
+$ace_control_items = $list_from_text( $ace_control_text );
+$ace_experiment_items = $list_from_text( $ace_experiment_text );
+
+$results_table = function_exists( 'get_field' ) ? get_field( 'case_study_results_table', $post_id ) : array();
+if ( ! is_array( $results_table ) ) {
+	$results_table = array();
+}
 ?>
 
-<section class="inner-banner-wrap with-overlay text-center" style="background-image: url('<?php echo esc_url( get_template_directory_uri() . '/assets/images/services-bg.jpg' ); ?>');">
+<section class="case-study-hero with-overlay" style="background-image: url('<?php echo esc_url( $hero_bg ); ?>');">
 	<div class="custom-container">
-		<div class="inner-banner">
-			<div class="global-header blogs">
-				<h2>Case Study</h2>
+		<div class="case-study-hero__grid">
+			<div class="case-study-hero__content">
+				<?php if ( $kicker ) : ?>
+					<span class="case-study-kicker"><?php echo esc_html( $kicker ); ?></span>
+				<?php endif; ?>
+				<h1><?php the_title(); ?></h1>
+				<?php if ( $subtitle ) : ?>
+					<p class="case-study-subtitle"><?php echo esc_html( $subtitle ); ?></p>
+				<?php endif; ?>
+				<div class="case-study-hero__cta">
+					<?php
+					$default_cta_url   = home_url( '/contact/' );
+					$default_cta_title = 'Free Action Plan';
+					if ( is_array( $cta_button ) && ! empty( $cta_button['url'] ) ) :
+						?>
+						<a href="<?php echo esc_url( $cta_button['url'] ); ?>" target="<?php echo esc_attr( $cta_button['target'] ? $cta_button['target'] : '_self' ); ?>" class="globalBtnDark">
+							<span><?php echo esc_html( $cta_button['title'] ? $cta_button['title'] : $default_cta_title ); ?> <i class="fa-solid fa-arrow-right-long"></i></span>
+						</a>
+					<?php else : ?>
+						<a href="<?php echo esc_url( $default_cta_url ); ?>" class="globalBtnDark">
+							<span><?php echo esc_html( $default_cta_title ); ?> <i class="fa-solid fa-arrow-right-long"></i></span>
+						</a>
+					<?php endif; ?>
+				</div>
+			</div>
+			<?php if ( $stat_value ) : ?>
+				<div class="case-study-hero__stat">
+					<div class="case-study-stat-card">
+						<span class="case-study-stat"><?php echo esc_html( $stat_value ); ?></span>
+						<p><?php echo esc_html( $stat_label ); ?></p>
+					</div>
+				</div>
+			<?php endif; ?>
+		</div>
+	</div>
+</section>
+
+<?php if ( $who_text || $what_text ) : ?>
+	<section class="case-study-section">
+		<div class="custom-container">
+			<div class="global-header text-center">
+				<h2><?php echo esc_html( $about_title ); ?></h2>
 				<div class="min-title">
 					<div class="icon-box">
 						<svg xmlns="http://www.w3.org/2000/svg" width="39" height="39" viewBox="0 0 39 39" fill="none">
@@ -26,33 +131,157 @@ get_header();
 							</defs>
 						</svg>
 					</div>
-					<h6><?php the_title(); ?></h6>
+					<h6><?php echo esc_html( $about_small ); ?></h6>
 				</div>
 			</div>
-		</div>
-	</div>
-</section>
-
-<section class="our-blog grey-bg">
-		<div class="custom-container">            
-			<div class="row">
-				<div class="col-12">
-					<div class="blog-details">
-						
-						<div class="blog-detail-text">
-							<span class="post-date">
-								<?php echo strtoupper( get_the_date( 'D' ) ) . get_the_date( ' F j, Y' ); ?>
-							</span>
-
-							<h1><?php the_title(); ?></h1>
-							
-							<?php the_content(); ?>
-						</div>                        
+			<div class="row case-study-grid">
+				<?php if ( $who_text ) : ?>
+					<div class="col-lg-6">
+						<div class="case-study-card">
+							<h3><?php echo esc_html( $who_title ); ?></h3>
+							<?php echo wp_kses_post( wpautop( $who_text ) ); ?>
+						</div>
 					</div>
-				</div>
+				<?php endif; ?>
+				<?php if ( $what_text ) : ?>
+					<div class="col-lg-6">
+						<div class="case-study-card">
+							<h3><?php echo esc_html( $what_title ); ?></h3>
+							<?php echo wp_kses_post( wpautop( $what_text ) ); ?>
+						</div>
+					</div>
+				<?php endif; ?>
 			</div>
 		</div>
 	</section>
+<?php endif; ?>
+
+<?php if ( $problem ) : ?>
+	<section class="case-study-section grey-bg">
+		<div class="custom-container">
+			<div class="global-header">
+				<h2>The Problem</h2>
+			</div>
+			<?php echo wp_kses_post( wpautop( $problem ) ); ?>
+		</div>
+	</section>
+<?php endif; ?>
+
+<?php if ( $solution || $ace_assets_items || $ace_control_items || $ace_experiment_items ) : ?>
+	<section class="case-study-section">
+		<div class="custom-container">
+			<div class="global-header">
+				<h2>The Solution</h2>
+			</div>
+			<?php if ( $solution ) : ?>
+				<?php echo wp_kses_post( wpautop( $solution ) ); ?>
+			<?php endif; ?>
+
+			<?php if ( $ace_assets_items || $ace_control_items || $ace_experiment_items ) : ?>
+				<div class="row case-study-ace-grid">
+					<?php if ( $ace_assets_items ) : ?>
+						<div class="col-lg-4">
+							<div class="case-study-ace-card">
+								<h4>Assets</h4>
+								<ul>
+									<?php foreach ( $ace_assets_items as $item ) : ?>
+										<li><?php echo esc_html( $item ); ?></li>
+									<?php endforeach; ?>
+								</ul>
+							</div>
+						</div>
+					<?php endif; ?>
+					<?php if ( $ace_control_items ) : ?>
+						<div class="col-lg-4">
+							<div class="case-study-ace-card">
+								<h4>Control</h4>
+								<ul>
+									<?php foreach ( $ace_control_items as $item ) : ?>
+										<li><?php echo esc_html( $item ); ?></li>
+									<?php endforeach; ?>
+								</ul>
+							</div>
+						</div>
+					<?php endif; ?>
+					<?php if ( $ace_experiment_items ) : ?>
+						<div class="col-lg-4">
+							<div class="case-study-ace-card">
+								<h4>Experimentation</h4>
+								<ul>
+									<?php foreach ( $ace_experiment_items as $item ) : ?>
+										<li><?php echo esc_html( $item ); ?></li>
+									<?php endforeach; ?>
+								</ul>
+							</div>
+						</div>
+					<?php endif; ?>
+				</div>
+			<?php endif; ?>
+		</div>
+	</section>
+<?php endif; ?>
+
+<?php if ( $results || $results_table ) : ?>
+	<section class="case-study-section grey-bg">
+		<div class="custom-container">
+			<div class="global-header">
+				<h2>Results</h2>
+			</div>
+			<?php if ( $results ) : ?>
+				<?php echo wp_kses_post( wpautop( $results ) ); ?>
+			<?php endif; ?>
+
+			<?php if ( $results_table ) : ?>
+				<div class="case-study-table-wrap">
+					<table class="case-study-table">
+						<thead>
+							<tr>
+								<th>Period</th>
+								<th>Spend</th>
+								<th>Purchases</th>
+								<th>Revenue</th>
+								<th>ROAS</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php foreach ( $results_table as $row ) : ?>
+								<tr>
+									<td><?php echo esc_html( isset( $row['period'] ) ? $row['period'] : '' ); ?></td>
+									<td><?php echo esc_html( isset( $row['spend'] ) ? $row['spend'] : '' ); ?></td>
+									<td><?php echo esc_html( isset( $row['purchases'] ) ? $row['purchases'] : '' ); ?></td>
+									<td><?php echo esc_html( isset( $row['revenue'] ) ? $row['revenue'] : '' ); ?></td>
+									<td><?php echo esc_html( isset( $row['roas'] ) ? $row['roas'] : '' ); ?></td>
+								</tr>
+							<?php endforeach; ?>
+						</tbody>
+					</table>
+				</div>
+			<?php endif; ?>
+		</div>
+	</section>
+<?php endif; ?>
+
+<section class="case-study-section">
+	<div class="custom-container case-study-cta">
+		<div>
+			<h2><?php echo wp_kses_post( $cta_heading ); ?></h2>
+			<p><?php echo wp_kses_post( $cta_text ); ?></p>
+		</div>
+		<?php
+		if ( is_array( $cta_button ) && ! empty( $cta_button['url'] ) ) :
+			?>
+			<a href="<?php echo esc_url( $cta_button['url'] ); ?>" target="<?php echo esc_attr( $cta_button['target'] ? $cta_button['target'] : '_self' ); ?>" class="globalBtnDark">
+				<span><?php echo esc_html( $cta_button['title'] ? $cta_button['title'] : 'Free Action Plan' ); ?> <i class="fa-solid fa-arrow-right-long"></i></span>
+			</a>
+		<?php else : ?>
+			<a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="globalBtnDark">
+				<span>Free Action Plan <i class="fa-solid fa-arrow-right-long"></i></span>
+			</a>
+		<?php endif; ?>
+	</div>
+</section>
+
+<?php get_template_part( 'template-parts/Home/client-logos' ); ?>
 
 <?php
 get_footer();
