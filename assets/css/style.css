@@ -2410,6 +2410,79 @@ footer.footer {
 	color: var(--secondary-light);
 	font-weight: 600;
 }
+
+/* Case Study styling aligned to Industries visuals */
+.cs-cols-section {
+	background: linear-gradient(180deg, #FFF5FE 0%, #E8ECF9 100%);
+}
+.cs-cols-section .cs-section-title {
+	opacity: 0.25;
+	-webkit-text-fill-color: #071027;
+}
+.cs-cols-section .cs-col-1,
+.cs-cols-section .cs-col-2 {
+	background-color: #FCFAFB;
+	border: 1px dashed #3d72fb;
+	border-radius: 30px 80px 30px 80px;
+	padding: 32px;
+	height: 100%;
+}
+
+.cs-prob-section {
+	background: #ffffff;
+}
+.cs-prob-section .custom-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+}
+.cs-prob-section .cs-section-title {
+	opacity: 0.25;
+	-webkit-text-fill-color: #071027;
+}
+.cs-prob-section .cs-col-desc {
+	max-width: 900px;
+}
+
+.cs-sol-section {
+	background: transparent;
+}
+.cs-sol-section .cs-section-title {
+	opacity: 0.25;
+	-webkit-text-fill-color: #071027;
+	text-align: center;
+	display: block;
+}
+.cs-sol-section .cs-race-content {
+	background: var(--secondary-light) url(../images/dark-section-bg.png) 0 0 repeat-y;
+	color: var(--white);
+	border-radius: 50px;
+	padding: 50px;
+	box-shadow: 0 18px 40px rgba(2, 14, 55, 0.18);
+}
+.cs-sol-section .race-intro p {color: rgba(255, 255, 255, 0.8);}
+.cs-sol-section .nav-pills .nav-link {
+	background: transparent;
+	border: 2px solid #3D72FB45;
+	color: var(--white);
+}
+.cs-sol-section .nav-pills .nav-link.active {
+	background: #013CFF;
+	color: var(--white);
+}
+.cs-sol-section .tab-pane {
+	background: rgba(255, 255, 255, 0.06);
+	border: 1px solid #3D72FB45;
+	color: var(--white);
+}
+.cs-sol-section .tab-pane li {color: rgba(255, 255, 255, 0.85);}
+.cs-sol-section .point-title {
+	background: rgba(255, 255, 255, 0.06);
+	border: 1px solid #3D72FB45;
+	color: var(--white);
+}
+.cs-sol-section .point-desc {color: rgba(255, 255, 255, 0.85);}
 .case-study-ace-grid {margin-top: 30px; gap: 30px 0;}
 .case-study-ace-card {
 	background: #f7f9ff;

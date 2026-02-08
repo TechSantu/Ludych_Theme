@@ -314,6 +314,17 @@
 }
 
 @media only screen and (max-width: 991px) {
+	.cs-cols-section .cs-col-1,
+	.cs-cols-section .cs-col-2 {
+		border-radius: 20px 50px 20px 50px;
+	}
+	.cs-sol-section .cs-race-content {
+		padding: 30px;
+		border-radius: 30px;
+	}
+}
+
+@media only screen and (max-width: 991px) {
 	.case-study-reviews__grid {grid-template-columns: repeat(2, minmax(0, 1fr));}
 	.case-study-logo-grid {grid-template-columns: repeat(3, minmax(0, 1fr));}
 }
