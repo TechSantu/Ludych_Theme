@@ -91,6 +91,88 @@ $selected_testimonials = function_exists( 'get_field' ) ? get_field( 'case_study
 if ( ! is_array( $selected_testimonials ) ) {
 	$selected_testimonials = array();
 }
+
+// Fallback copy to show layout if fields are empty.
+if ( empty( $who_text ) ) {
+	$who_text = 'Our partner is an American-owned and operated premium Outdoor Sporting Goods Company that provides bushcraft and outdoor self-reliance gear. They provide over 500 high-quality products designed to help outdoor enthusiasts find their niche in the great outdoors.';
+}
+if ( empty( $what_text ) ) {
+	$what_text = 'Our partner provides the equipment and knowledge for the modern outdoor enthusiast. Their products include camping gear, hunting gear, survival knives, and apparel. They also host survival and specialty classes and provide survival guides and booklets.';
+}
+if ( empty( $problem ) ) {
+	$problem = 'Before they worked with our team, the partner had never worked with another agency for paid media. Revenue and sales volume had plateaued, and the brand wanted to increase these metrics through search engine marketing. Prior Facebook campaigns had policy issues that restricted their account.';
+}
+if ( empty( $solution ) ) {
+	$solution = 'We started by diagnosing the policy issues and refining the product catalog to comply with platform rules. Once restrictions were removed, we built prospecting and remarketing audiences and launched a Facebook Shop to create an organic storefront. We then scaled using our A.C.E. framework.';
+}
+if ( empty( $solution_tabs ) ) {
+	$solution_tabs = array(
+		array(
+			'tab_title'   => 'Assets',
+			'tab_content' => '<ul><li>Built memorable ads to appeal to both current and potential customers</li><li>Created original content that strengthened product offerings</li><li>Built a Facebook Shop to organically showcase products to page followers</li></ul>',
+		),
+		array(
+			'tab_title'   => 'Control',
+			'tab_content' => '<ul><li>Improved previous audience targeting</li><li>Aggregated events to optimize event tracking</li></ul>',
+		),
+		array(
+			'tab_title'   => 'Experimentation',
+			'tab_content' => '<ul><li>Tested our prospecting campaign against a controlled audience</li><li>Conducted ad A/B testing using ad-set level budgets to ensure a 50/50 split</li></ul>',
+		),
+	);
+}
+if ( empty( $results ) ) {
+	$results = 'The results below are provided with permission from the brand and cover the 2021 calendar year. Q1 and Q2 were strong for both revenue and ROAS, achieved through policy resolution and best-practice execution. Q3 saw a downturn due to iOS 14 attribution changes, but adjustments helped account for tracking loss. In Q4, adding Google Ads captured additional demand, producing a 161% revenue increase versus Q1 2021.';
+}
+if ( empty( $results_columns ) ) {
+	$results_columns = array(
+		array( 'column_label' => 'Year 2021' ),
+		array( 'column_label' => 'Spend' ),
+		array( 'column_label' => 'Purchases' ),
+		array( 'column_label' => 'Revenue' ),
+		array( 'column_label' => 'ROAS' ),
+	);
+}
+if ( empty( $results_rows ) ) {
+	$results_rows = array(
+		array(
+			'row_values' => array(
+				array( 'value' => 'Q1' ),
+				array( 'value' => '$1,966.29' ),
+				array( 'value' => '1,034' ),
+				array( 'value' => '$81,939.40' ),
+				array( 'value' => '41.67' ),
+			),
+		),
+		array(
+			'row_values' => array(
+				array( 'value' => 'Q2' ),
+				array( 'value' => '$4,428.00' ),
+				array( 'value' => '1,373' ),
+				array( 'value' => '$112,794.72' ),
+				array( 'value' => '25.47' ),
+			),
+		),
+		array(
+			'row_values' => array(
+				array( 'value' => "Q3\n(iOS 14 changes)" ),
+				array( 'value' => '$4,419.93' ),
+				array( 'value' => '916' ),
+				array( 'value' => '$69,038.54' ),
+				array( 'value' => '15.61' ),
+			),
+		),
+		array(
+			'row_values' => array(
+				array( 'value' => 'Q4' ),
+				array( 'value' => '$8,614.49' ),
+				array( 'value' => '2,093' ),
+				array( 'value' => '$213,717.45' ),
+				array( 'value' => '24.80' ),
+			),
+		),
+	);
+}
 ?>
 
 <section class="case-study-hero with-overlay" style="background-image: url('<?php echo esc_url( $hero_bg ); ?>');">
