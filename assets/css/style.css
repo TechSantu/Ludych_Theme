@@ -2367,21 +2367,22 @@ footer.footer {
 .case-study-section .global-header {margin-bottom: 26px;}
 .cs-section {padding: 80px 0;}
 .cs-section-title {
-	font-size: 64px;
+	font-size: 120px;
 	font-weight: 400;
 	font-family: "Jost", sans-serif;
 	text-transform: capitalize;
+	color: white;
 	background: linear-gradient(to right, #013CFF, #E816D4);
 	-webkit-background-clip: text;
 	background-clip: text;
-	-webkit-text-fill-color: transparent;
+	-webkit-text-fill-color: white;
 	-webkit-text-stroke: 2px transparent;
-	opacity: 0.4;
-	line-height: 1.1;
-	margin-bottom: 12px;
+	opacity: 0.3;
+	line-height: 1.2;
+	margin-bottom: -20px;
 }
 .cs-cols {position: relative;}
-.cs-col-title {font-size: 18px; font-weight: 600; font-family: "Jost", sans-serif; color: var(--button-border); margin-bottom: 12px; text-transform: uppercase; letter-spacing: .08em;}
+.cs-col-title {font-size: 18px; font-weight: 500; font-family: "Jost", sans-serif; color: var(--button-border); margin-bottom: 12px; text-transform: uppercase; letter-spacing: .08em;}
 .cs-col-desc p {color: #5d7183;}
 .bg-light-blue {background: var(--secondary-dark-600);}
 .cs-sol-section .race-intro p {color: #5d7183;}
