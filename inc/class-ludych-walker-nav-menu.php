@@ -28,6 +28,9 @@ class Ludych_Walker_Nav_Menu extends Walker_Nav_Menu {
 		if ( $has_child ) {
 			$li_classes[] = 'dropdown';
 		}
+		if ( $has_child && $depth >= 1 ) {
+			$li_classes[] = 'dropdown-submenu';
+		}
 
 		$class_names = implode( ' ', array_map( 'esc_attr', array_filter( array_unique( array_merge( $li_classes, $classes ) ) ) ) );
 
@@ -39,10 +42,13 @@ class Ludych_Walker_Nav_Menu extends Walker_Nav_Menu {
 		$atts['rel']    = ! empty( $item->xfn ) ? $item->xfn : '';
 		$atts['href']   = ! empty( $item->url ) ? $item->url : '';
 
-		$link_classes = array( 'nav-link' );
+		$link_classes = array( 0 === $depth ? 'nav-link' : 'dropdown-item' );
 
-		if ( 0 === $depth && $has_child ) {
-			$link_classes[] = 'dropdown-toggle';
+		if ( $has_child ) {
+			$link_classes[]   = 'dropdown-toggle';
+			$atts['role']     = 'button';
+			$atts['data-bs-toggle'] = 'dropdown';
+			$atts['aria-expanded']  = 'false';
 		}
 
 		$atts['class'] = implode( ' ', array_map( 'esc_attr', $link_classes ) );
