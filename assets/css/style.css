@@ -393,13 +393,7 @@ textarea:focus {
 	color: var(--button-border);
 }
 
-.global-header h5 {
-	font-size: 45px;
-	font-weight: 600;
-	line-height: 60px;
-	color: #000000;
-	margin-top: 18px;
-}
+.global-header h5,
 .global-header .page-title {
 	font-size: 45px;
 	font-weight: 600;
@@ -408,11 +402,16 @@ textarea:focus {
 	margin-top: 18px;
 }
 
-.global-header .page-title span {
-	color: var(--button-border);
+.global-header h1.page-title {
+	font-size: 45px;
+	font-weight: 600;
+	line-height: 60px;
+	color: #000000;
+	margin-top: 18px;
 }
 
-.global-header h5 span {
+.global-header h5 span,
+.global-header .page-title span {
 	color: var(--button-border);
 }
 
@@ -1832,6 +1831,8 @@ footer.footer {
 	line-height: 18px;
 }
 
+.work-progress .icon-box img{width: 100%; max-width: 50px;}
+
 .list-group a.list-tab-panel-btn {
 	display: inline-flex;
 	padding: 12px 10px;
@@ -1878,19 +1879,14 @@ footer.footer {
 	}
 }
 
-@media (max-width: 767px) {
+@media (max-width: 680px) {
 	.tab-content .tab-pane.active {
 		grid-template-columns: repeat(2, 1fr);
 		gap: 20px;
 	}
 }
 
-@media (max-width: 479px) {
-	.tab-content .tab-pane.active {
-		grid-template-columns: 1fr;
-		gap: 16px;
-	}
-}
+
 .why-Onchoose-us,
 .workby-wrap {
 	background: var(--secondary-light);
@@ -2014,10 +2010,9 @@ footer.footer {
 	margin-top: -30px; position: relative;
 }
 
-.inner-banner .global-header h5 {
-	color: var(--white);
-}
-.inner-banner .global-header .page-title {
+.inner-banner .global-header h5,
+.inner-banner .global-header .page-title,
+.inner-banner .global-header h1.page-title {
 	color: var(--white);
 }
 
@@ -2816,4 +2811,17 @@ footer.footer {
 	display: flex;
 	flex-direction: column;
 	text-align: center;
+}
+
+
+.page-title {
+	color: var(--white);
+	font-size: 45px;
+	font-weight: 600;
+	line-height: 60px;
+	margin-top: 18px;
+}
+
+.page-title span {
+	color: var(--button-border);
 }

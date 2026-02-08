@@ -1,0 +1,717 @@
+{
+    "description": "DO NOT DELETE THIS FILE. This file is used to keep track of which files have been synced in the most recent deployment. If you delete this file a resync will need to be done (which can take a while) - read more: https://github.com/SamKirkland/FTP-Deploy-Action",
+    "version": "1.0.0",
+    "generatedTime": 1770564325169,
+    "data": [
+        {
+            "type": "file",
+            "name": "404.php",
+            "size": 939,
+            "hash": "cefe3b0efc89d8271d03d0613eba03a63f689847a440d442de134498f5965c34"
+        },
+        {
+            "type": "file",
+            "name": "archive-case_study.php",
+            "size": 226,
+            "hash": "73dc71e498e77ce1acf6cdb4ec34aa32f37332b7ade41c1c40f301a0b32858b7"
+        },
+        {
+            "type": "folder",
+            "name": "assets"
+        },
+        {
+            "type": "file",
+            "name": "footer.php",
+            "size": 149,
+            "hash": "783e033631059a73a0ef4b549df29a7dd6da37480e01889e0a63d443b1d8566d"
+        },
+        {
+            "type": "file",
+            "name": "functions.php",
+            "size": 597,
+            "hash": "93da1312c3ba94ac431473fa75d6ac07033471683e4a6535a93e29a821c8e7b8"
+        },
+        {
+            "type": "file",
+            "name": "header.php",
+            "size": 436,
+            "hash": "fc8ae3953328c1ae3bd8b8023fdcd84aac56f5a3c257da872f0045dd9a2b53e2"
+        },
+        {
+            "type": "file",
+            "name": "home.php",
+            "size": 1540,
+            "hash": "33179a44f9e3a0bcea40d2b5ed6698eef4a1a844e25bff901fc6a4c4b1944d70"
+        },
+        {
+            "type": "folder",
+            "name": "html"
+        },
+        {
+            "type": "folder",
+            "name": "inc"
+        },
+        {
+            "type": "file",
+            "name": "index.php",
+            "size": 120,
+            "hash": "1fedf365ce5337597448a25c01bc86d59210bf766fd83adcba06b5c829088a91"
+        },
+        {
+            "type": "file",
+            "name": "screenshot.png",
+            "size": 1597308,
+            "hash": "f0a21000ed3539ebee79ef171e1dd1e0488568af42703d11a053f857f96dc4b8"
+        },
+        {
+            "type": "file",
+            "name": "single-case_study.php",
+            "size": 11373,
+            "hash": "0e2c0a0194228e4d5f1787421dbefb5f4cfd27369f43f27343a00f5dddc4e55d"
+        },
+        {
+            "type": "file",
+            "name": "single-industries.php",
+            "size": 459,
+            "hash": "12e19768919917bdb5ed23fd2f402823d444c4cfecbb05cb9c5ec4a4c24e3a9f"
+        },
+        {
+            "type": "file",
+            "name": "single.php",
+            "size": 491,
+            "hash": "ac42ae6e0232a4ced39393a06b00af0c32b3bc101bc4d72f90cfa844a838bb3c"
+        },
+        {
+            "type": "file",
+            "name": "single-services.php",
+            "size": 576,
+            "hash": "03ad8b12d37bff9af4f4ad6b0f3f91ed6dde5ccc6522d6411fd55cd78a80a213"
+        },
+        {
+            "type": "file",
+            "name": "style.css",
+            "size": 264,
+            "hash": "6da0dc69c2ac9f5535d922c23b4ac1c867aa51766b06aa4c59da5bd27f67cf00"
+        },
+        {
+            "type": "folder",
+            "name": "template-parts"
+        },
+        {
+            "type": "folder",
+            "name": "templates"
+        },
+        {
+            "type": "folder",
+            "name": "assets/images"
+        },
+        {
+            "type": "folder",
+            "name": "assets/css"
+        },
+        {
+            "type": "folder",
+            "name": "assets/js"
+        },
+        {
+            "type": "file",
+            "name": "html/about.html",
+            "size": 37781,
+            "hash": "1ab489c66293a7424163ce923f01c209804552d9546af13fb0bf01a2ee343706"
+        },
+        {
+            "type": "file",
+            "name": "html/blog-2.html",
+            "size": 18559,
+            "hash": "db64a3d86cd2fe919ec7f76f152a3f1ede4b92a91826ea349d128ca5e3490ed0"
+        },
+        {
+            "type": "file",
+            "name": "html/blog-details.html",
+            "size": 21358,
+            "hash": "391577248cfe8bc84097eb7ad5c6cbd80b04a10aad5ed365bced7ac681bd61b2"
+        },
+        {
+            "type": "file",
+            "name": "html/blog.html",
+            "size": 17596,
+            "hash": "78804f96a0a508dd24d3c52240afc59cef2fbaf1561486d558ae4785310d85a7"
+        },
+        {
+            "type": "file",
+            "name": "html/case-studies.html",
+            "size": 17139,
+            "hash": "91f67690d46aa2b30052f8b87da27769c09e82f82667e026d34c55ac2bdc982b"
+        },
+        {
+            "type": "file",
+            "name": "html/contect-us.html",
+            "size": 27405,
+            "hash": "fbba77cefbeba09053f0c7e242578c65edd470c021d8eda34da38e2474153ab4"
+        },
+        {
+            "type": "file",
+            "name": "html/healthcare.html",
+            "size": 41281,
+            "hash": "35d919767c16ab08b15c980413e76c7760434a51665c8c63c78b1a33a474974f"
+        },
+        {
+            "type": "file",
+            "name": "html/services.html",
+            "size": 117235,
+            "hash": "babb099d9c577476faac5da9f9ef6122316de0ea05f65bea244329f289ee6679"
+        },
+        {
+            "type": "file",
+            "name": "html/index.html",
+            "size": 167873,
+            "hash": "5d8f76a53b2fc8b896b37c48953a2472aecce2ca4043e2bcd5e68ae03472b110"
+        },
+        {
+            "type": "file",
+            "name": "inc/acf-fields.php",
+            "size": 29201,
+            "hash": "462161590a355d7f31cb3391e1dfcf7fa65bca37f8a284d5a7d60bb69bf9e8f7"
+        },
+        {
+            "type": "file",
+            "name": "inc/ajax-load-more.php",
+            "size": 4901,
+            "hash": "94435116cf0d7565188b6842911fa7ed534155b7ae7220518d2e2b59d67d6169"
+        },
+        {
+            "type": "file",
+            "name": "inc/class-ludych-walker-nav-menu.php",
+            "size": 2156,
+            "hash": "3c8895347cf74cf0b6dbd6116f3d76741e42a9b681eda22747331438c116c631"
+        },
+        {
+            "type": "file",
+            "name": "inc/contact-form-handler.php",
+            "size": 9583,
+            "hash": "d671a62ef908e88a4dac43ae678de10a7c9015c07a2e5c5be8e96d97df4c15e6"
+        },
+        {
+            "type": "file",
+            "name": "inc/customizer.php",
+            "size": 14482,
+            "hash": "80047f82390964190dfc81a836c31bd590d33f7a4dce8280630eca6dbfed6445"
+        },
+        {
+            "type": "file",
+            "name": "inc/enqueue_styles_scripts.php",
+            "size": 1577,
+            "hash": "554efe5a7e6d74a7f3c72b5f5c497a020cadf6ee156ae3fdb9eed79d530bd6b0"
+        },
+        {
+            "type": "file",
+            "name": "inc/post-types.php",
+            "size": 8816,
+            "hash": "2d25874cf40e3ec80f2489b89f5a1fd378edf47cbef059d447dd9c4dcc2d678a"
+        },
+        {
+            "type": "file",
+            "name": "inc/theme-setup.php",
+            "size": 1343,
+            "hash": "bcd91c0b5f6c19b84fa9515835eb8fc606861efa111a00fd942ae7f846bf6853"
+        },
+        {
+            "type": "folder",
+            "name": "template-parts/Home"
+        },
+        {
+            "type": "folder",
+            "name": "template-parts/blog"
+        },
+        {
+            "type": "folder",
+            "name": "template-parts/common"
+        },
+        {
+            "type": "file",
+            "name": "template-parts/footer-main.php",
+            "size": 5684,
+            "hash": "bc495a9104a474a4563e599eaabd834d12e9d4d9a398f476947697e70ba40e10"
+        },
+        {
+            "type": "file",
+            "name": "template-parts/header-navbar.php",
+            "size": 2675,
+            "hash": "2c17e8ef9aba74d6530196145e7befae932c81ae6602b8ab208a61f111a75f56"
+        },
+        {
+            "type": "folder",
+            "name": "template-parts/industries"
+        },
+        {
+            "type": "folder",
+            "name": "template-parts/services"
+        },
+        {
+            "type": "file",
+            "name": "templates/case-study-self-reliance.php",
+            "size": 7931,
+            "hash": "147b2cd2890b29a16b47631c0e4df16e530cbf53fa6a760603b3be82aa3fd5ca"
+        },
+        {
+            "type": "file",
+            "name": "templates/contact.php",
+            "size": 370,
+            "hash": "3bde9b8b7a3c70b5d7a3781f7db464c3fe5651094fa8ce3ff6306a134d7c27f8"
+        },
+        {
+            "type": "file",
+            "name": "templates/homepage.php",
+            "size": 502,
+            "hash": "1066036fb8c8c36fb080e600c217924ff71c8df7a56b519b838d0ccfd1ba6c9b"
+        },
+        {
+            "type": "file",
+            "name": "templates/thank-you.php",
+            "size": 802,
+            "hash": "d951c595e44f30b279364a47e73fa978a81d49b82681e90055f507f67b379aa8"
+        },
+        {
+            "type": "file",
+            "name": "assets/images/San-Francisco.png",
+            "size": 53810,
+            "hash": "e5b2ce605ba5683c36b1023bc7e6d16217511d57ba01396b70abd0e037b90486"
+        },
+        {
+            "type": "file",
+            "name": "assets/images/about-left.jpg",
+            "size": 44254,
+            "hash": "3aa078523fe9774e581b4622e010be399f2cef3a6873ad386c6cca1eeb7d24d9"
+        },
+        {
+            "type": "file",
+            "name": "assets/images/banner-rightac.png",
+            "size": 1578630,
+            "hash": "32844f4b906818e043fc0149da3c1b790f41235e837ea5a49460ef19df74b916"
+        },
+        {
+            "type": "file",
+            "name": "assets/images/bg-1024x788.jpg",
+            "size": 39691,
+            "hash": "265d7773d9f6e88dbec557aff8efb8e37cd80a96f83834995881e48c47449b53"
+        },
+        {
+            "type": "file",
+            "name": "assets/images/blog-1.png",
+            "size": 81095,
+            "hash": "4b5d9f22b1020fde63b97f7b95bd30324469cf0a78fc13c3e33b8185234639a6"
+        },
+        {
+            "type": "file",
+            "name": "assets/images/blog-2.png",
+            "size": 88648,
+            "hash": "63697a3b257a6fb9759739df8a220ab0f8b3f994b4ae2c13f974f751f1dcb59a"
+        },
+        {
+            "type": "file",
+            "name": "assets/images/blog-3.jpg",
+            "size": 15147,
+            "hash": "300905db302100d08ade03cba3243233562c0cf87e684d97fbbfe1c59a51602b"
+        },
+        {
+            "type": "folder",
+            "name": "assets/images/case-studies"
+        },
+        {
+            "type": "file",
+            "name": "assets/images/close-btn.png",
+            "size": 300,
+            "hash": "f0f5ce9f75f87d704f77c21c8f0dd112055875622b768af07d63fe1734241ec4"
+        },
+        {
+            "type": "file",
+            "name": "assets/images/cta-2-banner-1.png",
+            "size": 409342,
+            "hash": "47a045e19759b800492454b87d74adc22a7922c3cc27793ae6a1123dfc6d4226"
+        },
+        {
+            "type": "file",
+            "name": "assets/images/ctablack-curve-text.svg",
+            "size": 15618,
+            "hash": "1be39f6520012f09f990dc27a4cf951d33f49f23443d4fa5c9a2eb790cf59f9c"
+        },
+        {
+            "type": "file",
+            "name": "assets/images/custom-development-2.jpg",
+            "size": 74064,
+            "hash": "571a966e213b2488b137d20df245b164f77acfdaff68d9ccb9fecd6eae41ee06"
+        },
+        {
+            "type": "file",
+            "name": "assets/images/custom-development-2048x1365.jpg",
+            "size": 245713,
+            "hash": "2096574e6b8046c4aa4a30d13113637e291ef04c67b378487c1fb993539d8d29"
+        },
+        {
+            "type": "file",
+            "name": "assets/images/dark-section-bg.png",
+            "size": 388612,
+            "hash": "7193e279497dc65b2f51edf0079e825757643ace51b44ff67649189bb718e144"
+        },
+        {
+            "type": "file",
+            "name": "assets/images/ftr-bg.png",
+            "size": 140475,
+            "hash": "8792750f092b49694bb183c254b07cb0ba914a67e6af47e0e3559a4da6025f4e"
+        },
+        {
+            "type": "file",
+            "name": "assets/images/grey-arrow-up-right.svg",
+            "size": 327,
+            "hash": "b3beb42df5714530b3540b060ec1eb0c593f131dcdac04214d58080dfbe6c76d"
+        },
+        {
+            "type": "file",
+            "name": "assets/images/hero-banner-scaled.jpg",
+            "size": 389176,
+            "hash": "5b980fb08201c9940b1b7e109a80d3ef54c346d34e68de2b1c944982e09e29c3"
+        },
+        {
+            "type": "file",
+            "name": "assets/images/hire-wordpress-developer.svg",
+            "size": 101761,
+            "hash": "c551d08547f5d1bfb2cdc2b7b25e22e749103a069162eeaeb38a94f3060e8bdb"
+        },
+        {
+            "type": "file",
+            "name": "assets/images/icon-consultation.svg",
+            "size": 7493,
+            "hash": "cf0b2e43487bcca237c7e2daabc42474fcb4dbea984b50c9814a7f4f56b1768a"
+        },
+        {
+            "type": "file",
+            "name": "assets/images/icon-quote.png",
+            "size": 1087,
+            "hash": "de17084e20730fd9fd9834a776265a2038eebbe45d139ddc6336235091bac09f"
+        },
+        {
+            "type": "file",
+            "name": "assets/images/inner-background-2.jpg",
+            "size": 9110,
+            "hash": "ad0b2b547827e74e9beb1ffa8574ffa32e1b23dbe8c48cf380246989c4d5697d"
+        },
+        {
+            "type": "file",
+            "name": "assets/images/inner-background.jpg",
+            "size": 9110,
+            "hash": "ad0b2b547827e74e9beb1ffa8574ffa32e1b23dbe8c48cf380246989c4d5697d"
+        },
+        {
+            "type": "file",
+            "name": "assets/images/logo.png",
+            "size": 2950,
+            "hash": "43894b97f8f2725fa258615f58fc8a78502c15f113e374cb6dd47151cf37c25a"
+        },
+        {
+            "type": "file",
+            "name": "assets/images/new-york.png",
+            "size": 45401,
+            "hash": "dfe1935af10d8ac9102c8963cb2a9c97540cf9eec70a326061090bfda76ea67c"
+        },
+        {
+            "type": "file",
+            "name": "assets/images/services-bg.jpg",
+            "size": 279630,
+            "hash": "209b076fa7c0da9639ee2d97fbe8909790158dc18d282f62e0c6e6c09bdd8a7c"
+        },
+        {
+            "type": "file",
+            "name": "assets/images/testimonial.png",
+            "size": 250349,
+            "hash": "64d5e296a40b9290b6879817b9272ceb262f75cea93aef3f33e62147bf1bb65e"
+        },
+        {
+            "type": "file",
+            "name": "assets/images/why-choose-us.jpg",
+            "size": 46614,
+            "hash": "ee39fdcb992ab978a29522db40c6a0904b4dd31088efb50208f3360f1375e313"
+        },
+        {
+            "type": "file",
+            "name": "assets/css/bootstrap.min.css",
+            "size": 194901,
+            "hash": "c0bcf7898fdc3b87babca678cd19a8e3ef570e931c80a3afbffcc453738c951a"
+        },
+        {
+            "type": "file",
+            "name": "assets/css/owl.carousel.min.css",
+            "size": 3351,
+            "hash": "521410e1fc44780061e09adc980275fb5ea277fd5d9e538454214ec4379ff4bc"
+        },
+        {
+            "type": "file",
+            "name": "assets/css/responsive.css",
+            "size": 8059,
+            "hash": "ba9c566916231c11df7ba842b45088ad5d08e3f24ee9b35ed0f4aaeb1dbe3433"
+        },
+        {
+            "type": "file",
+            "name": "assets/css/style.css",
+            "size": 55744,
+            "hash": "8af138395183619eb5d4b116503514b9161a98cec368a908cec686b64affc644"
+        },
+        {
+            "type": "file",
+            "name": "assets/js/bootstrap.min.js",
+            "size": 60404,
+            "hash": "9bcd4d0f29dc6556ebeeff44eaa0965f0c7f7308ee58394708cce2f698cca1b0"
+        },
+        {
+            "type": "file",
+            "name": "assets/js/custom.js",
+            "size": 12673,
+            "hash": "3f3be60ea0e2588e0cb54e199fd0cc476b953c8725bf6fb4682115d29f785f2f"
+        },
+        {
+            "type": "file",
+            "name": "assets/js/jquery.min.js",
+            "size": 87533,
+            "hash": "fc9a93dd241f6b045cbff0481cf4e1901becd0e12fb45166a8f17f95823f0b1a"
+        },
+        {
+            "type": "file",
+            "name": "assets/js/lightbox.js",
+            "size": 2568,
+            "hash": "fa7295bf285876a319bc718200cd61a4e51115c450dd6867f5b22843903b0e6a"
+        },
+        {
+            "type": "file",
+            "name": "assets/js/owl.carousel.min.js",
+            "size": 44342,
+            "hash": "a53c43f834b32309b084ea9314df8307e9c78cee2202c6e07f216ae4ae5b704d"
+        },
+        {
+            "type": "file",
+            "name": "assets/js/popper.min.js",
+            "size": 20095,
+            "hash": "051a8137b75880006ab58f47778ca713ed6c967130faba043c5cd0ed34517dc8"
+        },
+        {
+            "type": "file",
+            "name": "template-parts/Home/about.php",
+            "size": 3438,
+            "hash": "ee266ed8195773a59803bb2e87cfda3c07343de5bded1be6756b7fb0acdf370d"
+        },
+        {
+            "type": "file",
+            "name": "template-parts/Home/banner.php",
+            "size": 2820,
+            "hash": "8af298e948ecac93f9e5275292edfc85b9173cf91137de2f31366c66f027669f"
+        },
+        {
+            "type": "file",
+            "name": "template-parts/Home/client-logos.php",
+            "size": 3560,
+            "hash": "5d4371d02fb6297a336131a1f1e0322b60d7ba6409029d3eadd632e7b26e9399"
+        },
+        {
+            "type": "file",
+            "name": "template-parts/Home/faq_section.php",
+            "size": 3195,
+            "hash": "fcce9d7ebbe15d9901b516b9919895d984c92a61a60088e1879a707c1d679dd3"
+        },
+        {
+            "type": "file",
+            "name": "template-parts/Home/testimonials.php",
+            "size": 3509,
+            "hash": "d022440465ee43894603ec74ced3e86315deda4e87fea6c84a479ae5851d032c"
+        },
+        {
+            "type": "file",
+            "name": "template-parts/Home/why_choose_us.php",
+            "size": 3549,
+            "hash": "d5942dd967a3bf468abf8cf6d538eb94e4bd8e6f8c7881a554a8e3aa8a83580d"
+        },
+        {
+            "type": "file",
+            "name": "template-parts/blog/banner.php",
+            "size": 2994,
+            "hash": "37312eb5f1265d68b70541f0bd2f5cdace975326aab11f8714b44854534027b3"
+        },
+        {
+            "type": "file",
+            "name": "template-parts/blog/content-list.php",
+            "size": 978,
+            "hash": "bde682eac6f3e7f273a72eb7c62cdfbeee7441c552fbe60b39f72e187df9715d"
+        },
+        {
+            "type": "file",
+            "name": "template-parts/blog/content-single.php",
+            "size": 907,
+            "hash": "0812bc08959fb14e8f60382c2ef75929d3efbe1cf3f8ffa86425f1616c609dbb"
+        },
+        {
+            "type": "file",
+            "name": "template-parts/blog/content.php",
+            "size": 1017,
+            "hash": "7d0c33d7df630b208936c484c0ba5181e9ad3513ed9acce407522fb37e0c40eb"
+        },
+        {
+            "type": "file",
+            "name": "template-parts/blog/related-posts.php",
+            "size": 2079,
+            "hash": "9e1238895eeaa6e81c1561a3fa09abdb63a7e6d05d474dea1148fbffa3da0ea7"
+        },
+        {
+            "type": "file",
+            "name": "template-parts/common/case-studies-banner.php",
+            "size": 2748,
+            "hash": "996fe5bb9270cc9a2988360088b64f4a01c453d8e63d91f7f2cb586c8810d5e0"
+        },
+        {
+            "type": "file",
+            "name": "template-parts/common/case-studies-list.php",
+            "size": 2682,
+            "hash": "0e728547a6406999ed64117354bda0f6d754747edb7e7bcc3084334dfe4ad9f7"
+        },
+        {
+            "type": "file",
+            "name": "template-parts/common/contact-banner.php",
+            "size": 3303,
+            "hash": "9aa2899fc499b5f8cec2078b6dfeb7e8f6edd66c00ae556e934754b2634502c6"
+        },
+        {
+            "type": "file",
+            "name": "template-parts/common/contact-expertise.php",
+            "size": 4588,
+            "hash": "ec227083bb8712dc7f7cf73cdf6669d07640830988b8b3349f34f66dd8379ac8"
+        },
+        {
+            "type": "file",
+            "name": "template-parts/common/contact-us.php",
+            "size": 8359,
+            "hash": "c1b6e08d6a9fbf6705afb76ccaa645ca3c07b1d040632fc878b2fb37499fea91"
+        },
+        {
+            "type": "file",
+            "name": "template-parts/common/contect.php",
+            "size": 6673,
+            "hash": "65539b1372f558b8765560fd4210a27ee8d3fd29d955f0054528c9757372d4fa"
+        },
+        {
+            "type": "file",
+            "name": "template-parts/common/our_blog.php",
+            "size": 3716,
+            "hash": "65fa80e68b030a83d30ebba422ca2d7ea60368cbaefe2a25b8e2fbd541150cd5"
+        },
+        {
+            "type": "file",
+            "name": "template-parts/common/our_work.php",
+            "size": 4778,
+            "hash": "b13cf38d45b1e1817ac4a21ee3bf1747fc27e62776bfea2d6a15e9f7e5d3709d"
+        },
+        {
+            "type": "file",
+            "name": "template-parts/common/our_work_progress.php",
+            "size": 4347,
+            "hash": "65eca74f8d44d4dc7f1a1dc18898c1440cb60a4c1dbe006b364d2fbb27538b28"
+        },
+        {
+            "type": "file",
+            "name": "template-parts/industries/banner.php",
+            "size": 3080,
+            "hash": "444f4bca457084502b23638232ab6e5904fb1d05b11bfc2c9142b543eed46aa8"
+        },
+        {
+            "type": "file",
+            "name": "template-parts/industries/detail.php",
+            "size": 4188,
+            "hash": "b34c710e6458588282e9734cf92857e272399604d5e547b20b04154549a946e0"
+        },
+        {
+            "type": "file",
+            "name": "template-parts/industries/journey.php",
+            "size": 3548,
+            "hash": "5d1ca16b903787b3375c9137734623d23c6b766bef9e8228e6a2111e963ddb58"
+        },
+        {
+            "type": "file",
+            "name": "template-parts/industries/measurable.php",
+            "size": 3434,
+            "hash": "52b9adf624904ac27a1224850dbd307fe910c429f795325fd6176d125100f2a4"
+        },
+        {
+            "type": "file",
+            "name": "template-parts/industries/solutions.php",
+            "size": 3580,
+            "hash": "31bbfef3f0272bd4272e6ccb88ae1eb1f4ec5a8e4050908a1754cab5bdca695b"
+        },
+        {
+            "type": "file",
+            "name": "template-parts/industries/strategies.php",
+            "size": 2636,
+            "hash": "e73bcde2e476f7f14363658fcd8a48205b92292ad54f5195e43f52ef9ff1a68c"
+        },
+        {
+            "type": "file",
+            "name": "template-parts/services/banner.php",
+            "size": 3136,
+            "hash": "8dccaa8ee6f7ae01e7f79d0be9f7e2088407184d5f3add919016e730cf0fb53a"
+        },
+        {
+            "type": "file",
+            "name": "template-parts/services/cta.php",
+            "size": 1173,
+            "hash": "43e76ca697897314acd6d6a48a7d9ced31002f509df77e79444ce71d8a525762"
+        },
+        {
+            "type": "file",
+            "name": "template-parts/services/expertise.php",
+            "size": 4026,
+            "hash": "727bfb16a3fca9a0fea18d0c98a1c8f45dcdb0cf67ae915ab48f2af65a0ae326"
+        },
+        {
+            "type": "file",
+            "name": "template-parts/services/industries.php",
+            "size": 5270,
+            "hash": "6b83d7005a48ba514c977705465b3e6cbfbff9d2a0cac3e566675e804e2855a2"
+        },
+        {
+            "type": "file",
+            "name": "template-parts/services/process-intro.php",
+            "size": 5670,
+            "hash": "b9ea4564a9a6c5a9a9620a1a1984469654ed08abd65cbb11f31805f6bed46869"
+        },
+        {
+            "type": "file",
+            "name": "template-parts/common/services.php",
+            "size": 4124,
+            "hash": "c5d5f74267330ef9ebb142759fd8d89a8af9803297697145c1e0d38d5a44a7dc"
+        },
+        {
+            "type": "file",
+            "name": "assets/images/case-studies/logo-1.png",
+            "size": 5168,
+            "hash": "f40aa17baf2b2967fa54dac83e6f4b21c555aa22b9e7c92c6f1bc4d04d2e30bd"
+        },
+        {
+            "type": "file",
+            "name": "assets/images/case-studies/logo-2.png",
+            "size": 2750,
+            "hash": "a07c430e3f5ce8865667bb06bcee98410c98e8629810ed440580dbab1f8a6064"
+        },
+        {
+            "type": "file",
+            "name": "assets/images/case-studies/logo-3.png",
+            "size": 1712,
+            "hash": "3db3ba8f4a9ff327e39f5403106c2199711968058398ded8ddaa47b1727599e8"
+        },
+        {
+            "type": "file",
+            "name": "assets/images/case-studies/logo-4.png",
+            "size": 3344,
+            "hash": "c80d82fe73bbf6007ae515b03a9d2dcf75bffbbae0ed5105865484b7c3f55c0a"
+        },
+        {
+            "type": "file",
+            "name": "assets/images/case-studies/logo-5.png",
+            "size": 2019,
+            "hash": "c27abfd256e0162b010f92e65d542043881f5a135edf5f5aa39e98f244e340ca"
+        }
+    ]
+}

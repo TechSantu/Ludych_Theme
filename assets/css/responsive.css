@@ -189,7 +189,9 @@
 	.loginBtn-cntn .globalBtnOutline{color: var(--button-border) !important;}
 	.global-header .min-title {margin-top: -30px !important;}
 	.global-header h2{font-size: 90px;}
-	.global-header h5 {font-size: 34px; line-height: 1.2;}
+	.global-header h5,
+	.global-header .page-title,
+	.global-header h1.page-title {font-size: 34px; line-height: 1.2;}
 
 	.inner-banner .global-header.service p,
 	.inner-banner .global-header.blogs p{
@@ -237,7 +239,9 @@
 @media only screen and (max-width: 767px) {
 
 	.global-header h2{font-size: 74px;}
-	.global-header h5 {font-size: 30px;}
+	.global-header h5,
+	.global-header .page-title,
+	.global-header h1.page-title {font-size: 30px;}
 	.global-header .min-title {margin-top: -30px !important;}
 
 	.inner-banner-wrap .custom-container{padding: 0 20px;}

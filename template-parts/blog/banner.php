@@ -46,11 +46,11 @@ $banner_bg = get_template_directory_uri() . '/assets/images/services-bg.jpg';
 				<?php endif; ?>
 
 				<?php if ( ! is_single() ) : ?>
-					<h1 class="page-title"><?php echo esc_html( $main_title ); ?></h1>
+					<!-- <h1 class="page-title"><?php //echo esc_html( $main_title ); ?></h1> -->
 				<?php endif; ?>
 
 				<?php if ( is_home() ) : ?>
-				<h5>Thoughts <span>That Shape</span> the <span>Digital Future</span></h5>
+				<h1 class="page-title">Thoughts <span>That Shape</span> the <span>Digital Future</span></h1>
 				<p>From emerging tech trends to proven development strategies, our blog explores ideas that 
 				shape the future of digital innovation. Learn, grow, and stay inspired with content created 
 				by industry professionals.</p>
