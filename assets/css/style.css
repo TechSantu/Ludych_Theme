@@ -1137,6 +1137,11 @@ li.nav-item.dropdown .dropdown-menu li:has(a.dropdown-toggle) {
 .client-logos .global-header {
 	margin-bottom: 35px;
 }
+.client-logos .global-header h6 {
+	font-size: 45px;
+	font-weight: 600;
+	text-align: center;
+}
 
 .client-logos .client-logo-item {
 	background: #fff;
@@ -1153,18 +1158,18 @@ li.nav-item.dropdown .dropdown-menu li:has(a.dropdown-toggle) {
 .client-logos .client-logo-item img {
 	max-height: 48px;
 	width: auto;
-	filter: grayscale(100%);
-	opacity: 0.8;
+	filter: none;
+	opacity: 1;
 	transition: all 0.3s ease;
 }
 
 .client-logos .client-logo-item:hover {
-	border-color: #d9d9d9;
-	box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+	border-color: #eee;
+	box-shadow: none;
 }
 
 .client-logos .client-logo-item:hover img {
-	filter: grayscale(0%);
+	filter: none;
 	opacity: 1;
 }
 /* client logos end */
