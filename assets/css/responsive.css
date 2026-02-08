@@ -306,6 +306,14 @@
 }
 
 @media only screen and (max-width: 991px) {
+	.cs-section-title {font-size: 54px;}
+}
+
+@media only screen and (max-width: 575px) {
+	.cs-section-title {font-size: 42px;}
+}
+
+@media only screen and (max-width: 991px) {
 	.case-study-reviews__grid {grid-template-columns: repeat(2, minmax(0, 1fr));}
 	.case-study-logo-grid {grid-template-columns: repeat(3, minmax(0, 1fr));}
 }

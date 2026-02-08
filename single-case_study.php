@@ -276,35 +276,31 @@ if ( empty( $results_rows ) ) {
 							</div>
 						<?php endif; ?>
 
-						<div class="row d-md-flex d-none">
-							<div class="col-xl-3 col-lg-4 col-md-5">
-								<ul class="nav nav-pills nav-stacked flex-column h-100" role="tablist" aria-orientation="vertical">
-									<?php foreach ( $solution_tabs as $index => $tab ) : ?>
-										<?php
-										$tab_id    = 'tab_' . ( $index + 1 );
-										$is_active = 0 === $index;
-										?>
-										<li class="<?php echo $is_active ? 'active' : ''; ?>">
-											<span class="nav-link d-block w-100<?php echo $is_active ? ' active' : ''; ?>" data-tab="<?php echo esc_attr( $tab_id ); ?>">
-												<?php echo esc_html( isset( $tab['tab_title'] ) ? $tab['tab_title'] : '' ); ?>
-											</span>
-										</li>
-									<?php endforeach; ?>
-								</ul>
-							</div>
-							<div class="col-xl-9 col-lg-8 col-md-7">
-								<div class="tab-content p-0 d-flex flex-column h-100">
-									<?php foreach ( $solution_tabs as $index => $tab ) : ?>
-										<?php
-										$tab_id    = 'tab_' . ( $index + 1 );
-										$is_active = 0 === $index;
-										?>
-										<div class="tab-pane<?php echo $is_active ? ' active' : ''; ?>" id="<?php echo esc_attr( $tab_id ); ?>" role="tabpanel">
-											<?php echo wp_kses_post( wpautop( isset( $tab['tab_content'] ) ? $tab['tab_content'] : '' ) ); ?>
-										</div>
-									<?php endforeach; ?>
+						<div class="d-md-flex d-none cs-sol-tabs-top">
+							<ul class="nav nav-pills nav-stacked flex-row w-100" role="tablist" aria-orientation="horizontal">
+								<?php foreach ( $solution_tabs as $index => $tab ) : ?>
+									<?php
+									$tab_id    = 'tab_' . ( $index + 1 );
+									$is_active = 0 === $index;
+									?>
+									<li class="<?php echo $is_active ? 'active' : ''; ?>">
+										<span class="nav-link d-block<?php echo $is_active ? ' active' : ''; ?>" data-tab="<?php echo esc_attr( $tab_id ); ?>">
+											<?php echo esc_html( isset( $tab['tab_title'] ) ? $tab['tab_title'] : '' ); ?>
+										</span>
+									</li>
+								<?php endforeach; ?>
+							</ul>
+						</div>
+						<div class="tab-content p-0 d-flex flex-column h-100 d-md-block d-none">
+							<?php foreach ( $solution_tabs as $index => $tab ) : ?>
+								<?php
+								$tab_id    = 'tab_' . ( $index + 1 );
+								$is_active = 0 === $index;
+								?>
+								<div class="tab-pane<?php echo $is_active ? ' active' : ''; ?>" id="<?php echo esc_attr( $tab_id ); ?>" role="tabpanel">
+									<?php echo wp_kses_post( wpautop( isset( $tab['tab_content'] ) ? $tab['tab_content'] : '' ) ); ?>
 								</div>
-							</div>
+							<?php endforeach; ?>
 						</div>
 
 						<div class="d-md-none">
