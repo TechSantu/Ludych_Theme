@@ -406,6 +406,10 @@ textarea:focus {
 	margin-top: 18px;
 }
 
+.global-header .page-title span {
+	color: var(--button-border);
+}
+
 .global-header h5 span {
 	color: var(--button-border);
 }
@@ -1857,6 +1861,34 @@ footer.footer {
 }
 
 /* technology stack end */
+
+@media (max-width: 1199px) {
+	.tab-content .tab-pane.active {
+		grid-template-columns: repeat(4, 1fr);
+		gap: 30px;
+	}
+}
+
+@media (max-width: 991px) {
+	.tab-content .tab-pane.active {
+		grid-template-columns: repeat(3, 1fr);
+		gap: 24px;
+	}
+}
+
+@media (max-width: 767px) {
+	.tab-content .tab-pane.active {
+		grid-template-columns: repeat(2, 1fr);
+		gap: 20px;
+	}
+}
+
+@media (max-width: 479px) {
+	.tab-content .tab-pane.active {
+		grid-template-columns: 1fr;
+		gap: 16px;
+	}
+}
 .why-Onchoose-us,
 .workby-wrap {
 	background: var(--secondary-light);
