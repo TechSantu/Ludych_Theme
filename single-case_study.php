@@ -30,22 +30,29 @@ if ( empty( $hero_bg ) ) {
 	$hero_bg = get_template_directory_uri() . '/assets/images/services-bg.jpg';
 }
 
-$kicker           = $cs_get_field( 'case_study_kicker', 'Case Study' );
-$subtitle         = $cs_get_field( 'case_study_subtitle' );
-$stat_value       = $cs_get_field( 'case_study_stat_value' );
-$stat_label       = $cs_get_field( 'case_study_stat_label', 'Primary Result' );
-$about_title      = $cs_get_field( 'case_study_about_title', 'About Our Partner' );
-$about_small      = $cs_get_field( 'case_study_about_small', 'Partner Overview' );
-$who_title        = $cs_get_field( 'case_study_who_title', 'Who They Are' );
-$who_text         = $cs_get_field( 'case_study_who_text' );
-$what_title       = $cs_get_field( 'case_study_what_title', 'What They Do' );
-$what_text        = $cs_get_field( 'case_study_what_text' );
-$problem          = $cs_get_field( 'case_study_problem' );
-$solution         = $cs_get_field( 'case_study_solution' );
-$results          = $cs_get_field( 'case_study_results' );
-$reviews_kicker   = $cs_get_field( 'case_study_reviews_kicker', 'Searchbloom' );
-$reviews_rating   = $cs_get_field( 'case_study_reviews_rating', '4.9/5.0 Based on 99 Reviews' );
-$reviews_badge    = $cs_get_field( 'case_study_reviews_badge', 'Top Rated Agency' );
+$kicker      = $cs_get_field( 'case_study_kicker', 'Case Study' );
+$subtitle    = $cs_get_field( 'case_study_subtitle' );
+$stat_value  = $cs_get_field( 'case_study_stat_value' );
+$stat_label  = $cs_get_field( 'case_study_stat_label', 'Primary Result' );
+$about_title = $cs_get_field( 'case_study_about_title', 'About Our Partner' );
+$about_small = $cs_get_field( 'case_study_about_small', 'Partner Overview' );
+$who_title   = $cs_get_field( 'case_study_who_title', 'Who They Are' );
+$who_text    = $cs_get_field( 'case_study_who_text' );
+$what_title  = $cs_get_field( 'case_study_what_title', 'What They Do' );
+$what_text   = $cs_get_field( 'case_study_what_text' );
+$problem_title = $cs_get_field( 'case_study_problem_title', 'The Problem' );
+$problem     = $cs_get_field( 'case_study_problem' );
+$solution_title = $cs_get_field( 'case_study_solution_title', 'The Solution' );
+$solution    = $cs_get_field( 'case_study_solution' );
+$solution_tabs = function_exists( 'get_field' ) ? get_field( 'case_study_solution_tabs', $post_id ) : array();
+if ( ! is_array( $solution_tabs ) ) {
+	$solution_tabs = array();
+}
+$results_title = $cs_get_field( 'case_study_results_title', 'Results' );
+$results     = $cs_get_field( 'case_study_results' );
+$reviews_kicker = $cs_get_field( 'case_study_reviews_kicker', 'Searchbloom' );
+$reviews_rating = $cs_get_field( 'case_study_reviews_rating', '4.9/5.0 Based on 99 Reviews' );
+$reviews_badge  = $cs_get_field( 'case_study_reviews_badge', 'Top Rated Agency' );
 $partners_heading = $cs_get_field( 'case_study_partners_heading', 'You Are Much More Than a Client.' );
 $partners_text    = $cs_get_field( 'case_study_partners_text', 'Hundreds of brands trust our team with growth. Here are a few we are proud to work with.' );
 $cta_heading      = $cs_get_field( 'case_study_cta_heading', 'Want similar results? Contact us now!' );
@@ -77,6 +84,14 @@ $ace_experiment_items = $list_from_text( $ace_experiment_text );
 $results_table = function_exists( 'get_field' ) ? get_field( 'case_study_results_table', $post_id ) : array();
 if ( ! is_array( $results_table ) ) {
 	$results_table = array();
+}
+$results_columns = function_exists( 'get_field' ) ? get_field( 'case_study_results_columns', $post_id ) : array();
+if ( ! is_array( $results_columns ) ) {
+	$results_columns = array();
+}
+$results_rows = function_exists( 'get_field' ) ? get_field( 'case_study_results_rows', $post_id ) : array();
+if ( ! is_array( $results_rows ) ) {
+	$results_rows = array();
 }
 
 $selected_testimonials = function_exists( 'get_field' ) ? get_field( 'case_study_testimonials', $post_id ) : array();
@@ -144,10 +159,10 @@ if ( ! is_array( $selected_testimonials ) ) {
 					<h6><?php echo esc_html( $about_small ); ?></h6>
 				</div>
 			</div>
-			<div class="row case-study-grid">
+			<div class="row case-study-about-grid">
 				<?php if ( $who_text ) : ?>
 					<div class="col-lg-6">
-						<div class="case-study-card">
+						<div class="case-study-about-card">
 							<h3><?php echo esc_html( $who_title ); ?></h3>
 							<?php echo wp_kses_post( wpautop( $who_text ) ); ?>
 						</div>
@@ -155,7 +170,7 @@ if ( ! is_array( $selected_testimonials ) ) {
 				<?php endif; ?>
 				<?php if ( $what_text ) : ?>
 					<div class="col-lg-6">
-						<div class="case-study-card">
+						<div class="case-study-about-card">
 							<h3><?php echo esc_html( $what_title ); ?></h3>
 							<?php echo wp_kses_post( wpautop( $what_text ) ); ?>
 						</div>
@@ -170,24 +185,49 @@ if ( ! is_array( $selected_testimonials ) ) {
 	<section class="case-study-section grey-bg">
 		<div class="custom-container">
 			<div class="global-header">
-				<h2>The Problem</h2>
+				<h2><?php echo esc_html( $problem_title ); ?></h2>
 			</div>
 			<?php echo wp_kses_post( wpautop( $problem ) ); ?>
 		</div>
 	</section>
 <?php endif; ?>
 
-<?php if ( $solution || $ace_assets_items || $ace_control_items || $ace_experiment_items ) : ?>
+<?php if ( $solution || $solution_tabs || $ace_assets_items || $ace_control_items || $ace_experiment_items ) : ?>
 	<section class="case-study-section">
 		<div class="custom-container">
 			<div class="global-header">
-				<h2>The Solution</h2>
+				<h2><?php echo esc_html( $solution_title ); ?></h2>
 			</div>
 			<?php if ( $solution ) : ?>
 				<?php echo wp_kses_post( wpautop( $solution ) ); ?>
 			<?php endif; ?>
 
-			<?php if ( $ace_assets_items || $ace_control_items || $ace_experiment_items ) : ?>
+			<?php if ( ! empty( $solution_tabs ) ) : ?>
+				<div class="case-study-tabs" data-case-study-tabs>
+					<div class="case-study-tabs__nav" role="tablist">
+						<?php foreach ( $solution_tabs as $index => $tab ) : ?>
+							<?php
+							$tab_id = 'cs-tab-' . ( $index + 1 );
+							$is_active = 0 === $index;
+							?>
+							<button class="case-study-tabs__btn<?php echo $is_active ? ' is-active' : ''; ?>" type="button" data-tab-target="<?php echo esc_attr( $tab_id ); ?>" role="tab" aria-selected="<?php echo $is_active ? 'true' : 'false'; ?>">
+								<?php echo esc_html( isset( $tab['tab_title'] ) ? $tab['tab_title'] : '' ); ?>
+							</button>
+						<?php endforeach; ?>
+					</div>
+					<div class="case-study-tabs__panels">
+						<?php foreach ( $solution_tabs as $index => $tab ) : ?>
+							<?php
+							$tab_id = 'cs-tab-' . ( $index + 1 );
+							$is_active = 0 === $index;
+							?>
+							<div class="case-study-tabs__panel<?php echo $is_active ? ' is-active' : ''; ?>" id="<?php echo esc_attr( $tab_id ); ?>" role="tabpanel">
+								<?php echo wp_kses_post( wpautop( isset( $tab['tab_content'] ) ? $tab['tab_content'] : '' ) ); ?>
+							</div>
+						<?php endforeach; ?>
+					</div>
+				</div>
+			<?php elseif ( $ace_assets_items || $ace_control_items || $ace_experiment_items ) : ?>
 				<div class="row case-study-ace-grid">
 					<?php if ( $ace_assets_items ) : ?>
 						<div class="col-lg-4">
@@ -231,17 +271,59 @@ if ( ! is_array( $selected_testimonials ) ) {
 	</section>
 <?php endif; ?>
 
-<?php if ( $results || $results_table ) : ?>
+<?php if ( $results || $results_table || $results_columns || $results_rows ) : ?>
 	<section class="case-study-section grey-bg">
 		<div class="custom-container">
 			<div class="global-header">
-				<h2>Results</h2>
+				<h2><?php echo esc_html( $results_title ); ?></h2>
 			</div>
 			<?php if ( $results ) : ?>
 				<?php echo wp_kses_post( wpautop( $results ) ); ?>
 			<?php endif; ?>
 
-			<?php if ( $results_table ) : ?>
+			<?php if ( $results_columns && $results_rows ) : ?>
+				<div class="case-study-table-wrap">
+					<table class="case-study-table">
+						<thead>
+							<tr>
+								<?php foreach ( $results_columns as $column ) : ?>
+									<th><?php echo esc_html( isset( $column['column_label'] ) ? $column['column_label'] : '' ); ?></th>
+								<?php endforeach; ?>
+							</tr>
+						</thead>
+						<tbody>
+							<?php foreach ( $results_rows as $row ) : ?>
+								<?php
+								$row_values = isset( $row['row_values'] ) && is_array( $row['row_values'] ) ? $row['row_values'] : array();
+								$column_count = count( $results_columns );
+								?>
+								<tr>
+									<?php
+									if ( ! empty( $row_values ) ) :
+										$cell_index = 0;
+										foreach ( $row_values as $cell ) :
+											?>
+											<td><?php echo esc_html( isset( $cell['value'] ) ? $cell['value'] : '' ); ?></td>
+											<?php
+											$cell_index++;
+										endforeach;
+										for ( $i = $cell_index; $i < $column_count; $i++ ) :
+											?>
+											<td></td>
+											<?php
+										endfor;
+									elseif ( ! empty( $row['row_label'] ) ) :
+										?>
+										<td colspan="<?php echo esc_attr( max( 1, $column_count ) ); ?>"><?php echo esc_html( $row['row_label'] ); ?></td>
+										<?php
+									endif;
+									?>
+								</tr>
+							<?php endforeach; ?>
+						</tbody>
+					</table>
+				</div>
+			<?php elseif ( $results_table ) : ?>
 				<div class="case-study-table-wrap">
 					<table class="case-study-table">
 						<thead>

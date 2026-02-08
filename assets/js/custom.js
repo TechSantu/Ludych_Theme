@@ -430,6 +430,22 @@
 					}
 				});
 			});
+
+			// Case Study Detail Tabs
+			$(document).on('click', '[data-case-study-tabs] .case-study-tabs__btn', function () {
+				var btn = $(this);
+				var targetId = btn.data('tab-target');
+				var tabs = btn.closest('[data-case-study-tabs]');
+				if ( ! targetId || ! tabs.length ) {
+					return;
+				}
+
+				tabs.find('.case-study-tabs__btn').removeClass('is-active').attr('aria-selected', 'false');
+				btn.addClass('is-active').attr('aria-selected', 'true');
+
+				tabs.find('.case-study-tabs__panel').removeClass('is-active');
+				tabs.find('#' + targetId).addClass('is-active');
+			});
 		}
 	);
 })(jQuery);
