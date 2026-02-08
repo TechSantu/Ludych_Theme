@@ -446,6 +446,42 @@
 				tabs.find('.case-study-tabs__panel').removeClass('is-active');
 				tabs.find('#' + targetId).addClass('is-active');
 			});
+
+			// Case Study Solution Tabs (Searchbloom-style)
+			$(document).on('click', '.cs-sol-section .nav-link[data-tab]', function () {
+				var btn = $(this);
+				var tabId = btn.data('tab');
+				var container = btn.closest('.cs-sol-section');
+				if ( ! tabId || ! container.length ) {
+					return;
+				}
+				container.find('.nav-link').removeClass('active');
+				btn.addClass('active');
+				container.find('.tab-pane').removeClass('active');
+				container.find('#' + tabId).addClass('active');
+			});
+
+			// Case Study Solution Accordion (mobile)
+			$(document).on('click', '.cs-sol-section [data-toggle="collapse"] .point-title', function () {
+				var item = $(this).closest('[data-toggle="collapse"]');
+				var target = item.data('target');
+				if ( ! target ) {
+					return;
+				}
+				var panel = $(target);
+				if ( panel.hasClass('show') ) {
+					panel.removeClass('show');
+					item.attr('aria-expanded', 'false');
+				} else {
+					var container = item.closest('#tabContentCS');
+					if ( container.length ) {
+						container.find('.collapse').removeClass('show');
+						container.find('[data-toggle="collapse"]').attr('aria-expanded', 'false');
+					}
+					panel.addClass('show');
+					item.attr('aria-expanded', 'true');
+				}
+			});
 		}
 	);
 })(jQuery);

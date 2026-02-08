@@ -133,219 +133,253 @@ if ( ! is_array( $selected_testimonials ) ) {
 </section>
 
 <?php if ( $who_text || $what_text ) : ?>
-	<section class="case-study-section">
+	<section class="cs-section cs-cols-section py-5">
 		<div class="custom-container">
-			<div class="global-header text-center">
-				<h2><?php echo esc_html( $about_title ); ?></h2>
-				<div class="min-title">
-					<div class="icon-box">
-						<svg xmlns="http://www.w3.org/2000/svg" width="39" height="39" viewBox="0 0 39 39" fill="none">
-							<path d="M3.17827 26.2127c.17154-.0247 2.32423-.0489 4.80266-.0684 6.44077-.0183 12.28407-.0631 16.78827-.1267.7236-.0079 1.6447-.1217 2.02299-.243 1.7294-.5367 3.062-2.273 3.1985-4.1527l.0283-.5605-1.3019.0542-1.32.0538-.0128.3798c-.0189.5877-.1586.9476-.5333 1.3223-.4371.4372-.6808.479-3.0417.4912-2.3971.0116-4.9842.0296-9.4613.0845-1.8905.0188-4.3597.0475-5.4814.0499-1.13089-.0068-2.4063.0024-2.83144.0055l-.77788.0072.03852-.4789c.04719-.5059.49483-1.4857.85168-1.8426.11598-.1159.43842-.3466.71651-.5146.55642-.3179 1.23414-.3717 4.94284-.3921 3.564-.0225 8.7558-.0764 9.4883-.0933 1.5915-.05 3.0642-.8255 3.9511-2.0976 1.0109-1.4514 1.0267-1.614-.2493-9.04493-.0849-2.19041-.1643-4.62499-.2024-5.41256-.0201-.78731-.084-1.47573-.1299-1.52161-.156-.15597-.9392.11349-1.4314.49559-1.029.80881-1.028 0.88119-.7487 8.54741.0742 2.0726.0825 3.9544.0042 4.1794-.0601.2254-.3077.638-.5299.9153-.7469.9304-.9727.9544-8.2543 1.0062-5.94273.0524-6.78357.0858-7.64814.3632-1.8999.6338-3.30335 1.8354-4.05816 3.4893-.53533 1.1776-.67812 1.9626-.63797 3.5373.03073 1.5473.11406 1.6842.81804 1.5674z" fill="url(#a)"></path>
-							<defs>
-								<linearGradient id="a" x1="2.10682" y1="24.5083" x2="28.4018" y2="11.5311" gradientUnits="userSpaceOnUse">
-									<stop stop-color="#3D72FB"></stop>
-									<stop offset="1" stop-color="#fff"></stop>
-								</linearGradient>
-							</defs>
-						</svg>
-					</div>
-					<h6><?php echo esc_html( $about_small ); ?></h6>
+			<h2 class="cs-section-title mt-0 mb-4"><?php echo esc_html( $about_title ); ?></h2>
+			<div class="cs-cols pt-lg-5">
+				<div class="row">
+					<?php if ( $who_text ) : ?>
+						<div class="cs-col-1 pt-lg-0 pt-5 col-lg-6">
+							<p class="cs-col-title"><?php echo esc_html( $who_title ); ?></p>
+							<div class="cs-col-desc">
+								<?php echo wp_kses_post( wpautop( $who_text ) ); ?>
+							</div>
+						</div>
+					<?php endif; ?>
+					<?php if ( $what_text ) : ?>
+						<div class="cs-col-2 pt-lg-0 pt-5 col-lg-6">
+							<p class="cs-col-title"><?php echo esc_html( $what_title ); ?></p>
+							<div class="cs-col-desc">
+								<?php echo wp_kses_post( wpautop( $what_text ) ); ?>
+							</div>
+						</div>
+					<?php endif; ?>
 				</div>
-			</div>
-			<div class="row case-study-about-grid">
-				<?php if ( $who_text ) : ?>
-					<div class="col-lg-6">
-						<div class="case-study-about-card">
-							<h3><?php echo esc_html( $who_title ); ?></h3>
-							<?php echo wp_kses_post( wpautop( $who_text ) ); ?>
-						</div>
-					</div>
-				<?php endif; ?>
-				<?php if ( $what_text ) : ?>
-					<div class="col-lg-6">
-						<div class="case-study-about-card">
-							<h3><?php echo esc_html( $what_title ); ?></h3>
-							<?php echo wp_kses_post( wpautop( $what_text ) ); ?>
-						</div>
-					</div>
-				<?php endif; ?>
 			</div>
 		</div>
 	</section>
 <?php endif; ?>
 
-<?php if ( $problem || $solution || $solution_tabs || $ace_assets_items || $ace_control_items || $ace_experiment_items ) : ?>
-	<section class="case-study-section case-study-two-up">
+<?php if ( $problem ) : ?>
+	<section class="cs-section cs-cols-section cs-prob-section bg-light-blue py-5">
 		<div class="custom-container">
-			<div class="row">
-				<?php if ( $problem ) : ?>
-					<div class="col-lg-6">
-						<div class="case-study-two-up__card case-study-two-up__card--problem">
-							<h2><?php echo esc_html( $problem_title ); ?></h2>
+			<h2 class="cs-section-title mt-0 mb-4"><?php echo esc_html( $problem_title ); ?></h2>
+			<div class="cs-cols">
+				<div class="row">
+					<div class="pt-lg-0 pt-5 col-lg-12">
+						<div class="cs-col-desc">
 							<?php echo wp_kses_post( wpautop( $problem ) ); ?>
 						</div>
 					</div>
-				<?php endif; ?>
+				</div>
+			</div>
+		</div>
+	</section>
+<?php endif; ?>
 
-				<?php if ( $solution || $solution_tabs || $ace_assets_items || $ace_control_items || $ace_experiment_items ) : ?>
-					<div class="col-lg-6">
-						<div class="case-study-two-up__card case-study-two-up__card--solution">
-							<h2><?php echo esc_html( $solution_title ); ?></h2>
-							<?php if ( $solution ) : ?>
-								<?php echo wp_kses_post( wpautop( $solution ) ); ?>
-							<?php endif; ?>
-
-							<?php if ( ! empty( $solution_tabs ) ) : ?>
-								<div class="case-study-tabs" data-case-study-tabs>
-									<div class="case-study-tabs__nav" role="tablist">
-										<?php foreach ( $solution_tabs as $index => $tab ) : ?>
-											<?php
-											$tab_id = 'cs-tab-' . ( $index + 1 );
-											$is_active = 0 === $index;
-											?>
-											<button class="case-study-tabs__btn<?php echo $is_active ? ' is-active' : ''; ?>" type="button" data-tab-target="<?php echo esc_attr( $tab_id ); ?>" role="tab" aria-selected="<?php echo $is_active ? 'true' : 'false'; ?>">
-												<?php echo esc_html( isset( $tab['tab_title'] ) ? $tab['tab_title'] : '' ); ?>
-											</button>
-										<?php endforeach; ?>
+<?php if ( $solution || $solution_tabs || $ace_assets_items || $ace_control_items || $ace_experiment_items ) : ?>
+	<section class="cs-section cs-cols-section cs-sol-section py-5">
+		<div class="custom-container">
+			<h2 class="cs-section-title mt-0 mb-4"><?php echo esc_html( $solution_title ); ?></h2>
+			<div class="row pt-lg-4">
+				<div class="pt-lg-0 pt-5 col-lg-12 has-only-race">
+					<div class="cs-race-content mb-4">
+						<?php if ( $solution ) : ?>
+							<div class="race-intro text-center pb-4">
+								<div class="row justify-content-center">
+									<div class="col-lg-9">
+										<?php echo wp_kses_post( wpautop( $solution ) ); ?>
 									</div>
-									<div class="case-study-tabs__panels">
+								</div>
+							</div>
+						<?php endif; ?>
+
+						<?php if ( ! empty( $solution_tabs ) ) : ?>
+							<div class="row d-md-flex d-none">
+								<div class="col-xl-3 col-lg-4 col-md-5">
+									<ul class="nav nav-pills nav-stacked flex-column h-100" role="tablist" aria-orientation="vertical">
 										<?php foreach ( $solution_tabs as $index => $tab ) : ?>
 											<?php
-											$tab_id = 'cs-tab-' . ( $index + 1 );
+											$tab_id    = 'tab_' . ( $index + 1 );
 											$is_active = 0 === $index;
 											?>
-											<div class="case-study-tabs__panel<?php echo $is_active ? ' is-active' : ''; ?>" id="<?php echo esc_attr( $tab_id ); ?>" role="tabpanel">
+											<li class="<?php echo $is_active ? 'active' : ''; ?>">
+												<span class="nav-link d-block w-100<?php echo $is_active ? ' active' : ''; ?>" data-tab="<?php echo esc_attr( $tab_id ); ?>">
+													<?php echo esc_html( isset( $tab['tab_title'] ) ? $tab['tab_title'] : '' ); ?>
+												</span>
+											</li>
+										<?php endforeach; ?>
+									</ul>
+								</div>
+								<div class="col-xl-9 col-lg-8 col-md-7">
+									<div class="tab-content p-0 d-flex flex-column h-100">
+										<?php foreach ( $solution_tabs as $index => $tab ) : ?>
+											<?php
+											$tab_id    = 'tab_' . ( $index + 1 );
+											$is_active = 0 === $index;
+											?>
+											<div class="tab-pane<?php echo $is_active ? ' active' : ''; ?>" id="<?php echo esc_attr( $tab_id ); ?>" role="tabpanel">
 												<?php echo wp_kses_post( wpautop( isset( $tab['tab_content'] ) ? $tab['tab_content'] : '' ) ); ?>
 											</div>
 										<?php endforeach; ?>
 									</div>
 								</div>
-							<?php elseif ( $ace_assets_items || $ace_control_items || $ace_experiment_items ) : ?>
-								<div class="row case-study-ace-grid">
-									<?php if ( $ace_assets_items ) : ?>
-										<div class="col-12">
-											<div class="case-study-ace-card">
-												<h4>Assets</h4>
+							</div>
+
+							<div class="d-md-none">
+								<div id="tabContentCS">
+									<ul class="nav flex-column point-list mw-100">
+										<?php foreach ( $solution_tabs as $index => $tab ) : ?>
+											<?php
+											$collapse_id = 'collapse' . ( $index + 1 );
+											$is_active   = 0 === $index;
+											?>
+											<li data-toggle="collapse" data-target="#<?php echo esc_attr( $collapse_id ); ?>" aria-expanded="<?php echo $is_active ? 'true' : 'false'; ?>" aria-controls="<?php echo esc_attr( $collapse_id ); ?>">
+												<div class="point-title">
+													<span class="ptitle"><?php echo esc_html( isset( $tab['tab_title'] ) ? $tab['tab_title'] : '' ); ?></span>
+													<i class="point-caret fa fa-caret-down" aria-hidden="true"></i>
+												</div>
+												<div id="<?php echo esc_attr( $collapse_id ); ?>" class="collapse<?php echo $is_active ? ' show' : ''; ?>" data-parent="#tabContentCS">
+													<div class="point-desc">
+														<?php echo wp_kses_post( wpautop( isset( $tab['tab_content'] ) ? $tab['tab_content'] : '' ) ); ?>
+													</div>
+												</div>
+											</li>
+										<?php endforeach; ?>
+									</ul>
+								</div>
+							</div>
+						<?php elseif ( $ace_assets_items || $ace_control_items || $ace_experiment_items ) : ?>
+							<div class="row d-md-flex d-none">
+								<div class="col-xl-3 col-lg-4 col-md-5">
+									<ul class="nav nav-pills nav-stacked flex-column h-100" role="tablist" aria-orientation="vertical">
+										<?php if ( $ace_assets_items ) : ?>
+											<li class="active"><span class="nav-link d-block w-100 active" data-tab="tab_assets">Assets</span></li>
+										<?php endif; ?>
+										<?php if ( $ace_control_items ) : ?>
+											<li><span class="nav-link d-block w-100" data-tab="tab_control">Control</span></li>
+										<?php endif; ?>
+										<?php if ( $ace_experiment_items ) : ?>
+											<li><span class="nav-link d-block w-100" data-tab="tab_experimentation">Experimentation</span></li>
+										<?php endif; ?>
+									</ul>
+								</div>
+								<div class="col-xl-9 col-lg-8 col-md-7">
+									<div class="tab-content p-0 d-flex flex-column h-100">
+										<?php if ( $ace_assets_items ) : ?>
+											<div class="tab-pane active" id="tab_assets" role="tabpanel">
 												<ul>
 													<?php foreach ( $ace_assets_items as $item ) : ?>
 														<li><?php echo esc_html( $item ); ?></li>
 													<?php endforeach; ?>
 												</ul>
 											</div>
-										</div>
-									<?php endif; ?>
-									<?php if ( $ace_control_items ) : ?>
-										<div class="col-12">
-											<div class="case-study-ace-card">
-												<h4>Control</h4>
+										<?php endif; ?>
+										<?php if ( $ace_control_items ) : ?>
+											<div class="tab-pane" id="tab_control" role="tabpanel">
 												<ul>
 													<?php foreach ( $ace_control_items as $item ) : ?>
 														<li><?php echo esc_html( $item ); ?></li>
 													<?php endforeach; ?>
 												</ul>
 											</div>
-										</div>
-									<?php endif; ?>
-									<?php if ( $ace_experiment_items ) : ?>
-										<div class="col-12">
-											<div class="case-study-ace-card">
-												<h4>Experimentation</h4>
+										<?php endif; ?>
+										<?php if ( $ace_experiment_items ) : ?>
+											<div class="tab-pane" id="tab_experimentation" role="tabpanel">
 												<ul>
 													<?php foreach ( $ace_experiment_items as $item ) : ?>
 														<li><?php echo esc_html( $item ); ?></li>
 													<?php endforeach; ?>
 												</ul>
 											</div>
-										</div>
-									<?php endif; ?>
+										<?php endif; ?>
+									</div>
 								</div>
-							<?php endif; ?>
-						</div>
+							</div>
+						<?php endif; ?>
 					</div>
-				<?php endif; ?>
+				</div>
 			</div>
 		</div>
 	</section>
 <?php endif; ?>
 
 <?php if ( $results || $results_table || $results_columns || $results_rows ) : ?>
-	<section class="case-study-section grey-bg">
+	<section class="cs-section cs-cols-section cs-result-section py-lg-5 border-bottom-0">
 		<div class="custom-container">
-			<div class="global-header">
-				<h2><?php echo esc_html( $results_title ); ?></h2>
-			</div>
+			<h2 class="cs-section-title mt-0 mb-4"><?php echo esc_html( $results_title ); ?></h2>
 			<?php if ( $results ) : ?>
-				<?php echo wp_kses_post( wpautop( $results ) ); ?>
+				<div class="cs-section-desc pb-4">
+					<?php echo wp_kses_post( wpautop( $results ) ); ?>
+				</div>
 			<?php endif; ?>
 
-			<?php if ( $results_columns && $results_rows ) : ?>
-				<div class="case-study-table-wrap">
-					<table class="case-study-table">
-						<thead>
-							<tr>
-								<?php foreach ( $results_columns as $column ) : ?>
-									<th><?php echo esc_html( isset( $column['column_label'] ) ? $column['column_label'] : '' ); ?></th>
-								<?php endforeach; ?>
-							</tr>
-						</thead>
-						<tbody>
-							<?php foreach ( $results_rows as $row ) : ?>
-								<?php
-								$row_values = isset( $row['row_values'] ) && is_array( $row['row_values'] ) ? $row['row_values'] : array();
-								$column_count = count( $results_columns );
-								?>
-								<tr>
-									<?php
-									if ( ! empty( $row_values ) ) :
-										$cell_index = 0;
-										foreach ( $row_values as $cell ) :
-											?>
-											<td><?php echo esc_html( isset( $cell['value'] ) ? $cell['value'] : '' ); ?></td>
-											<?php
-											$cell_index++;
-										endforeach;
-										for ( $i = $cell_index; $i < $column_count; $i++ ) :
-											?>
-											<td></td>
-											<?php
-										endfor;
-									elseif ( ! empty( $row['row_label'] ) ) :
-										?>
-										<td colspan="<?php echo esc_attr( max( 1, $column_count ) ); ?>"><?php echo esc_html( $row['row_label'] ); ?></td>
+			<div class="cs-results-tholder pb-3">
+				<div class="cs-table-box mb-4 table-responsive">
+					<div class="table-responsive table-selfr">
+						<?php if ( $results_columns && $results_rows ) : ?>
+							<table class="table table-bordered">
+								<tbody>
+									<tr>
+										<?php foreach ( $results_columns as $column ) : ?>
+											<td><?php echo esc_html( isset( $column['column_label'] ) ? $column['column_label'] : '' ); ?></td>
+										<?php endforeach; ?>
+									</tr>
+									<?php foreach ( $results_rows as $row ) : ?>
 										<?php
-									endif;
-									?>
-								</tr>
-							<?php endforeach; ?>
-						</tbody>
-					</table>
+										$row_values = isset( $row['row_values'] ) && is_array( $row['row_values'] ) ? $row['row_values'] : array();
+										$column_count = count( $results_columns );
+										?>
+										<tr>
+											<?php
+											if ( ! empty( $row_values ) ) :
+												$cell_index = 0;
+												foreach ( $row_values as $cell ) :
+													?>
+													<td><?php echo esc_html( isset( $cell['value'] ) ? $cell['value'] : '' ); ?></td>
+													<?php
+													$cell_index++;
+												endforeach;
+												for ( $i = $cell_index; $i < $column_count; $i++ ) :
+													?>
+													<td></td>
+													<?php
+												endfor;
+											elseif ( ! empty( $row['row_label'] ) ) :
+												?>
+												<td colspan="<?php echo esc_attr( max( 1, $column_count ) ); ?>"><?php echo esc_html( $row['row_label'] ); ?></td>
+												<?php
+											endif;
+											?>
+										</tr>
+									<?php endforeach; ?>
+								</tbody>
+							</table>
+						<?php elseif ( $results_table ) : ?>
+							<table class="table table-bordered">
+								<tbody>
+									<tr>
+										<td>Year 2021</td>
+										<td>Spend</td>
+										<td>Purchases</td>
+										<td>Revenue</td>
+										<td>ROAS</td>
+									</tr>
+									<?php foreach ( $results_table as $row ) : ?>
+										<tr>
+											<td><?php echo esc_html( isset( $row['period'] ) ? $row['period'] : '' ); ?></td>
+											<td><?php echo esc_html( isset( $row['spend'] ) ? $row['spend'] : '' ); ?></td>
+											<td><?php echo esc_html( isset( $row['purchases'] ) ? $row['purchases'] : '' ); ?></td>
+											<td><?php echo esc_html( isset( $row['revenue'] ) ? $row['revenue'] : '' ); ?></td>
+											<td><?php echo esc_html( isset( $row['roas'] ) ? $row['roas'] : '' ); ?></td>
+										</tr>
+									<?php endforeach; ?>
+								</tbody>
+							</table>
+						<?php endif; ?>
+					</div>
 				</div>
-			<?php elseif ( $results_table ) : ?>
-				<div class="case-study-table-wrap">
-					<table class="case-study-table">
-						<thead>
-							<tr>
-								<th>Period</th>
-								<th>Spend</th>
-								<th>Purchases</th>
-								<th>Revenue</th>
-								<th>ROAS</th>
-							</tr>
-						</thead>
-						<tbody>
-							<?php foreach ( $results_table as $row ) : ?>
-								<tr>
-									<td><?php echo esc_html( isset( $row['period'] ) ? $row['period'] : '' ); ?></td>
-									<td><?php echo esc_html( isset( $row['spend'] ) ? $row['spend'] : '' ); ?></td>
-									<td><?php echo esc_html( isset( $row['purchases'] ) ? $row['purchases'] : '' ); ?></td>
-									<td><?php echo esc_html( isset( $row['revenue'] ) ? $row['revenue'] : '' ); ?></td>
-									<td><?php echo esc_html( isset( $row['roas'] ) ? $row['roas'] : '' ); ?></td>
-								</tr>
-							<?php endforeach; ?>
-						</tbody>
-					</table>
-				</div>
-			<?php endif; ?>
+			</div>
 		</div>
 	</section>
 <?php endif; ?>
