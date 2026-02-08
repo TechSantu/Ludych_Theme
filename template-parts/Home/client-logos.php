@@ -16,7 +16,7 @@ $logos_query = new WP_Query( array(
 	<section class="client-logos grey-bg">
 		<div class="custom-container">
 			<div class="global-header text-center">
-				<h2><?php echo esc_html( $section_heading ); ?></h2>
+				<!-- <h2><?php //echo esc_html( $section_heading ); ?></h2> -->
 				<div class="min-title">
 					<div class="icon-box">
 						<svg xmlns="http://www.w3.org/2000/svg" width="39" height="39" viewBox="0 0 39 39" fill="none">
