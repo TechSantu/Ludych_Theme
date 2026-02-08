@@ -33,7 +33,7 @@ if ( ! $cs_title ) {
 	<div class="custom-container">
 		<div class="inner-banner">
 			<div class="global-header blogs">
-				<h2><?php echo esc_html( $cs_heading ); ?></h2>
+				<h1><?php echo esc_html( $cs_heading ); ?></h1>
 				<div class="min-title">
 					<div class="icon-box">
 						<svg xmlns="http://www.w3.org/2000/svg" width="39" height="39" viewBox="0 0 39 39" fill="none">

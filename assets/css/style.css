@@ -362,6 +362,7 @@ textarea:focus {
 	text-align: center;
 }
 
+.global-header h1,
 .global-header h2 {
 	font-size: 120px;
 	text-transform: capitalize;
@@ -387,6 +388,7 @@ textarea:focus {
 	text-align: center;
 }
 
+.global-header h1 span,
 .global-header h2 span {
 	color: var(--button-border);
 }
@@ -1995,6 +1997,7 @@ footer.footer {
 	width: 100%;
 }
 
+.inner-banner .global-header h1,
 .inner-banner .global-header h2 {
 	position: relative;
 	display: inline-block;
