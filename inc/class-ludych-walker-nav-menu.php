@@ -45,8 +45,8 @@ class Ludych_Walker_Nav_Menu extends Walker_Nav_Menu {
 		$link_classes = array( 0 === $depth ? 'nav-link' : 'dropdown-item' );
 
 		if ( $has_child ) {
-			$link_classes[]   = 'dropdown-toggle';
-			$atts['role']     = 'button';
+			$link_classes[]         = 'dropdown-toggle';
+			$atts['role']           = 'button';
 			$atts['data-bs-toggle'] = 'dropdown';
 			$atts['aria-expanded']  = 'false';
 		}
