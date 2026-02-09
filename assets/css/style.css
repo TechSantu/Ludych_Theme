@@ -2870,3 +2870,7 @@ footer.footer {
 	flex-direction: column;
 	text-align: center;
 }
+.footer li a:hover,
+.footer li.current-menu-item a {
+	color: var(--button-border);
+}
