@@ -125,13 +125,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 											$map_embed,
 											array(
 												'iframe' => array(
-													'src'             => true,
-													'width'           => true,
-													'height'          => true,
-													'style'           => true,
+													'src' => true,
+													'width' => true,
+													'height' => true,
+													'style' => true,
 													'allowfullscreen' => true,
-													'loading'         => true,
-													'referrerpolicy'  => true,
+													'loading' => true,
+													'referrerpolicy' => true,
 												),
 											)
 										);

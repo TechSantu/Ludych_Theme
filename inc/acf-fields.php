@@ -1281,11 +1281,11 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 						'button_label' => 'Add Social Link',
 						'sub_fields'   => array(
 							array(
-								'key'          => 'field_about_team_member_social_icon',
-								'label'        => 'Icon',
-								'name'         => 'icon',
-								'type'         => 'select',
-								'choices'      => array(
+								'key'           => 'field_about_team_member_social_icon',
+								'label'         => 'Icon',
+								'name'          => 'icon',
+								'type'          => 'select',
+								'choices'       => array(
 									'facebook-f' => 'Facebook',
 									'twitter'    => 'Twitter',
 									'youtube'    => 'YouTube',
