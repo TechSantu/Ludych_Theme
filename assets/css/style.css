@@ -2805,6 +2805,7 @@ footer.footer {
 
 /*---- Our Team CSS ----*/
 .our-teams{padding: 80px 0px; position: relative;}
+.our-teams .col-md-6{margin-top: 15px; margin-bottom: 15px;}
 .our-teams .ourteam-Item {
 	border: 2px solid #cbcbcb; transition: 0.5s;
 	border-radius: 15px; overflow: hidden;
