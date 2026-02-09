@@ -79,7 +79,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 						<div class="footer-nav">
 							<h6>Email</h6>
 							<?php
-							$footer_email = get_theme_mod( 'ludych_contact_email', 'biz@ludych.com' );
+							$footer_email = get_theme_mod( 'ludych_contact_email', 'support@ludych.com' );
 							if ( $footer_email ) :
 								?>
 								<a href="mailto:<?php echo esc_attr( $footer_email ); ?>"><?php echo esc_html( $footer_email ); ?></a>
@@ -96,7 +96,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				</div>
 				<div class="col-xl-4 col-md-12 col-sm-12">
 					<div class="office-wrapper">
-						<h6>Global Office</h6>
+						<h6><?php echo esc_html( get_theme_mod( 'ludych_footer_office_heading', __( 'Our Office', 'ludych-theme' ) ) ); ?></h6>
 						<div class="row">
 							<div class="col-xl-6 col-md-6 col-sm-12">
 								<div class="office-item">
@@ -115,23 +115,27 @@ if ( ! defined( 'ABSPATH' ) ) {
 							</div>
 							<div class="col-xl-6 col-md-6 col-sm-12">
 								<div class="office-item">
-									<?php
-									$office2_image_id = get_theme_mod( 'ludych_footer_office2_image' );
-									if ( $office2_image_id ) {
-										echo wp_get_attachment_image( $office2_image_id, 'full', false, array() );
-									} else {
-										?>
-										<img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/San-Francisco.png' ); ?>" alt="">
-									<?php } ?>
-									<h5><?php echo esc_html( get_theme_mod( 'ludych_footer_office2_title', __( 'San Francisco', 'ludych-theme' ) ) ); ?></h5>
-									<p><?php echo esc_html( get_theme_mod( 'ludych_footer_office2_address', __( '456 Tech Street San Francisco, CA 94102', 'ludych-theme' ) ) ); ?></p>
-									<h6><?php echo esc_html( get_theme_mod( 'ludych_footer_office2_phone', __( '+1 (555) 987-6543', 'ludych-theme' ) ) ); ?></h6>
-								</div>
-							</div>
-							<div class="col-12">
-								<div class="office-item">
 									<div class="footer-map">
-										<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d51376610.418691374!2d-99.091086!3d38.191797!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xaa3076b5283652d9%3A0x2a5b6ef1354a7b77!2sLudych%20Technology!5e0!3m2!1sen!2sus!4v1770576168737!5m2!1sen!2sus" width="500" height="200" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+										<?php
+										$map_embed = get_theme_mod(
+											'ludych_footer_map_embed',
+											'<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d51376610.418691374!2d-99.091086!3d38.191797!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xaa3076b5283652d9%3A0x2a5b6ef1354a7b77!2sLudych%20Technology!5e0!3m2!1sen!2sus!4v1770576168737!5m2!1sen!2sus" width="500" height="200" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>'
+										);
+										echo wp_kses(
+											$map_embed,
+											array(
+												'iframe' => array(
+													'src'             => true,
+													'width'           => true,
+													'height'          => true,
+													'style'           => true,
+													'allowfullscreen' => true,
+													'loading'         => true,
+													'referrerpolicy'  => true,
+												),
+											)
+										);
+										?>
 									</div>
 								</div>
 							</div>
@@ -160,4 +164,3 @@ if ( ! defined( 'ABSPATH' ) ) {
 			</div>
 		</div>
 	</footer>
-

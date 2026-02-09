@@ -147,7 +147,7 @@ $values_items_fallback = array(
 	array(
 		'title'       => 'Automated QA,<br> Not Hope',
 		'icon'        => get_template_directory_uri() . '/assets/images/icon-consultation.svg',
-		'description' => 'Jest + Playwright run in CI/CD before any code ships. Accessibility audits. Performance testing. Load testing. We catch bugs before your users do&mdash;because hoping it works isn\'t a quality strategy.',
+		'description' => 'est + Playwright run in CI/CD before any code ships. Accessibility audits. Performance testing. Load testing. We catch bugs before your users do&mdash;because hoping it works isn\'t a quality strategy.',
 	),
 	array(
 		'title'       => 'Transparency<br> & Data',
@@ -221,6 +221,38 @@ $blog_fallback_items = array(
 		'title'       => 'Do Your Business with Expert Digital Solutions',
 		'description' => 'Do Your Business with Expert Digital Solutions In today&rsquo;s fast-paced digital world, success is no longer defined solely by hard work or traditional marketing strategies.',
 		'link_url'    => '#',
+	),
+);
+
+$team_title   = $acf_ready ? get_field( 'about_team_title', $post_id ) : '';
+$team_kicker  = $acf_ready ? get_field( 'about_team_kicker', $post_id ) : '';
+$team_heading = $acf_ready ? get_field( 'about_team_heading', $post_id ) : '';
+if ( ! $team_title ) {
+	$team_title = 'Our Team';
+}
+if ( ! $team_kicker ) {
+	$team_kicker = 'Our Team';
+}
+if ( ! $team_heading ) {
+	$team_heading = 'Meet the Engineers <span>Behind the Work</span>';
+}
+
+$team_members_fallback = array(
+	array(
+		'image'       => get_template_directory_uri() . '/assets/images/joseph-appleton-img.jpg',
+		'experience'  => '15+ years experiance',
+		'name'        => 'Joseph Appleton',
+		'title'       => 'Founder & Managing Partner',
+		'description' => 'Full-stack architect. Builds platforms that scale, not prototypes.',
+		'socials'     => array( 'facebook-f', 'twitter', 'youtube', 'instagram', 'pinterest' ),
+	),
+	array(
+		'image'       => get_template_directory_uri() . '/assets/images/joseph-appleton-img.jpg',
+		'experience'  => '15+ years experiance',
+		'name'        => 'Joseph Appleton',
+		'title'       => 'Founder & Managing Partner',
+		'description' => 'Full-stack architect. Builds platforms that scale, not prototypes.',
+		'socials'     => array( 'facebook-f', 'twitter', 'youtube', 'instagram', 'pinterest' ),
 	),
 );
 
@@ -436,6 +468,7 @@ get_header();
 			<div class="row">
 				<div class="col-12">
 					<div class="content-wrapper mission-vision">
+						<img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/custom-icon-star.svg' ); ?>" alt="" class="border-star">
 						<div class="content-box-inner">
 							<h3><?php echo esc_html( $mission_title ); ?></h3>
 							<p><?php echo esc_html( $mission_content ); ?></p>
@@ -451,6 +484,129 @@ get_header();
 					</div>
 				</div>
 			</div>
+		</div>
+	</div>
+</section>
+
+<section class="our-teams">
+	<div class="custom-container">
+		<div class="global-header middle-align">
+			<h2><?php echo esc_html( $team_title ); ?></h2>
+			<div class="min-title">
+				<div class="icon-box">
+					<svg xmlns="http://www.w3.org/2000/svg" width="39" height="39" viewBox="0 0 39 39" fill="none">
+						<path
+							d="M3.17827 26.2127c.17154-.0247 2.32423-.0489 4.80266-.0684 6.44077-.0183 12.28407-.0631 16.78827-.1267.7236-.0079 1.6447-.1217 2.02299-.243 1.7294-.5367 3.062-2.273 3.1985-4.1527l.0283-.5605-1.3019.0542-1.32.0538-.0128.3798c-.0189.5877-.1586.9476-.5333 1.3223-.4371.4372-.6808.479-3.0417.4912-2.3971.0116-4.9842.0296-9.4613.0845-1.8905.0188-4.3597.0475-5.4814.0499-1.13089-.0068-2.4063.0024-2.83144.0055l-.77788.0072.03852-.4789c.04719-.5059.49483-1.4857.85168-1.8426.11598-.1159.43842-.3466.71651-.5146.55642-.3179 1.23414-.3717 4.94284-.3921 3.564-.0225 8.7558-.0764 9.4883-.0933 1.5915-.05 3.0642-.8255 3.9511-2.0976 1.0109-1.4514 1.0267-1.614-.2493-9.04493-.0849-2.19041-.1643-4.62499-.2024-5.41256-.0201-.78731-.084-1.47573-.1299-1.52161-.156-.15597-.9392.11349-1.4314.49559-1.029.80881-1.028 0.88119-.7487 8.54741.0742 2.0726.0825 3.9544.0042 4.1794-.0601.2254-.3077.638-.5299.9153-.7469.9304-.9727.9544-8.2543 1.0062-5.94273.0524-6.78357.0858-7.64814.3632-1.8999.6338-3.30335 1.8354-4.05816 3.4893-.53533 1.1776-.67812 1.9626-.63797 3.5373.03073 1.5473.11406 1.6842.81804 1.5674z"
+							fill="url(#a)" />
+						<defs>
+							<linearGradient id="a" x1="2.10682" y1="24.5083" x2="28.4018" y2="11.5311"
+								gradientUnits="userSpaceOnUse">
+								<stop stop-color="#3D72FB" />
+								<stop offset="1" stop-color="#fff" />
+							</linearGradient>
+						</defs>
+					</svg>
+				</div>
+				<h6><?php echo esc_html( $team_kicker ); ?></h6>
+			</div>
+			<h5><?php echo wp_kses_post( $team_heading ); ?></h5>
+		</div>
+
+		<div class="row justify-content-center">
+			<?php
+			if ( $acf_ready && have_rows( 'about_team_members', $post_id ) ) :
+				while ( have_rows( 'about_team_members', $post_id ) ) :
+					the_row();
+					$member_image       = get_sub_field( 'image' );
+					$member_experience  = get_sub_field( 'experience' );
+					$member_name        = get_sub_field( 'name' );
+					$member_title       = get_sub_field( 'title' );
+					$member_description = get_sub_field( 'description' );
+					if ( is_array( $member_image ) ) {
+						$member_image = $member_image['url'] ?? '';
+					}
+					if ( ! $member_image ) {
+						$member_image = get_template_directory_uri() . '/assets/images/joseph-appleton-img.jpg';
+					}
+					?>
+					<div class="col-xl-4 col-md-6">
+						<div class="ourteam-Item">
+							<div class="team-thumbnail">
+								<img src="<?php echo esc_url( $member_image ); ?>" alt="">
+								<?php if ( $member_experience ) : ?>
+									<span class="team-tag">
+										<?php echo esc_html( $member_experience ); ?>
+									</span>
+								<?php endif; ?>
+
+								<?php if ( have_rows( 'socials' ) ) : ?>
+									<div class="group-social">
+										<ul>
+											<?php
+											while ( have_rows( 'socials' ) ) :
+												the_row();
+												$social_icon = get_sub_field( 'icon' );
+												$social_url  = get_sub_field( 'url' );
+												if ( ! $social_icon ) {
+													continue;
+												}
+												if ( ! $social_url ) {
+													$social_url = 'javascript:void(0)';
+												}
+												?>
+												<li>
+													<a href="<?php echo esc_url( $social_url ); ?>"><i class="fa-brands fa-<?php echo esc_attr( $social_icon ); ?>"></i></a>
+												</li>
+											<?php endwhile; ?>
+										</ul>
+									</div>
+								<?php endif; ?>
+							</div>
+							<div class="cntn-outer">
+								<?php if ( $member_name ) : ?>
+									<h4><?php echo esc_html( $member_name ); ?></h4>
+								<?php endif; ?>
+								<?php if ( $member_title ) : ?>
+									<strong><?php echo esc_html( $member_title ); ?></strong>
+								<?php endif; ?>
+								<?php if ( $member_description ) : ?>
+									<p><?php echo esc_html( $member_description ); ?></p>
+								<?php endif; ?>
+							</div>
+						</div>
+					</div>
+					<?php
+				endwhile;
+			else :
+				foreach ( $team_members_fallback as $member ) :
+					?>
+					<div class="col-xl-4 col-md-6">
+						<div class="ourteam-Item">
+							<div class="team-thumbnail">
+								<img src="<?php echo esc_url( $member['image'] ); ?>" alt="">
+								<span class="team-tag">
+									<?php echo esc_html( $member['experience'] ); ?>
+								</span>
+
+								<div class="group-social">
+									<ul>
+										<?php foreach ( $member['socials'] as $social ) : ?>
+											<li>
+												<a href="javascript:void(0)"><i class="fa-brands fa-<?php echo esc_attr( $social ); ?>"></i></a>
+											</li>
+										<?php endforeach; ?>
+									</ul>
+								</div>
+							</div>
+							<div class="cntn-outer">
+								<h4><?php echo esc_html( $member['name'] ); ?></h4>
+								<strong><?php echo esc_html( $member['title'] ); ?></strong>
+								<p><?php echo esc_html( $member['description'] ); ?></p>
+							</div>
+						</div>
+					</div>
+				<?php endforeach; ?>
+			<?php endif; ?>
 		</div>
 	</div>
 </section>
