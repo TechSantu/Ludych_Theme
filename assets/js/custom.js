@@ -136,9 +136,9 @@
 				function (e) {
 					e.preventDefault();
 
-					var button   = $(this);
-					var page     = button.data("page");
-					var maxPage  = button.data("max-pages");
+					var button = $(this);
+					var page = button.data("page");
+					var maxPage = button.data("max-pages");
 					var postType = button.data("post-type");
 					var nextPage = page + 1;
 
@@ -207,10 +207,10 @@
 				function (e) {
 					e.preventDefault();
 
-					var form             = $(this);
-					var messageBox       = form.find(".form-message");
-					var submitBtn        = form.find("button[type='submit']");
-					var originalBtnText  = submitBtn.find("span").text();
+					var form = $(this);
+					var messageBox = form.find(".form-message");
+					var submitBtn = form.find("button[type='submit']");
+					var originalBtnText = submitBtn.find("span").text();
 					var recaptchaEnabled = form.data("recaptcha-enabled") === 1 || form.data("recaptcha-enabled") === "1";
 					var recaptchaSiteKey = form.data("recaptcha-sitekey");
 
@@ -271,9 +271,12 @@
 			// Mobile Menu Dropdown Toggle
 			$('.navbar-nav .dropdown > a').on('click', function (e) {
 				if ($(window).width() < 992) {
-					var $el     = $(this);
+					var $el = $(this);
 					var $parent = $el.parent('.dropdown');
-					var $menu   = $el.next('.dropdown-menu');
+					var $menu = $el.next('.dropdown-menu');
+
+					// Check if this is a top-level item or a nested one
+					var isNested = $parent.hasClass('dropdown-submenu');
 
 					// Case 1: If the menu is already open, CLOSE it on the second click
 					if ($parent.hasClass('show')) {
@@ -287,8 +290,13 @@
 						e.preventDefault();
 						e.stopPropagation();
 
-						// Close other open menus
-						$('.navbar-nav .dropdown, .navbar-nav .dropdown-menu').removeClass('show');
+						// Only close OTHER menus if it's a top-level dropdown
+						if (!isNested) {
+							$('.navbar-nav .dropdown, .navbar-nav .dropdown-menu').not($parent).not($parent.parents('.dropdown')).removeClass('show');
+						} else {
+							// For nested menus, only close sibling nested menus
+							$parent.siblings('.dropdown-submenu').removeClass('show').find('.dropdown-menu').removeClass('show');
+						}
 
 						$parent.addClass('show');
 						$menu.addClass('show');
@@ -298,7 +306,7 @@
 			});
 
 			function loadBlogPosts(page, layout) {
-				var container  = $('#blog-posts-container');
+				var container = $('#blog-posts-container');
 				var pagination = $('#blog-pagination-container');
 
 				var baseUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
@@ -345,14 +353,14 @@
 
 			$(document).on('click', '.switcher-btn', function (e) {
 				e.preventDefault();
-				var btn    = $(this);
+				var btn = $(this);
 				var layout = btn.data('type');
 
 				$('.switcher-btn').removeClass('btn-secondary').addClass('btn-light');
 				btn.removeClass('btn-light').addClass('btn-secondary');
 
 				var params = new URLSearchParams(window.location.search);
-				var page   = params.get('paged') || 1;
+				var page = params.get('paged') || 1;
 
 				loadBlogPosts(page, layout);
 			});
@@ -361,7 +369,7 @@
 				e.preventDefault();
 				var url = $(this).attr('href');
 
-				var page  = 1;
+				var page = 1;
 				var match = url.match(/\/page\/(\d+)/);
 				if (match) {
 					page = match[1];
@@ -386,14 +394,14 @@
 				var tabsContainer = $('.cs-tabs');
 				var listContainer = $('.cs-lists ul');
 
-				if ( ! tabsContainer.length || ! listContainer.length) {
+				if (!tabsContainer.length || !listContainer.length) {
 					return;
 				}
 
 				e.preventDefault();
 
-				var link    = $(this);
-				var term    = link.data('term') || '';
+				var link = $(this);
+				var term = link.data('term') || '';
 				var baseUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
 
 				$.ajax({
@@ -433,10 +441,10 @@
 
 			// Case Study Detail Tabs
 			$(document).on('click', '[data-case-study-tabs] .case-study-tabs__btn', function () {
-				var btn      = $(this);
+				var btn = $(this);
 				var targetId = btn.data('tab-target');
-				var tabs     = btn.closest('[data-case-study-tabs]');
-				if ( ! targetId || ! tabs.length ) {
+				var tabs = btn.closest('[data-case-study-tabs]');
+				if (!targetId || !tabs.length) {
 					return;
 				}
 
@@ -449,10 +457,10 @@
 
 			// Case Study Solution Tabs (Searchbloom-style)
 			$(document).on('click', '.cs-sol-section .nav-link[data-tab]', function () {
-				var btn       = $(this);
-				var tabId     = btn.data('tab');
+				var btn = $(this);
+				var tabId = btn.data('tab');
 				var container = btn.closest('.cs-sol-section');
-				if ( ! tabId || ! container.length ) {
+				if (!tabId || !container.length) {
 					return;
 				}
 				container.find('.nav-link').removeClass('active');
@@ -463,18 +471,18 @@
 
 			// Case Study Solution Accordion (mobile)
 			$(document).on('click', '.cs-sol-section [data-toggle="collapse"] .point-title', function () {
-				var item   = $(this).closest('[data-toggle="collapse"]');
+				var item = $(this).closest('[data-toggle="collapse"]');
 				var target = item.data('target');
-				if ( ! target ) {
+				if (!target) {
 					return;
 				}
 				var panel = $(target);
-				if ( panel.hasClass('show') ) {
+				if (panel.hasClass('show')) {
 					panel.removeClass('show');
 					item.attr('aria-expanded', 'false');
 				} else {
 					var container = item.closest('#tabContentCS');
-					if ( container.length ) {
+					if (container.length) {
 						container.find('.collapse').removeClass('show');
 						container.find('[data-toggle="collapse"]').attr('aria-expanded', 'false');
 					}

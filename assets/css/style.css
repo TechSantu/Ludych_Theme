@@ -669,12 +669,25 @@ header.sticky .navbar-toggler .hamburger-toggle .hamburger span {
 	border-top: .0em solid !important;
 	vertical-align: 0em;
 	transition: all 0.4s ease-in-out;
+	margin-left: 5px;
+}
+
+li.nav-item.dropdown .dropdown-menu .dropdown-toggle::after {
+	content: "\f105";
+	position: absolute;
+	right: 15px;
+	top: 50%;
+	transform: translateY(-50%);
 }
 
 .dropdown-toggle.show::after,
-li.nav-item.dropdown:hover .dropdown-toggle::after {
+li.nav-item.dropdown:hover > .dropdown-toggle::after {
 	transform: rotate(180deg);
 	transition: all 0.4s ease-in-out;
+}
+
+li.nav-item.dropdown .dropdown-menu li:hover > .dropdown-toggle::after {
+	transform: translateY(-50%) rotate(0deg);
 }
 
 li.nav-item.dropdown:hover .dropdown-menu {
@@ -708,7 +721,7 @@ li.nav-item.dropdown .dropdown-menu .nav-link:hover{
 
 li.nav-item.dropdown:hover .dropdown-menu .dropdown-menu {
 	left: 100%;
-	opacity: 0px;
+	opacity: 0;
 	visibility: hidden;
 }
 
