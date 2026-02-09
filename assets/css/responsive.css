@@ -236,7 +236,7 @@
 		grid-template-columns: repeat(2, 1fr);
 	}
 
-	.workby-wrap .content-wrapper.mission-vision {		
+	.workby-wrap .content-wrapper.mission-vision {
 		gap: 30px; margin-top: 30px; padding: 30px;
 	}
 
@@ -284,7 +284,7 @@
 	.client-Item .client-profile{order: 1;}
 
 	.about-cntn{width: 100%;}
-	
+
 	.abt-counter .row .col-6:nth-child(2) .abt-counter-item,
 	.abt-counter .row .col-6:nth-child(4) .abt-counter-item {border-right: 0px;}
 
