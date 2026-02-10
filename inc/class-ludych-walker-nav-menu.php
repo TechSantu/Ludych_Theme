@@ -5,10 +5,29 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Ludych_Walker_Nav_Menu extends Walker_Nav_Menu {
 
+	private $has_many_children = false;
+
+	public function display_element( $element, &$children_elements, $max_depth, $depth, $args, &$output ) {
+		if ( isset( $children_elements[ $element->ID ] ) && count( $children_elements[ $element->ID ] ) > 10 ) {
+			$this->has_many_children = true;
+		} else {
+			$this->has_many_children = false;
+		}
+
+		parent::display_element( $element, $children_elements, $max_depth, $depth, $args, $output );
+	}
+
 	public function start_lvl( &$output, $depth = 0, $args = null ) {
 		$indent = str_repeat( "\t", $depth );
 
-		$output .= "\n$indent<ul class=\"dropdown-menu shadow\">\n";
+		$classes = array( 'dropdown-menu shadow' );
+		if ( $this->has_many_children ) {
+			$classes[] = 'dropdown-menu-columns';
+		}
+
+		$class_names = implode( ' ', $classes );
+
+		$output .= "\n$indent<ul class=\"$class_names\">\n";
 	}
 
 	/**
