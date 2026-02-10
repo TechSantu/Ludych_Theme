@@ -55,9 +55,9 @@ $testimonial_subtitle = get_field( 'testimonial_heading', $post_id );
 						<div class="info-head">
 							<h5><?php echo esc_html( $designation ); ?></h5>
 						</div>
+						<h6><?php echo esc_html( $role ? $role : $testimonial_name ); ?></h6>
 						<p><?php the_content(); ?></p>
 						<h4><?php echo esc_html( $testimonial_name ); ?></h4>
-						<h6><?php echo esc_html( $role ? $role : $testimonial_name ); ?></h6>
 					</div>
 					<div class="client-profile">
 						<?php if ( has_post_thumbnail() ) : ?>
