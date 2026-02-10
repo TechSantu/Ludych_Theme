@@ -37,7 +37,10 @@ $services_title = get_field( 'services_title', $post_id );
 						'post_type'           => 'services',
 						'posts_per_page'      => 3,
 						'post_status'         => 'publish',
-						'orderby'             => array( 'date' => 'ASC', 'ID' => 'ASC' ),
+						'orderby'             => array(
+							'date' => 'ASC',
+							'ID'   => 'ASC',
+						),
 						'ignore_sticky_posts' => true,
 					);
 					$services_query = new WP_Query( $args );
