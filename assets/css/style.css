@@ -757,12 +757,19 @@ li.nav-item.dropdown:hover .dropdown-menu.dropdown-menu-columns {
 
 @media (max-width: 991px) {
 	.dropdown-menu.dropdown-menu-columns {
-		min-width: 100%;
-		display: block;
+		min-width: 100% !important;
+		display: block !important;
+		padding: 0px !important;
 	}
 
 	.dropdown-menu.dropdown-menu-columns li {
-		width: 100%;
+		width: 100% !important;
+		flex: 0 0 100% !important;
+		border-bottom: 1px solid #e6e6e6 !important;
+	}
+
+	.dropdown-menu.dropdown-menu-columns li:last-child {
+		border-bottom: none !important;
 	}
 }
 
