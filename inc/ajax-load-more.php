@@ -8,10 +8,12 @@ function ludych_load_more_services() {
 	$post_type = isset( $_POST['post_type'] ) ? $_POST['post_type'] : 'services';
 
 	$args = array(
-		'post_type'      => $post_type,
-		'posts_per_page' => 3,
-		'paged'          => $paged,
-		'post_status'    => 'publish',
+		'post_type'           => $post_type,
+		'posts_per_page'      => 3,
+		'paged'               => $paged,
+		'post_status'         => 'publish',
+		'orderby'             => array( 'date' => 'ASC', 'ID' => 'ASC' ),
+		'ignore_sticky_posts' => true,
 	);
 
 	$query = new WP_Query( $args );
