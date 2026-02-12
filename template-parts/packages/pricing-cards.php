@@ -16,60 +16,60 @@ $packages = $acf_ready ? get_field( 'packages_pricing_packages', $post_id ) : ar
 if ( empty( $packages ) ) {
 	$packages = array(
 		array(
-			'name'         => 'Starter Growth: Launch & Optimize',
+			'name'         => 'Starter Growth Package — “Launch & Optimize”',
 			'description'  => 'Ideal for small businesses, startups, local shops & first-time online advertisers.',
 			'price'        => '$800 – $1,500',
 			'price_label'  => '/ month typical',
 			'icon'         => 'fa-rocket',
 			'features'     => array(
-				'WordPress Website Development',
-				'Search Engine Optimization (SEO)',
-				'PPC Advertising',
-				'Social Media Ads',
-				'Email Marketing',
-				'Analytics & Reporting',
+				'<strong>WordPress Web Development</strong>: Up to 5 pages, mobile responsive, basic on-page SEO',
+				'<strong>Search Engine Optimization</strong>: Keyword research, on-page optimization, monthly report',
+				'<strong>PPC Advertising</strong>: Search setup, $500 spend management, bid monitoring',
+				'<strong>Social Media Ads</strong>: FB/IG setup, creatives, monthly reporting',
+				'<strong>Email Marketing</strong>: 1 monthly campaign, integration & automation',
+				'<strong>Analytics & Reporting</strong>: GA+GTM config, monthly performance summary',
 			),
-			'outcome'      => 'GROUNDWORK FOR SCALE',
+			'outcome'      => 'BOOSTS ONLINE PRESENCE, EARLY TRAFFIC & GROUNDWORK FOR SCALE',
 			'outcome_icon' => 'fa-bullseye',
 			'is_featured'  => false,
 			'button_text'  => 'Select Plan',
 			'button_url'   => home_url( '/contact-us/' ),
 		),
 		array(
-			'name'         => 'Advanced Performance: Accelerate Growth',
+			'name'         => 'Advanced Performance Package — “Accelerate Growth”',
 			'description'  => 'Ideal for small–medium businesses ready to scale traffic and leads.',
 			'price'        => '$1,800 – $3,500',
 			'price_label'  => '/ month typical',
 			'icon'         => 'fa-bolt',
 			'features'     => array(
-				'WordPress Website Development',
-				'Comprehensive SEO',
-				'PPC Advertising + Management',
-				'Facebook & Instagram Ads',
-				'Email Marketing',
-				'Conversion Tracking & Analytics',
+				'<strong>WordPress Web Development</strong>: 8–12 pages, custom UI/UX, SEO-ready structure',
+				'<strong>Comprehensive SEO</strong>: Competitor analysis, technical SEO, monthly blog content',
+				'<strong>PPC Advertising</strong>: Full Search/Display, $1,500 budget management, optimization',
+				'<strong>Social Media Ads</strong>: Targeting strategy, retargeting & lookalike setups',
+				'<strong>Email Marketing</strong>: Automated funnels, 2 campaigns / month + reporting',
+				'<strong>Conversion Tracking</strong>: Enhanced analytics, call tracking, custom dashboards',
 			),
-			'outcome'      => 'MEASURABLE LEAD GROWTH',
+			'outcome'      => 'PRODUCES MEASURABLE ROI, TRAFFIC GROWTH & LEAD GENERATION',
 			'outcome_icon' => 'fa-chart-line',
 			'is_featured'  => true,
 			'button_text'  => 'Select Plan',
 			'button_url'   => home_url( '/contact-us/' ),
 		),
 		array(
-			'name'         => 'Enterprise Brand Booster: Dominant Market Presence',
+			'name'         => 'Enterprise Brand Booster — “Dominant Market Presence”',
 			'description'  => 'Ideal for established brands wanting deep optimization, high traffic, and multi-channel dominance.',
 			'price'        => '$4,500 – $10,000+',
 			'price_label'  => '/ month typical',
 			'icon'         => 'fa-crown',
 			'features'     => array(
-				'Premium WordPress Web Development',
-				'Enterprise SEO',
-				'Advanced PPC Management',
-				'Social Media Advertising',
-				'Email Marketing Automation',
-				'Advanced Analytics & Optimization',
+				'<strong>Premium WordPress Web Dev</strong>: Full custom site, eCommerce/CRM integration, CRO',
+				'<strong>Enterprise SEO</strong>: Full technical schema, ongoing link building & audits',
+				'<strong>Advanced PPC Management</strong>: Full Google/YT/Display funnels, $5,000+ management',
+				'<strong>Social Media Advertising</strong>: FB/IG/LinkedIn dynamic ads, audience segmentation',
+				'<strong>Email Automation</strong>: List segmentation, nurture sequences, full growth strategy',
+				'<strong>Advanced Analytics</strong>: Heatmaps, A/B testing, weekly/monthly strategic calls',
 			),
-			'outcome'      => 'MARKET DOMINANCE',
+			'outcome'      => 'HOLISTIC DOMINANCE, CROSS-CHANNEL SYNERGY & STRONGER BRANDING',
 			'outcome_icon' => 'fa-chess-king',
 			'is_featured'  => false,
 			'button_text'  => 'Select Plan',
@@ -98,15 +98,15 @@ if ( empty( $packages ) ) {
 			foreach ( $packages as $package ) :
 				$is_featured    = isset( $package['is_featured'] ) && $package['is_featured'];
 				$package_class  = $is_featured ? 'package-advanced featured' : 'package-starter';
-				$pkg_name       = $package['name'] ?: 'Package Name';
-				$pkg_desc       = $package['description'] ?: '';
-				$pkg_price      = $package['price'] ?: '$0';
-				$pkg_price_lbl  = $package['price_label'] ?: '/ month';
-				$pkg_icon       = $package['icon'] ?: 'fa-rocket';
-				$pkg_btn_text   = $package['button_text'] ?: 'Select Plan';
-				$pkg_btn_url    = $package['button_url'] ?: home_url('/contact-us/');
-				$pkg_outcome    = $package['outcome'] ?: 'OUTCOME';
-				$pkg_out_icon   = $package['outcome_icon'] ?: 'fa-bullseye';
+				$pkg_name       = ! empty( $package['name'] ) ? $package['name'] : 'Package Name';
+				$pkg_desc       = ! empty( $package['description'] ) ? $package['description'] : '';
+				$pkg_price      = ! empty( $package['price'] ) ? $package['price'] : '$0';
+				$pkg_price_lbl  = ! empty( $package['price_label'] ) ? $package['price_label'] : '/ month';
+				$pkg_icon       = ! empty( $package['icon'] ) ? $package['icon'] : 'fa-rocket';
+				$pkg_btn_text   = ! empty( $package['button_text'] ) ? $package['button_text'] : 'Select Plan';
+				$pkg_btn_url    = ! empty( $package['button_url'] ) ? $package['button_url'] : home_url('/contact-us/');
+				$pkg_outcome    = ! empty( $package['outcome'] ) ? $package['outcome'] : 'OUTCOME';
+				$pkg_out_icon   = ! empty( $package['outcome_icon'] ) ? $package['outcome_icon'] : 'fa-bullseye';
 				?>
 			<div class="col-lg-4">
 				<div class="modern-card <?php echo esc_attr( $package_class ); ?> h-100 position-relative">
@@ -135,7 +135,7 @@ if ( empty( $packages ) ) {
 					<div class="card-body-v2">
 						<ul class="pkg-features <?php echo $is_featured ? 'text-white' : ''; ?>">
 							<?php
-							$features = $package['features'] ?? array();
+							$features = ! empty( $package['features'] ) ? $package['features'] : array();
 							if ( is_string( $features ) ) {
 								$features = explode( "\n", $features );
 							}
@@ -145,7 +145,7 @@ if ( empty( $packages ) ) {
 									continue;
 								}
 								?>
-								<li><i class="fas fa-check"></i> <?php echo esc_html( $feature ); ?></li>
+								<li><i class="fas fa-check"></i> <?php echo wp_kses_post( $feature ); ?></li>
 							<?php endforeach; ?>
 						</ul>
 					</div>

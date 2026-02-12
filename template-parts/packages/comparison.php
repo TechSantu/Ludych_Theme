@@ -19,15 +19,15 @@ if ( empty( $pricing_tiers ) ) {
 	$pricing_tiers = array(
 		array(
 			'name'  => 'Starter Growth',
-			'range' => '$800 – $1,500 / mo',
+			'range' => '$800 – $1,500',
 		),
 		array(
 			'name'  => 'Advanced Performance',
-			'range' => '$1,800 – $3,500 / mo',
+			'range' => '$1,800 – $3,500',
 		),
 		array(
 			'name'  => 'Enterprise Brand Booster',
-			'range' => '$4,500 – $10,000+ / mo',
+			'range' => '$4,500 – $10,000+',
 		),
 	);
 }
