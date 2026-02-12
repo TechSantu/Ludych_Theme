@@ -31,12 +31,12 @@ if ( ! $intro_image ) {
 }
 
 $stat_1_number = $acf_ready ? get_field( 'packages_stat_1_number', $post_id ) : '5+';
-$stat_1_label = $acf_ready ? get_field( 'packages_stat_1_label', $post_id ) : 'Years Experience';
+$stat_1_label  = $acf_ready ? get_field( 'packages_stat_1_label', $post_id ) : 'Years Experience';
 $stat_2_number = $acf_ready ? get_field( 'packages_stat_2_number', $post_id ) : '20+';
-$stat_2_label = $acf_ready ? get_field( 'packages_stat_2_label', $post_id ) : 'Global Clients';
+$stat_2_label  = $acf_ready ? get_field( 'packages_stat_2_label', $post_id ) : 'Global Clients';
 
 $badge_number = $acf_ready ? get_field( 'packages_badge_number', $post_id ) : '+250%';
-$badge_label = $acf_ready ? get_field( 'packages_badge_label', $post_id ) : 'Avg. Revenue Growth';
+$badge_label  = $acf_ready ? get_field( 'packages_badge_label', $post_id ) : 'Avg. Revenue Growth';
 ?>
 
 <section class="packages-lp-intro py-5 overflow-hidden">

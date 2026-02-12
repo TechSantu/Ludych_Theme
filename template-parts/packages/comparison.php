@@ -7,28 +7,28 @@ global $post_id;
 
 $acf_ready = function_exists( 'get_field' ) && function_exists( 'acf' ) && is_object( acf() );
 
-$comparison_title = $acf_ready ? get_field( 'packages_comparison_title', $post_id ) : 'Not sure which one fits?';
+$comparison_title       = $acf_ready ? get_field( 'packages_comparison_title', $post_id ) : 'Not sure which one fits?';
 $comparison_description = $acf_ready ? get_field( 'packages_comparison_description', $post_id ) : 'Prices vary depending on deliverables, goals, and scope. Every business is unique, and so are our solutions.';
-$comparison_cta_text = $acf_ready ? get_field( 'packages_comparison_cta_text', $post_id ) : 'We offer free digital marketing consultations followed by detailed quotations.';
+$comparison_cta_text    = $acf_ready ? get_field( 'packages_comparison_cta_text', $post_id ) : 'We offer free digital marketing consultations followed by detailed quotations.';
 $comparison_button_text = $acf_ready ? get_field( 'packages_comparison_button_text', $post_id ) : 'Request Detailed Quote';
-$comparison_button_url = $acf_ready ? get_field( 'packages_comparison_button_url', $post_id ) : home_url('/contact-us/');
+$comparison_button_url  = $acf_ready ? get_field( 'packages_comparison_button_url', $post_id ) : home_url('/contact-us/');
 
 $pricing_tiers = $acf_ready ? get_field( 'packages_pricing_tiers', $post_id ) : array();
 
 if ( empty( $pricing_tiers ) ) {
 	$pricing_tiers = array(
 		array(
-			'name' => 'Starter Growth',
-			'range' => '$800 – $1,500 / mo'
+			'name'  => 'Starter Growth',
+			'range' => '$800 – $1,500 / mo',
 		),
 		array(
-			'name' => 'Advanced Performance',
-			'range' => '$1,800 – $3,500 / mo'
+			'name'  => 'Advanced Performance',
+			'range' => '$1,800 – $3,500 / mo',
 		),
 		array(
-			'name' => 'Enterprise Brand Booster',
-			'range' => '$4,500 – $10,000+ / mo'
-		)
+			'name'  => 'Enterprise Brand Booster',
+			'range' => '$4,500 – $10,000+ / mo',
+		),
 	);
 }
 ?>
@@ -43,12 +43,12 @@ if ( empty( $pricing_tiers ) ) {
 				</div>
 				
 				<div class="pricing-tier-summary p-4 bg-white rounded-4 shadow-sm border">
-					<?php 
+					<?php
 					$tier_count = count( $pricing_tiers );
-					foreach ( $pricing_tiers as $index => $tier ) : 
+					foreach ( $pricing_tiers as $index => $tier ) :
 						$is_last = ( $index === $tier_count - 1 );
-					?>
-						<div class="row align-items-center <?php echo !$is_last ? 'mb-3 pb-3 border-bottom' : ''; ?> g-3">
+						?>
+						<div class="row align-items-center <?php echo ! $is_last ? 'mb-3 pb-3 border-bottom' : ''; ?> g-3">
 							<div class="col-6 col-md-5">
 								<span class="fw-bold text-dark"><?php echo esc_html( $tier['name'] ?? '' ); ?></span>
 							</div>

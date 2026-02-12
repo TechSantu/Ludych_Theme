@@ -7,74 +7,74 @@ global $post_id;
 
 $acf_ready = function_exists( 'get_field' ) && function_exists( 'acf' ) && is_object( acf() );
 
-$pricing_title = $acf_ready ? get_field( 'packages_pricing_title', $post_id ) : 'Our Plans';
+$pricing_title    = $acf_ready ? get_field( 'packages_pricing_title', $post_id ) : 'Our Plans';
 $pricing_subtitle = $acf_ready ? get_field( 'packages_pricing_subtitle', $post_id ) : 'Strategic Growth Tiers';
-$pricing_heading = $acf_ready ? get_field( 'packages_pricing_heading', $post_id ) : 'Scale Your Business with <span>Precision</span>';
+$pricing_heading  = $acf_ready ? get_field( 'packages_pricing_heading', $post_id ) : 'Scale Your Business with <span>Precision</span>';
 
 $packages = $acf_ready ? get_field( 'packages_pricing_packages', $post_id ) : array();
 
 if ( empty( $packages ) ) {
 	$packages = array(
 		array(
-			'name' => 'Starter Growth',
-			'description' => 'Perfect for startups and local businesses looking to establish their presence.',
-			'price' => '$800',
-			'price_label' => '/ month starting',
-			'icon' => 'fa-rocket',
-			'features' => array(
+			'name'         => 'Starter Growth',
+			'description'  => 'Perfect for startups and local businesses looking to establish their presence.',
+			'price'        => '$800',
+			'price_label'  => '/ month starting',
+			'icon'         => 'fa-rocket',
+			'features'     => array(
 				'WordPress Dev (5 Pages)',
 				'Foundational On-page SEO',
 				'PPC Setup (Google/Bing)',
 				'Social Media Ads Setup',
 				'1 Email Campaign / Month',
-				'Monthly Performance Report'
+				'Monthly Performance Report',
 			),
-			'outcome' => 'GROUNDWORK FOR SCALE',
+			'outcome'      => 'GROUNDWORK FOR SCALE',
 			'outcome_icon' => 'fa-bullseye',
-			'is_featured' => false,
-			'button_text' => 'Select Plan',
-			'button_url' => home_url('/contact-us/')
+			'is_featured'  => false,
+			'button_text'  => 'Select Plan',
+			'button_url'   => home_url('/contact-us/'),
 		),
 		array(
-			'name' => 'Advanced Performance',
-			'description' => 'Designed for businesses ready to accelerate leads and dominate traffic.',
-			'price' => '$1,800',
-			'price_label' => '/ month starting',
-			'icon' => 'fa-bolt',
-			'features' => array(
+			'name'         => 'Advanced Performance',
+			'description'  => 'Designed for businesses ready to accelerate leads and dominate traffic.',
+			'price'        => '$1,800',
+			'price_label'  => '/ month starting',
+			'icon'         => 'fa-bolt',
+			'features'     => array(
 				'8-12 Page Custom WP Site',
 				'Technical & Competitor SEO',
 				'Managed Ad Budget Up to $1,500',
 				'FB & IG Retargeting Campaigns',
 				'2 Automated Email Funnels',
-				'Enhanced Conversion Tracking'
+				'Enhanced Conversion Tracking',
 			),
-			'outcome' => 'MEASURABLE LEAD GROWTH',
+			'outcome'      => 'MEASURABLE LEAD GROWTH',
 			'outcome_icon' => 'fa-chart-line',
-			'is_featured' => true,
-			'button_text' => 'Select Plan',
-			'button_url' => home_url('/contact-us/')
+			'is_featured'  => true,
+			'button_text'  => 'Select Plan',
+			'button_url'   => home_url('/contact-us/'),
 		),
 		array(
-			'name' => 'Enterprise Booster',
-			'description' => 'Full-channel dominance with deep optimization and dedicated coordination.',
-			'price' => '$4,500',
-			'price_label' => '/ month starting',
-			'icon' => 'fa-crown',
-			'features' => array(
+			'name'         => 'Enterprise Booster',
+			'description'  => 'Full-channel dominance with deep optimization and dedicated coordination.',
+			'price'        => '$4,500',
+			'price_label'  => '/ month starting',
+			'icon'         => 'fa-crown',
+			'features'     => array(
 				'Custom eCommerce/CRM Integration',
 				'High-Authority Link Building',
 				'Managed Budget $5,000+',
 				'Cross-Channel Retargeting',
 				'Advanced Automation Workflows',
-				'Weekly Strategic Calls'
+				'Weekly Strategic Calls',
 			),
-			'outcome' => 'MARKET DOMINANCE',
+			'outcome'      => 'MARKET DOMINANCE',
 			'outcome_icon' => 'fa-chess-king',
-			'is_featured' => false,
-			'button_text' => 'Select Plan',
-			'button_url' => home_url('/contact-us/')
-		)
+			'is_featured'  => false,
+			'button_text'  => 'Select Plan',
+			'button_url'   => home_url('/contact-us/'),
+		),
 	);
 }
 ?>
@@ -94,10 +94,11 @@ if ( empty( $packages ) ) {
 		</div>
 
 		<div class="row g-4 align-items-stretch">
-			<?php foreach ( $packages as $package ) : 
-				$is_featured = isset( $package['is_featured'] ) ? $package['is_featured'] : false;
+			<?php
+			foreach ( $packages as $package ) :
+				$is_featured   = isset( $package['is_featured'] ) ? $package['is_featured'] : false;
 				$package_class = $is_featured ? 'package-advanced featured' : 'package-starter';
-			?>
+				?>
 			<div class="col-lg-4">
 				<div class="modern-card <?php echo esc_attr( $package_class ); ?> h-100 position-relative">
 					<?php if ( $is_featured ) : ?>
@@ -124,15 +125,17 @@ if ( empty( $packages ) ) {
 					
 					<div class="card-body-v2">
 						<ul class="pkg-features <?php echo $is_featured ? 'text-white' : ''; ?>">
-							<?php 
+							<?php
 							$features = $package['features'] ?? array();
 							if ( is_string( $features ) ) {
 								$features = explode( "\n", $features );
 							}
-							foreach ( $features as $feature ) : 
+							foreach ( $features as $feature ) :
 								$feature = trim( $feature );
-								if ( empty( $feature ) ) continue;
-							?>
+								if ( empty( $feature ) ) {
+									continue;
+								}
+								?>
 								<li><i class="fas fa-check"></i> <?php echo esc_html( $feature ); ?></li>
 							<?php endforeach; ?>
 						</ul>
@@ -146,7 +149,7 @@ if ( empty( $packages ) ) {
 							</span>
 						</div>
 						<a href="<?php echo esc_url( $package['button_url'] ?? home_url('/contact-us/') ); ?>" 
-						   class="lp-btn <?php echo $is_featured ? 'lp-btn-primary' : 'lp-btn-outline'; ?> w-100">
+							class="lp-btn <?php echo $is_featured ? 'lp-btn-primary' : 'lp-btn-outline'; ?> w-100">
 							<?php echo esc_html( $package['button_text'] ?? 'Select Plan' ); ?>
 						</a>
 					</div>
@@ -161,48 +164,48 @@ if ( empty( $packages ) ) {
 $offers_schema = array();
 foreach ( $packages as $package ) {
 	$price_value = preg_replace('/[^0-9.]/', '', $package['price'] ?? '0');
-	
+
 	$features = $package['features'] ?? array();
 	if ( is_string( $features ) ) {
 		$features = explode( "\n", $features );
 	}
 	$features = array_filter( array_map( 'trim', $features ) );
-	
+
 	$offers_schema[] = array(
-		'@type' => 'Offer',
-		'name' => $package['name'] ?? '',
-		'description' => $package['description'] ?? '',
-		'price' => $price_value,
-		'priceCurrency' => 'USD',
+		'@type'              => 'Offer',
+		'name'               => $package['name'] ?? '',
+		'description'        => $package['description'] ?? '',
+		'price'              => $price_value,
+		'priceCurrency'      => 'USD',
 		'priceSpecification' => array(
-			'@type' => 'UnitPriceSpecification',
-			'price' => $price_value,
+			'@type'         => 'UnitPriceSpecification',
+			'price'         => $price_value,
 			'priceCurrency' => 'USD',
-			'unitText' => 'MONTH'
+			'unitText'      => 'MONTH',
 		),
-		'itemOffered' => array(
-			'@type' => 'Service',
-			'name' => $package['name'] ?? '',
-			'description' => implode( ', ', $features )
+		'itemOffered'        => array(
+			'@type'       => 'Service',
+			'name'        => $package['name'] ?? '',
+			'description' => implode( ', ', $features ),
 		),
-		'url' => $package['button_url'] ?? home_url('/contact-us/')
+		'url'                => $package['button_url'] ?? home_url('/contact-us/'),
 	);
 }
 
 $service_schema = array(
-	'@context' => 'https://schema.org',
-	'@type' => 'Service',
+	'@context'    => 'https://schema.org',
+	'@type'       => 'Service',
 	'serviceType' => 'Digital Marketing',
-	'provider' => array(
+	'provider'    => array(
 		'@type' => 'Organization',
-		'name' => 'Ludych Technology',
-		'url' => home_url()
+		'name'  => 'Ludych Technology',
+		'url'   => home_url(),
 	),
-	'areaServed' => array(
+	'areaServed'  => array(
 		'@type' => 'State',
-		'name' => 'Arizona'
+		'name'  => 'Arizona',
 	),
-	'offers' => $offers_schema
+	'offers'      => $offers_schema,
 );
 ?>
 

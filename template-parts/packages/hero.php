@@ -59,22 +59,22 @@ if ( ! $hero_subtitle ) {
 
 <?php
 $breadcrumb_schema = array(
-	'@context' => 'https://schema.org',
-	'@type' => 'BreadcrumbList',
+	'@context'        => 'https://schema.org',
+	'@type'           => 'BreadcrumbList',
 	'itemListElement' => array(
 		array(
-			'@type' => 'ListItem',
+			'@type'    => 'ListItem',
 			'position' => 1,
-			'name' => 'Home',
-			'item' => home_url()
+			'name'     => 'Home',
+			'item'     => home_url(),
 		),
 		array(
-			'@type' => 'ListItem',
+			'@type'    => 'ListItem',
 			'position' => 2,
-			'name' => 'Packages',
-			'item' => get_permalink( $post_id )
-		)
-	)
+			'name'     => 'Packages',
+			'item'     => get_permalink( $post_id ),
+		),
+	),
 );
 ?>
 
