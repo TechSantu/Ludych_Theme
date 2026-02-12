@@ -141,7 +141,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 			</div>
 			<div class="copy-right">
 				<p class="copyright-text">
-					© <?php echo date( 'Y' ); ?> <?php echo esc_html( get_theme_mod( 'ludych_footer_copyright_name', 'Ludych Digital Agency' ) ); ?>. <?php echo esc_html( get_theme_mod( 'ludych_footer_copyright_suffix', 'All rights reserved.' ) ); ?>
+					© <?php echo date( 'Y' ); ?> <?php echo esc_html( get_theme_mod( 'ludych_footer_copyright_name', 'Ludych Digital Agency' ) ); ?>. <?php echo esc_html( get_theme_mod( 'ludych_footer_copyright_suffix', 'All rights reserved.' ) ); ?> | 
+					<a href="<?php echo esc_url( home_url( '/privacy-policy' ) ); ?>">Privacy Policy</a> | 
+					<a href="<?php echo esc_url( home_url( '/terms-and-conditions' ) ); ?>">Terms & Conditions</a>
 				</p>
 				<div class="copy-right-btns">
 					<?php
