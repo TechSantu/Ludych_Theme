@@ -136,16 +136,21 @@ if ( empty( $packages ) ) {
 						<ul class="pkg-features <?php echo $is_featured ? 'text-white' : ''; ?>">
 							<?php
 							$features = ! empty( $package['features'] ) ? $package['features'] : array();
+							
+							// Handle fallback (array of strings) vs ACF Repeater (array of arrays)
 							if ( is_string( $features ) ) {
 								$features = explode( "\n", $features );
 							}
-							foreach ( (array) $features as $feature ) :
-								$feature = trim( $feature );
-								if ( empty( $feature ) ) {
+
+							foreach ( (array) $features as $feature_item ) :
+								$feature_text = is_array( $feature_item ) ? ( $feature_item['feature'] ?? '' ) : $feature_item;
+								$feature_text = trim( (string) $feature_text );
+								
+								if ( empty( $feature_text ) ) {
 									continue;
 								}
 								?>
-								<li><i class="fas fa-check"></i> <?php echo wp_kses_post( $feature ); ?></li>
+								<li><i class="fas fa-check"></i> <?php echo wp_kses_post( $feature_text ); ?></li>
 							<?php endforeach; ?>
 						</ul>
 					</div>

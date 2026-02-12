@@ -1351,4 +1351,346 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 		'description'           => '',
 	) );
 
+	acf_add_local_field_group( array(
+		'key'                   => 'group_packages_page_fields',
+		'title'                 => __( 'Packages Page Fields', 'ludych-theme' ),
+		'fields'                => array(
+			// Tab: Hero
+			array(
+				'key'   => 'field_pkg_tab_hero',
+				'label' => 'Hero Section',
+				'type'  => 'tab',
+			),
+			array(
+				'key'           => 'field_packages_hero_background',
+				'label'         => 'Hero Background Image',
+				'name'          => 'packages_hero_background',
+				'type'          => 'image',
+				'return_format' => 'array',
+			),
+			array(
+				'key'   => 'field_packages_hero_kicker',
+				'label' => 'Hero Kicker',
+				'name'  => 'packages_hero_kicker',
+				'type'  => 'text',
+			),
+			array(
+				'key'   => 'field_packages_hero_title',
+				'label' => 'Hero Title',
+				'name'  => 'packages_hero_title',
+				'type'  => 'text',
+			),
+			array(
+				'key'   => 'field_packages_hero_subtitle',
+				'label' => 'Hero Subtitle',
+				'name'  => 'packages_hero_subtitle',
+				'type'  => 'textarea',
+				'rows'  => 3,
+			),
+
+			// Tab: Intro
+			array(
+				'key'   => 'field_pkg_tab_intro',
+				'label' => 'Intro Section',
+				'type'  => 'tab',
+			),
+			array(
+				'key'   => 'field_packages_intro_badge',
+				'label' => 'Intro Badge',
+				'name'  => 'packages_intro_badge',
+				'type'  => 'text',
+			),
+			array(
+				'key'   => 'field_packages_intro_title',
+				'label' => 'Intro Title',
+				'name'  => 'packages_intro_title',
+				'type'  => 'text',
+			),
+			array(
+				'key'   => 'field_packages_intro_description',
+				'label' => 'Intro Description',
+				'name'  => 'packages_intro_description',
+				'type'  => 'wysiwyg',
+			),
+			array(
+				'key'   => 'field_packages_intro_image',
+				'label' => 'Intro Image',
+				'name'  => 'packages_intro_image',
+				'type'  => 'image',
+				'return_format' => 'array',
+			),
+			array(
+				'key'   => 'field_packages_stat_1_number',
+				'label' => 'Stat 1 Number',
+				'name'  => 'packages_stat_1_number',
+				'type'  => 'text',
+			),
+			array(
+				'key'   => 'field_packages_stat_1_label',
+				'label' => 'Stat 1 Label',
+				'name'  => 'packages_stat_1_label',
+				'type'  => 'text',
+			),
+			array(
+				'key'   => 'field_packages_stat_2_number',
+				'label' => 'Stat 2 Number',
+				'name'  => 'packages_stat_2_number',
+				'type'  => 'text',
+			),
+			array(
+				'key'   => 'field_packages_stat_2_label',
+				'label' => 'Stat 2 Label',
+				'name'  => 'packages_stat_2_label',
+				'type'  => 'text',
+			),
+			array(
+				'key'   => 'field_packages_badge_number',
+				'label' => 'Float Badge Number',
+				'name'  => 'packages_badge_number',
+				'type'  => 'text',
+			),
+			array(
+				'key'   => 'field_packages_badge_label',
+				'label' => 'Float Badge Label',
+				'name'  => 'packages_badge_label',
+				'type'  => 'text',
+			),
+
+			// Tab: Pricing Cards
+			array(
+				'key'   => 'field_pkg_tab_pricing',
+				'label' => 'Pricing Section',
+				'type'  => 'tab',
+			),
+			array(
+				'key'   => 'field_packages_pricing_title',
+				'label' => 'Pricing Title',
+				'name'  => 'packages_pricing_title',
+				'type'  => 'text',
+			),
+			array(
+				'key'   => 'field_packages_pricing_subtitle',
+				'label' => 'Pricing Subtitle',
+				'name'  => 'packages_pricing_subtitle',
+				'type'  => 'text',
+			),
+			array(
+				'key'   => 'field_packages_pricing_heading',
+				'label' => 'Pricing Heading',
+				'name'  => 'packages_pricing_heading',
+				'type'  => 'text',
+			),
+			array(
+				'key'        => 'field_packages_pricing_packages',
+				'label'      => 'Packages List',
+				'name'       => 'packages_pricing_packages',
+				'type'       => 'repeater',
+				'layout'     => 'block',
+				'sub_fields' => array(
+					array(
+						'key'   => 'field_pkg_name',
+						'label' => 'Package Name',
+						'name'  => 'name',
+						'type'  => 'text',
+					),
+					array(
+						'key'   => 'field_pkg_desc',
+						'label' => 'Description',
+						'name'  => 'description',
+						'type'  => 'textarea',
+						'rows'  => 2,
+					),
+					array(
+						'key'   => 'field_pkg_price',
+						'label' => 'Price Range',
+						'name'  => 'price',
+						'type'  => 'text',
+					),
+					array(
+						'key'   => 'field_pkg_price_lbl',
+						'label' => 'Price Label',
+						'name'  => 'price_label',
+						'type'  => 'text',
+					),
+					array(
+						'key'   => 'field_pkg_icon',
+						'label' => 'Icon Class (FontAwesome)',
+						'name'  => 'icon',
+						'type'  => 'text',
+					),
+					array(
+						'key'        => 'field_pkg_features',
+						'label'      => 'Package Features',
+						'name'       => 'features',
+						'type'       => 'repeater',
+						'layout'     => 'table',
+						'sub_fields' => array(
+							array(
+								'key'   => 'field_pkg_feature_item',
+								'label' => 'Feature',
+								'name'  => 'feature',
+								'type'  => 'text',
+							),
+						),
+					),
+					array(
+						'key'   => 'field_pkg_outcome',
+						'label' => 'Outcome Text',
+						'name'  => 'outcome',
+						'type'  => 'text',
+					),
+					array(
+						'key'   => 'field_pkg_outcome_icon',
+						'label' => 'Outcome Icon Class',
+						'name'  => 'outcome_icon',
+						'type'  => 'text',
+					),
+					array(
+						'key'   => 'field_pkg_is_featured',
+						'label' => 'Is Featured?',
+						'name'  => 'is_featured',
+						'type'  => 'true_false',
+						'ui'    => 1,
+					),
+					array(
+						'key'   => 'field_pkg_btn_text',
+						'label' => 'Button Text',
+						'name'  => 'button_text',
+						'type'  => 'text',
+					),
+					array(
+						'key'   => 'field_pkg_btn_url',
+						'label' => 'Button URL',
+						'name'  => 'button_url',
+						'type'  => 'text',
+					),
+				),
+			),
+
+			// Tab: Comparison
+			array(
+				'key'   => 'field_pkg_tab_comparison',
+				'label' => 'Comparison Section',
+				'type'  => 'tab',
+			),
+			array(
+				'key'   => 'field_packages_comparison_title',
+				'label' => 'Comparison Title',
+				'name'  => 'packages_comparison_title',
+				'type'  => 'text',
+			),
+			array(
+				'key'   => 'field_packages_comparison_description',
+				'label' => 'Comparison Description',
+				'name'  => 'packages_comparison_description',
+				'type'  => 'textarea',
+				'rows'  => 3,
+			),
+			array(
+				'key'   => 'field_packages_comparison_cta_text',
+				'label' => 'Comparison CTA Text',
+				'name'  => 'packages_comparison_cta_text',
+				'type'  => 'textarea',
+				'rows'  => 3,
+			),
+			array(
+				'key'   => 'field_packages_comparison_button_text',
+				'label' => 'CTA Button Text',
+				'name'  => 'packages_comparison_button_text',
+				'type'  => 'text',
+			),
+			array(
+				'key'   => 'field_packages_comparison_button_url',
+				'label' => 'CTA Button URL',
+				'name'  => 'packages_comparison_button_url',
+				'type'  => 'text',
+			),
+			array(
+				'key'        => 'field_packages_pricing_tiers',
+				'label'      => 'Pricing Tiers (Bottom List)',
+				'name'       => 'packages_pricing_tiers',
+				'type'       => 'repeater',
+				'layout'     => 'table',
+				'sub_fields' => array(
+					array(
+						'key'   => 'field_tier_name',
+						'label' => 'Tier Name',
+						'name'  => 'name',
+						'type'  => 'text',
+					),
+					array(
+						'key'   => 'field_tier_range',
+						'label' => 'Price Range',
+						'name'  => 'range',
+						'type'  => 'text',
+					),
+				),
+			),
+
+			// Tab: FAQ
+			array(
+				'key'   => 'field_pkg_tab_faq',
+				'label' => 'FAQ Section',
+				'type'  => 'tab',
+			),
+			array(
+				'key'   => 'field_packages_faq_kicker',
+				'label' => 'FAQ Kicker',
+				'name'  => 'packages_faq_kicker',
+				'type'  => 'text',
+			),
+			array(
+				'key'   => 'field_packages_faq_title',
+				'label' => 'FAQ Title',
+				'name'  => 'packages_faq_title',
+				'type'  => 'text',
+			),
+			array(
+				'key'   => 'field_packages_faq_description',
+				'label' => 'FAQ Description',
+				'name'  => 'packages_faq_description',
+				'type'  => 'textarea',
+				'rows'  => 2,
+			),
+			array(
+				'key'        => 'field_packages_faqs',
+				'label'      => 'FAQ List',
+				'name'       => 'packages_faqs',
+				'type'       => 'repeater',
+				'layout'     => 'block',
+				'sub_fields' => array(
+					array(
+						'key'   => 'field_faq_q',
+						'label' => 'Question',
+						'name'  => 'question',
+						'type'  => 'text',
+					),
+					array(
+						'key'   => 'field_faq_a',
+						'label' => 'Answer',
+						'name'  => 'answer',
+						'type'  => 'textarea',
+						'rows'  => 3,
+					),
+				),
+			),
+		),
+		'location'              => array(
+			array(
+				array(
+					'param'    => 'page',
+					'operator' => '==',
+					'value'    => '670',
+				),
+			),
+		),
+		'menu_order'            => 0,
+		'position'              => 'normal',
+		'style'                 => 'default',
+		'label_placement'       => 'top',
+		'instruction_placement' => 'label',
+		'active'                => true,
+		'description'           => '',
+	) );
+
 endif;
