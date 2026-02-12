@@ -1413,10 +1413,10 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				'type'  => 'wysiwyg',
 			),
 			array(
-				'key'   => 'field_packages_intro_image',
-				'label' => 'Intro Image',
-				'name'  => 'packages_intro_image',
-				'type'  => 'image',
+				'key'           => 'field_packages_intro_image',
+				'label'         => 'Intro Image',
+				'name'          => 'packages_intro_image',
+				'type'          => 'image',
 				'return_format' => 'array',
 			),
 			array(

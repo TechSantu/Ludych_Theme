@@ -136,7 +136,7 @@ if ( empty( $packages ) ) {
 						<ul class="pkg-features <?php echo $is_featured ? 'text-white' : ''; ?>">
 							<?php
 							$features = ! empty( $package['features'] ) ? $package['features'] : array();
-							
+
 							// Handle fallback (array of strings) vs ACF Repeater (array of arrays)
 							if ( is_string( $features ) ) {
 								$features = explode( "\n", $features );
@@ -145,7 +145,7 @@ if ( empty( $packages ) ) {
 							foreach ( (array) $features as $feature_item ) :
 								$feature_text = is_array( $feature_item ) ? ( $feature_item['feature'] ?? '' ) : $feature_item;
 								$feature_text = trim( (string) $feature_text );
-								
+
 								if ( empty( $feature_text ) ) {
 									continue;
 								}
