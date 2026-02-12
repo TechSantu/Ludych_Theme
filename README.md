@@ -1,4 +1,13 @@
-# Ludych Technology - Premium WordPress Theme
+# Ludych Theme
+
+**Theme Name:** Ludych Theme  
+**Theme URI:** https://ludych-v2.webcrazeo.in/  
+**Author:** DevSantu  
+**Author URI:** https://webcrazeo.in/  
+**Description:** A modern, clean, and responsive theme.  
+**Version:** 1.0  
+**License:** GNU General Public License v2 or later  
+**Text Domain:** ludych-theme
 
 ## Overview
 Ludych Technology is a premium, high-impact WordPress theme designed for modern digital agencies. It features a refined design aesthetic, modular template parts, and fully dynamic content management via ACF.
