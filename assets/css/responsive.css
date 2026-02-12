@@ -340,6 +340,17 @@
 	.footer .footer-right {
 		flex-wrap: wrap;
 	}
+
+	.copy-right {
+		flex-direction: column;
+		gap: 20px;
+		text-align: center;
+	}
+
+	.copy-right-right {
+		flex-direction: column;
+		gap: 15px;
+	}
 }
 
 

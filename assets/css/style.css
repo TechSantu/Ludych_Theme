@@ -1734,6 +1734,28 @@ footer.footer {
 	padding: 20px 0px;
 }
 
+.copy-right-right {
+	display: flex;
+	align-items: center;
+	gap: 30px;
+}
+
+.copy-right-links {
+	display: flex;
+	align-items: center;
+	gap: 15px;
+}
+
+.copy-right-links a {
+	color: #a1a1a1;
+	font-size: 14px;
+	transition: all 0.3s ease;
+}
+
+.copy-right-links a:hover {
+	color: var(--button-border);
+}
+
 .copy-right-btns {
 	display: flex;
 	align-items: center;
@@ -1742,6 +1764,11 @@ footer.footer {
 
 .copy-right-btns a {
 	color: #a1a1a1;
+	transition: all 0.3s ease;
+}
+
+.copy-right-btns a:hover {
+	color: var(--button-border);
 }
 
 .office-item img {

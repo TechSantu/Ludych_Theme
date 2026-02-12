@@ -140,24 +140,30 @@ if ( ! defined( 'ABSPATH' ) ) {
 				</div>
 			</div>
 			<div class="copy-right">
-				<p class="copyright-text">
-					© <?php echo date( 'Y' ); ?> <?php echo esc_html( get_theme_mod( 'ludych_footer_copyright_name', 'Ludych Digital Agency' ) ); ?>. <?php echo esc_html( get_theme_mod( 'ludych_footer_copyright_suffix', 'All rights reserved.' ) ); ?> | 
-					<a href="<?php echo esc_url( home_url( '/privacy-policy' ) ); ?>">Privacy Policy</a> | 
-					<a href="<?php echo esc_url( home_url( '/terms-and-conditions' ) ); ?>">Terms & Conditions</a>
-				</p>
-				<div class="copy-right-btns">
-					<?php
-					for ( $i = 1; $i <= 5; $i++ ) {
-						$icon = trim( (string) get_theme_mod( "ludych_footer_social_{$i}_icon" ) );
-						$url  = trim( (string) get_theme_mod( "ludych_footer_social_{$i}_url", '#' ) );
+				<div class="copy-right-left">
+					<p class="copyright-text">
+						© <?php echo date( 'Y' ); ?> <?php echo esc_html( get_theme_mod( 'ludych_footer_copyright_name', 'Ludych Digital Agency' ) ); ?>. <?php echo esc_html( get_theme_mod( 'ludych_footer_copyright_suffix', 'All rights reserved.' ) ); ?>
+					</p>
+				</div>
+				<div class="copy-right-right">
+					<div class="copy-right-links">
+						<a href="<?php echo esc_url( home_url( '/privacy-policy' ) ); ?>">Privacy Policy</a>
+						<a href="<?php echo esc_url( home_url( '/terms-and-conditions' ) ); ?>">Terms & Conditions</a>
+					</div>
+					<div class="copy-right-btns">
+						<?php
+						for ( $i = 1; $i <= 5; $i++ ) {
+							$icon = trim( (string) get_theme_mod( "ludych_footer_social_{$i}_icon" ) );
+							$url  = trim( (string) get_theme_mod( "ludych_footer_social_{$i}_url", '#' ) );
 
-						if ( '' === $icon || '' === $url ) {
-							continue;
+							if ( '' === $icon || '' === $url ) {
+								continue;
+							}
+
+							echo '<a href="' . esc_url( $url ) . '"><i class="' . esc_attr( $icon ) . '"></i></a>';
 						}
-
-						echo '<a href="' . esc_url( $url ) . '"><i class="' . esc_attr( $icon ) . '"></i></a>';
-					}
-					?>
+						?>
+					</div>
 				</div>
 			</div>
 		</div>
