@@ -54,7 +54,7 @@ if ( empty( $redirect_url ) ) {
 								<?php if ( $email ) : ?>
 									<li><span>Email:</span> <a href="mailto:<?php echo esc_attr( $email ); ?>"><?php echo esc_html( $email ); ?></a></li>
 								<?php endif; ?>
-								<li><span>Link:</span> <a href="https://calendly.com/appleton-ludych" target="_blank">Calendly</a></li>
+								<li><span>Calendly:</span> <a href="https://calendly.com/appleton-ludych" target="_blank">Book a meeting</a></li>
 							</ul>
 						</div>
 					<?php endif; ?>
@@ -179,7 +179,21 @@ if ( empty( $redirect_url ) ) {
 					<?php endif; ?>
 				</div>
 			</div>
-		</div>
+	</div>
 
+	<div class="custom-container mt-5">
+		<div class="row">
+			<div class="col-12">
+				<div class="calendly-wrapper">
+					<div class="global-header middle-align">
+						<h2>Booking</h2>
+						<h5>Schedule a <span>Meeting</span></h5>
+					</div>
+					<div class="calendly-iframe-container">
+						<iframe src="https://calendly.com/appleton-ludych" width="100%" height="700" frameborder="0"></iframe>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </section>

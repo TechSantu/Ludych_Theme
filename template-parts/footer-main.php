@@ -83,7 +83,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 							if ( $footer_email ) :
 								?>
 								<a href="mailto:<?php echo esc_attr( $footer_email ); ?>"><?php echo esc_html( $footer_email ); ?></a>
-							<?php endif; ?>							
+							<?php endif; ?>	
+							
+							<h6>Calendly</h6>
+							<a href="https://calendly.com/appleton-ludych" target="_blank">Book a meeting</a>
 						</div>
 					</div>
 				</div>
