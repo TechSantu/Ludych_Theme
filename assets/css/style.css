@@ -2677,9 +2677,9 @@ footer.footer {
 }
 
 .global-header.about-head h2 {
-	opacity: 0.05 !important;
+	opacity: 0.25 !important;
 	margin-bottom: -15px;
-	letter-spacing: 0.25px;
+	letter-spacing: 5px;
 }
 
 .global-header.about-head p {
