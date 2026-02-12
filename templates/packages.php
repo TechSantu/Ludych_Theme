@@ -138,7 +138,7 @@ get_header();
 						<div class="outcome-pill mb-4">
 							<span class="small fw-bold text-primary"><i class="fas fa-bullseye me-2"></i> GROUNDWORK FOR SCALE</span>
 						</div>
-						<a href="<?php echo esc_url(home_url('/contact')); ?>" class="lp-btn lp-btn-outline w-100">Select Plan</a>
+						<a href="<?php echo esc_url(home_url('/contact-us/')); ?>" class="lp-btn lp-btn-outline w-100">Select Plan</a>
 					</div>
 				</div>
 			</div>
@@ -170,7 +170,7 @@ get_header();
 						<div class="outcome-pill featured-pill mb-4">
 							<span class="small fw-bold text-white"><i class="fas fa-chart-line me-2"></i> MEASURABLE LEAD GROWTH</span>
 						</div>
-						<a href="<?php echo esc_url(home_url('/contact')); ?>" class="lp-btn lp-btn-primary w-100">Select Plan</a>
+						<a href="<?php echo esc_url(home_url('/contact-us/')); ?>" class="lp-btn lp-btn-primary w-100">Select Plan</a>
 					</div>
 				</div>
 			</div>
@@ -201,7 +201,7 @@ get_header();
 						<div class="outcome-pill mb-4">
 							<span class="small fw-bold text-primary"><i class="fas fa-chess-king me-2"></i> MARKET DOMINANCE</span>
 						</div>
-						<a href="<?php echo esc_url(home_url('/contact')); ?>" class="lp-btn lp-btn-outline w-100">Select Plan</a>
+						<a href="<?php echo esc_url(home_url('/contact-us/')); ?>" class="lp-btn lp-btn-outline w-100">Select Plan</a>
 					</div>
 				</div>
 			</div>
@@ -247,7 +247,7 @@ get_header();
 				
 				<div class="text-center mt-5">
 					<p class="text-muted mb-4">We offer free digital marketing consultations followed by detailed quotations.</p>
-					<a href="<?php echo esc_url(home_url('/contact')); ?>" class="globalBtnDark"><span>Request Detailed Quote</span> <i class="fa-solid fa-arrow-right"></i></a>
+					<a href="<?php echo esc_url(home_url('/contact-us/')); ?>" class="globalBtnDark"><span>Request Detailed Quote</span> <i class="fa-solid fa-arrow-right"></i></a>
 				</div>
 			</div>
 		</div>
