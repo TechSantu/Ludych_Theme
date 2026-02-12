@@ -7,9 +7,9 @@ global $post_id;
 
 $acf_ready = function_exists( 'get_field' ) && function_exists( 'acf' ) && is_object( acf() );
 
-$faq_kicker      = $acf_ready ? get_field( 'packages_faq_kicker', $post_id ) : 'Common Queries';
-$faq_title       = $acf_ready ? get_field( 'packages_faq_title', $post_id ) : 'Digital Marketing <br><span class="text-primary">Pricing FAQ 2026</span>';
-$faq_description = $acf_ready ? get_field( 'packages_faq_description', $post_id ) : 'Clear answers to help you navigate your digital investment decisions with Ludych Technology.';
+$faq_kicker      = ( $acf_ready ? get_field( 'packages_faq_kicker', $post_id ) : '' ) ?: 'Common Queries';
+$faq_title       = ( $acf_ready ? get_field( 'packages_faq_title', $post_id ) : '' ) ?: 'Digital Marketing <br><span class="text-primary">Pricing FAQ 2026</span>';
+$faq_description = ( $acf_ready ? get_field( 'packages_faq_description', $post_id ) : '' ) ?: 'Clear answers to help you navigate your digital investment decisions with Ludych Technology.';
 
 $faqs = $acf_ready ? get_field( 'packages_faqs', $post_id ) : array();
 
@@ -77,17 +77,21 @@ foreach ( $faqs as $faq ) {
 			</div>
 			<div class="col-lg-8">
 				<div class="accordion modern-faq-accordion" id="lpFAQ">
-					<?php foreach ( $faqs as $i => $faq ) : ?>
+					<?php
+					foreach ( $faqs as $i => $faq ) :
+						$f_q = $faq['question'] ?: 'Question?';
+						$f_a = $faq['answer'] ?: 'Answer goes here.';
+						?>
 						<div class="accordion-item mb-3">
 							<h2 class="accordion-header">
 								<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#lp-faq-<?php echo $i; ?>">
 									<span class="faq-num me-3">0<?php echo $i + 1; ?></span> 
-									<?php echo esc_html( $faq['question'] ?? '' ); ?>
+									<?php echo esc_html( $f_q ); ?>
 								</button>
 							</h2>
 							<div id="lp-faq-<?php echo $i; ?>" class="accordion-collapse collapse" data-bs-parent="#lpFAQ">
 								<div class="accordion-body">
-									<?php echo esc_html( $faq['answer'] ?? '' ); ?>
+									<?php echo esc_html( $f_a ); ?>
 								</div>
 							</div>
 						</div>

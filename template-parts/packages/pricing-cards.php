@@ -7,9 +7,9 @@ global $post_id;
 
 $acf_ready = function_exists( 'get_field' ) && function_exists( 'acf' ) && is_object( acf() );
 
-$pricing_title    = $acf_ready ? get_field( 'packages_pricing_title', $post_id ) : 'Our Plans';
-$pricing_subtitle = $acf_ready ? get_field( 'packages_pricing_subtitle', $post_id ) : 'Strategic Growth Tiers';
-$pricing_heading  = $acf_ready ? get_field( 'packages_pricing_heading', $post_id ) : 'Scale Your Business with <span>Precision</span>';
+$pricing_title    = ( $acf_ready ? get_field( 'packages_pricing_title', $post_id ) : '' ) ?: 'Our Plans';
+$pricing_subtitle = ( $acf_ready ? get_field( 'packages_pricing_subtitle', $post_id ) : '' ) ?: 'Strategic Growth Tiers';
+$pricing_heading  = ( $acf_ready ? get_field( 'packages_pricing_heading', $post_id ) : '' ) ?: 'Scale Your Business with <span>Precision</span>';
 
 $packages = $acf_ready ? get_field( 'packages_pricing_packages', $post_id ) : array();
 
@@ -96,8 +96,17 @@ if ( empty( $packages ) ) {
 		<div class="row g-4 align-items-stretch">
 			<?php
 			foreach ( $packages as $package ) :
-				$is_featured   = isset( $package['is_featured'] ) ? $package['is_featured'] : false;
-				$package_class = $is_featured ? 'package-advanced featured' : 'package-starter';
+				$is_featured    = isset( $package['is_featured'] ) && $package['is_featured'];
+				$package_class  = $is_featured ? 'package-advanced featured' : 'package-starter';
+				$pkg_name       = $package['name'] ?: 'Package Name';
+				$pkg_desc       = $package['description'] ?: '';
+				$pkg_price      = $package['price'] ?: '$0';
+				$pkg_price_lbl  = $package['price_label'] ?: '/ month';
+				$pkg_icon       = $package['icon'] ?: 'fa-rocket';
+				$pkg_btn_text   = $package['button_text'] ?: 'Select Plan';
+				$pkg_btn_url    = $package['button_url'] ?: home_url('/contact-us/');
+				$pkg_outcome    = $package['outcome'] ?: 'OUTCOME';
+				$pkg_out_icon   = $package['outcome_icon'] ?: 'fa-bullseye';
 				?>
 			<div class="col-lg-4">
 				<div class="modern-card <?php echo esc_attr( $package_class ); ?> h-100 position-relative">
@@ -107,18 +116,18 @@ if ( empty( $packages ) ) {
 					
 					<div class="card-header-v2">
 						<div class="pkg-icon mb-4">
-							<i class="fas <?php echo esc_attr( $package['icon'] ?? 'fa-rocket' ); ?>"></i>
+							<i class="fas <?php echo esc_attr( $pkg_icon ); ?>"></i>
 						</div>
 						<h4 <?php echo $is_featured ? 'class="text-white"' : ''; ?>>
-							<?php echo esc_html( $package['name'] ?? 'Package Name' ); ?>
+							<?php echo esc_html( $pkg_name ); ?>
 						</h4>
 						<p class="<?php echo $is_featured ? 'text-white opacity-75' : 'text-muted'; ?> small mb-4">
-							<?php echo esc_html( $package['description'] ?? '' ); ?>
+							<?php echo esc_html( $pkg_desc ); ?>
 						</p>
 						<div class="pkg-price mb-4 <?php echo $is_featured ? 'text-white font-custom-style' : ''; ?>">
-							<span class="price-val"><?php echo esc_html( $package['price'] ?? '$0' ); ?></span>
+							<span class="price-val"><?php echo esc_html( $pkg_price ); ?></span>
 							<span class="price-label <?php echo $is_featured ? 'opacity-75' : ''; ?>">
-								<?php echo esc_html( $package['price_label'] ?? '/ month' ); ?>
+								<?php echo esc_html( $pkg_price_lbl ); ?>
 							</span>
 						</div>
 					</div>
@@ -130,7 +139,7 @@ if ( empty( $packages ) ) {
 							if ( is_string( $features ) ) {
 								$features = explode( "\n", $features );
 							}
-							foreach ( $features as $feature ) :
+							foreach ( (array) $features as $feature ) :
 								$feature = trim( $feature );
 								if ( empty( $feature ) ) {
 									continue;
@@ -144,13 +153,13 @@ if ( empty( $packages ) ) {
 					<div class="card-footer-v2 mt-auto pt-4 border-0 bg-transparent">
 						<div class="outcome-pill <?php echo $is_featured ? 'featured-pill' : ''; ?> mb-4">
 							<span class="small fw-bold <?php echo $is_featured ? 'text-white' : 'text-primary'; ?>">
-								<i class="fas <?php echo esc_attr( $package['outcome_icon'] ?? 'fa-bullseye' ); ?> me-2"></i> 
-								<?php echo esc_html( $package['outcome'] ?? 'OUTCOME' ); ?>
+								<i class="fas <?php echo esc_attr( $pkg_out_icon ); ?> me-2"></i> 
+								<?php echo esc_html( $pkg_outcome ); ?>
 							</span>
 						</div>
-						<a href="<?php echo esc_url( $package['button_url'] ?? home_url('/contact-us/') ); ?>" 
+						<a href="<?php echo esc_url( $pkg_btn_url ); ?>" 
 							class="lp-btn <?php echo $is_featured ? 'lp-btn-primary' : 'lp-btn-outline'; ?> w-100">
-							<?php echo esc_html( $package['button_text'] ?? 'Select Plan' ); ?>
+							<?php echo esc_html( $pkg_btn_text ); ?>
 						</a>
 					</div>
 				</div>

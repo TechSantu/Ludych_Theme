@@ -7,36 +7,23 @@ global $post_id;
 
 $acf_ready = function_exists( 'get_field' ) && function_exists( 'acf' ) && is_object( acf() );
 
-$intro_badge = $acf_ready ? get_field( 'packages_intro_badge', $post_id ) : '';
-if ( ! $intro_badge ) {
-	$intro_badge = 'Arizona\'s #1 Digital Agency';
-}
-
-$intro_title = $acf_ready ? get_field( 'packages_intro_title', $post_id ) : '';
-if ( ! $intro_title ) {
-	$intro_title = 'Empowering <span class="text-gradient">Local Businesses</span> with ROI-Driven Marketing';
-}
-
-$intro_description = $acf_ready ? get_field( 'packages_intro_description', $post_id ) : '';
-if ( ! $intro_description ) {
-	$intro_description = 'Our packages start from as low as <strong>$800 per month</strong>, ensuring that even small and local businesses and bootstrapped startups can access quality digital marketing services. Whether you\'re just starting out or running a well-established enterprise, we have the perfect package for you. Our comprehensive digital marketing services cover all the essentials to boost your online presence. From stunning web design and eCommerce development to expert Search Engine Optimization (SEO) strategies, Social Media Marketing (SMM), and Pay Per Click (PPC) online ads management, we\'ve got you covered. We\'ve successfully helped over 20+ companies establish their online presence and achieve impressive growth through our ROI-focused digital marketing strategies. To make things even better, we offer customizable packages tailored to your specific requirements.';
-}
+$intro_badge       = ( $acf_ready ? get_field( 'packages_intro_badge', $post_id ) : '' ) ?: 'Arizona\'s #1 Digital Agency';
+$intro_title       = ( $acf_ready ? get_field( 'packages_intro_title', $post_id ) : '' ) ?: 'Empowering <span class="text-gradient">Local Businesses</span> with ROI-Driven Marketing';
+$intro_description = ( $acf_ready ? get_field( 'packages_intro_description', $post_id ) : '' ) ?: 'Our packages start from as low as <strong>$800 per month</strong>, ensuring that even small and local businesses and bootstrapped startups can access quality digital marketing services. Whether you\'re just starting out or running a well-established enterprise, we have the perfect package for you. Our comprehensive digital marketing services cover all the essentials to boost your online presence. From stunning web design and eCommerce development to expert Search Engine Optimization (SEO) strategies, Social Media Marketing (SMM), and Pay Per Click (PPC) online ads management, we\'ve got you covered. We\'ve successfully helped over 20+ companies establish their online presence and achieve impressive growth through our ROI-focused digital marketing strategies. To make things even better, we offer customizable packages tailored to your specific requirements.';
 
 $intro_image = $acf_ready ? get_field( 'packages_intro_image', $post_id ) : '';
 if ( is_array( $intro_image ) ) {
 	$intro_image = $intro_image['url'] ?? '';
 }
-if ( ! $intro_image ) {
-	$intro_image = get_template_directory_uri() . '/assets/images/about-left.jpg';
-}
+$intro_image = $intro_image ?: get_template_directory_uri() . '/assets/images/about-left.jpg';
 
-$stat_1_number = $acf_ready ? get_field( 'packages_stat_1_number', $post_id ) : '5+';
-$stat_1_label  = $acf_ready ? get_field( 'packages_stat_1_label', $post_id ) : 'Years Experience';
-$stat_2_number = $acf_ready ? get_field( 'packages_stat_2_number', $post_id ) : '20+';
-$stat_2_label  = $acf_ready ? get_field( 'packages_stat_2_label', $post_id ) : 'Global Clients';
+$stat_1_number = ( $acf_ready ? get_field( 'packages_stat_1_number', $post_id ) : '' ) ?: '5+';
+$stat_1_label  = ( $acf_ready ? get_field( 'packages_stat_1_label', $post_id ) : '' ) ?: 'Years Experience';
+$stat_2_number = ( $acf_ready ? get_field( 'packages_stat_2_number', $post_id ) : '' ) ?: '20+';
+$stat_2_label  = ( $acf_ready ? get_field( 'packages_stat_2_label', $post_id ) : '' ) ?: 'Global Clients';
 
-$badge_number = $acf_ready ? get_field( 'packages_badge_number', $post_id ) : '+250%';
-$badge_label  = $acf_ready ? get_field( 'packages_badge_label', $post_id ) : 'Avg. Revenue Growth';
+$badge_number = ( $acf_ready ? get_field( 'packages_badge_number', $post_id ) : '' ) ?: '+250%';
+$badge_label  = ( $acf_ready ? get_field( 'packages_badge_label', $post_id ) : '' ) ?: 'Avg. Revenue Growth';
 ?>
 
 <section class="packages-lp-intro py-5 overflow-hidden">

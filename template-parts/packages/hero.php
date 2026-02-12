@@ -11,24 +11,11 @@ $hero_bg = $acf_ready ? get_field( 'packages_hero_background', $post_id ) : '';
 if ( is_array( $hero_bg ) ) {
 	$hero_bg = $hero_bg['url'] ?? '';
 }
-if ( ! $hero_bg ) {
-	$hero_bg = get_template_directory_uri() . '/assets/images/services-bg.jpg';
-}
+$hero_bg = $hero_bg ?: get_template_directory_uri() . '/assets/images/services-bg.jpg';
 
-$hero_kicker = $acf_ready ? get_field( 'packages_hero_kicker', $post_id ) : '';
-if ( ! $hero_kicker ) {
-	$hero_kicker = 'Digital Marketing Packages';
-}
-
-$hero_title = $acf_ready ? get_field( 'packages_hero_title', $post_id ) : '';
-if ( ! $hero_title ) {
-	$hero_title = 'Ludych Technology: Digital Marketing Packages, <span>Pricing & Cost In Arizona</span>';
-}
-
-$hero_subtitle = $acf_ready ? get_field( 'packages_hero_subtitle', $post_id ) : '';
-if ( ! $hero_subtitle ) {
-	$hero_subtitle = 'Looking for top-notch digital marketing packages in Arizona? Look no further! We offer various affordable options at Ludych Technology Agency to suit every need and budget.';
-}
+$hero_kicker   = ( $acf_ready ? get_field( 'packages_hero_kicker', $post_id ) : '' ) ?: 'Digital Marketing Packages';
+$hero_title    = ( $acf_ready ? get_field( 'packages_hero_title', $post_id ) : '' ) ?: 'Ludych Technology: Digital Marketing Packages, <span>Pricing & Cost In Arizona</span>';
+$hero_subtitle = ( $acf_ready ? get_field( 'packages_hero_subtitle', $post_id ) : '' ) ?: 'Looking for top-notch digital marketing packages in Arizona? Look no further! We offer various affordable options at Ludych Technology Agency to suit every need and budget.';
 ?>
 
 <section class="inner-banner-wrap with-overlay text-center" style="background-image: url('<?php echo esc_url( $hero_bg ); ?>');">
