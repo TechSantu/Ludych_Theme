@@ -7,9 +7,9 @@ global $post_id;
 
 $acf_ready = function_exists( 'get_field' ) && function_exists( 'acf' ) && is_object( acf() );
 
-$comparison_title       = $acf_ready ? get_field( 'packages_comparison_title', $post_id ) : 'Not sure which one fits?';
-$comparison_description = $acf_ready ? get_field( 'packages_comparison_description', $post_id ) : 'Prices vary depending on deliverables, goals, and scope. Every business is unique, and so are our solutions.';
-$comparison_cta_text    = $acf_ready ? get_field( 'packages_comparison_cta_text', $post_id ) : 'We offer free digital marketing consultations followed by detailed quotations.';
+$comparison_title       = $acf_ready ? get_field( 'packages_comparison_title', $post_id ) : 'Pricing';
+$comparison_description = $acf_ready ? get_field( 'packages_comparison_description', $post_id ) : 'Based on industry trends & typical agency structures (actual Ludych pricing should be customized based on deliverables, goals, and scope)';
+$comparison_cta_text    = $acf_ready ? get_field( 'packages_comparison_cta_text', $post_id ) : 'Keep in mind that these are general guidelines and pricing can vary widely depending on the specific company and the level of service provided. It\'s important to get detailed pricing information for each service and that is why we offer a free digital marketing consultation followed by detailed quotations with breakdowns for each of our digital marketing services.';
 $comparison_button_text = $acf_ready ? get_field( 'packages_comparison_button_text', $post_id ) : 'Request Detailed Quote';
 $comparison_button_url  = $acf_ready ? get_field( 'packages_comparison_button_url', $post_id ) : home_url('/contact-us/');
 

@@ -22,12 +22,12 @@ if ( ! $hero_kicker ) {
 
 $hero_title = $acf_ready ? get_field( 'packages_hero_title', $post_id ) : '';
 if ( ! $hero_title ) {
-	$hero_title = 'Pricing & Cost <span>In Arizona</span>';
+	$hero_title = 'Ludych Technology: Digital Marketing Packages, <span>Pricing & Cost In Arizona</span>';
 }
 
 $hero_subtitle = $acf_ready ? get_field( 'packages_hero_subtitle', $post_id ) : '';
 if ( ! $hero_subtitle ) {
-	$hero_subtitle = 'Looking for top-notch digital marketing packages in Arizona? We offer various affordable options at Ludych Technology Agency to suit every need and budget.';
+	$hero_subtitle = 'Looking for top-notch digital marketing packages in Arizona? Look no further! We offer various affordable options at Ludych Technology Agency to suit every need and budget.';
 }
 ?>
 

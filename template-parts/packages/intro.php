@@ -19,7 +19,7 @@ if ( ! $intro_title ) {
 
 $intro_description = $acf_ready ? get_field( 'packages_intro_description', $post_id ) : '';
 if ( ! $intro_description ) {
-	$intro_description = 'Our packages start from as low as <strong>$800 per month</strong>, ensuring that even small and local businesses and bootstrapped startups can access quality digital marketing services. Whether you\'re just starting out or running a well-established enterprise, we have the perfect package for you.';
+	$intro_description = 'Our packages start from as low as <strong>$800 per month</strong>, ensuring that even small and local businesses and bootstrapped startups can access quality digital marketing services. Whether you\'re just starting out or running a well-established enterprise, we have the perfect package for you. Our comprehensive digital marketing services cover all the essentials to boost your online presence. We\'ve successfully helped over 20+ companies establish their online presence and achieve impressive growth through our ROI-focused digital marketing strategies.';
 }
 
 $intro_image = $acf_ready ? get_field( 'packages_intro_image', $post_id ) : '';

@@ -16,15 +16,15 @@ $faqs = $acf_ready ? get_field( 'packages_faqs', $post_id ) : array();
 if ( empty( $faqs ) ) {
 	$faqs = array(
 		array(
-			'question' => 'What is the average monthly cost in the USA?',
-			'answer'   => 'Starting from $1,000 - depending on scope, services, and agency.',
+			'question' => 'What is the average monthly cost of digital marketing in the USA?',
+			'answer'   => 'Starting from $1000 - depending on scope, services, and agency.',
 		),
 		array(
 			'question' => 'Which digital marketing services offer the best ROI?',
 			'answer'   => 'SEO and content marketing offer high ROI over time. PPC delivers faster but costlier results.',
 		),
 		array(
-			'question' => 'Can I hire an agency on a project basis?',
+			'question' => 'Can I hire a digital marketing agency on a project basis?',
 			'answer'   => 'Yes. Project-based pricing is ideal for one-time campaigns, such as product launches or audits.',
 		),
 		array(
@@ -40,7 +40,7 @@ if ( empty( $faqs ) ) {
 			'answer'   => 'Yes. Competitive sectors, such as real estate, finance, and e-commerce, often require higher ad spends and technical SEO.',
 		),
 		array(
-			'question' => 'How transparent is your pricing?',
+			'question' => 'How transparent is digital marketing agency pricing?',
 			'answer'   => 'Reputed agencies, such as Ludych Technology, share a detailed scope of work, performance KPIs, and monthly reports to ensure clarity.',
 		),
 	);
