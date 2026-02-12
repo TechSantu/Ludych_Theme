@@ -96,17 +96,17 @@ if ( empty( $packages ) ) {
 		<div class="row g-4 align-items-stretch">
 			<?php
 			foreach ( $packages as $package ) :
-				$is_featured    = isset( $package['is_featured'] ) && $package['is_featured'];
-				$package_class  = $is_featured ? 'package-advanced featured' : 'package-starter';
-				$pkg_name       = ! empty( $package['name'] ) ? $package['name'] : 'Package Name';
-				$pkg_desc       = ! empty( $package['description'] ) ? $package['description'] : '';
-				$pkg_price      = ! empty( $package['price'] ) ? $package['price'] : '$0';
-				$pkg_price_lbl  = ! empty( $package['price_label'] ) ? $package['price_label'] : '/ month';
-				$pkg_icon       = ! empty( $package['icon'] ) ? $package['icon'] : 'fa-rocket';
-				$pkg_btn_text   = ! empty( $package['button_text'] ) ? $package['button_text'] : 'Select Plan';
-				$pkg_btn_url    = ! empty( $package['button_url'] ) ? $package['button_url'] : home_url('/contact-us/');
-				$pkg_outcome    = ! empty( $package['outcome'] ) ? $package['outcome'] : 'OUTCOME';
-				$pkg_out_icon   = ! empty( $package['outcome_icon'] ) ? $package['outcome_icon'] : 'fa-bullseye';
+				$is_featured   = isset( $package['is_featured'] ) && $package['is_featured'];
+				$package_class = $is_featured ? 'package-advanced featured' : 'package-starter';
+				$pkg_name      = ! empty( $package['name'] ) ? $package['name'] : 'Package Name';
+				$pkg_desc      = ! empty( $package['description'] ) ? $package['description'] : '';
+				$pkg_price     = ! empty( $package['price'] ) ? $package['price'] : '$0';
+				$pkg_price_lbl = ! empty( $package['price_label'] ) ? $package['price_label'] : '/ month';
+				$pkg_icon      = ! empty( $package['icon'] ) ? $package['icon'] : 'fa-rocket';
+				$pkg_btn_text  = ! empty( $package['button_text'] ) ? $package['button_text'] : 'Select Plan';
+				$pkg_btn_url   = ! empty( $package['button_url'] ) ? $package['button_url'] : home_url('/contact-us/');
+				$pkg_outcome   = ! empty( $package['outcome'] ) ? $package['outcome'] : 'OUTCOME';
+				$pkg_out_icon  = ! empty( $package['outcome_icon'] ) ? $package['outcome_icon'] : 'fa-bullseye';
 				?>
 			<div class="col-lg-4">
 				<div class="modern-card <?php echo esc_attr( $package_class ); ?> h-100 position-relative">
