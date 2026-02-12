@@ -338,7 +338,8 @@
 
 
 	.footer .footer-right {
-		flex-wrap: wrap;
+		flex-direction: column;
+		gap: 30px;
 	}
 
 	.copy-right {
@@ -350,6 +351,11 @@
 	.copy-right-right {
 		flex-direction: column;
 		gap: 15px;
+	}
+
+	.copy-right-links {
+		flex-direction: column;
+		gap: 10px;
 	}
 }
 
