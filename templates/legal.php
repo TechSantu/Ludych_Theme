@@ -35,52 +35,52 @@ $banner_bg = get_template_directory_uri() . '/assets/images/services-bg.jpg';
 </section>
 
 <section class="legal-content-section padding-top padding-bottom">
-    <div class="custom-container">
-        <div class="row">
-            <div class="col-12">
-                <div class="legal-content">
-                    <?php
-                    while ( have_posts() ) :
-                        the_post();
-                        the_content();
-                    endwhile;
-                    ?>
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="custom-container">
+		<div class="row">
+			<div class="col-12">
+				<div class="legal-content">
+					<?php
+					while ( have_posts() ) :
+						the_post();
+						the_content();
+					endwhile;
+					?>
+				</div>
+			</div>
+		</div>
+	</div>
 </section>
 
 <style>
 .legal-content {
-    background: #fff;
-    padding: 50px;
-    border-radius: 35px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.05);
-    border: 1px solid #eee;
-    line-height: 1.8;
-    color: #474A4F;
+	background: #fff;
+	padding: 50px;
+	border-radius: 35px;
+	box-shadow: 0 20px 60px rgba(0,0,0,0.05);
+	border: 1px solid #eee;
+	line-height: 1.8;
+	color: #474A4F;
 }
 .legal-content h2, .legal-content h3 {
-    color: #222629;
-    margin-top: 30px;
-    margin-bottom: 15px;
+	color: #222629;
+	margin-top: 30px;
+	margin-bottom: 15px;
 }
 .legal-content p {
-    margin-bottom: 20px;
+	margin-bottom: 20px;
 }
 .legal-content ul {
-    margin-bottom: 20px;
-    list-style: disc;
-    padding-left: 20px;
+	margin-bottom: 20px;
+	list-style: disc;
+	padding-left: 20px;
 }
 .legal-content li {
-    margin-bottom: 10px;
+	margin-bottom: 10px;
 }
 @media (max-width: 767px) {
-    .legal-content {
-        padding: 30px 20px;
-    }
+	.legal-content {
+		padding: 30px 20px;
+	}
 }
 </style>
 
