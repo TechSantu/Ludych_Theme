@@ -125,8 +125,8 @@ if ( empty( $packages ) ) {
 							<?php echo esc_html( $pkg_desc ); ?>
 						</p>
 						<div class="pkg-price mb-4 <?php echo $is_featured ? 'text-white font-custom-style' : ''; ?>">
-							<span class="price-val"><?php echo esc_html( $pkg_price ); ?></span>
-							<span class="price-label <?php echo $is_featured ? 'opacity-75' : ''; ?>">
+							<span class="price-val d-block mb-1"><?php echo esc_html( $pkg_price ); ?></span>
+							<span class="price-label d-block small <?php echo $is_featured ? 'opacity-75' : 'text-muted'; ?>">
 								<?php echo esc_html( $pkg_price_lbl ); ?>
 							</span>
 						</div>
@@ -149,8 +149,21 @@ if ( empty( $packages ) ) {
 								if ( empty( $feature_text ) ) {
 									continue;
 								}
+
+								$parts = explode( ':', $feature_text, 2 );
+								$label = trim( $parts[0] );
+								$value = isset( $parts[1] ) ? trim( $parts[1] ) : '';
 								?>
-								<li><i class="fas fa-check"></i> <?php echo wp_kses_post( $feature_text ); ?></li>
+								<li>
+									<i class="fas fa-check"></i>
+									<div class="feature-info">
+										<span class="f-label"><?php echo wp_kses_post( $label ); ?></span>
+										<?php if ( ! empty( $value ) ) : ?>
+											<span class="f-sep">:</span>
+											<span class="f-value"><?php echo wp_kses_post( $value ); ?></span>
+										<?php endif; ?>
+									</div>
+								</li>
 							<?php endforeach; ?>
 						</ul>
 					</div>
