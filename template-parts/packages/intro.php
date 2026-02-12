@@ -7,7 +7,6 @@ global $post_id;
 
 $acf_ready = function_exists( 'get_field' ) && function_exists( 'acf' ) && is_object( acf() );
 
-// Intro Section Fields
 $intro_badge = $acf_ready ? get_field( 'packages_intro_badge', $post_id ) : '';
 if ( ! $intro_badge ) {
 	$intro_badge = 'Arizona\'s #1 Digital Agency';
@@ -31,13 +30,11 @@ if ( ! $intro_image ) {
 	$intro_image = get_template_directory_uri() . '/assets/images/about-left.jpg';
 }
 
-// Stats
 $stat_1_number = $acf_ready ? get_field( 'packages_stat_1_number', $post_id ) : '5+';
 $stat_1_label = $acf_ready ? get_field( 'packages_stat_1_label', $post_id ) : 'Years Experience';
 $stat_2_number = $acf_ready ? get_field( 'packages_stat_2_number', $post_id ) : '20+';
 $stat_2_label = $acf_ready ? get_field( 'packages_stat_2_label', $post_id ) : 'Global Clients';
 
-// Floating Badge
 $badge_number = $acf_ready ? get_field( 'packages_badge_number', $post_id ) : '+250%';
 $badge_label = $acf_ready ? get_field( 'packages_badge_label', $post_id ) : 'Avg. Revenue Growth';
 ?>

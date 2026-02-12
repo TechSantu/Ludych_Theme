@@ -7,15 +7,12 @@ global $post_id;
 
 $acf_ready = function_exists( 'get_field' ) && function_exists( 'acf' ) && is_object( acf() );
 
-// FAQ Section Fields
 $faq_kicker = $acf_ready ? get_field( 'packages_faq_kicker', $post_id ) : 'Common Queries';
 $faq_title = $acf_ready ? get_field( 'packages_faq_title', $post_id ) : 'Digital Marketing <br><span class="text-primary">Pricing FAQ 2026</span>';
 $faq_description = $acf_ready ? get_field( 'packages_faq_description', $post_id ) : 'Clear answers to help you navigate your digital investment decisions with Ludych Technology.';
 
-// Get FAQs from ACF repeater
 $faqs = $acf_ready ? get_field( 'packages_faqs', $post_id ) : array();
 
-// Default FAQs if ACF is not available or no FAQs are set
 if ( empty( $faqs ) ) {
 	$faqs = array(
 		array(
@@ -45,6 +42,23 @@ if ( empty( $faqs ) ) {
 		array(
 			'question' => 'How transparent is your pricing?',
 			'answer' => 'Reputed agencies, such as Ludych Technology, share a detailed scope of work, performance KPIs, and monthly reports to ensure clarity.'
+		)
+	);
+}
+
+$faq_schema = array(
+	'@context' => 'https://schema.org',
+	'@type' => 'FAQPage',
+	'mainEntity' => array()
+);
+
+foreach ( $faqs as $faq ) {
+	$faq_schema['mainEntity'][] = array(
+		'@type' => 'Question',
+		'name' => $faq['question'] ?? '',
+		'acceptedAnswer' => array(
+			'@type' => 'Answer',
+			'text' => $faq['answer'] ?? ''
 		)
 	);
 }
@@ -83,3 +97,7 @@ if ( empty( $faqs ) ) {
 		</div>
 	</div>
 </section>
+
+<script type="application/ld+json">
+<?php echo wp_json_encode( $faq_schema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT ); ?>
+</script>

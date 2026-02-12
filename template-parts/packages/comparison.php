@@ -7,14 +7,12 @@ global $post_id;
 
 $acf_ready = function_exists( 'get_field' ) && function_exists( 'acf' ) && is_object( acf() );
 
-// Comparison Section Fields
 $comparison_title = $acf_ready ? get_field( 'packages_comparison_title', $post_id ) : 'Not sure which one fits?';
 $comparison_description = $acf_ready ? get_field( 'packages_comparison_description', $post_id ) : 'Prices vary depending on deliverables, goals, and scope. Every business is unique, and so are our solutions.';
 $comparison_cta_text = $acf_ready ? get_field( 'packages_comparison_cta_text', $post_id ) : 'We offer free digital marketing consultations followed by detailed quotations.';
 $comparison_button_text = $acf_ready ? get_field( 'packages_comparison_button_text', $post_id ) : 'Request Detailed Quote';
 $comparison_button_url = $acf_ready ? get_field( 'packages_comparison_button_url', $post_id ) : home_url('/contact-us/');
 
-// Pricing Tiers
 $pricing_tiers = $acf_ready ? get_field( 'packages_pricing_tiers', $post_id ) : array();
 
 if ( empty( $pricing_tiers ) ) {

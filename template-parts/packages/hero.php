@@ -7,7 +7,6 @@ global $post_id;
 
 $acf_ready = function_exists( 'get_field' ) && function_exists( 'acf' ) && is_object( acf() );
 
-// Hero Section Fields
 $hero_bg = $acf_ready ? get_field( 'packages_hero_background', $post_id ) : '';
 if ( is_array( $hero_bg ) ) {
 	$hero_bg = $hero_bg['url'] ?? '';
@@ -57,3 +56,28 @@ if ( ! $hero_subtitle ) {
 		</div>
 	</div>
 </section>
+
+<?php
+$breadcrumb_schema = array(
+	'@context' => 'https://schema.org',
+	'@type' => 'BreadcrumbList',
+	'itemListElement' => array(
+		array(
+			'@type' => 'ListItem',
+			'position' => 1,
+			'name' => 'Home',
+			'item' => home_url()
+		),
+		array(
+			'@type' => 'ListItem',
+			'position' => 2,
+			'name' => 'Packages',
+			'item' => get_permalink( $post_id )
+		)
+	)
+);
+?>
+
+<script type="application/ld+json">
+<?php echo wp_json_encode( $breadcrumb_schema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT ); ?>
+</script>

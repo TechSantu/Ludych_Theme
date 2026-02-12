@@ -7,15 +7,12 @@ global $post_id;
 
 $acf_ready = function_exists( 'get_field' ) && function_exists( 'acf' ) && is_object( acf() );
 
-// Pricing Section Header
 $pricing_title = $acf_ready ? get_field( 'packages_pricing_title', $post_id ) : 'Our Plans';
 $pricing_subtitle = $acf_ready ? get_field( 'packages_pricing_subtitle', $post_id ) : 'Strategic Growth Tiers';
 $pricing_heading = $acf_ready ? get_field( 'packages_pricing_heading', $post_id ) : 'Scale Your Business with <span>Precision</span>';
 
-// Get pricing packages from ACF repeater
 $packages = $acf_ready ? get_field( 'packages_pricing_packages', $post_id ) : array();
 
-// Default packages if ACF is not available or no packages are set
 if ( empty( $packages ) ) {
 	$packages = array(
 		array(
@@ -159,3 +156,56 @@ if ( empty( $packages ) ) {
 		</div>
 	</div>
 </section>
+
+<?php
+$offers_schema = array();
+foreach ( $packages as $package ) {
+	$price_value = preg_replace('/[^0-9.]/', '', $package['price'] ?? '0');
+	
+	$features = $package['features'] ?? array();
+	if ( is_string( $features ) ) {
+		$features = explode( "\n", $features );
+	}
+	$features = array_filter( array_map( 'trim', $features ) );
+	
+	$offers_schema[] = array(
+		'@type' => 'Offer',
+		'name' => $package['name'] ?? '',
+		'description' => $package['description'] ?? '',
+		'price' => $price_value,
+		'priceCurrency' => 'USD',
+		'priceSpecification' => array(
+			'@type' => 'UnitPriceSpecification',
+			'price' => $price_value,
+			'priceCurrency' => 'USD',
+			'unitText' => 'MONTH'
+		),
+		'itemOffered' => array(
+			'@type' => 'Service',
+			'name' => $package['name'] ?? '',
+			'description' => implode( ', ', $features )
+		),
+		'url' => $package['button_url'] ?? home_url('/contact-us/')
+	);
+}
+
+$service_schema = array(
+	'@context' => 'https://schema.org',
+	'@type' => 'Service',
+	'serviceType' => 'Digital Marketing',
+	'provider' => array(
+		'@type' => 'Organization',
+		'name' => 'Ludych Technology',
+		'url' => home_url()
+	),
+	'areaServed' => array(
+		'@type' => 'State',
+		'name' => 'Arizona'
+	),
+	'offers' => $offers_schema
+);
+?>
+
+<script type="application/ld+json">
+<?php echo wp_json_encode( $service_schema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT ); ?>
+</script>
