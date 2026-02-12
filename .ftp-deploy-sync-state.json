@@ -1,8 +1,14 @@
 {
     "description": "DO NOT DELETE THIS FILE. This file is used to keep track of which files have been synced in the most recent deployment. If you delete this file a resync will need to be done (which can take a while) - read more: https://github.com/SamKirkland/FTP-Deploy-Action",
     "version": "1.0.0",
-    "generatedTime": 1770564325169,
+    "generatedTime": 1770738615321,
     "data": [
+        {
+            "type": "file",
+            "name": ".ftp-deploy-sync-state.json",
+            "size": 25016,
+            "hash": "fede89136d78e3f4ab502c9b7b452199a3224718b0b37badae0d8420c9e1adf4"
+        },
         {
             "type": "file",
             "name": "404.php",
@@ -103,11 +109,11 @@
         },
         {
             "type": "folder",
-            "name": "assets/images"
+            "name": "assets/css"
         },
         {
             "type": "folder",
-            "name": "assets/css"
+            "name": "assets/images"
         },
         {
             "type": "folder",
@@ -116,8 +122,8 @@
         {
             "type": "file",
             "name": "html/about.html",
-            "size": 37781,
-            "hash": "1ab489c66293a7424163ce923f01c209804552d9546af13fb0bf01a2ee343706"
+            "size": 44215,
+            "hash": "7f06c97df7edf4055690be354f6d75c206ec8faab833d68e6c73d96afded54f5"
         },
         {
             "type": "file",
@@ -151,6 +157,12 @@
         },
         {
             "type": "file",
+            "name": "html/index.html",
+            "size": 168123,
+            "hash": "dd4f2673df6b72f977ca5af145f9e6c243b9ab96d93d5ea717f544def5f9a943"
+        },
+        {
+            "type": "file",
             "name": "html/healthcare.html",
             "size": 41281,
             "hash": "35d919767c16ab08b15c980413e76c7760434a51665c8c63c78b1a33a474974f"
@@ -163,27 +175,21 @@
         },
         {
             "type": "file",
-            "name": "html/index.html",
-            "size": 167873,
-            "hash": "5d8f76a53b2fc8b896b37c48953a2472aecce2ca4043e2bcd5e68ae03472b110"
-        },
-        {
-            "type": "file",
             "name": "inc/acf-fields.php",
-            "size": 29201,
-            "hash": "462161590a355d7f31cb3391e1dfcf7fa65bca37f8a284d5a7d60bb69bf9e8f7"
+            "size": 40435,
+            "hash": "e42a3a0f43fae27b27e5b59dd0a29c68677a4f54cec22c0bea5e32fe4b2804d6"
         },
         {
             "type": "file",
             "name": "inc/ajax-load-more.php",
-            "size": 4901,
-            "hash": "94435116cf0d7565188b6842911fa7ed534155b7ae7220518d2e2b59d67d6169"
+            "size": 5033,
+            "hash": "02b283d7d653ac5ace6756da3594a45eda38d804de631b87b97537c0013b3ce4"
         },
         {
             "type": "file",
             "name": "inc/class-ludych-walker-nav-menu.php",
-            "size": 2156,
-            "hash": "3c8895347cf74cf0b6dbd6116f3d76741e42a9b681eda22747331438c116c631"
+            "size": 2981,
+            "hash": "dd8dba89ecf03c18534689759a7df4ebb5019fcb5bb8b057a7bafb55c6b154e9"
         },
         {
             "type": "file",
@@ -229,9 +235,15 @@
         },
         {
             "type": "file",
+            "name": "template-parts/content-helloworld.php",
+            "size": 107,
+            "hash": "454762b09641a7f9623e0b74ba3cf81c2f9c57e61b29dd03712ed13867a8095b"
+        },
+        {
+            "type": "file",
             "name": "template-parts/footer-main.php",
-            "size": 5684,
-            "hash": "bc495a9104a474a4563e599eaabd834d12e9d4d9a398f476947697e70ba40e10"
+            "size": 5910,
+            "hash": "9277fd61572eca2cfd604700e84fbd4fce644de81fb310321c6e39eec7959f58"
         },
         {
             "type": "file",
@@ -249,6 +261,12 @@
         },
         {
             "type": "file",
+            "name": "templates/about.php",
+            "size": 33448,
+            "hash": "419187343747990543581b4d2e3a0c745969bcccc3b7a43698a0adaecc15a2ad"
+        },
+        {
+            "type": "file",
             "name": "templates/case-study-self-reliance.php",
             "size": 7931,
             "hash": "147b2cd2890b29a16b47631c0e4df16e530cbf53fa6a760603b3be82aa3fd5ca"
@@ -261,15 +279,39 @@
         },
         {
             "type": "file",
+            "name": "templates/thank-you.php",
+            "size": 802,
+            "hash": "d951c595e44f30b279364a47e73fa978a81d49b82681e90055f507f67b379aa8"
+        },
+        {
+            "type": "file",
             "name": "templates/homepage.php",
             "size": 502,
             "hash": "1066036fb8c8c36fb080e600c217924ff71c8df7a56b519b838d0ccfd1ba6c9b"
         },
         {
             "type": "file",
-            "name": "templates/thank-you.php",
-            "size": 802,
-            "hash": "d951c595e44f30b279364a47e73fa978a81d49b82681e90055f507f67b379aa8"
+            "name": "assets/css/bootstrap.min.css",
+            "size": 194901,
+            "hash": "c0bcf7898fdc3b87babca678cd19a8e3ef570e931c80a3afbffcc453738c951a"
+        },
+        {
+            "type": "file",
+            "name": "assets/css/owl.carousel.min.css",
+            "size": 3351,
+            "hash": "521410e1fc44780061e09adc980275fb5ea277fd5d9e538454214ec4379ff4bc"
+        },
+        {
+            "type": "file",
+            "name": "assets/css/responsive.css",
+            "size": 8772,
+            "hash": "4f049afd6c93c45374513c2cfe8c464c6d2366f472485cca1abdb5635ef4dc19"
+        },
+        {
+            "type": "file",
+            "name": "assets/css/style.css",
+            "size": 59267,
+            "hash": "9c552b4ab5c9091b4fd1d7b736e4f62f5238428b9e0c6797c3b203c4d3d60a2f"
         },
         {
             "type": "file",
@@ -314,14 +356,14 @@
             "hash": "300905db302100d08ade03cba3243233562c0cf87e684d97fbbfe1c59a51602b"
         },
         {
-            "type": "folder",
-            "name": "assets/images/case-studies"
-        },
-        {
             "type": "file",
             "name": "assets/images/close-btn.png",
             "size": 300,
             "hash": "f0f5ce9f75f87d704f77c21c8f0dd112055875622b768af07d63fe1734241ec4"
+        },
+        {
+            "type": "folder",
+            "name": "assets/images/case-studies"
         },
         {
             "type": "file",
@@ -346,6 +388,12 @@
             "name": "assets/images/custom-development-2048x1365.jpg",
             "size": 245713,
             "hash": "2096574e6b8046c4aa4a30d13113637e291ef04c67b378487c1fb993539d8d29"
+        },
+        {
+            "type": "file",
+            "name": "assets/images/custom-icon-star.svg",
+            "size": 1405,
+            "hash": "70b77c61057e6d9bcceef85f8eeede03188722161be387081430198d952084ff"
         },
         {
             "type": "file",
@@ -403,6 +451,12 @@
         },
         {
             "type": "file",
+            "name": "assets/images/joseph-appleton-img.jpg",
+            "size": 20696,
+            "hash": "4cbfd5faeac62fb7e39a7d0725dc70d5bba6f965754573d213bb4c808299826e"
+        },
+        {
+            "type": "file",
             "name": "assets/images/logo.png",
             "size": 2950,
             "hash": "43894b97f8f2725fa258615f58fc8a78502c15f113e374cb6dd47151cf37c25a"
@@ -421,39 +475,15 @@
         },
         {
             "type": "file",
-            "name": "assets/images/testimonial.png",
-            "size": 250349,
-            "hash": "64d5e296a40b9290b6879817b9272ceb262f75cea93aef3f33e62147bf1bb65e"
-        },
-        {
-            "type": "file",
             "name": "assets/images/why-choose-us.jpg",
             "size": 46614,
             "hash": "ee39fdcb992ab978a29522db40c6a0904b4dd31088efb50208f3360f1375e313"
         },
         {
             "type": "file",
-            "name": "assets/css/bootstrap.min.css",
-            "size": 194901,
-            "hash": "c0bcf7898fdc3b87babca678cd19a8e3ef570e931c80a3afbffcc453738c951a"
-        },
-        {
-            "type": "file",
-            "name": "assets/css/owl.carousel.min.css",
-            "size": 3351,
-            "hash": "521410e1fc44780061e09adc980275fb5ea277fd5d9e538454214ec4379ff4bc"
-        },
-        {
-            "type": "file",
-            "name": "assets/css/responsive.css",
-            "size": 8059,
-            "hash": "ba9c566916231c11df7ba842b45088ad5d08e3f24ee9b35ed0f4aaeb1dbe3433"
-        },
-        {
-            "type": "file",
-            "name": "assets/css/style.css",
-            "size": 55744,
-            "hash": "8af138395183619eb5d4b116503514b9161a98cec368a908cec686b64affc644"
+            "name": "assets/images/testimonial.png",
+            "size": 250349,
+            "hash": "64d5e296a40b9290b6879817b9272ceb262f75cea93aef3f33e62147bf1bb65e"
         },
         {
             "type": "file",
@@ -464,8 +494,8 @@
         {
             "type": "file",
             "name": "assets/js/custom.js",
-            "size": 12673,
-            "hash": "3f3be60ea0e2588e0cb54e199fd0cc476b953c8725bf6fb4682115d29f785f2f"
+            "size": 13077,
+            "hash": "b4c7019c215e4a3dc3a5a241b67e8f4253fe1a316f1bf3f2e54707cecc3a8332"
         },
         {
             "type": "file",
@@ -517,21 +547,21 @@
         },
         {
             "type": "file",
-            "name": "template-parts/Home/testimonials.php",
-            "size": 3509,
-            "hash": "d022440465ee43894603ec74ced3e86315deda4e87fea6c84a479ae5851d032c"
-        },
-        {
-            "type": "file",
             "name": "template-parts/Home/why_choose_us.php",
             "size": 3549,
             "hash": "d5942dd967a3bf468abf8cf6d538eb94e4bd8e6f8c7881a554a8e3aa8a83580d"
         },
         {
             "type": "file",
+            "name": "template-parts/Home/testimonials.php",
+            "size": 3509,
+            "hash": "d022440465ee43894603ec74ced3e86315deda4e87fea6c84a479ae5851d032c"
+        },
+        {
+            "type": "file",
             "name": "template-parts/blog/banner.php",
-            "size": 2994,
-            "hash": "37312eb5f1265d68b70541f0bd2f5cdace975326aab11f8714b44854534027b3"
+            "size": 3024,
+            "hash": "355314bd794015e4f6bc0d2b50a49b8b826d383bbf87ce8e9688f2a370b7457a"
         },
         {
             "type": "file",
@@ -613,6 +643,12 @@
         },
         {
             "type": "file",
+            "name": "template-parts/common/services.php",
+            "size": 4204,
+            "hash": "a3da30070543deb47e1dd9975dabdeb20b7d3bbe1fdcb69aa70dbd3f7f3e0f70"
+        },
+        {
+            "type": "file",
             "name": "template-parts/industries/banner.php",
             "size": 3080,
             "hash": "444f4bca457084502b23638232ab6e5904fb1d05b11bfc2c9142b543eed46aa8"
@@ -679,21 +715,9 @@
         },
         {
             "type": "file",
-            "name": "template-parts/common/services.php",
-            "size": 4124,
-            "hash": "c5d5f74267330ef9ebb142759fd8d89a8af9803297697145c1e0d38d5a44a7dc"
-        },
-        {
-            "type": "file",
             "name": "assets/images/case-studies/logo-1.png",
             "size": 5168,
             "hash": "f40aa17baf2b2967fa54dac83e6f4b21c555aa22b9e7c92c6f1bc4d04d2e30bd"
-        },
-        {
-            "type": "file",
-            "name": "assets/images/case-studies/logo-2.png",
-            "size": 2750,
-            "hash": "a07c430e3f5ce8865667bb06bcee98410c98e8629810ed440580dbab1f8a6064"
         },
         {
             "type": "file",
@@ -712,6 +736,12 @@
             "name": "assets/images/case-studies/logo-5.png",
             "size": 2019,
             "hash": "c27abfd256e0162b010f92e65d542043881f5a135edf5f5aa39e98f244e340ca"
+        },
+        {
+            "type": "file",
+            "name": "assets/images/case-studies/logo-2.png",
+            "size": 2750,
+            "hash": "a07c430e3f5ce8865667bb06bcee98410c98e8629810ed440580dbab1f8a6064"
         }
     ]
 }

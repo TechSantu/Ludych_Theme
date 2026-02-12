@@ -387,6 +387,13 @@ textarea:focus {
 
 .global-header.middle-align {
 	text-align: center;
+	align-items: center;
+	justify-content: center;
+}
+
+.global-header.left-align {
+	text-align: left;
+	align-items: flex-start;
 }
 
 .global-header h2 span,
@@ -1294,8 +1301,8 @@ li.nav-item.dropdown .dropdown-menu li:has(a.dropdown-toggle) {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	display: -webkit-box;
-	-webkit-line-clamp: 1;
-	line-clamp: 1;
+	-webkit-line-clamp: 2;
+	line-clamp: 2;
 	-webkit-box-orient: vertical;
 }
 
@@ -3461,7 +3468,7 @@ footer.footer {
 
 .our-teams .team-thumbnail {
 	position: relative;
-	height: 400px;
+	height: 320px;
 }
 
 .our-teams .team-thumbnail img {

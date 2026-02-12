@@ -83,7 +83,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 							if ( $footer_email ) :
 								?>
 								<a href="mailto:<?php echo esc_attr( $footer_email ); ?>"><?php echo esc_html( $footer_email ); ?></a>
-							<?php endif; ?>							
+							<?php endif; ?>
+							<h6>Skype</h6>
+							<?php
+							$footer_skype = get_theme_mod( 'ludych_footer_skype', 'Ludych' );
+							if ( $footer_skype ) :
+								?>
+								<a href="skype:<?php echo esc_attr( $footer_skype ); ?>?chat"><?php echo esc_html( $footer_skype ); ?></a>
+							<?php endif; ?>
 						</div>
 					</div>
 				</div>

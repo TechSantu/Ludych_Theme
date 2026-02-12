@@ -54,6 +54,7 @@ if ( empty( $redirect_url ) ) {
 								<?php if ( $email ) : ?>
 									<li><span>Email:</span> <a href="mailto:<?php echo esc_attr( $email ); ?>"><?php echo esc_html( $email ); ?></a></li>
 								<?php endif; ?>
+								<li><span>Link:</span> <a href="https://calendly.com/appleton-ludych" target="_blank">Calendly</a></li>
 							</ul>
 						</div>
 					<?php endif; ?>
