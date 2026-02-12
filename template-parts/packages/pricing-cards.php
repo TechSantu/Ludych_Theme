@@ -16,7 +16,7 @@ $packages = $acf_ready ? get_field( 'packages_pricing_packages', $post_id ) : ar
 if ( empty( $packages ) ) {
 	$packages = array(
 		array(
-			'name'         => 'Starter Growth',
+			'name'         => 'Starter Growth: Launch & Optimize',
 			'description'  => 'Ideal for small businesses, startups, local shops & first-time online advertisers.',
 			'price'        => '$800 – $1,500',
 			'price_label'  => '/ month typical',
@@ -36,7 +36,7 @@ if ( empty( $packages ) ) {
 			'button_url'   => home_url( '/contact-us/' ),
 		),
 		array(
-			'name'         => 'Advanced Performance',
+			'name'         => 'Advanced Performance: Accelerate Growth',
 			'description'  => 'Ideal for small–medium businesses ready to scale traffic and leads.',
 			'price'        => '$1,800 – $3,500',
 			'price_label'  => '/ month typical',
@@ -56,8 +56,8 @@ if ( empty( $packages ) ) {
 			'button_url'   => home_url( '/contact-us/' ),
 		),
 		array(
-			'name'         => 'Enterprise Booster',
-			'description'  => 'Ideal for established brands wanting deep optimization and multi-channel dominance.',
+			'name'         => 'Enterprise Brand Booster: Dominant Market Presence',
+			'description'  => 'Ideal for established brands wanting deep optimization, high traffic, and multi-channel dominance.',
 			'price'        => '$4,500 – $10,000+',
 			'price_label'  => '/ month typical',
 			'icon'         => 'fa-crown',
