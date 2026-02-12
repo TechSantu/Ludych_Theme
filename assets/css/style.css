@@ -3835,9 +3835,11 @@ footer.footer {
 }
 
 .lp-btn {
+	display: block;
+	width: 100%;
 	padding: 14px 24px;
 	border-radius: 8px;
-	font-weight: 600;
+	font-weight: 700;
 	text-align: center;
 	transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
 	text-transform: capitalize;
