@@ -18,19 +18,19 @@ if ( empty( $phone ) ) {
 if ( empty( $email ) ) {
 	$email = 'biz@ludych.com';
 }
-	if ( empty( $open_time ) ) {
-		$open_time = "Monday - Friday: 9AM to 5PM\nSaturday - Sunday: Closed";
-	}
-	
+if ( empty( $open_time ) ) {
+	$open_time = "Monday - Friday: 9AM to 5PM\nSaturday - Sunday: Closed";
+}
+
 	$subtitle           = get_theme_mod( 'ludych_contact_form_subtitle', 'Get In Touch' );
 	$title              = get_theme_mod( 'ludych_contact_form_title', 'Get Your <span>Free Quote</span> Today!' );
 	$recaptcha_enabled  = (bool) get_theme_mod( 'ludych_recaptcha_enabled', false );
 	$recaptcha_site_key = get_theme_mod( 'ludych_recaptcha_site_key', '' );
 	$redirect_url       = get_theme_mod( 'ludych_contact_redirect_url', '' );
-	if ( empty( $redirect_url ) ) {
-		$redirect_url = home_url( '/thank-you' );
-	}
-	?>
+if ( empty( $redirect_url ) ) {
+	$redirect_url = home_url( '/thank-you' );
+}
+?>
 	
 	<section class="contact-us">
 		<div class="custom-container">
