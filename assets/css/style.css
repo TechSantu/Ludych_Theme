@@ -2759,7 +2759,7 @@ footer.footer {
 }
 
 .cs-lists ul li .cs-tool-box figure img {
-	filter: grayscale(100%);
+	/* filter: grayscale(100%); */
 }
 
 .cs-lists ul li .cs-tool-box:hover figure img {
