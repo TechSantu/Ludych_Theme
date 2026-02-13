@@ -11,10 +11,17 @@ $post_id = get_the_ID();
 
 get_header();
 
+// Include Packages CSS
+echo '<link rel="stylesheet" href="' . get_template_directory_uri() . '/assets/css/packages.css">';
+
 get_template_part( 'template-parts/packages/hero' );
-get_template_part( 'template-parts/packages/intro' );
+get_template_part( 'template-parts/packages/process' );
+get_template_part( 'template-parts/packages/integrated-solutions' );
+get_template_part( 'template-parts/packages/services-grid' );
+get_template_part( 'template-parts/packages/stats' );
 get_template_part( 'template-parts/packages/pricing-cards' );
-get_template_part( 'template-parts/packages/comparison' );
+get_template_part( 'template-parts/packages/inclusions' );
 get_template_part( 'template-parts/packages/faq' );
+get_template_part( 'template-parts/packages/cta' );
 
 get_footer();

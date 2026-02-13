@@ -4,48 +4,81 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 global $post_id;
-
 $acf_ready = function_exists( 'get_field' ) && function_exists( 'acf' ) && is_object( acf() );
 
-$faq_kicker      = ( $acf_ready ? get_field( 'packages_faq_kicker', $post_id ) : '' ) ?: 'Common Queries';
-$faq_title       = ( $acf_ready ? get_field( 'packages_faq_title', $post_id ) : '' ) ?: 'Digital Marketing <br><span class="text-primary">Pricing FAQ 2026</span>';
-$faq_description = ( $acf_ready ? get_field( 'packages_faq_description', $post_id ) : '' ) ?: 'Clear answers to help you navigate your digital investment decisions with Ludych Technology.';
-
-$faqs = $acf_ready ? get_field( 'packages_faqs', $post_id ) : array();
+$faq_title = ( $acf_ready ? get_field( 'packages_faq_title', $post_id ) : '' ) ?: 'Frequently Asked Questions';
+$faqs      = $acf_ready ? get_field( 'packages_faqs', $post_id ) : array();
 
 if ( empty( $faqs ) ) {
 	$faqs = array(
 		array(
-			'question' => 'What is the average monthly cost of digital marketing in the USA?',
-			'answer'   => 'Starting from $1000 - depending on scope, services, and agency.',
+			'question' => 'How long does it take to see results from digital marketing?',
+			'answer'   => 'Results vary by strategy and industry. SEO typically takes 3-6 months for significant results, while PPC advertising can show immediate traffic.',
 		),
 		array(
-			'question' => 'Which digital marketing services offer the best ROI?',
-			'answer'   => 'SEO and content marketing offer high ROI over time. PPC delivers faster but costlier results.',
+			'question' => 'What\'s included in your marketing audit?',
+			'answer'   => 'Our comprehensive marketing audit includes website analysis, SEO performance review, competitor analysis, and existing campaign assessment.',
 		),
 		array(
-			'question' => 'Can I hire a digital marketing agency on a project basis?',
-			'answer'   => 'Yes. Project-based pricing is ideal for one-time campaigns, such as product launches or audits.',
+			'question' => 'Do you work with businesses in my industry?',
+			'answer'   => 'We have experience across virtually all industries including e-commerce, SaaS, healthcare, finance, education, and more.',
 		),
 		array(
-			'question' => 'How do I choose the right pricing model?',
-			'answer'   => 'Startups often prefer project-based or hybrid retainers. Performance-based works if you need ROI-based accountability.',
-		),
-		array(
-			'question' => 'Is digital marketing expensive for small businesses?',
-			'answer'   => 'Not if planned well. Start with essentials like SEO and social media. Agencies like Ludych Technology offer entry-level plans.',
-		),
-		array(
-			'question' => 'Does pricing vary by industry?',
-			'answer'   => 'Yes. Competitive sectors, such as real estate, finance, and e-commerce, often require higher ad spends and technical SEO.',
-		),
-		array(
-			'question' => 'How transparent is digital marketing agency pricing?',
-			'answer'   => 'Reputed agencies, such as Ludych Technology, share a detailed scope of work, performance KPIs, and monthly reports to ensure clarity.',
+			'question' => 'How do you measure marketing success?',
+			'answer'   => 'We track KPIs relevant to your business goals: website traffic, lead generation, conversion rates, and ROI.',
 		),
 	);
 }
+?>
 
+<section class="section-faq">
+	<div class="faq-container">
+		<h2 class="font-inria text-center section-title"><?php echo esc_html( $faq_title ); ?></h2>
+		<div class="faq-list">
+			<?php foreach ( $faqs as $i => $faq ) : ?>
+			<div class="faq-item <?php echo $i === 0 ? 'active' : ''; ?>">
+				<button class="faq-quest">
+					<?php echo esc_html( $faq['question'] ); ?>
+					<span class="faq-toggle"><?php echo $i === 0 ? '-' : '+'; ?></span>
+				</button>
+				<div class="faq-ans" style="<?php echo $i === 0 ? 'max-height: 300px; padding-bottom: 2rem;' : ''; ?>">
+					<p><?php echo esc_html( $faq['answer'] ); ?></p>
+				</div>
+			</div>
+			<?php endforeach; ?>
+		</div>
+	</div>
+</section>
+
+<script>
+// Inline JS for FAQ (or move to global js file)
+document.addEventListener('DOMContentLoaded', function() {
+	document.querySelectorAll('.faq-quest').forEach(button => {
+		button.addEventListener('click', () => {
+			const item = button.parentElement;
+			const isOpen = item.classList.contains('active');
+
+			// Close all others
+			document.querySelectorAll('.faq-item').forEach(i => {
+				i.classList.remove('active');
+				i.querySelector('.faq-toggle').textContent = '+';
+				i.querySelector('.faq-ans').style.maxHeight = null;
+				i.querySelector('.faq-ans').style.paddingBottom = null;
+			});
+
+			if (!isOpen) {
+				item.classList.add('active');
+				button.querySelector('.faq-toggle').textContent = '-';
+				const ans = item.querySelector('.faq-ans');
+				ans.style.maxHeight = ans.scrollHeight + "px";
+				ans.style.paddingBottom = "2rem";
+			}
+		});
+	});
+});
+</script>
+
+<?php
 $faq_schema = array(
 	'@context'   => 'https://schema.org',
 	'@type'      => 'FAQPage',
@@ -63,45 +96,7 @@ foreach ( $faqs as $faq ) {
 	);
 }
 ?>
-
-<section class="lp-faq-section py-5 bg-grey overflow-hidden">
-	<div class="custom-container">
-		<div class="row g-5">
-			<div class="col-lg-4">
-				<div class="faq-intro h-100 d-flex flex-column">
-					<h6 class="text-primary fw-bold text-uppercase ls-1"><?php echo esc_html( $faq_kicker ); ?></h6>
-					<h2 class="display-6 fw-bold mb-4"><?php echo wp_kses_post( $faq_title ); ?></h2>
-					<p class="text-muted mb-4"><?php echo esc_html( $faq_description ); ?></p>
-					<img src="<?php echo get_template_directory_uri(); ?>/assets/images/custom-icon-star.svg" alt="" class="mt-auto faq-deco-img opacity-25 animate-spin">
-				</div>
-			</div>
-			<div class="col-lg-8">
-				<div class="accordion modern-faq-accordion" id="lpFAQ">
-					<?php
-					foreach ( $faqs as $i => $faq ) :
-						$f_q = $faq['question'] ?: 'Question?';
-						$f_a = $faq['answer'] ?: 'Answer goes here.';
-						?>
-						<div class="accordion-item mb-3">
-							<h2 class="accordion-header">
-								<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#lp-faq-<?php echo $i; ?>">
-									<span class="faq-num me-3">0<?php echo $i + 1; ?></span> 
-									<?php echo esc_html( $f_q ); ?>
-								</button>
-							</h2>
-							<div id="lp-faq-<?php echo $i; ?>" class="accordion-collapse collapse" data-bs-parent="#lpFAQ">
-								<div class="accordion-body">
-									<?php echo esc_html( $f_a ); ?>
-								</div>
-							</div>
-						</div>
-					<?php endforeach; ?>
-				</div>
-			</div>
-		</div>
-	</div>
-</section>
-
 <script type="application/ld+json">
 <?php echo wp_json_encode( $faq_schema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT ); ?>
 </script>
+
