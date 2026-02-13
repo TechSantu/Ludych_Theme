@@ -48,10 +48,11 @@ if ( empty( $processes ) ) {
 <section class="section-process">
 	<div class="custom-container">
 		<div class="process-grid">
-			<?php foreach ( $processes as $process ) : 
+			<?php
+			foreach ( $processes as $process ) :
 				$icon = $process['icon'] ?? 'fa-circle';
 				$bg   = $process['bg_class'] ?? 'bg-light-teal';
-			?>
+				?>
 			<div class="process-item">
 				<div class="process-icon <?php echo esc_attr( $bg ); ?>">
 					<i class="fas <?php echo esc_attr( $icon ); ?> fa-lg"></i>

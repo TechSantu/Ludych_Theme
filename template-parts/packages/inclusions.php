@@ -10,10 +10,26 @@ $inclusions = $acf_ready ? get_field( 'packages_inclusions', $post_id ) : array(
 
 if ( empty( $inclusions ) ) {
 	$inclusions = array(
-		array( 'text' => 'Setup & Onboarding', 'color' => 'green', 'icon' => 'fa-play' ),
-		array( 'text' => '24/7 Support', 'color' => 'yellow', 'icon' => 'fa-headset' ),
-		array( 'text' => 'No Setup Fees', 'color' => 'orange', 'icon' => 'fa-ban' ),
-		array( 'text' => '30-Day Guarantee', 'color' => 'dark-orange', 'icon' => 'fa-shield-alt' ),
+		array(
+			'text'  => 'Setup & Onboarding',
+			'color' => 'green',
+			'icon'  => 'fa-play',
+		),
+		array(
+			'text'  => '24/7 Support',
+			'color' => 'yellow',
+			'icon'  => 'fa-headset',
+		),
+		array(
+			'text'  => 'No Setup Fees',
+			'color' => 'orange',
+			'icon'  => 'fa-ban',
+		),
+		array(
+			'text'  => '30-Day Guarantee',
+			'color' => 'dark-orange',
+			'icon'  => 'fa-shield-alt',
+		),
 	);
 }
 ?>

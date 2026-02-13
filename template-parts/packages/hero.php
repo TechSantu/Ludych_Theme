@@ -17,7 +17,7 @@ $hero_subtitle = ( $acf_ready ? get_field( 'packages_hero_subtitle', $post_id ) 
 $hero_btn_text = ( $acf_ready ? get_field( 'packages_hero_btn_text', $post_id ) : '' ) ?: 'Boost Your Marketing';
 $hero_btn_url  = ( $acf_ready ? get_field( 'packages_hero_btn_url', $post_id ) : '' ) ?: home_url( '/contact-us/' );
 
-// Hero background image logic from previous implementation is less relevant in the new design which uses a radial gradient, 
+// Hero background image logic from previous implementation is less relevant in the new design which uses a radial gradient,
 // but we can keep it as an overlay if needed, or ignore if strict design adherence.
 // The new design uses CSS background on .hero. We will stick to the new design's CSS.
 ?>

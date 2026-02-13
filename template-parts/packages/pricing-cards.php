@@ -15,46 +15,46 @@ $packages = $acf_ready ? get_field( 'packages_pricing_packages', $post_id ) : ar
 if ( empty( $packages ) ) {
 	$packages = array(
 		array(
-			'name'         => 'Marketing Starter',
-			'description'  => 'Essential multi-channel marketing for small businesses and startups.',
-			'price'        => '$400-700',
-			'price_label'  => '/month',
-			'is_featured'  => false,
-			'features'     => array(
+			'name'        => 'Marketing Starter',
+			'description' => 'Essential multi-channel marketing for small businesses and startups.',
+			'price'       => '$400-700',
+			'price_label' => '/month',
+			'is_featured' => false,
+			'features'    => array(
 				'SEO optimization (5 keywords)',
 				'PPC basics (Google Ads)',
 				'Social media basics',
-				'Monthly reporting'
+				'Monthly reporting',
 			),
-			'bg_class'     => 'cyan' // Helper for demo
+			'bg_class'    => 'cyan', // Helper for demo
 		),
 		array(
-			'name'         => 'Growth Bundle',
-			'description'  => 'Comprehensive marketing solution for growing businesses seeking scale.',
-			'price'        => '$800-1,200',
-			'price_label'  => '/month',
-			'is_featured'  => true,
-			'features'     => array(
+			'name'        => 'Growth Bundle',
+			'description' => 'Comprehensive marketing solution for growing businesses seeking scale.',
+			'price'       => '$800-1,200',
+			'price_label' => '/month',
+			'is_featured' => true,
+			'features'    => array(
 				'Full SEO optimization',
 				'Multi-platform PPC',
 				'Advanced automation',
-				'Content creation (4/mo)'
+				'Content creation (4/mo)',
 			),
-			'bg_class'     => 'orange'
+			'bg_class'    => 'orange',
 		),
 		array(
-			'name'         => 'Full Marketing',
-			'description'  => 'Complete marketing operations for established companies.',
-			'price'        => '$1,500-2,000',
-			'price_label'  => '/month',
-			'is_featured'  => false,
-			'features'     => array(
+			'name'        => 'Full Marketing',
+			'description' => 'Complete marketing operations for established companies.',
+			'price'       => '$1,500-2,000',
+			'price_label' => '/month',
+			'is_featured' => false,
+			'features'    => array(
 				'All marketing channels active',
 				'Cusom automation flows',
 				'Weekly strategy sessions',
-				'Dedicated manager'
+				'Dedicated manager',
 			),
-			'bg_class'     => 'cyan'
+			'bg_class'    => 'cyan',
 		),
 	);
 }
@@ -66,14 +66,17 @@ if ( empty( $packages ) ) {
 		<p class="section-subtitle"><?php echo esc_html( $pricing_subtitle ); ?></p>
 
 		<div class="package-grid">
-			<?php foreach ( $packages as $i => $package ) : 
+			<?php
+			foreach ( $packages as $i => $package ) :
 				$is_featured = isset( $package['is_featured'] ) && $package['is_featured'];
-				$class = 'package-card';
-				if ( $is_featured ) $class .= ' popular';
-				
+				$class       = 'package-card';
+				if ( $is_featured ) {
+					$class .= ' popular';
+				}
+
 				// Determine header color logic if not set in ACF
 				$bg_class = $package['bg_class'] ?? ( $is_featured ? 'orange' : 'cyan' );
-			?>
+				?>
 			<div class="<?php echo esc_attr( $class ); ?>">
 				<?php if ( $is_featured ) : ?>
 					<div class="popular-tag">Most Popular</div>
@@ -91,9 +94,11 @@ if ( empty( $packages ) ) {
 						$features = explode( "\n", $features );
 					}
 					foreach ( (array) $features as $feat ) :
-						$feat_text = is_array( $feat ) ? ($feat['feature'] ?? '') : $feat;
-						if ( empty( trim( $feat_text ) ) ) continue;
-					?>
+						$feat_text = is_array( $feat ) ? ( $feat['feature'] ?? '' ) : $feat;
+						if ( empty( trim( $feat_text ) ) ) {
+							continue;
+						}
+						?>
 					<li><span><i class="fas fa-check"></i></span> <?php echo wp_kses_post( $feat_text ); ?></li>
 					<?php endforeach; ?>
 				</ul>
@@ -109,14 +114,14 @@ if ( empty( $packages ) ) {
 // Schema Markup
 $offers_schema = array();
 foreach ( $packages as $package ) {
-	$price_value = preg_replace('/[^0-9.]/', '', $package['price'] ?? '0');
+	$price_value     = preg_replace('/[^0-9.]/', '', $package['price'] ?? '0');
 	$offers_schema[] = array(
-		'@type'              => 'Offer',
-		'name'               => $package['name'] ?? '',
-		'description'        => $package['description'] ?? '',
-		'price'              => $price_value,
-		'priceCurrency'      => 'USD',
-		'url'                => home_url('/contact-us/'),
+		'@type'         => 'Offer',
+		'name'          => $package['name'] ?? '',
+		'description'   => $package['description'] ?? '',
+		'price'         => $price_value,
+		'priceCurrency' => 'USD',
+		'url'           => home_url('/contact-us/'),
 	);
 }
 

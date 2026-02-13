@@ -10,10 +10,22 @@ $stats = $acf_ready ? get_field( 'packages_stats', $post_id ) : array();
 
 if ( empty( $stats ) ) {
 	$stats = array(
-		array( 'val' => '$50M+', 'lbl' => 'Revenue Generated' ),
-		array( 'val' => '2M+', 'lbl' => 'Leads Delivered' ),
-		array( 'val' => '150+', 'lbl' => 'Happy Clients' ),
-		array( 'val' => '5+', 'lbl' => 'Years Experience' ),
+		array(
+			'val' => '$50M+',
+			'lbl' => 'Revenue Generated',
+		),
+		array(
+			'val' => '2M+',
+			'lbl' => 'Leads Delivered',
+		),
+		array(
+			'val' => '150+',
+			'lbl' => 'Happy Clients',
+		),
+		array(
+			'val' => '5+',
+			'lbl' => 'Years Experience',
+		),
 	);
 }
 ?>
@@ -22,10 +34,10 @@ if ( empty( $stats ) ) {
 	<div class="custom-container">
 		<div class="results-card">
 			<div class="results-grid">
-				<?php 
+				<?php
 				$count = count( $stats );
-				$i = 0;
-				foreach ( $stats as $stat ) : 
+				$i     = 0;
+				foreach ( $stats as $stat ) :
 					$border_class = '';
 					if ( $i < $count - 1 ) {
 						// Add border logic if needed, simplistically implemented via CSS classes in original design
@@ -35,16 +47,23 @@ if ( empty( $stats ) ) {
 					}
 					// Mapping classes from original HTML roughly
 					$class = 'result-stat';
-					if ( $i == 1 ) $class .= ' border-x'; // roughly middle
-					if ( $i == 2 ) $class .= ' border-right'; 
-					
+					if ( $i == 1 ) {
+						$class .= ' border-x'; // roughly middle
+					}
+					if ( $i == 2 ) {
+						$class .= ' border-right';
+					}
+
 					// Better approach: use CSS nth-child in the new CSS file.
-				?>
+					?>
 				<div class="result-stat">
 					<h2><?php echo esc_html( $stat['val'] ); ?></h2>
 					<p><?php echo esc_html( $stat['lbl'] ); ?></p>
 				</div>
-				<?php $i++; endforeach; ?>
+					<?php
+					++$i;
+endforeach;
+				?>
 			</div>
 		</div>
 	</div>
