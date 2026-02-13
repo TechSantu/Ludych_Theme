@@ -811,7 +811,7 @@ header {
 }
 
 .inclusions-footer-box {
-	margin-top: 2rem;
+	margin-top: 2.25rem;
 	padding-top: 1.25rem;
 	border-top: 1px dashed #d6dbe6;
 }
@@ -1060,6 +1060,12 @@ header {
 	.faq-quest {
 		padding: 1.25rem 0;
 		font-size: 1.02rem;
+	}
+
+	.faq-container,
+	.faq-list {
+		padding-left: 8px;
+		padding-right: 8px;
 	}
 }
 
