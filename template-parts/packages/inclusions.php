@@ -71,10 +71,12 @@ if ( empty( $inclusions ) ) {
 				</div>
 				<?php endforeach; ?>
 			</div>
+			<div class="inclusions-footer-box">
+				<p class="inclusion-footer-text">Ready to get started? Choose a package above or contact us for a custom marketing solution.</p>
+				<a class="globalBtnDark" href="<?php echo esc_url( home_url('/contact-us/') ); ?>">
+					<span>Get Started Today <i class="fa-solid fa-arrow-right-long"></i></span>
+				</a>
+			</div>
 		</div>
-		<p class="inclusion-footer-text">Ready to get started? Choose a package above or contact us for a custom marketing solution.</p>
-		<a class="globalBtnDark" href="<?php echo esc_url( home_url('/contact-us/') ); ?>">
-			<span>Get Started Today <i class="fa-solid fa-arrow-right-long"></i></span>
-		</a>
 	</div>
 </section>

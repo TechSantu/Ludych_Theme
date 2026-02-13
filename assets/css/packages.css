@@ -103,6 +103,12 @@ header {
 	color: var(--button-border);
 }
 
+.info-btn {
+	font-weight: 500;
+	letter-spacing: 0;
+	text-transform: none;
+}
+
 .btn-black-large {
 	background: var(--secondary-light);
 	color: #fff;
@@ -351,6 +357,13 @@ header {
 	width: 100%;
 	max-width: 900px;
 	margin: 0 auto;
+}
+
+.section-services .global-header .min-title,
+.section-packages .global-header .min-title,
+.section-faq .global-header .min-title,
+.section-inclusions .global-header .min-title {
+	margin-top: -28px !important;
 }
 
 .section-subtitle {
@@ -791,13 +804,19 @@ header {
 }
 
 .inclusion-footer-text {
-	margin: 0 auto 2rem;
+	margin: 0 auto 1.5rem;
 	color: #4f5d75;
 	text-align: center;
 	max-width: 600px;
 }
 
-.section-inclusions .globalBtnDark {
+.inclusions-footer-box {
+	margin-top: 2rem;
+	padding-top: 1.25rem;
+	border-top: 1px dashed #d6dbe6;
+}
+
+.inclusions-footer-box .globalBtnDark {
 	margin-top: 4px;
 }
 
@@ -913,6 +932,57 @@ header {
 	}
 }
 
+@media (max-width: 991px) {
+	.packages-lp-intro .global-header,
+	.section-services .global-header,
+	.section-packages .global-header,
+	.section-faq .global-header,
+	.section-inclusions .global-header {
+		max-width: 100%;
+	}
+
+	.section-services .global-header h2,
+	.section-packages .global-header h2,
+	.section-faq .global-header h2,
+	.section-inclusions .global-header h2,
+	.packages-lp-intro .global-header h2 {
+		font-size: 78px;
+	}
+
+	.section-services .global-header h5,
+	.section-packages .global-header h5,
+	.section-faq .global-header h5,
+	.section-inclusions .global-header h5,
+	.packages-lp-intro .global-header h5 {
+		font-size: 34px;
+		line-height: 1.25;
+	}
+
+	.section-services .global-header .min-title,
+	.section-packages .global-header .min-title,
+	.section-faq .global-header .min-title,
+	.section-inclusions .global-header .min-title {
+		margin-top: -16px !important;
+	}
+
+	.info-grid {
+		gap: 2rem;
+		padding: 0;
+	}
+
+	.stat-badge {
+		position: static;
+		margin-top: 1rem;
+		right: auto;
+		bottom: auto;
+		display: inline-block;
+	}
+
+	.gradient-banner h2 {
+		font-size: 2.4rem;
+	}
+}
+
 @media (max-width: 768px) {
 	.hero {
 		height: auto;
@@ -981,6 +1051,58 @@ header {
 	.gradient-banner {
 		padding: 2.5rem 1.5rem;
 		border-radius: 16px;
+	}
+
+	.gradient-banner h2 {
+		font-size: 2rem;
+	}
+
+	.faq-quest {
+		padding: 1.25rem 0;
+		font-size: 1.02rem;
+	}
+}
+
+@media (max-width: 575px) {
+	.section-services .global-header h2,
+	.section-packages .global-header h2,
+	.section-faq .global-header h2,
+	.section-inclusions .global-header h2,
+	.packages-lp-intro .global-header h2 {
+		font-size: 58px;
+	}
+
+	.section-services .global-header h5,
+	.section-packages .global-header h5,
+	.section-faq .global-header h5,
+	.section-inclusions .global-header h5,
+	.packages-lp-intro .global-header h5 {
+		font-size: 27px;
+	}
+
+	.inclusions-grid,
+	.results-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.inclusions-card {
+		padding: 1.5rem 1rem;
+	}
+
+	.gradient-banner {
+		padding: 1.8rem 1rem;
+	}
+
+	.gradient-banner h2 {
+		font-size: 1.65rem;
+	}
+
+	.info-feature {
+		gap: 1rem;
+	}
+
+	.feature-text h3 {
+		font-size: 1.25rem;
 	}
 }
 
