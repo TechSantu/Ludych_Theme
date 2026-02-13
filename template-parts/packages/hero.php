@@ -17,7 +17,7 @@ $hero_title    = ( $acf_ready ? get_field( 'packages_hero_title', $post_id ) : '
 $hero_subtitle = ( $acf_ready ? get_field( 'packages_hero_subtitle', $post_id ) : '' ) ?: 'Accelerate your business growth with data-driven marketing strategies that deliver measurable ROI and sustainable success across all digital channels.';
 $hero_btn_text = ( $acf_ready ? get_field( 'packages_hero_btn_text', $post_id ) : '' ) ?: 'Boost Your Marketing';
 $hero_btn_url  = ( $acf_ready ? get_field( 'packages_hero_btn_url', $post_id ) : '' ) ?: home_url( '/contact-us/' );
-$hero_eyebrow = ( $acf_ready ? get_field( 'packages_hero_eyebrow', $post_id ) : '' ) ?: 'Pricing & Packages';
+$hero_eyebrow  = ( $acf_ready ? get_field( 'packages_hero_eyebrow', $post_id ) : '' ) ?: 'Pricing & Packages';
 ?>
 
 <section class="inner-banner-wrap with-overlay text-center" style="background-image: url('<?php echo esc_url( $hero_bg ); ?>');">
