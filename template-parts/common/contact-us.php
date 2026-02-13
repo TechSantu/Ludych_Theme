@@ -4,22 +4,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 global $wp;
 
-$address   = get_field( 'contact_address', 'option' );
-$phone     = get_field( 'contact_phone', 'option' );
-$email     = get_field( 'contact_email', 'option' );
-$open_time = get_field( 'contact_open_time', 'option' );
+$address   = get_theme_mod( 'ludych_contact_address', get_field( 'contact_address', 'option' ) );
+$phone     = get_theme_mod( 'ludych_contact_phone', get_field( 'contact_phone', 'option' ) );
+$email     = get_theme_mod( 'ludych_contact_email', get_field( 'contact_email', 'option' ) );
+$open_time = get_theme_mod( 'ludych_contact_open_time', get_field( 'contact_open_time', 'option' ) );
 
-if ( ! $address ) {
+if ( empty( $address ) ) {
 	$address = '1820 E Ray Road, STE A110, Chandler, Arizona 85225';
 }
-if ( ! $phone ) {
+if ( empty( $phone ) ) {
 	$phone = '520-660-8791';
 }
-if ( ! $email ) {
+if ( empty( $email ) ) {
 	$email = 'biz@ludych.com';
 }
-if ( ! $open_time ) {
-	$open_time = 'Monday - Friday: 10:00 - 20:00';
+if ( empty( $open_time ) ) {
+	$open_time = 'Monday - Friday: 10:00 - 20:00<br>Friday - 9AM to 5PM<br>Saturday - Sunday - Closed';
 }
 
 $subtitle           = get_theme_mod( 'ludych_contact_form_subtitle', 'Get In Touch' );
@@ -62,7 +62,7 @@ if ( empty( $redirect_url ) ) {
 					<?php if ( $open_time ) : ?>
 						<div class="cntc-box">
 							<h4>Open Time</h4>
-							<p><?php echo esc_html( $open_time ); ?></p>
+							<p><?php echo wp_kses_post( $open_time ); ?></p>
 						</div>
 					<?php endif; ?>
 
