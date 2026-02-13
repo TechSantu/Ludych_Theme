@@ -37,7 +37,7 @@ if ( empty( $stats ) ) {
 			<?php
 			foreach ( $stats as $i => $stat ) :
 				$class = 'result-stat';
-				// Match index5.html classes: 
+				// Match index5.html classes:
 				// 2nd item (index 1) has 'border-x'
 				// 3rd item (index 2) has 'border-right'
 				if ( $i === 1 ) {

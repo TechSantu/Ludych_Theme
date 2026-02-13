@@ -54,9 +54,9 @@ if ( empty( $processes ) ) {
 				?>
 			<div class="process-item">
 				<div class="process-icon <?php echo esc_attr( $bg ); ?>">
-					<?php 
+					<?php
 					if ( isset( $process['svg'] ) && ! empty( $process['svg'] ) ) {
-						echo $process['svg']; 
+						echo $process['svg'];
 					} else {
 						$icon = $process['icon'] ?? 'fa-circle';
 						echo '<i class="fas ' . esc_attr( $icon ) . ' fa-lg"></i>';

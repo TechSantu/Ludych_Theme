@@ -42,7 +42,7 @@ if ( empty( $inclusions ) ) {
 				<?php foreach ( $inclusions as $inc ) : ?>
 				<div class="inclusion-item">
 					<div class="inclusion-icon <?php echo esc_attr( $inc['color'] ?? 'green' ); ?>">
-						<?php 
+						<?php
 						if ( isset( $inc['svg'] ) && ! empty( $inc['svg'] ) ) {
 							echo $inc['svg'];
 						} else {

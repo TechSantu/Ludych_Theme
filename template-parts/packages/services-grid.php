@@ -68,7 +68,7 @@ if ( empty( $services ) ) {
 				?>
 			<div class="service-card text-left">
 				<div class="service-icon-box small-cyan">
-					<?php 
+					<?php
 					if ( isset( $srv['svg'] ) && ! empty( $srv['svg'] ) ) {
 						echo $srv['svg']; // Output raw SVG
 					} else {

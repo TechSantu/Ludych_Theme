@@ -53,7 +53,7 @@ if ( empty( $features ) ) {
 				<?php foreach ( $features as $feature ) : ?>
 				<div class="info-feature">
 					<div class="feature-icon-circle orange">
-						<?php 
+						<?php
 						if ( isset( $feature['svg'] ) && ! empty( $feature['svg'] ) ) {
 							echo $feature['svg'];
 						} else {
