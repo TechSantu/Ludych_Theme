@@ -19,6 +19,7 @@ wp_enqueue_style(
 get_header();
 
 get_template_part( 'template-parts/packages/hero' );
+get_template_part( 'template-parts/packages/intro' );
 get_template_part( 'template-parts/packages/process' );
 get_template_part( 'template-parts/packages/integrated-solutions' );
 get_template_part( 'template-parts/packages/services-grid' );

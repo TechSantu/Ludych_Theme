@@ -290,6 +290,37 @@ header {
 	line-height: 1.1;
 }
 
+.section-services .global-header h2,
+.section-packages .global-header h2,
+.section-faq .global-header h2,
+.section-inclusions .global-header h2,
+.packages-lp-intro .global-header h2 {
+	-webkit-text-fill-color: #f6f6f6;
+}
+
+.section-results .global-header h2,
+.section-gradient-cta .global-header h2 {
+	-webkit-text-fill-color: #ffffff;
+}
+
+.section-services .global-header h5,
+.section-packages .global-header h5,
+.section-faq .global-header h5,
+.section-inclusions .global-header h5,
+.packages-lp-intro .global-header h5 {
+	color: var(--secondary-light);
+}
+
+.pkg-intro-header {
+	margin-bottom: 20px;
+}
+
+.pkg-intro-header p {
+	width: 100%;
+	text-align: left;
+	color: #5f6b82;
+}
+
 .section-subtitle {
 	font-size: 1.1rem;
 	color: #4f5d75;
