@@ -1400,55 +1400,6 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				'type'  => 'url',
 			),
 
-			// Tab: Intro
-			array(
-				'key'   => 'field_pkg_tab_intro',
-				'label' => 'Intro Section',
-				'type'  => 'tab',
-			),
-			array(
-				'key'   => 'field_packages_intro_badge',
-				'label' => 'Intro Badge',
-				'name'  => 'packages_intro_badge',
-				'type'  => 'text',
-			),
-			array(
-				'key'   => 'field_packages_intro_title',
-				'label' => 'Intro Title',
-				'name'  => 'packages_intro_title',
-				'type'  => 'text',
-			),
-			array(
-				'key'   => 'field_packages_intro_description',
-				'label' => 'Intro Description',
-				'name'  => 'packages_intro_description',
-				'type'  => 'wysiwyg',
-			),
-			array(
-				'key'   => 'field_packages_stat_1_number',
-				'label' => 'Stat 1 Number',
-				'name'  => 'packages_stat_1_number',
-				'type'  => 'text',
-			),
-			array(
-				'key'   => 'field_packages_stat_1_label',
-				'label' => 'Stat 1 Label',
-				'name'  => 'packages_stat_1_label',
-				'type'  => 'text',
-			),
-			array(
-				'key'   => 'field_packages_stat_2_number',
-				'label' => 'Stat 2 Number',
-				'name'  => 'packages_stat_2_number',
-				'type'  => 'text',
-			),
-			array(
-				'key'   => 'field_packages_stat_2_label',
-				'label' => 'Stat 2 Label',
-				'name'  => 'packages_stat_2_label',
-				'type'  => 'text',
-			),
-
 			// Tab: Info Section
 			array(
 				'key'   => 'field_pkg_tab_info',
