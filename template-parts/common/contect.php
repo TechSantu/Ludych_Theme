@@ -7,7 +7,7 @@ global $post_id, $wp;
 $address            = get_theme_mod( 'ludych_contact_address', '1820 E Ray Road, STE A110, Chandler, Arizona 85225' );
 $phone              = get_theme_mod( 'ludych_contact_phone', '520-660-8791' );
 $email              = get_theme_mod( 'ludych_contact_email', 'biz@ludych.com' );
-$open_time          = get_theme_mod( 'ludych_contact_open_time', 'Monday - Friday: 10:00 - 20:00' );
+$open_time          = get_theme_mod( 'ludych_contact_open_time', "Monday - Friday: 9AM to 5PM\nSaturday - Sunday: Closed" );
 $subtitle           = get_theme_mod( 'ludych_contact_form_subtitle', 'Get In Touch' );
 $title              = get_theme_mod( 'ludych_contact_form_title', 'Get Your <span>Free Quote</span> Today!' );
 $recaptcha_enabled  = (bool) get_theme_mod( 'ludych_recaptcha_enabled', false );
@@ -42,7 +42,7 @@ $recaptcha_site_key = get_theme_mod( 'ludych_recaptcha_site_key', '' );
 						<?php if ( $open_time ) : ?>
 						<div class="cntc-box">
 							<h4>Open Time</h4>
-							<p><?php echo ( $open_time ); ?></p>
+							<p><?php echo nl2br( esc_html( $open_time ) ); ?></p>
 						</div>
 						<?php endif; ?>
 

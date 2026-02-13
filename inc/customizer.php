@@ -443,8 +443,8 @@ function ludych_customize_register( $wp_customize ) {
 	$wp_customize->add_setting(
 		'ludych_contact_open_time',
 		array(
-			'default'           => 'Monday - Friday: 10:00 - 20:00',
-			'sanitize_callback' => 'sanitize_text_field',
+			'default'           => "Monday - Friday: 9AM to 5PM\nSaturday - Sunday: Closed",
+			'sanitize_callback' => 'sanitize_textarea_field',
 			'transport'         => 'refresh',
 		)
 	);
@@ -453,7 +453,7 @@ function ludych_customize_register( $wp_customize ) {
 		array(
 			'label'   => __( 'Opening Hours', 'ludych-theme' ),
 			'section' => 'ludych_contact_section',
-			'type'    => 'text',
+			'type'    => 'textarea',
 		)
 	);
 
