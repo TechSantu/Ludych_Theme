@@ -67,7 +67,7 @@ if ( empty( $inclusions ) ) {
 						}
 						?>
 					</div>
-					<span><?php echo esc_html( $inc['text'] ); ?></span>
+					<span class="inclusion-label"><?php echo esc_html( $inc['text'] ); ?></span>
 				</div>
 				<?php endforeach; ?>
 			</div>
