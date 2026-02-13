@@ -146,7 +146,7 @@ if ( empty( $redirect_url ) ) {
 									</select>
 								</div>
 							</div>
-							<div class="col-12">
+							<div class="col-lg-6">
 								<div class="form-group">
 									<label>Project Details *</label>
 									<textarea name="message" class="form-control" placeholder="Write your message..." minlength="10" required></textarea>

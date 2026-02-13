@@ -76,7 +76,7 @@ $process_step_col_class = $process_steps_map[ $process_steps_count ] ?? 'col-xl-
 						</defs>
 					</svg>
 				</div>
-				<h6><?php echo esc_html( $process_subtitle ); ?></h6>
+				<h6><?php //echo esc_html( $process_subtitle ); ?>What are the Arizona Digital Marketing Services offered by Ludych?</h6>
 			</div>
 			<h5><?php echo wp_kses_post( $process_title ); ?></h5>
 		</div>
