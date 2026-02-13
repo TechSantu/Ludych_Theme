@@ -1373,6 +1373,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				'label' => 'Hero Title',
 				'name'  => 'packages_hero_title',
 				'type'  => 'text',
+				'default_value' => 'Digital Marketing That Drives Results',
 			),
 			array(
 				'key'   => 'field_packages_hero_subtitle',
@@ -1380,24 +1381,28 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				'name'  => 'packages_hero_subtitle',
 				'type'  => 'textarea',
 				'rows'  => 3,
+				'default_value' => 'Accelerate your business growth with data-driven marketing strategies that deliver measurable ROI and sustainable success across all digital channels.',
 			),
 			array(
 				'key'   => 'field_packages_hero_eyebrow',
 				'label' => 'Hero Eyebrow',
 				'name'  => 'packages_hero_eyebrow',
 				'type'  => 'text',
+				'default_value' => 'Pricing & Packages',
 			),
 			array(
 				'key'   => 'field_packages_hero_btn_text',
 				'label' => 'Hero Button Text',
 				'name'  => 'packages_hero_btn_text',
 				'type'  => 'text',
+				'default_value' => 'Boost Your Marketing',
 			),
 			array(
 				'key'   => 'field_packages_hero_btn_url',
 				'label' => 'Hero Button URL',
 				'name'  => 'packages_hero_btn_url',
 				'type'  => 'url',
+				'default_value' => '/contact-us/',
 			),
 
 			// Tab: Info Section
@@ -1418,24 +1423,28 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				'label' => 'Info Stat Value',
 				'name'  => 'packages_info_stat_val',
 				'type'  => 'text',
+				'default_value' => '$1.8M',
 			),
 			array(
 				'key'   => 'field_packages_info_stat_lbl',
 				'label' => 'Info Stat Label',
 				'name'  => 'packages_info_stat_lbl',
 				'type'  => 'text',
+				'default_value' => 'Customer Acquisition Cost Ratio',
 			),
 			array(
 				'key'   => 'field_packages_info_btn_text',
 				'label' => 'Info Button Text',
 				'name'  => 'packages_info_btn_text',
 				'type'  => 'text',
+				'default_value' => 'LET\'S WORK TOGETHER',
 			),
 			array(
 				'key'   => 'field_packages_info_btn_url',
 				'label' => 'Info Button URL',
 				'name'  => 'packages_info_btn_url',
 				'type'  => 'url',
+				'default_value' => '/contact-us/',
 			),
 			array(
 				'key'        => 'field_packages_info_features',
@@ -1484,12 +1493,14 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				'label' => 'Services Heading',
 				'name'  => 'packages_services_heading',
 				'type'  => 'text',
+				'default_value' => 'Services',
 			),
 			array(
 				'key'   => 'field_packages_services_title',
 				'label' => 'Services Title',
 				'name'  => 'packages_services_title',
 				'type'  => 'text',
+				'default_value' => 'Comprehensive Marketing Services',
 			),
 			array(
 				'key'   => 'field_packages_services_subtitle',
@@ -1497,6 +1508,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				'name'  => 'packages_services_subtitle',
 				'type'  => 'textarea',
 				'rows'  => 2,
+				'default_value' => 'From strategy to execution, we provide end-to-end digital marketing solutions that drive growth and deliver measurable results.',
 			),
 			array(
 				'key'        => 'field_packages_services_list',
@@ -1552,18 +1564,21 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				'label' => 'Results Heading',
 				'name'  => 'packages_stats_heading',
 				'type'  => 'text',
+				'default_value' => 'Results',
 			),
 			array(
 				'key'   => 'field_packages_stats_kicker',
 				'label' => 'Results Kicker',
 				'name'  => 'packages_stats_kicker',
 				'type'  => 'text',
+				'default_value' => 'Performance',
 			),
 			array(
 				'key'   => 'field_packages_stats_title',
 				'label' => 'Results Title',
 				'name'  => 'packages_stats_title',
 				'type'  => 'text',
+				'default_value' => 'Proven Results That Speak for Themselves',
 			),
 			array(
 				'key'   => 'field_packages_stats_subtitle',
@@ -1571,6 +1586,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				'name'  => 'packages_stats_subtitle',
 				'type'  => 'textarea',
 				'rows'  => 2,
+				'default_value' => 'Our data-driven approach consistently delivers exceptional results for businesses across all industries.',
 			),
 			array(
 				'key'        => 'field_packages_stats',
@@ -1605,18 +1621,21 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				'label' => 'Inclusions Heading',
 				'name'  => 'packages_inclusions_heading',
 				'type'  => 'text',
+				'default_value' => 'Included',
 			),
 			array(
 				'key'   => 'field_packages_inclusions_kicker',
 				'label' => 'Inclusions Kicker',
 				'name'  => 'packages_inclusions_kicker',
 				'type'  => 'text',
+				'default_value' => 'Plan Benefits',
 			),
 			array(
 				'key'   => 'field_packages_inclusions_title',
 				'label' => 'Inclusions Title',
 				'name'  => 'packages_inclusions_title',
 				'type'  => 'text',
+				'default_value' => 'All Plans Include',
 			),
 			array(
 				'key'        => 'field_packages_inclusions',
@@ -1658,18 +1677,21 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				'name'  => 'packages_inclusions_footer_text',
 				'type'  => 'textarea',
 				'rows'  => 2,
+				'default_value' => 'Ready to get started? Choose a package above or contact us for a custom marketing solution.',
 			),
 			array(
 				'key'   => 'field_packages_inclusions_button_text',
 				'label' => 'Inclusions Button Text',
 				'name'  => 'packages_inclusions_button_text',
 				'type'  => 'text',
+				'default_value' => 'Get Started Today',
 			),
 			array(
 				'key'   => 'field_packages_inclusions_button_url',
 				'label' => 'Inclusions Button URL',
 				'name'  => 'packages_inclusions_button_url',
 				'type'  => 'url',
+				'default_value' => '/contact-us/',
 			),
 
 			// Tab: Pricing Cards
@@ -1683,18 +1705,21 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				'label' => 'Pricing Title',
 				'name'  => 'packages_pricing_title',
 				'type'  => 'text',
+				'default_value' => 'Website Packages',
 			),
 			array(
 				'key'   => 'field_packages_pricing_subtitle',
 				'label' => 'Pricing Subtitle',
 				'name'  => 'packages_pricing_subtitle',
 				'type'  => 'text',
+				'default_value' => 'Keep in mind that these are general guidelines and pricing can vary widely depending on the specific company and the level of service provided. It\'s important to get detailed pricing information for each service and that is why we offer a free digital marketing consultation followed by detailed quotations with breakdowns for each of our digital marketing services. Actual Ludych pricing should be customized based on deliverables, goals, and scope.',
 			),
 			array(
 				'key'   => 'field_packages_pricing_heading',
 				'label' => 'Pricing Heading',
 				'name'  => 'packages_pricing_heading',
 				'type'  => 'text',
+				'default_value' => 'Pricing',
 			),
 			array(
 				'key'        => 'field_packages_pricing_packages',
@@ -1769,6 +1794,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				'label' => 'Standalone Section Title',
 				'name'  => 'packages_standalone_title',
 				'type'  => 'text',
+				'default_value' => 'Marketing Starter Services',
 			),
 			array(
 				'key'   => 'field_packages_standalone_description',
@@ -1776,6 +1802,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				'name'  => 'packages_standalone_description',
 				'type'  => 'textarea',
 				'rows'  => 2,
+				'default_value' => 'Start with one focused service and scale as your business grows.',
 			),
 			array(
 				'key'        => 'field_packages_standalone_packages',
@@ -1856,6 +1883,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				'label' => 'Development Section Title',
 				'name'  => 'packages_development_title',
 				'type'  => 'text',
+				'default_value' => 'Development Packages',
 			),
 			array(
 				'key'   => 'field_packages_development_description',
@@ -1863,6 +1891,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				'name'  => 'packages_development_description',
 				'type'  => 'textarea',
 				'rows'  => 2,
+				'default_value' => 'Product-ready development bundles for websites, stores, and custom applications with scalable delivery.',
 			),
 			array(
 				'key'        => 'field_packages_development_packages',
@@ -1998,6 +2027,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				'label' => 'FAQ Title',
 				'name'  => 'packages_faq_title',
 				'type'  => 'text',
+				'default_value' => 'FAQs: Digital Marketing Pricing 2026',
 			),
 			array(
 				'key'        => 'field_packages_faqs',
@@ -2033,6 +2063,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				'label' => 'CTA Title',
 				'name'  => 'packages_cta_title',
 				'type'  => 'text',
+				'default_value' => 'Still Have Questions?',
 			),
 			array(
 				'key'   => 'field_packages_cta_description',
@@ -2040,18 +2071,21 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				'name'  => 'packages_cta_description',
 				'type'  => 'textarea',
 				'rows'  => 2,
+				'default_value' => 'Our marketing experts are here to help. Schedule a free consultation to discuss your specific needs and get personalized recommendations.',
 			),
 			array(
 				'key'   => 'field_packages_cta_button_text',
 				'label' => 'CTA Button Text',
 				'name'  => 'packages_cta_button_text',
 				'type'  => 'text',
+				'default_value' => 'Schedule Free Consultation',
 			),
 			array(
 				'key'   => 'field_packages_cta_button_url',
 				'label' => 'CTA Button URL',
 				'name'  => 'packages_cta_button_url',
 				'type'  => 'url',
+				'default_value' => '/contact-us/',
 			),
 		),
 		'location'              => array(
