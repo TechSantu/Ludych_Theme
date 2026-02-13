@@ -6,26 +6,38 @@ if ( ! defined( 'ABSPATH' ) ) {
 global $post_id;
 $acf_ready = function_exists( 'get_field' ) && function_exists( 'acf' ) && is_object( acf() );
 
-$faq_title = ( $acf_ready ? get_field( 'packages_faq_title', $post_id ) : '' ) ?: 'Frequently Asked Questions';
+$faq_title = ( $acf_ready ? get_field( 'packages_faq_title', $post_id ) : '' ) ?: 'FAQs: Digital Marketing Pricing 2026';
 $faqs      = $acf_ready ? get_field( 'packages_faqs', $post_id ) : array();
 
 if ( empty( $faqs ) ) {
 	$faqs = array(
 		array(
-			'question' => 'How long does it take to see results from digital marketing?',
-			'answer'   => 'Results vary by strategy and industry. SEO typically takes 3-6 months for significant results, while PPC advertising can show immediate traffic.',
+			'question' => 'What is the average monthly cost of digital marketing in the USA?',
+			'answer'   => 'Starting from $1000 - depending on scope, services, and agency.',
 		),
 		array(
-			'question' => 'What\'s included in your marketing audit?',
-			'answer'   => 'Our comprehensive marketing audit includes website analysis, SEO performance review, competitor analysis, and existing campaign assessment.',
+			'question' => 'Which digital marketing services offer the best ROI?',
+			'answer'   => 'SEO and content marketing offer high ROI over time. PPC delivers faster but costlier results.',
 		),
 		array(
-			'question' => 'Do you work with businesses in my industry?',
-			'answer'   => 'We have experience across virtually all industries including e-commerce, SaaS, healthcare, finance, education, and more.',
+			'question' => 'Can I hire a digital marketing agency on a project basis?',
+			'answer'   => 'Yes. Project-based pricing is ideal for one-time campaigns, such as product launches or audits.',
 		),
 		array(
-			'question' => 'How do you measure marketing success?',
-			'answer'   => 'We track KPIs relevant to your business goals: website traffic, lead generation, conversion rates, and ROI.',
+			'question' => 'How do I choose the right pricing model?',
+			'answer'   => 'Startups often prefer project-based or hybrid retainers. Performance-based works if you need ROI-based accountability.',
+		),
+		array(
+			'question' => 'Is digital marketing expensive for small businesses?',
+			'answer'   => 'Not if planned well. Start with essentials like SEO and social media. Agencies like Ludych Technology offer entry-level plans.',
+		),
+		array(
+			'question' => 'Does pricing vary by industry?',
+			'answer'   => 'Yes. Competitive sectors, such as real estate, finance, and e-commerce, often require higher ad spends and technical SEO.',
+		),
+		array(
+			'question' => 'How transparent is digital marketing agency pricing?',
+			'answer'   => 'Reputed agencies, such as Ludych Technology, share a detailed scope of work, performance KPIs, and monthly reports to ensure clarity.',
 		),
 	);
 }

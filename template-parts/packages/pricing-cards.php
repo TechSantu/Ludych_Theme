@@ -7,8 +7,8 @@ global $post_id;
 
 $acf_ready = function_exists( 'get_field' ) && function_exists( 'acf' ) && is_object( acf() );
 
-$pricing_title    = ( $acf_ready ? get_field( 'packages_pricing_title', $post_id ) : '' ) ?: 'Marketing Combo Packages';
-$pricing_subtitle = ( $acf_ready ? get_field( 'packages_pricing_subtitle', $post_id ) : '' ) ?: 'Integrated multi-channel marketing solutions designed to grow your business. Each package builds on the previous tier with additional channels and advanced features.';
+$pricing_title    = ( $acf_ready ? get_field( 'packages_pricing_title', $post_id ) : '' ) ?: 'Website Packages';
+$pricing_subtitle = ( $acf_ready ? get_field( 'packages_pricing_subtitle', $post_id ) : '' ) ?: 'Keep in mind that these are general guidelines and pricing can vary widely depending on the specific company and the level of service provided. It\'s important to get detailed pricing information for each service and that is why we offer a free digital marketing consultation followed by detailed quotations with breakdowns for each of our digital marketing services. Actual Ludych pricing should be customized based on deliverables, goals, and scope.';
 $pricing_heading  = ( $acf_ready ? get_field( 'packages_pricing_heading', $post_id ) : '' ) ?: 'Pricing';
 
 $packages = $acf_ready ? get_field( 'packages_pricing_packages', $post_id ) : array();
@@ -16,122 +16,106 @@ $packages = $acf_ready ? get_field( 'packages_pricing_packages', $post_id ) : ar
 if ( empty( $packages ) ) {
 	$packages = array(
 		array(
-			'name'        => 'Marketing Starter',
-			'description' => 'Essential multi-channel marketing for small businesses and startups.',
-			'price'       => '$400-700',
-			'price_label' => '/month',
+			'name'        => 'Starter Website Package',
+			'description' => 'Perfect for startups or small businesses looking for a simple and minimalist brochure website with affordable web design.',
+			'price'       => 'from $1,500 +VAT',
+			'price_label' => '',
 			'is_featured' => false,
 			'features'    => array(
-				'SEO optimization (5 keywords)',
-				'PPC basics (Google Ads)',
-				'Social media basics',
-				'Monthly reporting',
+				'Up to 5 pages',
+				'Custom design',
+				'Mobile friendly design',
+				'Unlimited revisions',
+				'Intuitive website builder included',
+				'Custom contact forms',
+				'Up to 10 premium stock images',
+				'Social media linking',
+				'Training video on how to maintain your new website',
+				'We take your website live on your domain name',
 			),
-			'bg_class'    => 'cyan', // Helper for demo
+			'bg_class'    => 'cyan',
 		),
 		array(
-			'name'        => 'Growth Bundle',
-			'description' => 'Comprehensive marketing solution for growing businesses seeking scale.',
-			'price'       => '$800-1,200',
-			'price_label' => '/month',
+			'name'        => 'Small to Medium Website Package',
+			'description' => 'Elevate your established business to new heights with additional pages for your website.',
+			'price'       => 'from $2,000 +VAT',
+			'price_label' => '',
 			'is_featured' => true,
 			'features'    => array(
-				'Full SEO optimization',
-				'Multi-platform PPC',
-				'Advanced automation',
-				'Content creation (4/mo)',
+				'Up to 10 pages',
+				'Custom design',
+				'Mobile friendly design',
+				'Unlimited revisions',
+				'Page speed optimisation',
+				'Intuitive website builder included',
+				'Custom contact forms',
+				'Unlimited premium stock imagery',
+				'Social media linking',
+				'Google Analytics setup and install',
+				'Search Engine Submission',
+				'Up to three training videos on how to maintain your new website',
+				'We take your website live on your domain name',
 			),
 			'bg_class'    => 'orange',
 		),
 		array(
-			'name'        => 'Full Marketing',
-			'description' => 'Complete marketing operations for established companies.',
-			'price'       => '$1,500-2,000',
-			'price_label' => '/month',
+			'name'        => 'Enterprise Website Packages',
+			'description' => 'For established businesses looking to dominate their market with custom website design.',
+			'price'       => 'Enquire for a quote',
+			'price_label' => '',
 			'is_featured' => false,
 			'features'    => array(
-				'All marketing channels active',
-				'Cusom automation flows',
-				'Weekly strategy sessions',
-				'Dedicated manager',
+				'Unlimited pages',
+				'Custom design',
+				'Custom development for advanced functionality',
+				'Mobile friendly design',
+				'Unlimited revisions',
+				'Page speed optimisation',
+				'Intuitive website builder included',
+				'Custom contact forms',
+				'Unlimited premium stock imagery',
+				'Social media linking',
+				'Google Analytics setup and install',
+				'Google Search Console setup and install',
+				'Search Engine Submission',
+				'Unlimited training videos on how to maintain your new website',
+				'We take your website live on your domain name',
 			),
 			'bg_class'    => 'cyan',
 		),
 	);
 }
 
-$standalone_title       = ( $acf_ready ? get_field( 'packages_standalone_title', $post_id ) : '' ) ?: 'Standalone Services';
-$standalone_description = ( $acf_ready ? get_field( 'packages_standalone_description', $post_id ) : '' ) ?: 'Start with one service and scale as you grow. Individual marketing solutions to target specific needs and fit your budget.';
+$standalone_title       = ( $acf_ready ? get_field( 'packages_standalone_title', $post_id ) : '' ) ?: 'Marketing Starter Services';
+$standalone_description = ( $acf_ready ? get_field( 'packages_standalone_description', $post_id ) : '' ) ?: 'Start with one focused service and scale as your business grows.';
 $standalone_packages    = $acf_ready ? get_field( 'packages_standalone_packages', $post_id ) : array();
 if ( empty( $standalone_packages ) ) {
 	$standalone_packages = array(
 		array(
+			'name'        => 'Marketing Starter',
+			'description' => 'Essential digital marketing support for businesses getting started.',
+			'price'       => 'from $500 - $700',
+			'price_label' => '/month',
+			'is_featured' => false,
+			'features'    => array(
+				'Entry-level marketing plan',
+				'Basic campaign setup',
+				'Monthly performance reporting',
+			),
+			'bg_class'    => 'cyan',
+		),
+		array(
 			'name'        => 'SEO Starter',
-			'description' => 'Boost your organic visibility with targeted SEO optimization',
-			'price'       => '$150-300',
+			'description' => 'Improve visibility with foundational SEO optimisations.',
+			'price'       => '$250',
 			'price_label' => '/month',
 			'is_featured' => false,
 			'features'    => array(
-				'10 keyword targets',
-				'3 pages optimized/month',
-				'Basic technical fixes',
-				'Monthly report',
-				'Keyword research',
-				'Meta tag optimization',
-				'Content recommendations',
+				'Keyword targeting',
+				'On-page SEO basics',
+				'Search visibility improvements',
 			),
 			'bg_class'    => 'cyan',
-		),
-		array(
-			'name'        => 'PPC Essentials',
-			'description' => 'Get started with targeted advertising on your preferred platform',
-			'price'       => '$200-400',
-			'price_label' => '/month + ad spend',
-			'is_featured' => false,
-			'features'    => array(
-				'Single platform setup',
-				'Up to $500 ad spend management',
-				'Weekly optimization',
-				'Performance dashboard',
-				'Ad copy creation',
-				'Landing page review',
-				'Conversion tracking setup',
-			),
-			'bg_class'    => 'orange',
-		),
-		array(
-			'name'        => 'Email Basic',
-			'description' => 'Build relationships and drive conversions with email marketing',
-			'price'       => '$100-250',
-			'price_label' => '/month',
-			'is_featured' => false,
-			'features'    => array(
-				'2 campaigns/month',
-				'List management (up to 1K contacts)',
-				'Simple automation',
-				'Monthly metrics',
-				'Template design',
-				'A/B testing',
-				'Subscriber segmentation',
-			),
-			'bg_class'    => 'cyan',
-		),
-		array(
-			'name'        => 'Social Media',
-			'description' => 'Engage your audience and build brand awareness on social platforms',
-			'price'       => '$150-350',
-			'price_label' => '/month',
-			'is_featured' => true,
-			'features'    => array(
-				'2 platforms',
-				'8-12 posts/month',
-				'Basic engagement',
-				'Growth tracking',
-				'Content calendar',
-				'Hashtag strategy',
-				'Monthly analytics',
-			),
-			'bg_class'    => 'orange',
 		),
 	);
 }
