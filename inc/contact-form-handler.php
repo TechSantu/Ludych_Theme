@@ -18,7 +18,6 @@ function ludych_handle_contact_form() {
 	$phone            = sanitize_text_field( $_POST['phone'] ?? '' );
 	$company          = sanitize_text_field( $_POST['company'] ?? '' );
 	$service          = sanitize_text_field( $_POST['service'] ?? '' );
-	$budget           = sanitize_text_field( $_POST['budget'] ?? '' );
 	$message          = sanitize_textarea_field( $_POST['message'] ?? '' );
 	$page_url         = esc_url_raw( $_POST['page_url'] ?? '' );
 	$recaptcha_token  = sanitize_text_field( $_POST['recaptcha_token'] ?? '' );
@@ -34,10 +33,12 @@ function ludych_handle_contact_form() {
 		wp_send_json_error( array( 'message' => __( 'Please provide a valid name (2-100 characters).', 'ludych-theme' ) ) );
 	}
 
-	if ( isset( $_POST['first_name'], $_POST['last_name'] ) ) {
-		if ( strlen( trim( $first_name ) ) < 2 || strlen( trim( $last_name ) ) < 2 ) {
-			wp_send_json_error( array( 'message' => __( 'Please provide a valid first and last name.', 'ludych-theme' ) ) );
-		}
+	if ( isset( $_POST['first_name'] ) && strlen( trim( $first_name ) ) < 2 ) {
+		wp_send_json_error( array( 'message' => __( 'Please provide a valid first name.', 'ludych-theme' ) ) );
+	}
+
+	if ( ! empty( $last_name ) && strlen( trim( $last_name ) ) < 2 ) {
+		wp_send_json_error( array( 'message' => __( 'Please provide a valid last name.', 'ludych-theme' ) ) );
 	}
 
 	if ( empty( $email ) || ! is_email( $email ) ) {
@@ -48,7 +49,7 @@ function ludych_handle_contact_form() {
 		wp_send_json_error( array( 'message' => __( 'Please provide a message with at least 10 characters.', 'ludych-theme' ) ) );
 	}
 
-	if ( isset( $_POST['company'] ) && strlen( trim( $company ) ) < 2 ) {
+	if ( ! empty( $company ) && strlen( trim( $company ) ) < 2 ) {
 		wp_send_json_error( array( 'message' => __( 'Please provide a valid company name.', 'ludych-theme' ) ) );
 	}
 
@@ -122,7 +123,6 @@ function ludych_handle_contact_form() {
 	update_post_meta( $post_id, '_submission_first_name', $first_name );
 	update_post_meta( $post_id, '_submission_last_name', $last_name );
 	update_post_meta( $post_id, '_submission_service', $service );
-	update_post_meta( $post_id, '_submission_budget', $budget );
 	update_post_meta( $post_id, '_submission_ip', $ip_address );
 	update_post_meta( $post_id, '_submission_page_url', $page_url );
 	update_post_meta( $post_id, '_submission_date', $date_time );
@@ -168,10 +168,6 @@ function ludych_handle_contact_form() {
 			<tr>
 				<td style="padding: 10px; border-bottom: 1px solid #f0f0f0; color: #888;">Service:</td>
 				<td style="padding: 10px; border-bottom: 1px solid #f0f0f0;">' . esc_html( $service ) . '</td>
-			</tr>
-			<tr>
-				<td style="padding: 10px; border-bottom: 1px solid #f0f0f0; color: #888;">Budget:</td>
-				<td style="padding: 10px; border-bottom: 1px solid #f0f0f0;">' . esc_html( $budget ) . '</td>
 			</tr>
 			<tr>
 				<td style="padding: 10px; border-bottom: 1px solid #f0f0f0; vertical-align: top; color: #888;">Message:</td>

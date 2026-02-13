@@ -16,7 +16,7 @@ if ( empty( $phone ) ) {
 	$phone = '520-660-8791';
 }
 if ( empty( $email ) ) {
-	$email = 'biz@ludych.com';
+	$email = 'support@ludych.com';
 }
 if ( empty( $open_time ) ) {
 	$open_time = "Monday - Friday: 9AM to 5PM\nSaturday - Sunday: Closed";
@@ -110,8 +110,8 @@ if ( empty( $redirect_url ) ) {
 							</div>
 							<div class="col-lg-6">
 								<div class="form-group">
-									<label>Last Name *</label>
-									<input type="text" name="last_name" class="form-control" placeholder="Enter your last name" minlength="2" maxlength="60" required>
+									<label>Last Name</label>
+									<input type="text" name="last_name" class="form-control" placeholder="Enter your last name" minlength="2" maxlength="60">
 								</div>
 							</div>
 							<div class="col-lg-6">
@@ -128,8 +128,8 @@ if ( empty( $redirect_url ) ) {
 							</div>
 							<div class="col-lg-12">
 								<div class="form-group">
-									<label>Company Name *</label>
-									<input type="text" name="company" class="form-control" placeholder="Enter your company name" minlength="2" maxlength="120" required>
+									<label>Company Name</label>
+									<input type="text" name="company" class="form-control" placeholder="Enter your company name" minlength="2" maxlength="120">
 								</div>
 							</div>
 							<div class="col-lg-6">
@@ -143,18 +143,6 @@ if ( empty( $redirect_url ) ) {
 										<option value="digital-marketing">Digital Marketing</option>
 										<option value="seo">SEO</option>
 										<option value="other">Other</option>
-									</select>
-								</div>
-							</div>
-							<div class="col-lg-6">
-								<div class="form-group">
-									<label>Project Budget</label>
-									<select name="budget" class="form-control">
-										<option value="" selected>$10k - $25k</option>
-										<option value="under-10k">Under $10k</option>
-										<option value="25k-50k">$25k - $50k</option>
-										<option value="50k-100k">$50k - $100k</option>
-										<option value="100k-plus">$100k+</option>
 									</select>
 								</div>
 							</div>
