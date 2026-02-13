@@ -11,7 +11,7 @@ if ( ! $heading ) {
 
 $small_title = get_field('work_progress_small_title', $post_id);
 if ( ! $small_title ) {
-	$small_title = 'Process';
+	$small_title = 'Pay-Per-Click (PPC) Advertising';
 }
 
 $main_title = get_field('work_progress_title', $post_id);
