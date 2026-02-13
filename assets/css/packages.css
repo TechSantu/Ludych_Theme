@@ -719,6 +719,8 @@ header {
 	font-weight: 900;
 	margin-bottom: 1rem;
 	color: var(--secondary-light);
+	display: flex;
+	flex-direction: column;
 }
 
 .p-price span {
