@@ -4,15 +4,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 function ludych_load_more_services() {
-	$paged     = isset( $_POST['page'] ) ? $_POST['page'] : 1;
-	$post_type = isset( $_POST['post_type'] ) ? $_POST['post_type'] : 'services';
+	$paged     = isset( $_POST['page'] ) ? intval( $_POST['page'] ) : 1;
+	$post_type = isset( $_POST['post_type'] ) ? sanitize_key( $_POST['post_type'] ) : 'services';
 
 	$args = array(
 		'post_type'           => $post_type,
 		'posts_per_page'      => 3,
 		'paged'               => $paged,
 		'post_status'         => 'publish',
-		'orderby'             => 'rand',
+		'orderby'             => 'date',
+		'order'               => 'DESC',
 		'ignore_sticky_posts' => true,
 	);
 
