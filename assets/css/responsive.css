@@ -208,6 +208,19 @@
 		color: var(--button-border) !important;
 	}
 
+	.our-work-progress .global-header.middle-align .min-title {
+		width: 100%;
+		max-width: 100%;
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+
+	.our-work-progress .global-header .min-title h6 {
+		overflow-wrap: anywhere;
+		word-break: break-word;
+		text-align: center;
+	}
+
 	.global-header .min-title {
 		margin-top: -30px !important;
 	}
