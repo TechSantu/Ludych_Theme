@@ -9,6 +9,7 @@ $acf_ready = function_exists( 'get_field' ) && function_exists( 'acf' ) && is_ob
 
 $pricing_title    = ( $acf_ready ? get_field( 'packages_pricing_title', $post_id ) : '' ) ?: 'Marketing Combo Packages';
 $pricing_subtitle = ( $acf_ready ? get_field( 'packages_pricing_subtitle', $post_id ) : '' ) ?: 'Integrated multi-channel marketing solutions designed to grow your business. Each package builds on the previous tier with additional channels and advanced features.';
+$pricing_heading  = ( $acf_ready ? get_field( 'packages_pricing_heading', $post_id ) : '' ) ?: 'Pricing';
 
 $packages = $acf_ready ? get_field( 'packages_pricing_packages', $post_id ) : array();
 
@@ -59,9 +60,11 @@ if ( empty( $packages ) ) {
 	);
 }
 
-$standalone_title       = 'Standalone Services';
-$standalone_description = 'Start with one service and scale as you grow. Individual marketing solutions to target specific needs and fit your budget.';
-$standalone_packages    = array(
+$standalone_title       = ( $acf_ready ? get_field( 'packages_standalone_title', $post_id ) : '' ) ?: 'Standalone Services';
+$standalone_description = ( $acf_ready ? get_field( 'packages_standalone_description', $post_id ) : '' ) ?: 'Start with one service and scale as you grow. Individual marketing solutions to target specific needs and fit your budget.';
+$standalone_packages    = $acf_ready ? get_field( 'packages_standalone_packages', $post_id ) : array();
+if ( empty( $standalone_packages ) ) {
+	$standalone_packages = array(
 	array(
 		'name'        => 'SEO Starter',
 		'description' => 'Boost your organic visibility with targeted SEO optimization',
@@ -130,11 +133,14 @@ $standalone_packages    = array(
 		),
 		'bg_class'    => 'orange',
 	),
-);
+	);
+}
 
-$development_title       = 'Development Packages';
-$development_description = 'Product-ready development bundles for websites, stores, and custom applications with scalable delivery.';
-$development_packages    = array(
+$development_title       = ( $acf_ready ? get_field( 'packages_development_title', $post_id ) : '' ) ?: 'Development Packages';
+$development_description = ( $acf_ready ? get_field( 'packages_development_description', $post_id ) : '' ) ?: 'Product-ready development bundles for websites, stores, and custom applications with scalable delivery.';
+$development_packages    = $acf_ready ? get_field( 'packages_development_packages', $post_id ) : array();
+if ( empty( $development_packages ) ) {
+	$development_packages = array(
 	array(
 		'name'        => 'Website Launch',
 		'description' => 'Professional business website build with conversion-focused pages and fast launch.',
@@ -183,7 +189,8 @@ $development_packages    = array(
 		),
 		'bg_class'    => 'cyan',
 	),
-);
+	);
+}
 
 $render_package_cards = static function ( $cards ) {
 	foreach ( $cards as $package ) :
@@ -194,6 +201,14 @@ $render_package_cards = static function ( $cards ) {
 		}
 
 		$bg_class = $package['bg_class'] ?? ( $is_featured ? 'orange' : 'cyan' );
+		$btn_text = $package['button_text'] ?? 'Get Started';
+		$btn_url  = $package['button_url'] ?? home_url( '/contact-us/' );
+		if ( empty( $btn_text ) ) {
+			$btn_text = 'Get Started';
+		}
+		if ( empty( $btn_url ) ) {
+			$btn_url = home_url( '/contact-us/' );
+		}
 		?>
 		<div class="<?php echo esc_attr( $class ); ?>">
 			<?php if ( $is_featured ) : ?>
@@ -221,7 +236,7 @@ $render_package_cards = static function ( $cards ) {
 				<?php endforeach; ?>
 			</ul>
 			
-			<button class="<?php echo $is_featured ? 'btn-orange' : 'btn-outline-orange'; ?> w-full" onclick="window.location.href='<?php echo esc_url( home_url('/contact-us/') ); ?>'">Get Started</button>
+			<button class="<?php echo $is_featured ? 'btn-orange' : 'btn-outline-orange'; ?> w-full" onclick="window.location.href='<?php echo esc_url( $btn_url ); ?>'"><?php echo esc_html( $btn_text ); ?></button>
 		</div>
 		<?php
 	endforeach;
@@ -244,7 +259,7 @@ $render_package_cards = static function ( $cards ) {
 						</defs>
 					</svg>
 				</div>
-				<h6>Pricing</h6>
+				<h6><?php echo esc_html( $pricing_heading ); ?></h6>
 			</div>
 			<h5><?php echo esc_html( $pricing_title ); ?></h5>
 			<p><?php echo esc_html( $pricing_subtitle ); ?></p>

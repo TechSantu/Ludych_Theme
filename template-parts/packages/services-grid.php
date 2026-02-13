@@ -8,6 +8,7 @@ $acf_ready = function_exists( 'get_field' ) && function_exists( 'acf' ) && is_ob
 
 $services_title    = ( $acf_ready ? get_field( 'packages_services_title', $post_id ) : '' ) ?: 'Comprehensive Marketing Services';
 $services_subtitle = ( $acf_ready ? get_field( 'packages_services_subtitle', $post_id ) : '' ) ?: 'From strategy to execution, we provide end-to-end digital marketing solutions that drive growth and deliver measurable results.';
+$services_heading  = ( $acf_ready ? get_field( 'packages_services_heading', $post_id ) : '' ) ?: 'Services';
 
 $services = $acf_ready ? get_field( 'packages_services_list', $post_id ) : array();
 
@@ -56,7 +57,7 @@ if ( empty( $services ) ) {
 <section class="section-services">
 	<div class="custom-container">
 		<div class="global-header middle-align">
-			<h2>Services</h2>
+			<h2><?php echo esc_html( $services_heading ); ?></h2>
 			<div class="min-title">
 				<div class="icon-box">
 					<svg xmlns="http://www.w3.org/2000/svg" width="39" height="39" viewBox="0 0 39 39" fill="none">

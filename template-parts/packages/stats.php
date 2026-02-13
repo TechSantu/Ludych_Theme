@@ -8,6 +8,8 @@ $acf_ready = function_exists( 'get_field' ) && function_exists( 'acf' ) && is_ob
 
 $stats_title    = ( $acf_ready ? get_field( 'packages_stats_title', $post_id ) : '' ) ?: 'Proven Results That Speak for Themselves';
 $stats_subtitle = ( $acf_ready ? get_field( 'packages_stats_subtitle', $post_id ) : '' ) ?: 'Our data-driven approach consistently delivers exceptional results for businesses across all industries.';
+$stats_heading  = ( $acf_ready ? get_field( 'packages_stats_heading', $post_id ) : '' ) ?: 'Results';
+$stats_kicker   = ( $acf_ready ? get_field( 'packages_stats_kicker', $post_id ) : '' ) ?: 'Performance';
 
 $stats = $acf_ready ? get_field( 'packages_stats', $post_id ) : array();
 
@@ -36,7 +38,7 @@ if ( empty( $stats ) ) {
 <section class="section-results">
 	<div class="custom-container">
 		<div class="global-header middle-align">
-			<h2>Results</h2>
+			<h2><?php echo esc_html( $stats_heading ); ?></h2>
 			<div class="min-title">
 				<div class="icon-box">
 					<svg xmlns="http://www.w3.org/2000/svg" width="39" height="39" viewBox="0 0 39 39" fill="none">
@@ -49,7 +51,7 @@ if ( empty( $stats ) ) {
 						</defs>
 					</svg>
 				</div>
-				<h6>Performance</h6>
+				<h6><?php echo esc_html( $stats_kicker ); ?></h6>
 			</div>
 			<h5><?php echo esc_html( $stats_title ); ?></h5>
 			<p><?php echo esc_html( $stats_subtitle ); ?></p>

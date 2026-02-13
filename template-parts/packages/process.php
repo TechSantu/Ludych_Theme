@@ -4,7 +4,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 global $post_id;
-$processes = array(
+$acf_ready = function_exists( 'get_field' ) && function_exists( 'acf' ) && is_object( acf() );
+
+$processes = $acf_ready ? get_field( 'packages_process_steps', $post_id ) : array();
+if ( empty( $processes ) ) {
+	$processes = array(
 	array(
 		'title'       => 'Analyze',
 		'description' => 'Assess your market position and identify growth opportunities',
@@ -35,7 +39,8 @@ $processes = array(
 		'svg'         => '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2D3748" stroke-width="2"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>',
 		'bg_class'    => 'bg-light-teal',
 	),
-);
+	);
+}
 ?>
 
 <section class="section-process">

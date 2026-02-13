@@ -7,6 +7,12 @@ global $post_id;
 $acf_ready = function_exists( 'get_field' ) && function_exists( 'acf' ) && is_object( acf() );
 
 $inclusions = $acf_ready ? get_field( 'packages_inclusions', $post_id ) : array();
+$inclusions_heading      = ( $acf_ready ? get_field( 'packages_inclusions_heading', $post_id ) : '' ) ?: 'Included';
+$inclusions_kicker       = ( $acf_ready ? get_field( 'packages_inclusions_kicker', $post_id ) : '' ) ?: 'Plan Benefits';
+$inclusions_title        = ( $acf_ready ? get_field( 'packages_inclusions_title', $post_id ) : '' ) ?: 'All Plans Include';
+$inclusions_footer_text  = ( $acf_ready ? get_field( 'packages_inclusions_footer_text', $post_id ) : '' ) ?: 'Ready to get started? Choose a package above or contact us for a custom marketing solution.';
+$inclusions_button_text  = ( $acf_ready ? get_field( 'packages_inclusions_button_text', $post_id ) : '' ) ?: 'Get Started Today';
+$inclusions_button_url   = ( $acf_ready ? get_field( 'packages_inclusions_button_url', $post_id ) : '' ) ?: home_url('/contact-us/');
 
 if ( empty( $inclusions ) ) {
 	$inclusions = array(
@@ -38,7 +44,7 @@ if ( empty( $inclusions ) ) {
 	<div class="custom-container text-center">
 		<div class="inclusions-card">
 			<div class="global-header middle-align">
-				<h2>Included</h2>
+				<h2><?php echo esc_html( $inclusions_heading ); ?></h2>
 				<div class="min-title">
 					<div class="icon-box">
 						<svg xmlns="http://www.w3.org/2000/svg" width="39" height="39" viewBox="0 0 39 39" fill="none">
@@ -51,9 +57,9 @@ if ( empty( $inclusions ) ) {
 							</defs>
 						</svg>
 					</div>
-					<h6>Plan Benefits</h6>
+					<h6><?php echo esc_html( $inclusions_kicker ); ?></h6>
 				</div>
-				<h5>All Plans Include</h5>
+				<h5><?php echo esc_html( $inclusions_title ); ?></h5>
 			</div>
 			<div class="inclusions-grid">
 				<?php foreach ( $inclusions as $inc ) : ?>
@@ -72,9 +78,9 @@ if ( empty( $inclusions ) ) {
 				<?php endforeach; ?>
 			</div>
 			<div class="inclusions-footer-box">
-				<p class="inclusion-footer-text">Ready to get started? Choose a package above or contact us for a custom marketing solution.</p>
-				<a class="globalBtnDark" href="<?php echo esc_url( home_url('/contact-us/') ); ?>">
-					<span>Get Started Today <i class="fa-solid fa-arrow-right-long"></i></span>
+				<p class="inclusion-footer-text"><?php echo esc_html( $inclusions_footer_text ); ?></p>
+				<a class="globalBtnDark" href="<?php echo esc_url( $inclusions_button_url ); ?>">
+					<span><?php echo esc_html( $inclusions_button_text ); ?> <i class="fa-solid fa-arrow-right-long"></i></span>
 				</a>
 			</div>
 		</div>
