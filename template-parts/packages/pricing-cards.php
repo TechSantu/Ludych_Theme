@@ -58,6 +58,174 @@ if ( empty( $packages ) ) {
 		),
 	);
 }
+
+$standalone_title       = 'Standalone Services';
+$standalone_description = 'Start with one service and scale as you grow. Individual marketing solutions to target specific needs and fit your budget.';
+$standalone_packages    = array(
+	array(
+		'name'        => 'SEO Starter',
+		'description' => 'Boost your organic visibility with targeted SEO optimization',
+		'price'       => '$150-300',
+		'price_label' => '/month',
+		'is_featured' => false,
+		'features'    => array(
+			'10 keyword targets',
+			'3 pages optimized/month',
+			'Basic technical fixes',
+			'Monthly report',
+			'Keyword research',
+			'Meta tag optimization',
+			'Content recommendations',
+		),
+		'bg_class'    => 'cyan',
+	),
+	array(
+		'name'        => 'PPC Essentials',
+		'description' => 'Get started with targeted advertising on your preferred platform',
+		'price'       => '$200-400',
+		'price_label' => '/month + ad spend',
+		'is_featured' => false,
+		'features'    => array(
+			'Single platform setup',
+			'Up to $500 ad spend management',
+			'Weekly optimization',
+			'Performance dashboard',
+			'Ad copy creation',
+			'Landing page review',
+			'Conversion tracking setup',
+		),
+		'bg_class'    => 'orange',
+	),
+	array(
+		'name'        => 'Email Basic',
+		'description' => 'Build relationships and drive conversions with email marketing',
+		'price'       => '$100-250',
+		'price_label' => '/month',
+		'is_featured' => false,
+		'features'    => array(
+			'2 campaigns/month',
+			'List management (up to 1K contacts)',
+			'Simple automation',
+			'Monthly metrics',
+			'Template design',
+			'A/B testing',
+			'Subscriber segmentation',
+		),
+		'bg_class'    => 'cyan',
+	),
+	array(
+		'name'        => 'Social Media',
+		'description' => 'Engage your audience and build brand awareness on social platforms',
+		'price'       => '$150-350',
+		'price_label' => '/month',
+		'is_featured' => true,
+		'features'    => array(
+			'2 platforms',
+			'8-12 posts/month',
+			'Basic engagement',
+			'Growth tracking',
+			'Content calendar',
+			'Hashtag strategy',
+			'Monthly analytics',
+		),
+		'bg_class'    => 'orange',
+	),
+);
+
+$development_title       = 'Development Packages';
+$development_description = 'Product-ready development bundles for websites, stores, and custom applications with scalable delivery.';
+$development_packages    = array(
+	array(
+		'name'        => 'Website Launch',
+		'description' => 'Professional business website build with conversion-focused pages and fast launch.',
+		'price'       => '$900-1,800',
+		'price_label' => '/project',
+		'is_featured' => false,
+		'features'    => array(
+			'Up to 6 pages',
+			'Responsive UI build',
+			'On-page SEO basics',
+			'Contact form integration',
+			'Speed optimization',
+			'CMS handover',
+		),
+		'bg_class'    => 'cyan',
+	),
+	array(
+		'name'        => 'Ecommerce Build',
+		'description' => 'Launch a conversion-ready online store with payment, shipping, and product workflows.',
+		'price'       => '$1,800-3,500',
+		'price_label' => '/project',
+		'is_featured' => true,
+		'features'    => array(
+			'Store setup & structure',
+			'Product & category templates',
+			'Payment gateway setup',
+			'Shipping/tax configuration',
+			'Cart + checkout optimization',
+			'Analytics integration',
+		),
+		'bg_class'    => 'orange',
+	),
+	array(
+		'name'        => 'Custom Web App',
+		'description' => 'Build tailored business workflows with secure, scalable custom application development.',
+		'price'       => '$3,500-8,000+',
+		'price_label' => '/project',
+		'is_featured' => false,
+		'features'    => array(
+			'Discovery & architecture',
+			'Custom frontend + backend',
+			'Role-based access control',
+			'API integration',
+			'QA & deployment',
+			'Post-launch support',
+		),
+		'bg_class'    => 'cyan',
+	),
+);
+
+$render_package_cards = static function ( $cards ) {
+	foreach ( $cards as $package ) :
+		$is_featured = isset( $package['is_featured'] ) && $package['is_featured'];
+		$class       = 'package-card';
+		if ( $is_featured ) {
+			$class .= ' popular';
+		}
+
+		$bg_class = $package['bg_class'] ?? ( $is_featured ? 'orange' : 'cyan' );
+		?>
+		<div class="<?php echo esc_attr( $class ); ?>">
+			<?php if ( $is_featured ) : ?>
+				<div class="popular-tag">Most Popular</div>
+			<?php endif; ?>
+			
+			<div class="p-header <?php echo esc_attr( $bg_class ); ?>"></div>
+			<h3 class="font-inria"><?php echo esc_html( $package['name'] ); ?></h3>
+			<div class="p-price"><?php echo esc_html( $package['price'] ); ?><span><?php echo esc_html( $package['price_label'] ); ?></span></div>
+			<p class="p-desc"><?php echo esc_html( $package['description'] ); ?></p>
+			
+			<ul class="p-list">
+				<?php
+				$features = $package['features'] ?? array();
+				if ( is_string( $features ) ) {
+					$features = explode( "\n", $features );
+				}
+				foreach ( (array) $features as $feat ) :
+					$feat_text = is_array( $feat ) ? ( $feat['feature'] ?? '' ) : $feat;
+					if ( empty( trim( $feat_text ) ) ) {
+						continue;
+					}
+					?>
+				<li><span>✓</span> <?php echo wp_kses_post( $feat_text ); ?></li>
+				<?php endforeach; ?>
+			</ul>
+			
+			<button class="<?php echo $is_featured ? 'btn-orange' : 'btn-outline-orange'; ?> w-full" onclick="window.location.href='<?php echo esc_url( home_url('/contact-us/') ); ?>'">Get Started</button>
+		</div>
+		<?php
+	endforeach;
+};
 ?>
 
 <section class="section-packages">
@@ -83,46 +251,23 @@ if ( empty( $packages ) ) {
 		</div>
 
 		<div class="package-grid">
-			<?php
-			foreach ( $packages as $i => $package ) :
-				$is_featured = isset( $package['is_featured'] ) && $package['is_featured'];
-				$class       = 'package-card';
-				if ( $is_featured ) {
-					$class .= ' popular';
-				}
+			<?php $render_package_cards( $packages ); ?>
+		</div>
 
-				// Determine header color logic if not set in ACF
-				$bg_class = $package['bg_class'] ?? ( $is_featured ? 'orange' : 'cyan' );
-				?>
-			<div class="<?php echo esc_attr( $class ); ?>">
-				<?php if ( $is_featured ) : ?>
-					<div class="popular-tag">Most Popular</div>
-				<?php endif; ?>
-				
-				<div class="p-header <?php echo esc_attr( $bg_class ); ?>"></div>
-				<h3 class="font-inria"><?php echo esc_html( $package['name'] ); ?></h3>
-				<div class="p-price"><?php echo esc_html( $package['price'] ); ?><span><?php echo esc_html( $package['price_label'] ); ?></span></div>
-				<p class="p-desc"><?php echo esc_html( $package['description'] ); ?></p>
-				
-				<ul class="p-list">
-					<?php
-					$features = $package['features'] ?? array();
-					if ( is_string( $features ) ) {
-						$features = explode( "\n", $features );
-					}
-					foreach ( (array) $features as $feat ) :
-						$feat_text = is_array( $feat ) ? ( $feat['feature'] ?? '' ) : $feat;
-						if ( empty( trim( $feat_text ) ) ) {
-							continue;
-						}
-						?>
-					<li><span>✓</span> <?php echo wp_kses_post( $feat_text ); ?></li>
-					<?php endforeach; ?>
-				</ul>
-				
-				<button class="<?php echo $is_featured ? 'btn-orange' : 'btn-outline-orange'; ?> w-full" onclick="window.location.href='<?php echo home_url('/contact-us/'); ?>'">Get Started</button>
+		<div class="package-subsection">
+			<h3 class="package-subsection__title"><?php echo esc_html( $standalone_title ); ?></h3>
+			<p class="package-subsection__subtitle"><?php echo esc_html( $standalone_description ); ?></p>
+			<div class="package-grid package-grid--four">
+				<?php $render_package_cards( $standalone_packages ); ?>
 			</div>
-			<?php endforeach; ?>
+		</div>
+
+		<div class="package-subsection">
+			<h3 class="package-subsection__title"><?php echo esc_html( $development_title ); ?></h3>
+			<p class="package-subsection__subtitle"><?php echo esc_html( $development_description ); ?></p>
+			<div class="package-grid package-grid--three">
+				<?php $render_package_cards( $development_packages ); ?>
+			</div>
 		</div>
 	</div>
 </section>
@@ -131,6 +276,28 @@ if ( empty( $packages ) ) {
 // Schema Markup
 $offers_schema = array();
 foreach ( $packages as $package ) {
+	$price_value     = preg_replace('/[^0-9.]/', '', $package['price'] ?? '0');
+	$offers_schema[] = array(
+		'@type'         => 'Offer',
+		'name'          => $package['name'] ?? '',
+		'description'   => $package['description'] ?? '',
+		'price'         => $price_value,
+		'priceCurrency' => 'USD',
+		'url'           => home_url('/contact-us/'),
+	);
+}
+foreach ( $standalone_packages as $package ) {
+	$price_value     = preg_replace('/[^0-9.]/', '', $package['price'] ?? '0');
+	$offers_schema[] = array(
+		'@type'         => 'Offer',
+		'name'          => $package['name'] ?? '',
+		'description'   => $package['description'] ?? '',
+		'price'         => $price_value,
+		'priceCurrency' => 'USD',
+		'url'           => home_url('/contact-us/'),
+	);
+}
+foreach ( $development_packages as $package ) {
 	$price_value     = preg_replace('/[^0-9.]/', '', $package['price'] ?? '0');
 	$offers_schema[] = array(
 		'@type'         => 'Offer',
