@@ -12,10 +12,7 @@ function ludych_load_more_services() {
 		'posts_per_page'      => 3,
 		'paged'               => $paged,
 		'post_status'         => 'publish',
-		'orderby'             => array(
-			'date' => 'ASC',
-			'ID'   => 'ASC',
-		),
+		'orderby'             => 'rand',
 		'ignore_sticky_posts' => true,
 	);
 

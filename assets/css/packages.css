@@ -1,26 +1,26 @@
 /* Full Styles from index5.html */
 :root {
-	--bg-dark: #000000;
-	--bg-dark-accent: #0f172a;
+	--bg-dark: var(--secondary-light);
+	--bg-dark-accent: #0a163f;
 	--white: #ffffff;
-	--text-gray: #E2E8F0;
-	--text-muted: #94A3B8;
-	--orange: #ef8749;
-	--orange-hover: #f89f73;
-	--teal: #adefcb;
-	--yellow: #fdee9b;
-	--light-blue: #F0F9FF;
-	--border-gray: #E2E8F0;
+	--text-gray: #e2e8f0;
+	--text-muted: #94a3b8;
+	--orange: var(--button-border);
+	--orange-hover: #2f62d8;
+	--teal: var(--button-cyan);
+	--yellow: #f3f9ff;
+	--light-blue: #f0f9ff;
+	--border-gray: var(--border-light);
 	--shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 	--shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 /* Base Overrides for Exact Mirror */
 body {
-	font-family: 'Roboto', sans-serif !important;
-	color: #1a1a1a;
+	font-family: "Poppins", sans-serif;
+	color: var(--secondary-light);
 	line-height: 1.6;
-	background-color: #fdfdfd;
+	background-color: var(--white);
 	overflow-x: hidden;
 }
 
@@ -31,7 +31,7 @@ h4,
 h5,
 h6,
 .font-inria {
-	font-family: 'Inria Serif', serif !important;
+	font-family: "Jost", sans-serif;
 }
 
 .max-w-7xl {
@@ -49,7 +49,7 @@ header {
 /* Buttons */
 .btn-orange {
 	background: var(--orange);
-	color: var(--white);
+	color: #fff;
 	border: none;
 	padding: 0.75rem 2rem;
 	border-radius: 6px;
@@ -65,8 +65,8 @@ header {
 .btn-orange:hover {
 	background: var(--orange-hover);
 	transform: translateY(-2px);
-	box-shadow: 0 6px 0 #d97706;
-	color: var(--white);
+	box-shadow: 0 6px 0 #1f4bb8;
+	color: #fff;
 }
 
 .btn-orange:active {
@@ -76,7 +76,7 @@ header {
 
 .btn-yellow {
 	background: var(--yellow);
-	color: #1a1a1a;
+	color: var(--secondary-light);
 	border: none;
 	padding: 0.75rem 2rem;
 	border-radius: 4px;
@@ -87,7 +87,7 @@ header {
 }
 
 .btn-black-large {
-	background: #000;
+	background: var(--secondary-light);
 	color: #fff;
 	padding: 1.25rem 3rem;
 	border-radius: 8px;
@@ -105,7 +105,7 @@ header {
 }
 
 .btn-black-plain {
-	background: #000;
+	background: var(--secondary-light);
 	color: #fff;
 	padding: 0.75rem 2rem;
 	border-radius: 4px;
@@ -133,9 +133,9 @@ header {
 /* Hero Section */
 .hero {
 	position: relative;
-	background: radial-gradient(circle at 50% 50%, #1a1a1e 0%, #050505 100%);
-	height: 100vh;
-	min-height: 800px;
+	background: linear-gradient(135deg, var(--secondary-light) 0%, #142a70 100%);
+	height: auto;
+	min-height: 680px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -167,20 +167,19 @@ header {
 	line-height: 1.1;
 	margin-bottom: 2rem;
 	letter-spacing: -0.01em;
-	font-family: 'Roboto', sans-serif;
+	font-family: "Jost", sans-serif;
 	color: white;
-	white-space: nowrap;
-	/* Keep on one line as requested */
+	white-space: normal;
 	width: 100%;
 }
 
 .results-box {
-	background-color: #adefcb;
-	color: #1a1a1a;
+	background-color: var(--button-cyan);
+	color: var(--secondary-light);
 	padding: 0.1em 0.5em;
 	border-radius: 12px;
 	display: inline-block;
-	box-shadow: 6px 6px 0 #ef8749;
+	box-shadow: 6px 6px 0 var(--button-border);
 	margin-left: 0.2em;
 	transform: rotate(-1.5deg);
 }
@@ -200,8 +199,8 @@ header {
 	padding: 1.2rem 3rem !important;
 	font-size: 1.2rem !important;
 	border-radius: 8px !important;
-	background: linear-gradient(to bottom, #f89f73, #ef8749) !important;
-	box-shadow: 0 4px 15px rgba(239, 135, 73, 0.3) !important;
+	background: linear-gradient(to bottom, #4d7ffc, #3d72fb) !important;
+	box-shadow: 0 4px 15px rgba(61, 114, 251, 0.35) !important;
 }
 
 /* Floating Shapes */
@@ -214,7 +213,7 @@ header {
 .shape.diamond {
 	width: 280px;
 	height: 280px;
-	border: 1px solid rgba(239, 135, 73, 0.2);
+	border: 1px solid rgba(151, 247, 147, 0.2);
 	top: 15%;
 	left: -2%;
 	transform: rotate(45deg);
@@ -256,7 +255,7 @@ header {
 
 .section-subtitle {
 	font-size: 1.1rem;
-	color: #555;
+	color: #4f5d75;
 	max-width: 800px;
 	margin: 0 auto 3.5rem;
 }
@@ -288,15 +287,15 @@ header {
 }
 
 .bg-light-teal {
-	background-color: #e6fffa;
+	background-color: #eff8ff;
 }
 
 .bg-light-orange {
-	background-color: #fffaf0;
+	background-color: #f5f8ff;
 }
 
 .bg-light-yellow {
-	background-color: #fffff0;
+	background-color: #f0f9ff;
 }
 
 .process-item h3 {
@@ -312,7 +311,7 @@ header {
 /* Integrated Solutions Section */
 .section-info.dark {
 	padding: 6rem 0;
-	background-color: #1e293b;
+	background-color: var(--secondary-light);
 	color: white;
 }
 
@@ -339,8 +338,8 @@ header {
 
 .stat-badge {
 	position: absolute;
-	background: white;
-	color: #111;
+	background: #fff;
+	color: var(--secondary-light);
 	padding: 1.5rem;
 	border-radius: 12px;
 	bottom: -20px;
@@ -351,7 +350,7 @@ header {
 .stat-badge .val {
 	font-size: 2rem;
 	font-weight: 900;
-	color: #111;
+	color: var(--secondary-light);
 }
 
 .stat-badge .lbl {
@@ -417,8 +416,8 @@ header {
 .service-icon-box.small-cyan {
 	width: 44px;
 	height: 44px;
-	background: #e6fffa;
-	color: #0694a2;
+	background: #eff8ff;
+	color: var(--button-border);
 	border-radius: 8px;
 	display: flex;
 	align-items: center;
@@ -494,7 +493,7 @@ header {
 }
 
 .result-stat p {
-	color: #64748b;
+	color: #4f5d75;
 	font-size: 0.9rem;
 }
 
@@ -589,7 +588,7 @@ header {
 }
 
 .p-list span {
-	color: #0694a2;
+	color: var(--button-border);
 	font-weight: 900;
 }
 
@@ -647,7 +646,7 @@ header {
 
 .inclusion-footer-text {
 	margin: 0 auto 2rem;
-	color: #555;
+	color: #4f5d75;
 	text-align: center;
 	max-width: 600px;
 }
@@ -679,7 +678,7 @@ header {
 	font-size: 1.25rem;
 	font-weight: 600;
 	cursor: pointer;
-	font-family: 'Roboto', sans-serif;
+	font-family: "Poppins", sans-serif;
 }
 
 .faq-ans {
@@ -701,11 +700,11 @@ header {
 .gradient-banner {
 	max-width: 1100px;
 	margin: 0 auto;
-	background: linear-gradient(90deg, #adefcb 0%, #ef8749 100%);
+	background: linear-gradient(90deg, #e8f2ff 0%, #b9d0ff 100%);
 	padding: 4rem;
 	border-radius: 24px;
 	text-align: center;
-	color: #111;
+	color: var(--secondary-light);
 }
 
 .gradient-banner h2 {
@@ -758,7 +757,7 @@ header {
 	.hero {
 		height: auto;
 		min-height: auto;
-		padding: 5rem 0;
+		padding: 7rem 0 5rem;
 	}
 
 	.hero h1 {
