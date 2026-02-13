@@ -15,38 +15,38 @@ if ( empty( $services ) ) {
 	$services = array(
 		array(
 			'title'   => 'Search Engine Optimization',
-			'desc'    => 'Boost your organic visibility and drive qualified traffic with comprehensive SEO strategies.',
-			'svg'     => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>',
+			'desc'    => 'Boost your organic visibility and drive qualified traffic with comprehensive SEO strategies that deliver long-term results.',
+			'svg'     => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2" /></svg>',
 			'bullets' => "Keyword Research\nOn-Page Optimization\nTechnical SEO\nContent Strategy",
 		),
 		array(
 			'title'   => 'Pay-Per-Click Advertising',
 			'desc'    => 'Maximize your ad spend with targeted PPC campaigns across Google, Bing, and social media platforms.',
-			'svg'     => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
+			'svg'     => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>',
 			'bullets' => "Google Ads\nSocial Media Ads\nRemarketing\nCampaign Optimization",
 		),
 		array(
 			'title'   => 'Email Marketing',
 			'desc'    => 'Build lasting relationships and drive conversions through personalized, automated email campaigns.',
-			'svg'     => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>',
+			'svg'     => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></svg>',
 			'bullets' => "List Building\nAutomation\nA/B Testing\nPerformance Tracking",
 		),
 		array(
 			'title'   => 'Analytics & Reporting',
 			'desc'    => 'Make data-driven decisions with comprehensive analytics, tracking, and detailed performance reports.',
-			'svg'     => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>',
+			'svg'     => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.21 15.89A10 10 0 1 1 8 2.83" /><path d="M22 12A10 10 0 0 0 12 2v10z" /></svg>',
 			'bullets' => "Google Analytics\nCustom Dashboards\nROI Tracking\nMonthly Reports",
 		),
 		array(
 			'title'   => 'Content Marketing',
-			'desc'    => 'Engage your audience with compelling content that educates, entertains, and converts prospects.',
-			'svg'     => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5 5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>',
+			'desc'    => 'Engage your audience with compelling content that educates, entertains, and converts prospects into customers.',
+			'svg'     => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" /><polyline points="18 13 12 7 6 13" /><line x1="12" y1="7" x2="12" y2="21" /></svg>',
 			'bullets' => "Content Strategy\nBlog Writing\nVideo Content\nSocial Content",
 		),
 		array(
 			'title'   => 'Social Media Marketing',
 			'desc'    => 'Build brand awareness and engage your community across all major social media platforms.',
-			'svg'     => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>',
+			'svg'     => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>',
 			'bullets' => "Strategy Development\nContent Creation\nCommunity Management\nSocial Advertising",
 		),
 	);
