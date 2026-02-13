@@ -1712,7 +1712,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				'label'         => 'Pricing Subtitle',
 				'name'          => 'packages_pricing_subtitle',
 				'type'          => 'text',
-				'default_value' => 'Keep in mind that these are general guidelines and pricing can vary widely depending on the specific company and the level of service provided. It\'s important to get detailed pricing information for each service and that is why we offer a free digital marketing consultation followed by detailed quotations with breakdowns for each of our digital marketing services. Actual Ludych pricing should be customized based on deliverables, goals, and scope.',
+				'default_value' => 'Choose the website package that best fits your business stage and goals.',
 			),
 			array(
 				'key'           => 'field_packages_pricing_heading',
@@ -1720,6 +1720,14 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				'name'          => 'packages_pricing_heading',
 				'type'          => 'text',
 				'default_value' => 'Pricing',
+			),
+			array(
+				'key'           => 'field_packages_pricing_note',
+				'label'         => 'Pricing Note',
+				'name'          => 'packages_pricing_note',
+				'type'          => 'textarea',
+				'rows'          => 4,
+				'default_value' => 'Keep in mind that these are general guidelines and pricing can vary widely depending on the specific company and the level of service provided. It\'s important to get detailed pricing information for each service and that is why we offer a free digital marketing consultation followed by detailed quotations with breakdowns for each of our digital marketing services. Actual Ludych pricing should be customized based on deliverables, goals, and scope.',
 			),
 			array(
 				'key'        => 'field_packages_pricing_packages',

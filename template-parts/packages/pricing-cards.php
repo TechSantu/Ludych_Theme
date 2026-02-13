@@ -8,8 +8,9 @@ global $post_id;
 $acf_ready = function_exists( 'get_field' ) && function_exists( 'acf' ) && is_object( acf() );
 
 $pricing_title    = ( $acf_ready ? get_field( 'packages_pricing_title', $post_id ) : '' ) ?: 'Website Packages';
-$pricing_subtitle = ( $acf_ready ? get_field( 'packages_pricing_subtitle', $post_id ) : '' ) ?: 'Keep in mind that these are general guidelines and pricing can vary widely depending on the specific company and the level of service provided. It\'s important to get detailed pricing information for each service and that is why we offer a free digital marketing consultation followed by detailed quotations with breakdowns for each of our digital marketing services. Actual Ludych pricing should be customized based on deliverables, goals, and scope.';
+$pricing_subtitle = ( $acf_ready ? get_field( 'packages_pricing_subtitle', $post_id ) : '' ) ?: 'Choose the website package that best fits your business stage and goals.';
 $pricing_heading  = ( $acf_ready ? get_field( 'packages_pricing_heading', $post_id ) : '' ) ?: 'Pricing';
+$pricing_note     = ( $acf_ready ? get_field( 'packages_pricing_note', $post_id ) : '' ) ?: 'Keep in mind that these are general guidelines and pricing can vary widely depending on the specific company and the level of service provided. It\'s important to get detailed pricing information for each service and that is why we offer a free digital marketing consultation followed by detailed quotations with breakdowns for each of our digital marketing services. Actual Ludych pricing should be customized based on deliverables, goals, and scope.';
 
 $packages = $acf_ready ? get_field( 'packages_pricing_packages', $post_id ) : array();
 
@@ -272,6 +273,10 @@ $render_package_cards = static function ( $cards ) {
 				<?php $render_package_cards( $development_packages ); ?>
 			</div>
 		</div>
+
+		<?php if ( ! empty( $pricing_note ) ) : ?>
+			<p class="text-center text-muted mt-4"><?php echo esc_html( $pricing_note ); ?></p>
+		<?php endif; ?>
 	</div>
 </section>
 
