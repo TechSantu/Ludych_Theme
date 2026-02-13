@@ -18,53 +18,53 @@ if ( empty( $phone ) ) {
 if ( empty( $email ) ) {
 	$email = 'biz@ludych.com';
 }
-if ( empty( $open_time ) ) {
-	$open_time = 'Monday - Friday: 10:00 - 20:00<br>Friday - 9AM to 5PM<br>Saturday - Sunday - Closed';
-}
-
-$subtitle           = get_theme_mod( 'ludych_contact_form_subtitle', 'Get In Touch' );
-$title              = get_theme_mod( 'ludych_contact_form_title', 'Get Your <span>Free Quote</span> Today!' );
-$recaptcha_enabled  = (bool) get_theme_mod( 'ludych_recaptcha_enabled', false );
-$recaptcha_site_key = get_theme_mod( 'ludych_recaptcha_site_key', '' );
-$redirect_url       = get_theme_mod( 'ludych_contact_redirect_url', '' );
-if ( empty( $redirect_url ) ) {
-	$redirect_url = home_url( '/thank-you' );
-}
-?>
-
-<section class="contact-us">
-	<div class="custom-container">
-		<div class="row">
-			<div class="col-xl-4 col-md-5 col-sm-12">
-				<div class="contact-cntn">
-					<?php if ( $address ) : ?>
-						<div class="cntc-box">
-							<h4>Address</h4>
-							<p><?php echo nl2br( esc_html( $address ) ); ?></p>
-						</div>
-					<?php endif; ?>
-
-					<?php if ( $phone || $email ) : ?>
-						<div class="cntc-box">
-							<h4>Contact</h4>
-							<ul>
-								<?php if ( $phone ) : ?>
-									<li><span>Phone:</span> <a href="tel:<?php echo esc_attr( preg_replace( '/\s+/', '', $phone ) ); ?>"><?php echo esc_html( $phone ); ?></a></li>
-								<?php endif; ?>
-								<?php if ( $email ) : ?>
-									<li><span>Email:</span> <a href="mailto:<?php echo esc_attr( $email ); ?>"><?php echo esc_html( $email ); ?></a></li>
-								<?php endif; ?>
-								<li><span>Calendly:</span> <a href="https://calendly.com/appleton-ludych" target="_blank">Book a meeting</a></li>
-							</ul>
-						</div>
-					<?php endif; ?>
-
-					<?php if ( $open_time ) : ?>
-						<div class="cntc-box">
-							<h4>Open Time</h4>
-							<p><?php echo $open_time; ?></p>
-						</div>
-					<?php endif; ?>
+	if ( empty( $open_time ) ) {
+		$open_time = "Monday - Friday: 9AM to 5PM\nSaturday - Sunday: Closed";
+	}
+	
+	$subtitle           = get_theme_mod( 'ludych_contact_form_subtitle', 'Get In Touch' );
+	$title              = get_theme_mod( 'ludych_contact_form_title', 'Get Your <span>Free Quote</span> Today!' );
+	$recaptcha_enabled  = (bool) get_theme_mod( 'ludych_recaptcha_enabled', false );
+	$recaptcha_site_key = get_theme_mod( 'ludych_recaptcha_site_key', '' );
+	$redirect_url       = get_theme_mod( 'ludych_contact_redirect_url', '' );
+	if ( empty( $redirect_url ) ) {
+		$redirect_url = home_url( '/thank-you' );
+	}
+	?>
+	
+	<section class="contact-us">
+		<div class="custom-container">
+			<div class="row">
+				<div class="col-xl-4 col-md-5 col-sm-12">
+					<div class="contact-cntn">
+						<?php if ( $address ) : ?>
+							<div class="cntc-box">
+								<h4>Address</h4>
+								<p><?php echo nl2br( esc_html( $address ) ); ?></p>
+							</div>
+						<?php endif; ?>
+	
+						<?php if ( $phone || $email ) : ?>
+							<div class="cntc-box">
+								<h4>Contact</h4>
+								<ul>
+									<?php if ( $phone ) : ?>
+										<li><span>Phone:</span> <a href="tel:<?php echo esc_attr( preg_replace( '/\s+/', '', $phone ) ); ?>"><?php echo esc_html( $phone ); ?></a></li>
+									<?php endif; ?>
+									<?php if ( $email ) : ?>
+										<li><span>Email:</span> <a href="mailto:<?php echo esc_attr( $email ); ?>"><?php echo esc_html( $email ); ?></a></li>
+									<?php endif; ?>
+									<li><span>Calendly:</span> <a href="https://calendly.com/appleton-ludych" target="_blank">Book a meeting</a></li>
+								</ul>
+							</div>
+						<?php endif; ?>
+	
+						<?php if ( $open_time ) : ?>
+							<div class="cntc-box">
+								<h4>Open Time</h4>
+								<p><?php echo nl2br( esc_html( $open_time ) ); ?></p>
+							</div>
+						<?php endif; ?>
 
 					<div class="social-box">
 						<ul>
