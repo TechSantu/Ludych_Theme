@@ -23,17 +23,17 @@ if ( empty( $features ) ) {
 		array(
 			'title' => 'Integrated Digital Marketing Solutions',
 			'desc'  => 'We are a one-stop-shop for digital marketing, offering integrated solutions from start to finish that support your entire customer journey.',
-			'icon'  => 'fa-layer-group',
+			'svg'   => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>',
 		),
 		array(
 			'title' => 'Deep Expertise Across Marketing Disciplines',
 			'desc'  => 'Get access to a purpose-led team of problem-solvers who possess the in-depth knowledge and experience to tackle any challenge.',
-			'icon'  => 'fa-brain',
+			'svg'   => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
 		),
 		array(
 			'title' => 'Discover Your Partner in Growth',
 			'desc'  => 'For more than two decades, we\'ve unlocked the growth potential of our clients through effective, full-service digital marketing strategies.',
-			'icon'  => 'fa-handshake',
+			'svg'   => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>',
 		),
 	);
 }
@@ -53,7 +53,13 @@ if ( empty( $features ) ) {
 				<?php foreach ( $features as $feature ) : ?>
 				<div class="info-feature">
 					<div class="feature-icon-circle orange">
-						<i class="fas <?php echo esc_attr( $feature['icon'] ?? 'fa-check' ); ?>"></i>
+						<?php 
+						if ( isset( $feature['svg'] ) && ! empty( $feature['svg'] ) ) {
+							echo $feature['svg'];
+						} else {
+							echo '<i class="fas ' . esc_attr( $feature['icon'] ?? 'fa-check' ) . '"></i>';
+						}
+						?>
 					</div>
 					<div class="feature-text">
 						<h3><?php echo esc_html( $feature['title'] ); ?></h3>

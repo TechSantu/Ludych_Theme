@@ -34,36 +34,23 @@ if ( empty( $stats ) ) {
 	<div class="custom-container">
 		<div class="results-card">
 			<div class="results-grid">
-				<?php
-				$count = count( $stats );
-				$i     = 0;
-				foreach ( $stats as $stat ) :
-					$border_class = '';
-					if ( $i < $count - 1 ) {
-						// Add border logic if needed, simplistically implemented via CSS classes in original design
-						// The original design had classes like 'border-x', 'border-right'.
-						// We can just rely on CSS :not(:last-child) or specific classes.
-						// For now, let's just output divs and handle borders in CSS.
-					}
-					// Mapping classes from original HTML roughly
-					$class = 'result-stat';
-					if ( $i == 1 ) {
-						$class .= ' border-x'; // roughly middle
-					}
-					if ( $i == 2 ) {
-						$class .= ' border-right';
-					}
-
-					// Better approach: use CSS nth-child in the new CSS file.
-					?>
-				<div class="result-stat">
-					<h2><?php echo esc_html( $stat['val'] ); ?></h2>
-					<p><?php echo esc_html( $stat['lbl'] ); ?></p>
-				</div>
-					<?php
-					++$i;
-endforeach;
+			<?php
+			foreach ( $stats as $i => $stat ) :
+				$class = 'result-stat';
+				// Match index5.html classes: 
+				// 2nd item (index 1) has 'border-x'
+				// 3rd item (index 2) has 'border-right'
+				if ( $i === 1 ) {
+					$class .= ' border-x';
+				} elseif ( $i === 2 ) {
+					$class .= ' border-right';
+				}
 				?>
+			<div class="<?php echo esc_attr( $class ); ?>">
+				<h2><?php echo esc_html( $stat['val'] ); ?></h2>
+				<p><?php echo esc_html( $stat['lbl'] ); ?></p>
+			</div>
+			<?php endforeach; ?>
 			</div>
 		</div>
 	</div>

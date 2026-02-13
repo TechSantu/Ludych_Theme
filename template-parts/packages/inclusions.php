@@ -13,22 +13,22 @@ if ( empty( $inclusions ) ) {
 		array(
 			'text'  => 'Setup & Onboarding',
 			'color' => 'green',
-			'icon'  => 'fa-play',
+			'svg'   => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>',
 		),
 		array(
 			'text'  => '24/7 Support',
 			'color' => 'yellow',
-			'icon'  => 'fa-headset',
+			'svg'   => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>',
 		),
 		array(
 			'text'  => 'No Setup Fees',
 			'color' => 'orange',
-			'icon'  => 'fa-ban',
+			'svg'   => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>',
 		),
 		array(
 			'text'  => '30-Day Guarantee',
 			'color' => 'dark-orange',
-			'icon'  => 'fa-shield-alt',
+			'svg'   => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>',
 		),
 	);
 }
@@ -42,7 +42,13 @@ if ( empty( $inclusions ) ) {
 				<?php foreach ( $inclusions as $inc ) : ?>
 				<div class="inclusion-item">
 					<div class="inclusion-icon <?php echo esc_attr( $inc['color'] ?? 'green' ); ?>">
-						<i class="fas <?php echo esc_attr( $inc['icon'] ?? 'fa-check' ); ?> text-white"></i>
+						<?php 
+						if ( isset( $inc['svg'] ) && ! empty( $inc['svg'] ) ) {
+							echo $inc['svg'];
+						} else {
+							echo '<i class="fas ' . esc_attr( $inc['icon'] ?? 'fa-check' ) . ' text-white"></i>';
+						}
+						?>
 					</div>
 					<span><?php echo esc_html( $inc['text'] ); ?></span>
 				</div>

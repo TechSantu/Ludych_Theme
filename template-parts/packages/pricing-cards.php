@@ -99,7 +99,7 @@ if ( empty( $packages ) ) {
 							continue;
 						}
 						?>
-					<li><span><i class="fas fa-check"></i></span> <?php echo wp_kses_post( $feat_text ); ?></li>
+					<li><span>✓</span> <?php echo wp_kses_post( $feat_text ); ?></li>
 					<?php endforeach; ?>
 				</ul>
 				
