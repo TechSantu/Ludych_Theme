@@ -1965,6 +1965,11 @@ footer.footer {
 	border-radius: 50%;
 }
 
+/* Single Service pages: keep process icons visually lighter */
+.single-services .work-progress-card .img-box img {
+	max-width: 60%;
+}
+
 .work-progress .icon-box {
 	text-align: center;
 	display: flex;
