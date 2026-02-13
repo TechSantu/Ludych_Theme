@@ -136,9 +136,9 @@
 				function (e) {
 					e.preventDefault();
 
-					var button   = $(this);
-					var page     = button.data("page");
-					var maxPage  = button.data("max-pages");
+					var button = $(this);
+					var page = button.data("page");
+					var maxPage = button.data("max-pages");
 					var postType = button.data("post-type");
 					var nextPage = page + 1;
 
@@ -207,10 +207,10 @@
 				function (e) {
 					e.preventDefault();
 
-					var form             = $(this);
-					var messageBox       = form.find(".form-message");
-					var submitBtn        = form.find("button[type='submit']");
-					var originalBtnText  = submitBtn.find("span").text();
+					var form = $(this);
+					var messageBox = form.find(".form-message");
+					var submitBtn = form.find("button[type='submit']");
+					var originalBtnText = submitBtn.find("span").text();
 					var recaptchaEnabled = form.data("recaptcha-enabled") === 1 || form.data("recaptcha-enabled") === "1";
 					var recaptchaSiteKey = form.data("recaptcha-sitekey");
 
@@ -271,9 +271,9 @@
 			// Mobile Menu Dropdown Toggle
 			$('.navbar-nav .dropdown > a').on('click', function (e) {
 				if ($(window).width() < 992) {
-					var $el     = $(this);
+					var $el = $(this);
 					var $parent = $el.parent('.dropdown');
-					var $menu   = $el.next('.dropdown-menu');
+					var $menu = $el.next('.dropdown-menu');
 
 					// Check if this is a top-level item or a nested one
 					var isNested = $parent.hasClass('dropdown-submenu');
@@ -291,7 +291,7 @@
 						e.stopPropagation();
 
 						// Only close OTHER menus if it's a top-level dropdown
-						if ( ! isNested) {
+						if (!isNested) {
 							$('.navbar-nav .dropdown, .navbar-nav .dropdown-menu').not($parent).not($parent.parents('.dropdown')).removeClass('show');
 						} else {
 							// For nested menus, only close sibling nested menus
@@ -306,7 +306,7 @@
 			});
 
 			function loadBlogPosts(page, layout) {
-				var container  = $('#blog-posts-container');
+				var container = $('#blog-posts-container');
 				var pagination = $('#blog-pagination-container');
 
 				var baseUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
@@ -353,14 +353,14 @@
 
 			$(document).on('click', '.switcher-btn', function (e) {
 				e.preventDefault();
-				var btn    = $(this);
+				var btn = $(this);
 				var layout = btn.data('type');
 
 				$('.switcher-btn').removeClass('btn-secondary').addClass('btn-light');
 				btn.removeClass('btn-light').addClass('btn-secondary');
 
 				var params = new URLSearchParams(window.location.search);
-				var page   = params.get('paged') || 1;
+				var page = params.get('paged') || 1;
 
 				loadBlogPosts(page, layout);
 			});
@@ -369,7 +369,7 @@
 				e.preventDefault();
 				var url = $(this).attr('href');
 
-				var page  = 1;
+				var page = 1;
 				var match = url.match(/\/page\/(\d+)/);
 				if (match) {
 					page = match[1];
@@ -389,62 +389,105 @@
 				}, 500);
 			});
 
-			// Case Studies AJAX Filter
-			$(document).on('click', '.cs-tabs a', function (e) {
-				var tabsContainer = $('.cs-tabs');
-				var listContainer = $('.cs-lists ul');
+			// Case Studies AJAX Filter & Pagination
+			var csContainer = $('#case-studies-container');
+			var csLoadMoreBtn = $('#load-more-case-studies');
+			var csLoadMoreContainer = $('.case-studies-load-more');
 
-				if ( ! tabsContainer.length || ! listContainer.length) {
-					return;
-				}
-
-				e.preventDefault();
-
-				var link    = $(this);
-				var term    = link.data('term') || '';
-				var baseUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
-
+			function loadCaseStudies(term, page, append) {
 				$.ajax({
 					url: ludych_ajax_obj.ajax_url,
 					type: 'post',
 					data: {
 						action: 'ludych_ajax_case_studies_filter',
-						term: term
+						term: term,
+						paged: page
 					},
 					beforeSend: function () {
-						listContainer.css('opacity', '0.5');
+						if (!append) {
+							csContainer.css('opacity', '0.5');
+						} else {
+							csLoadMoreBtn.addClass('disabled').find('span').html('Loading... <i class="fa-solid fa-spinner fa-spin"></i>');
+						}
 					},
 					success: function (response) {
-						listContainer.css('opacity', '1');
-						if (response && response.content !== undefined) {
-							listContainer.html(response.content);
+						if (!append) {
+							csContainer.css('opacity', '1');
+							if (response && response.content !== undefined) {
+								csContainer.html(response.content);
+							}
+						} else {
+							csLoadMoreBtn.removeClass('disabled').find('span').html('Load More <i class="fa-solid fa-arrow-right-long"></i>');
+							if (response && response.content !== undefined) {
+								csContainer.append(response.content);
+							}
 						}
 
-						$('.cs-tabs a').removeClass('active');
-						link.addClass('active');
+						// Update pagination state
+						if (response) {
+							var maxPages = response.max_pages || 1;
+							var currentPage = response.current_page || 1;
 
+							csLoadMoreBtn.data('max-pages', maxPages);
+							csLoadMoreBtn.data('paged', currentPage);
+
+							if (currentPage >= maxPages) {
+								csLoadMoreContainer.hide();
+							} else {
+								csLoadMoreContainer.show();
+							}
+						}
+
+						// Update URL
 						var params = new URLSearchParams(window.location.search);
 						if (term) {
 							params.set('case-study-category', term);
 						} else {
 							params.delete('case-study-category');
 						}
+
+						var baseUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
 						var newUrl = baseUrl + (params.toString() ? "?" + params.toString() : "");
 						window.history.pushState({ path: newUrl }, '', newUrl);
 					},
 					error: function () {
-						listContainer.css('opacity', '1');
+						csContainer.css('opacity', '1');
+						csLoadMoreBtn.removeClass('disabled').find('span').html('Load More <i class="fa-solid fa-arrow-right-long"></i>');
 						console.log('Error loading case studies');
 					}
 				});
+			}
+
+			$(document).on('click', '.cs-tabs a', function (e) {
+				e.preventDefault();
+				var link = $(this);
+				var term = link.data('term') || '';
+
+				$('.cs-tabs a').removeClass('active');
+				link.addClass('active');
+
+				// Reset pagination on tab change
+				loadCaseStudies(term, 1, false);
+			});
+
+			$(document).on('click', '#load-more-case-studies', function (e) {
+				e.preventDefault();
+				var btn = $(this);
+				if (btn.hasClass('disabled')) return;
+
+				var term = $('.cs-tabs a.active').data('term') || '';
+				var currentPage = parseInt(btn.data('paged')) || 1;
+				var nextPage = currentPage + 1;
+
+				loadCaseStudies(term, nextPage, true);
 			});
 
 			// Case Study Detail Tabs
 			$(document).on('click', '[data-case-study-tabs] .case-study-tabs__btn', function () {
-				var btn      = $(this);
+				var btn = $(this);
 				var targetId = btn.data('tab-target');
-				var tabs     = btn.closest('[data-case-study-tabs]');
-				if ( ! targetId || ! tabs.length) {
+				var tabs = btn.closest('[data-case-study-tabs]');
+				if (!targetId || !tabs.length) {
 					return;
 				}
 
@@ -457,10 +500,10 @@
 
 			// Case Study Solution Tabs (Searchbloom-style)
 			$(document).on('click', '.cs-sol-section .nav-link[data-tab]', function () {
-				var btn       = $(this);
-				var tabId     = btn.data('tab');
+				var btn = $(this);
+				var tabId = btn.data('tab');
 				var container = btn.closest('.cs-sol-section');
-				if ( ! tabId || ! container.length) {
+				if (!tabId || !container.length) {
 					return;
 				}
 				container.find('.nav-link').removeClass('active');
@@ -471,9 +514,9 @@
 
 			// Case Study Solution Accordion (mobile)
 			$(document).on('click', '.cs-sol-section [data-toggle="collapse"] .point-title', function () {
-				var item   = $(this).closest('[data-toggle="collapse"]');
+				var item = $(this).closest('[data-toggle="collapse"]');
 				var target = item.data('target');
-				if ( ! target) {
+				if (!target) {
 					return;
 				}
 				var panel = $(target);

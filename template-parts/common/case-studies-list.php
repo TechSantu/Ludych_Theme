@@ -52,7 +52,7 @@ $case_studies = new WP_Query( $query_args );
 		</div>
 
 		<div class="cs-lists">
-			<ul>
+			<ul id="case-studies-container">
 				<?php if ( $case_studies->have_posts() ) : ?>
 					<?php while ( $case_studies->have_posts() ) : ?>
 						<?php
@@ -90,6 +90,12 @@ $case_studies = new WP_Query( $query_args );
 					</li>
 				<?php endif; ?>
 			</ul>
+
+			<div class="case-studies-load-more" style="text-align: center; margin-top: 40px; display: <?php echo ( $case_studies->max_num_pages > 1 ) ? 'block' : 'none'; ?>;">
+				<button id="load-more-case-studies" class="btn btn-primary" data-paged="1" data-max-pages="<?php echo esc_attr( $case_studies->max_num_pages ); ?>">
+					<span>Load More <i class="fa-solid fa-arrow-right-long"></i></span>
+				</button>
+			</div>
 		</div>
 	</div>
 </section>

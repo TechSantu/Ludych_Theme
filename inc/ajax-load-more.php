@@ -115,12 +115,14 @@ add_action( 'wp_ajax_ludych_ajax_blog_filter', 'ludych_ajax_blog_filter' );
 add_action( 'wp_ajax_nopriv_ludych_ajax_blog_filter', 'ludych_ajax_blog_filter' );
 
 function ludych_ajax_case_studies_filter() {
-	$term = isset( $_POST['term'] ) ? sanitize_text_field( wp_unslash( $_POST['term'] ) ) : '';
+	$term  = isset( $_POST['term'] ) ? sanitize_text_field( wp_unslash( $_POST['term'] ) ) : '';
+	$paged = isset( $_POST['paged'] ) ? intval( $_POST['paged'] ) : 1;
 
 	$query_args = array(
 		'post_type'      => 'case_study',
 		'posts_per_page' => 12,
 		'post_status'    => 'publish',
+		'paged'          => $paged,
 	);
 
 	if ( $term ) {
@@ -163,7 +165,7 @@ function ludych_ajax_case_studies_filter() {
 			<?php
 		}
 		wp_reset_postdata();
-	} else {
+	} elseif ( 1 === $paged ) {
 		?>
 		<li>
 			<div class="cs-tool-box">
@@ -178,7 +180,9 @@ function ludych_ajax_case_studies_filter() {
 
 	wp_send_json(
 		array(
-			'content' => $content,
+			'content'      => $content,
+			'max_pages'    => $case_studies->max_num_pages,
+			'current_page' => $paged,
 		)
 	);
 }
