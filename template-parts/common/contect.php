@@ -42,7 +42,7 @@ $recaptcha_site_key = get_theme_mod( 'ludych_recaptcha_site_key', '' );
 						<?php if ( $open_time ) : ?>
 						<div class="cntc-box">
 							<h4>Open Time</h4>
-							<p><?php echo esc_html( $open_time ); ?></p>
+							<p><?php echo ( $open_time ); ?></p>
 						</div>
 						<?php endif; ?>
 
