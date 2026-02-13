@@ -62,7 +62,7 @@ if ( empty( $redirect_url ) ) {
 					<?php if ( $open_time ) : ?>
 						<div class="cntc-box">
 							<h4>Open Time</h4>
-							<p><?php echo wp_kses_post( $open_time ); ?></p>
+							<p><?php echo $open_time; ?></p>
 						</div>
 					<?php endif; ?>
 
