@@ -2758,13 +2758,13 @@ footer.footer {
 	border-radius: 6.5px;
 }
 
-.cs-lists ul li .cs-tool-box figure img {
-	/* filter: grayscale(100%); */
+/* .cs-lists ul li .cs-tool-box figure img {
+	filter: grayscale(100%);
 }
 
 .cs-lists ul li .cs-tool-box:hover figure img {
 	filter: grayscale(0);
-}
+} */
 
 .cs-lists ul li .cs-tool-box .cs-box-desc h3 {
 	font-weight: 500;
