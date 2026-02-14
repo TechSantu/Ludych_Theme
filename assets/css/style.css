@@ -1095,7 +1095,7 @@ li.nav-item.dropdown .dropdown-menu li:has(a.dropdown-toggle) {
 }
 
 .about-us .about-thumb {
-	box-shadow: 20px 20px 0 rgba(71, 85, 105, 0.2);
+	border: 2px solid #3d72fb;
 }
 
 .about-cntn {
