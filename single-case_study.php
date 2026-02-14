@@ -131,7 +131,7 @@ if ( empty( $results_table_html ) ) {
 				<?php endif; ?>
 				<div class="case-study-hero__cta">
 					<?php
-					$default_cta_url   = home_url( '/contact/' );
+					$default_cta_url   = home_url( '/contact-us/' );
 					$default_cta_title = 'Free Action Plan';
 					if ( is_array( $cta_button ) && ! empty( $cta_button['url'] ) ) :
 						?>
@@ -167,7 +167,7 @@ if ( empty( $results_table_html ) ) {
 						<div class="cs-col-1 pt-5 col-lg-6">
 							<p class="cs-col-title"><?php echo esc_html( $who_title ); ?></p>
 							<div class="cs-col-desc">
-								<?php echo wp_kses_post( wpautop( $who_text ) ); ?>
+								<?php echo wpautop( $who_text ); ?>
 							</div>
 						</div>
 					<?php endif; ?>
@@ -175,7 +175,7 @@ if ( empty( $results_table_html ) ) {
 						<div class="cs-col-2 pt-5 col-lg-6">
 							<p class="cs-col-title"><?php echo esc_html( $what_title ); ?></p>
 							<div class="cs-col-desc">
-								<?php echo wp_kses_post( wpautop( $what_text ) ); ?>
+								<?php echo wpautop( $what_text ); ?>
 							</div>
 						</div>
 					<?php endif; ?>
@@ -193,7 +193,7 @@ if ( empty( $results_table_html ) ) {
 				<div class="row">
 					<div class="pt-lg-0 pt-5 col-lg-12">
 						<div class="cs-col-desc">
-							<?php echo wp_kses_post( wpautop( $problem ) ); ?>
+							<?php echo wpautop( $problem ); ?>
 						</div>
 					</div>
 				</div>
@@ -213,7 +213,7 @@ if ( empty( $results_table_html ) ) {
 							<div class="race-intro text-center pb-4">
 								<div class="row justify-content-center">
 									<div class="col-lg-9">
-										<?php echo wp_kses_post( wpautop( $solution ) ); ?>
+										<?php echo wpautop( $solution ); ?>
 									</div>
 								</div>
 							</div>
@@ -224,7 +224,7 @@ if ( empty( $results_table_html ) ) {
 								<div class="expertise-card">
 									<div class="expertise-info">
 										<h3><?php echo esc_html( isset( $tab['tab_title'] ) ? $tab['tab_title'] : '' ); ?></h3>
-										<?php echo wp_kses_post( wpautop( isset( $tab['tab_content'] ) ? $tab['tab_content'] : '' ) ); ?>
+										<?php echo wpautop( isset( $tab['tab_content'] ) ? $tab['tab_content'] : '' ); ?>
 									</div>
 								</div>
 							<?php endforeach; ?>
@@ -242,7 +242,7 @@ if ( empty( $results_table_html ) ) {
 			<h2 class="cs-section-title mt-0 mb-4"><?php echo esc_html( $results_title ); ?></h2>
 			<?php if ( $results ) : ?>
 				<div class="cs-section-desc pb-4">
-					<?php echo wp_kses_post( wpautop( $results ) ); ?>
+					<?php echo wpautop( $results ); ?>
 				</div>
 			<?php endif; ?>
 
@@ -250,7 +250,7 @@ if ( empty( $results_table_html ) ) {
 				<div class="cs-table-box mb-4 table-responsive">
 					<div class="table-responsive table-selfr">
 						<?php if ( $results_table_html ) : ?>
-							<?php echo wp_kses_post( $results_table_html ); ?>
+							<?php echo $results_table_html; ?>
 						<?php endif; ?>
 					</div>
 				</div>
