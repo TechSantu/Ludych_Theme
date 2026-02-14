@@ -49,6 +49,7 @@ if ( ! $cs_title ) {
 					<h6><?php echo esc_html( $cs_subtitle ); ?></h6>
 				</div>
 				<h5><?php echo wp_kses_post( $cs_title ); ?></h5>
+				<p>Our case studies will give you details on a few of our partners’ campaigns, which will show you the powerful results we can accomplish together.</p>
 			</div>
 		</div>
 	</div>

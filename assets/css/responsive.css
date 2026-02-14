@@ -46,6 +46,10 @@
 	.cs-lists ul li .cs-tool-box .cs-box-desc h3 {
 		font-size: 24px;
 	}
+
+	.cs-lists ul li .cs-tool-box figure {
+		height: 150px;
+	}
 }
 
 
@@ -512,6 +516,11 @@
 
 	.cs-lists ul li .cs-tool-box .cs-box-desc h3 {
 		font-size: 20px;
+	}
+
+	.cs-lists ul li .cs-tool-box figure {
+		height: 130px;
+		margin-bottom: 18px;
 	}
 
 	.blog-item2 {

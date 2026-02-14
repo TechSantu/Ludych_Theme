@@ -2759,6 +2759,23 @@ footer.footer {
 	height: 100%;
 }
 
+.cs-lists ul li .cs-tool-box figure {
+	margin: 0 0 22px;
+	height: 170px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.cs-lists ul li .cs-tool-box figure img {
+	max-width: 100%;
+	max-height: 100%;
+	width: auto;
+	height: auto;
+	object-fit: contain;
+	display: block;
+}
+
 .cs-lists ul li .cs-tool-box:hover {
 	background-color: #f5fcff;
 	box-shadow: 0 4px 20px 0 rgba(46, 168, 216, .31);
