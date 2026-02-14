@@ -1094,6 +1094,10 @@ li.nav-item.dropdown .dropdown-menu li:has(a.dropdown-toggle) {
 	max-width: 100%;
 }
 
+.about-us .about-thumb {
+	box-shadow: 20px 20px 0 rgba(71, 85, 105, 0.2);
+}
+
 .about-cntn {
 	position: relative;
 	width: 95%;
@@ -3478,6 +3482,14 @@ footer.footer {
 .case-study-partners .global-header p {
 	max-width: 720px;
 	margin: 16px auto 0;
+}
+
+body.single-case_study .client-logos .global-header {
+	text-align: center;
+}
+
+body.single-case_study .client-logos .global-header .min-title {
+	justify-content: center;
 }
 
 .case-study-logo-grid {
