@@ -3002,6 +3002,45 @@ footer.footer {
 	color: #5d7183;
 }
 
+.cs-result-section .cs-section-desc {
+	max-width: 900px;
+	margin: 0 auto;
+	text-align: center;
+}
+
+.cs-result-section .cs-section-desc ul,
+.cs-result-section .cs-section-desc ol {
+	display: inline-block;
+	text-align: left;
+}
+
+/* Keep list formatting consistent across case study rich text content. */
+.cs-cols-section .cs-col-desc ul,
+.cs-cols-section .cs-col-desc ol,
+.cs-cols-section .race-intro ul,
+.cs-cols-section .race-intro ol,
+.cs-cols-section .expertise-info ul,
+.cs-cols-section .expertise-info ol,
+.cs-cols-section .cs-section-desc ul,
+.cs-cols-section .cs-section-desc ol {
+	margin: 12px 0;
+	padding-left: 22px;
+}
+
+.cs-cols-section .cs-col-desc li,
+.cs-cols-section .race-intro li,
+.cs-cols-section .expertise-info li,
+.cs-cols-section .cs-section-desc li {
+	margin-bottom: 8px;
+}
+
+.cs-cols-section .cs-col-desc li::marker,
+.cs-cols-section .race-intro li::marker,
+.cs-cols-section .expertise-info li::marker,
+.cs-cols-section .cs-section-desc li::marker {
+	color: #3d72fb;
+}
+
 .cs-result-section .table {
 	background: #fff;
 	border-radius: 10px;
