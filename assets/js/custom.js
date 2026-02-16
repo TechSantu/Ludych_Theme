@@ -535,6 +535,90 @@
 					item.attr('aria-expanded', 'true');
 				}
 			});
+
+			// Case Study Gallery Lightbox
+			var csGallery = $('[data-case-study-gallery]');
+			var csLightbox = $('[data-case-study-lightbox]');
+			if (csGallery.length && csLightbox.length) {
+				var csItems = csGallery.find('.case-study-gallery-item');
+				var csImage = csLightbox.find('[data-gallery-image]');
+				var csCaption = csLightbox.find('[data-gallery-caption]');
+				var csCloseButtons = csLightbox.find('[data-gallery-close]');
+				var csPrev = csLightbox.find('[data-gallery-prev]');
+				var csNext = csLightbox.find('[data-gallery-next]');
+				var csCurrentIndex = 0;
+				var csLastFocusedElement = null;
+
+				function csOpenLightbox(index) {
+					csLastFocusedElement = document.activeElement;
+					csUpdateSlide(index);
+					csLightbox.addClass('is-open').attr('aria-hidden', 'false');
+					$('body').addClass('case-study-lightbox-open');
+					csCloseButtons.first().trigger('focus');
+				}
+
+				function csCloseLightbox() {
+					csLightbox.removeClass('is-open').attr('aria-hidden', 'true');
+					$('body').removeClass('case-study-lightbox-open');
+					if (csLastFocusedElement && typeof csLastFocusedElement.focus === 'function') {
+						csLastFocusedElement.focus();
+					}
+				}
+
+				function csUpdateSlide(index) {
+					if ( ! csItems.length) {
+						return;
+					}
+
+					csCurrentIndex = index;
+					if (csCurrentIndex < 0) {
+						csCurrentIndex = csItems.length - 1;
+					}
+					if (csCurrentIndex >= csItems.length) {
+						csCurrentIndex = 0;
+					}
+
+					var currentItem = csItems.eq(csCurrentIndex);
+					var src = currentItem.attr('data-gallery-src') || '';
+					var alt = currentItem.attr('data-gallery-alt') || '';
+					var caption = currentItem.attr('data-gallery-caption') || '';
+
+					csImage.attr('src', src);
+					csImage.attr('alt', alt);
+					csCaption.text(caption);
+				}
+
+				csItems.on('click', function () {
+					csOpenLightbox(csItems.index(this));
+				});
+
+				csPrev.on('click', function () {
+					csUpdateSlide(csCurrentIndex - 1);
+				});
+
+				csNext.on('click', function () {
+					csUpdateSlide(csCurrentIndex + 1);
+				});
+
+				csCloseButtons.on('click', function () {
+					csCloseLightbox();
+				});
+
+				$(document).on('keydown.caseStudyGallery', function (e) {
+					if ( ! csLightbox.hasClass('is-open')) {
+						return;
+					}
+					if (e.key === 'Escape') {
+						csCloseLightbox();
+					}
+					if (e.key === 'ArrowLeft') {
+						csUpdateSlide(csCurrentIndex - 1);
+					}
+					if (e.key === 'ArrowRight') {
+						csUpdateSlide(csCurrentIndex + 1);
+					}
+				});
+			}
 		}
 	);
 })(jQuery);

@@ -807,6 +807,37 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				'media_upload'  => 0,
 				'default_value' => 'They sell camping gear, hunting equipment, survival knives, and apparel. The company also runs survival and specialty classes and publishes guides and booklets for their community.',
 			),
+			array(
+				'key'   => 'field_cs_tab_gallery',
+				'label' => 'Gallery',
+				'type'  => 'tab',
+			),
+			array(
+				'key'           => 'field_case_study_gallery_title',
+				'label'         => 'Gallery Title',
+				'name'          => 'case_study_gallery_title',
+				'type'          => 'text',
+				'default_value' => 'Project Gallery',
+			),
+			array(
+				'key'   => 'field_case_study_gallery_intro',
+				'label' => 'Gallery Intro',
+				'name'  => 'case_study_gallery_intro',
+				'type'  => 'textarea',
+				'rows'  => 2,
+			),
+			array(
+				'key'           => 'field_case_study_gallery_images',
+				'label'         => 'Gallery Images',
+				'name'          => 'case_study_gallery_images',
+				'type'          => 'gallery',
+				'preview_size'  => 'medium',
+				'library'       => 'all',
+				'min'           => 0,
+				'max'           => 0,
+				'insert'        => 'append',
+				'return_format' => 'array',
+			),
 
 			array(
 				'key'   => 'field_cs_tab_problem',

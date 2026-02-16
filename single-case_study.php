@@ -40,6 +40,12 @@ $who_title      = $cs_get_field( 'case_study_who_title', 'Who They Are' );
 $who_text       = $cs_get_field( 'case_study_who_text' );
 $what_title     = $cs_get_field( 'case_study_what_title', 'What They Do' );
 $what_text      = $cs_get_field( 'case_study_what_text' );
+$gallery_title  = $cs_get_field( 'case_study_gallery_title', 'Project Gallery' );
+$gallery_intro  = $cs_get_field( 'case_study_gallery_intro' );
+$gallery_images = function_exists( 'get_field' ) ? get_field( 'case_study_gallery_images', $post_id ) : array();
+if ( ! is_array( $gallery_images ) ) {
+	$gallery_images = array();
+}
 $problem_title  = $cs_get_field( 'case_study_problem_title', 'The Problem' );
 $problem        = $cs_get_field( 'case_study_problem' );
 $solution_title = $cs_get_field( 'case_study_solution_title', 'The Solution' );
@@ -183,6 +189,71 @@ if ( empty( $results_table_html ) ) {
 			</div>
 		</div>
 	</section>
+<?php endif; ?>
+
+<?php if ( ! empty( $gallery_images ) ) : ?>
+	<section class="cs-section case-study-gallery-section py-5">
+		<div class="custom-container">
+			<h2 class="cs-section-title mt-0 mb-4 text-center"><?php echo esc_html( $gallery_title ); ?></h2>
+			<?php if ( ! empty( $gallery_intro ) ) : ?>
+				<div class="case-study-gallery-intro">
+					<?php echo wpautop( $gallery_intro ); ?>
+				</div>
+			<?php endif; ?>
+			<div class="case-study-gallery-grid" data-case-study-gallery>
+				<?php foreach ( $gallery_images as $image ) : ?>
+					<?php
+					$full_url  = '';
+					$thumb_url = '';
+					$alt       = '';
+					$caption   = '';
+
+					if ( is_array( $image ) ) {
+						$full_url  = isset( $image['url'] ) ? $image['url'] : '';
+						$thumb_url = isset( $image['sizes']['large'] ) ? $image['sizes']['large'] : $full_url;
+						$alt       = isset( $image['alt'] ) ? $image['alt'] : '';
+						$caption   = isset( $image['caption'] ) ? $image['caption'] : '';
+					} else {
+						$full_url  = (string) $image;
+						$thumb_url = (string) $image;
+					}
+
+					if ( empty( $full_url ) ) {
+						continue;
+					}
+					?>
+					<button
+						type="button"
+						class="case-study-gallery-item"
+						data-gallery-src="<?php echo esc_url( $full_url ); ?>"
+						data-gallery-alt="<?php echo esc_attr( $alt ); ?>"
+						data-gallery-caption="<?php echo esc_attr( wp_strip_all_tags( $caption ) ); ?>"
+					>
+						<img src="<?php echo esc_url( $thumb_url ); ?>" alt="<?php echo esc_attr( $alt ); ?>" loading="lazy" decoding="async" />
+					</button>
+				<?php endforeach; ?>
+			</div>
+		</div>
+	</section>
+
+	<div class="case-study-lightbox" data-case-study-lightbox aria-hidden="true">
+		<div class="case-study-lightbox__backdrop" data-gallery-close></div>
+		<div class="case-study-lightbox__dialog" role="dialog" aria-modal="true" aria-label="<?php echo esc_attr__( 'Case study gallery preview', 'ludych-theme' ); ?>">
+			<button type="button" class="case-study-lightbox__close" data-gallery-close aria-label="<?php echo esc_attr__( 'Close gallery', 'ludych-theme' ); ?>">
+				<i class="fa-solid fa-xmark" aria-hidden="true"></i>
+			</button>
+			<button type="button" class="case-study-lightbox__nav case-study-lightbox__nav--prev" data-gallery-prev aria-label="<?php echo esc_attr__( 'Previous image', 'ludych-theme' ); ?>">
+				<i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+			</button>
+			<figure class="case-study-lightbox__figure">
+				<img src="" alt="" data-gallery-image />
+				<figcaption class="case-study-lightbox__caption" data-gallery-caption></figcaption>
+			</figure>
+			<button type="button" class="case-study-lightbox__nav case-study-lightbox__nav--next" data-gallery-next aria-label="<?php echo esc_attr__( 'Next image', 'ludych-theme' ); ?>">
+				<i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+			</button>
+		</div>
+	</div>
 <?php endif; ?>
 
 <?php if ( $problem ) : ?>
