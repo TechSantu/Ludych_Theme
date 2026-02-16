@@ -3272,6 +3272,13 @@ footer.footer {
 .cs-sol-section .expertise-card .expertise-info ul {
 	padding-left: 20px;
 	margin: 0;
+	display: block;
+}
+
+.cs-sol-section .expertise-card .expertise-info ul li {
+	justify-content: flex-start;
+	align-items: flex-start;
+	text-align: left;
 }
 
 .case-study-ace-grid {
@@ -3748,6 +3755,7 @@ body.case-study-lightbox-open {
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
+	filter: grayscale(100%);
 }
 
 .our-teams .group-social {
