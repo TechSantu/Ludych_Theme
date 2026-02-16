@@ -537,16 +537,16 @@
 			});
 
 			// Case Study Gallery Lightbox
-			var csGallery = $('[data-case-study-gallery]');
+			var csGallery  = $('[data-case-study-gallery]');
 			var csLightbox = $('[data-case-study-lightbox]');
 			if (csGallery.length && csLightbox.length) {
-				var csItems = csGallery.find('.case-study-gallery-item');
-				var csImage = csLightbox.find('[data-gallery-image]');
-				var csCaption = csLightbox.find('[data-gallery-caption]');
-				var csCloseButtons = csLightbox.find('[data-gallery-close]');
-				var csPrev = csLightbox.find('[data-gallery-prev]');
-				var csNext = csLightbox.find('[data-gallery-next]');
-				var csCurrentIndex = 0;
+				var csItems              = csGallery.find('.case-study-gallery-item');
+				var csImage              = csLightbox.find('[data-gallery-image]');
+				var csCaption            = csLightbox.find('[data-gallery-caption]');
+				var csCloseButtons       = csLightbox.find('[data-gallery-close]');
+				var csPrev               = csLightbox.find('[data-gallery-prev]');
+				var csNext               = csLightbox.find('[data-gallery-next]');
+				var csCurrentIndex       = 0;
 				var csLastFocusedElement = null;
 
 				function csOpenLightbox(index) {
@@ -579,9 +579,9 @@
 					}
 
 					var currentItem = csItems.eq(csCurrentIndex);
-					var src = currentItem.attr('data-gallery-src') || '';
-					var alt = currentItem.attr('data-gallery-alt') || '';
-					var caption = currentItem.attr('data-gallery-caption') || '';
+					var src         = currentItem.attr('data-gallery-src') || '';
+					var alt         = currentItem.attr('data-gallery-alt') || '';
+					var caption     = currentItem.attr('data-gallery-caption') || '';
 
 					csImage.attr('src', src);
 					csImage.attr('alt', alt);
