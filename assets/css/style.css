@@ -2742,7 +2742,7 @@ footer.footer {
 }
 
 .cs-lists ul li {
-	width: calc((100% - 0px) / 3);
+	width: calc((100% - 0px) / 2);
 }
 
 .cs-lists ul li .cs-tool-box {
@@ -2765,7 +2765,7 @@ footer.footer {
 
 .cs-lists ul li .cs-tool-box figure {
 	margin: 0 0 22px;
-	height: 170px;
+	height: 220px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
