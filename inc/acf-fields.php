@@ -951,7 +951,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 			),
 			array(
 				'key'   => 'field_case_study_cta_button',
-				'label' => 'CTA Button',
+				'label' => 'Hero CTA Button',
 				'name'  => 'case_study_cta_button',
 				'type'  => 'link',
 			),
