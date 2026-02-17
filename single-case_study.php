@@ -54,9 +54,9 @@ $solution_tabs  = function_exists( 'get_field' ) ? get_field( 'case_study_soluti
 if ( ! is_array( $solution_tabs ) ) {
 	$solution_tabs = array();
 }
-$results_title = $cs_get_field( 'case_study_results_title', 'Results' );
-$results       = $cs_get_field( 'case_study_results' );
-$cta_button    = function_exists( 'get_field' ) ? get_field( 'case_study_cta_button', $post_id ) : null;
+$results_title     = $cs_get_field( 'case_study_results_title', 'Results' );
+$results           = $cs_get_field( 'case_study_results' );
+$cta_button        = function_exists( 'get_field' ) ? get_field( 'case_study_cta_button', $post_id ) : null;
 $closing_cta_title = $cs_get_field( 'case_study_closing_cta_title' );
 $closing_cta_text  = $cs_get_field( 'case_study_closing_cta_text' );
 
