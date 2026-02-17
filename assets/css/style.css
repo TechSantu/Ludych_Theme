@@ -3277,7 +3277,7 @@ footer.footer {
 
 .cs-sol-section .expertise-card .expertise-info ul li {
 	justify-content: flex-start;
-	align-items: flex-start;
+	align-items: center;
 	text-align: left;
 }
 
