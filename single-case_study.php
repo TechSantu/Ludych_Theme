@@ -341,7 +341,7 @@ if ( empty( $results_table_html ) ) {
 						<h2><?php echo esc_html( $closing_cta_title ); ?></h2>
 					<?php endif; ?>
 					<?php if ( $closing_cta_text ) : ?>
-						<p><?php echo esc_html( $closing_cta_text ); ?></p>
+						<?php echo wpautop( wp_kses_post( $closing_cta_text ) ); ?>
 					<?php endif; ?>
 				</div>
 			</div>

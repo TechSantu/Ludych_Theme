@@ -955,6 +955,19 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				'name'  => 'case_study_cta_button',
 				'type'  => 'link',
 			),
+			array(
+				'key'   => 'field_case_study_closing_cta_title',
+				'label' => 'Closing CTA Title',
+				'name'  => 'case_study_closing_cta_title',
+				'type'  => 'text',
+			),
+			array(
+				'key'   => 'field_case_study_closing_cta_text',
+				'label' => 'Closing CTA Text',
+				'name'  => 'case_study_closing_cta_text',
+				'type'  => 'textarea',
+				'rows'  => 3,
+			),
 		),
 		'location'              => array(
 			array(
