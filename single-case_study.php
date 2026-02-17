@@ -57,6 +57,8 @@ if ( ! is_array( $solution_tabs ) ) {
 $results_title = $cs_get_field( 'case_study_results_title', 'Results' );
 $results       = $cs_get_field( 'case_study_results' );
 $cta_button    = function_exists( 'get_field' ) ? get_field( 'case_study_cta_button', $post_id ) : null;
+$closing_cta_title = $cs_get_field( 'case_study_closing_cta_title' );
+$closing_cta_text  = $cs_get_field( 'case_study_closing_cta_text' );
 
 $list_from_text = function ( $text ) {
 	if ( ! $text ) {
@@ -324,6 +326,23 @@ if ( empty( $results_table_html ) ) {
 							<?php echo $results_table_html; ?>
 						<?php endif; ?>
 					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+<?php endif; ?>
+
+<?php if ( $closing_cta_title || $closing_cta_text ) : ?>
+	<section class="cs-section py-5">
+		<div class="custom-container">
+			<div class="case-study-cta">
+				<div class="case-study-cta__content">
+					<?php if ( $closing_cta_title ) : ?>
+						<h2><?php echo esc_html( $closing_cta_title ); ?></h2>
+					<?php endif; ?>
+					<?php if ( $closing_cta_text ) : ?>
+						<p><?php echo esc_html( $closing_cta_text ); ?></p>
+					<?php endif; ?>
 				</div>
 			</div>
 		</div>
