@@ -3375,6 +3375,10 @@ footer.footer {
 	margin-bottom: 10px;
 }
 
+.case-study-cta .globalBtnDark {
+	flex-shrink: 0;
+}
+
 .case-study-tabs {
 	margin-top: 30px;
 	background: #f7f8ff;

@@ -59,6 +59,7 @@ $results           = $cs_get_field( 'case_study_results' );
 $cta_button        = function_exists( 'get_field' ) ? get_field( 'case_study_cta_button', $post_id ) : null;
 $closing_cta_title = $cs_get_field( 'case_study_closing_cta_title' );
 $closing_cta_text  = $cs_get_field( 'case_study_closing_cta_text' );
+$closing_cta_button = function_exists( 'get_field' ) ? get_field( 'case_study_closing_cta_button', $post_id ) : null;
 
 $list_from_text = function ( $text ) {
 	if ( ! $text ) {
@@ -332,7 +333,7 @@ if ( empty( $results_table_html ) ) {
 	</section>
 <?php endif; ?>
 
-<?php if ( $closing_cta_title || $closing_cta_text ) : ?>
+<?php if ( $closing_cta_title || $closing_cta_text || ( is_array( $closing_cta_button ) && ! empty( $closing_cta_button['url'] ) ) ) : ?>
 	<section class="cs-section py-5">
 		<div class="custom-container">
 			<div class="case-study-cta">
@@ -344,6 +345,11 @@ if ( empty( $results_table_html ) ) {
 						<?php echo wpautop( wp_kses_post( $closing_cta_text ) ); ?>
 					<?php endif; ?>
 				</div>
+				<?php if ( is_array( $closing_cta_button ) && ! empty( $closing_cta_button['url'] ) ) : ?>
+					<a href="<?php echo esc_url( $closing_cta_button['url'] ); ?>" target="<?php echo esc_attr( ! empty( $closing_cta_button['target'] ) ? $closing_cta_button['target'] : '_self' ); ?>" class="globalBtnDark">
+						<span><?php echo esc_html( ! empty( $closing_cta_button['title'] ) ? $closing_cta_button['title'] : 'Free Action Plan' ); ?> <i class="fa-solid fa-arrow-right-long"></i></span>
+					</a>
+				<?php endif; ?>
 			</div>
 		</div>
 	</section>

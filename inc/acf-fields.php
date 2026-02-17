@@ -968,6 +968,12 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				'type'  => 'textarea',
 				'rows'  => 3,
 			),
+			array(
+				'key'   => 'field_case_study_closing_cta_button',
+				'label' => 'Closing CTA Button',
+				'name'  => 'case_study_closing_cta_button',
+				'type'  => 'link',
+			),
 		),
 		'location'              => array(
 			array(
